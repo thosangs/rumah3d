@@ -15,7 +15,7 @@ export function renderHitungan(R, el, onPick) {
     h += `<tr class="total"><td colspan="6">${g.name} <span class="badge">${g.area} m² → ${g.pieces} keping · +${cfg.wastePct}% = ${g.withWaste} keping = ${g.boxes} dus</span></td></tr>`;
     for (const f of g.items) {
       const alt = f.isBathroom && cfg.bathFloorMode === '40';
-      h += `<tr class="row-click" data-id="${f.id}"><td>${f.name}${alt ? ` <span class="badge">${f.tileSpec.label}</span>` : ''}${cutsHtml(f)}</td><td class="num">${f.area}</td><td class="num">${f.full}</td><td class="num">${f.cutPieces} pcs</td><td class="num">${f.cutTiles}</td><td class="num"><b>${f.pieces}</b></td></tr>`;
+      h += `<tr class="row-click" data-id="${f.id}"><td>${f.name}${alt ? ` <span class="badge">${f.tileSpec.label}</span>` : ''}${cutsHtml(f)}${f.note ? `<div class="cuts">${f.note}</div>` : ''}</td><td class="num">${f.area}</td><td class="num">${f.full}</td><td class="num">${f.cutPieces} pcs</td><td class="num">${f.cutTiles}</td><td class="num"><b>${f.pieces}</b></td></tr>`;
     }
   }
   h += `</tbody></table>`;

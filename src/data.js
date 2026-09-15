@@ -43,17 +43,14 @@ export const FLOOR_AREAS = [
     tile: 'floor',
     mainRect: R(6.5 + HALF, 8.5 - HALF, 10 - HALF, 13.5 - HALF), // ruang keluarga: pola dipusatkan di sini
     rects: [
-      // dapur + ruang makan (y 3.5–7.0); tapak tangga L (anak tangga awal x 8.28–9.925, y 3.56–4.56;
-      // run sepanjang tembok kanan x 8.88–9.925, y 4.56–9.06) dikeluarkan
-      R(3 + HALF, 3.5 + HALF, 8.28, 7.0 - HALF),
-      R(8.28, 4.56, 8.88, 7.0 - HALF),
+      // dapur + ruang makan (y 3.5–7.0) — keramik menerus sampai bawah tangga (tangga duduk di atas lantai, kolongnya lemari)
+      R(3 + HALF, 3.5 + HALF, 10 - HALF, 7.0 - HALF),
       // koridor depan toilet menerus ke ruang keluarga (y 7.0–8.5)
-      R(4.75 + HALF, 7.0 - HALF, 8.88, 8.5 - HALF),
-      // di bawah tangga bagian depan (tinggi bebas ≥ 2 m) tetap dilantai
-      R(8.88, 6.66, 10 - HALF, 8.5 - HALF),
+      R(4.75 + HALF, 7.0 - HALF, 10 - HALF, 8.5 - HALF),
       // ruang keluarga (y 8.5–13.5)
       R(6.5 + HALF, 8.5 - HALF, 10 - HALF, 13.5 - HALF),
     ],
+    note: 'Termasuk lantai di bawah tangga (±6 m², ±10 keping). Kalau tangga dicor masif sampai lantai, kurangi ±10 keping (3 dus).',
     // keliling untuk plin (panjang tembok bersih dikurangi bukaan pintu)
     plinth: {
       length:

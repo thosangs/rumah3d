@@ -1,9 +1,9 @@
 
 === GRANIT 80x80 (3 keping/dus, cadangan 7%) ===
 
-## Lantai 1  — 56.91 m² | 98 keping (utuh 61 + korban potong 37) → +cadangan 105 keping = 35 dus
-  - Dapur + R. Makan + R. Keluarga (satu bidang menerus)       43.53 m²   utuh 47   potongan 37 pcs   dari 27  keping → total 74 keping  [mulai: ruang utama: simetris/utuh dari depan]
-      potongan: 48×80×8, 47×80×6, 25×80×5, 80×80 (L)×4, 77×80×3, 23×80×2, 25×77×1, 70×77×1, 70×80×1, 63×80×1, 60×63×1, 60×80×1, 25×43×1, 6×23×1, 37×48×1
+## Lantai 1  — 60.73 m² | 104 keping (utuh 66 + korban potong 38) → +cadangan 112 keping = 38 dus
+  - Dapur + R. Makan + R. Keluarga (satu bidang menerus)       47.35 m²   utuh 52   potongan 37 pcs   dari 28  keping → total 80 keping  [mulai: ruang utama: simetris/utuh dari depan]
+      potongan: 48×80×12, 25×80×7, 47×80×6, 77×80×3, 80×80 (L)×2, 25×77×1, 70×77×1, 70×80×1, 63×80×1, 60×63×1, 60×80×1, 25×48×1
   - Kamar Tidur 1                                              11.22 m²   utuh 12   potongan 13 pcs   dari 8   keping → total 20 keping  [mulai: ruang utama: simetris/utuh dari belakang]
       potongan: 47×80×8, 15×80×3, 15×47×2
   - Toilet Lt.1 (lantai)                                       2.16 m²    utuh 2    potongan 2 pcs    dari 2   keping → total 4 keping  [mulai: ruang utama: simetris/utuh dari belakang]
@@ -15,9 +15,9 @@
   - Teras Belakang                                             4.77 m²    utuh 3    potongan 12 pcs   dari 6   keping → total 9 keping  [mulai: ruang utama: simetris/simetris (nat tengah)]
       potongan: 31×80×6, 31×47×2, 31×48×2, 47×80×1, 48×80×1
 
-## Lantai 2  — 51.56 m² | 93 keping (utuh 59 + korban potong 34) → +cadangan 100 keping = 34 dus
-  - Selasar + R. Keluarga Lt.2 (satu bidang menerus)           24.8 m²    utuh 34   potongan 17 pcs   dari 6   keping → total 40 keping  [mulai: ruang utama: utuh dari tembok kiri/utuh dari depan]
-      potongan: 25×80×8, 15×80×5, 25×25×1, 80×80 (L)×1, 37×80×1, 15×37×1
+## Lantai 2  — 51.56 m² | 100 keping (utuh 47 + korban potong 53) → +cadangan 107 keping = 36 dus
+  - Selasar + R. Keluarga Lt.2 (satu bidang menerus)           24.8 m²    utuh 22   potongan 29 pcs   dari 25  keping → total 47 keping  [mulai: ruang utama: simetris/utuh dari depan]
+      potongan: 47×80×12, 58×80×6, 48×80×5, 25×47×1, 25×80×1, 25×58×1, 80×80 (L)×1, 37×80×1, 37×48×1
   - Kamar Tidur 2                                              11.22 m²   utuh 9    potongan 16 pcs   dari 16  keping → total 25 keping  [mulai: ruang utama: simetris/simetris]
       potongan: 47×80×12, 47×47×4
   - Kamar Tidur Utama                                          11.22 m²   utuh 12   potongan 13 pcs   dari 8   keping → total 20 keping  [mulai: ruang utama: simetris/utuh dari belakang]
@@ -42,7 +42,7 @@
   - Kamar Tidur 2                                              12.5 m → 17 strip → 3 keping
   - Kamar Tidur Utama                                          10.7 m → 15 strip → 2 keping
 
-## TOTAL granit 80x80 (lantai + plin, pola rapi): 256 keping, +cadangan 275 keping ≈ 176 m² = 92 dus  (pola hemat: 252 keping ≈ 90 dus)
+## TOTAL granit 80x80 (lantai + plin, pola rapi): 269 keping, +cadangan 289 keping ≈ 184.96 m² = 97 dus  (pola hemat: 258 keping ≈ 93 dus)
 
 === DINDING KAMAR MANDI 30x60 (8 keping/dus) zona bawah 1.8 m teraso, atas 0.6 m putih polos ===
 
@@ -67,13 +67,13 @@
 ## TOTAL dinding: TERASO 27.96 m² → 174 keping (+cadangan 187) = 24 dus | PUTIH 9.51 m² → 61 keping (+cadangan 66) = 9 dus
 
 === HITUNGAN RIIL vs TUKANG (dus) — 80×80: 3/dus, 30×60: 8/dus ===
-  Lantai 1                           tukang 60 m²     94 kpg    32 dus   | riil 56.91 m²  98 kpg    33 dus   +7% → 35 dus
-  Lantai 2                           tukang 62.5 m²   98 kpg    33 dus   | riil 51.56 m²  93 kpg    31 dus   +7% → 34 dus
+  Lantai 1                           tukang 60 m²     94 kpg    32 dus   | riil 60.73 m²  104 kpg   35 dus   +7% → 38 dus
+  Lantai 2                           tukang 62.5 m²   98 kpg    33 dus   | riil 51.56 m²  100 kpg   34 dus   +7% → 36 dus
   Teras bawah                        tukang 21 m²     33 kpg    11 dus   | riil 9.54 m²   18 kpg    6 dus    +7% → 7 dus
   Teras atas                         tukang 27 m²     43 kpg    15 dus   | riil 18.42 m²  34 kpg    12 dus   +7% → 13 dus
   Lantai KM (riil sudah di Lt1/Lt2)  tukang 9 m²      15 kpg    5 dus    | riil 6.48 m²   12 kpg    - dus    +7% → - dus
   Plin                               tukang — m²      18 kpg    6 dus    | riil — m²      13 kpg    5 dus    +7% → 5 dus
-  TOTAL 80×80                        tukang 179.5 m²  301 kpg   102 dus  | riil 176 m²    256 kpg   86 dus   +7% → 92 dus
+  TOTAL 80×80                        tukang 179.5 m²  301 kpg   102 dus  | riil 184.96 m² 269 kpg   90 dus   +7% → 97 dus
   Dinding KM bawah (teraso)          tukang 30 m²     167 kpg   21 dus   | riil 27.96 m²  174 kpg   22 dus   +7% → 24 dus
   Dinding KM atas (putih)            tukang 42 m²     234 kpg   30 dus   | riil 9.51 m²   61 kpg    8 dus    +7% → 9 dus
   TOTAL 30×60                        tukang 72 m²     401 kpg   51 dus   | riil 37.47 m²  235 kpg   30 dus   +7% → 33 dus

@@ -241,17 +241,21 @@ export function layoutFloor(rects, tile, opts = {}) {
       const full = cells.filter((c) => c.full).length;
       const cuts = cells.filter((c) => !c.full);
       const pack = packCuts(cuts, tile);
-      const sizes = cuts.filter((c) => c.shape !== 'L').map((c) => Math.min(c.w, c.h));
+      const rectCuts = cuts.filter((c) => c.shape !== 'L');
+      const sizes = rectCuts.map((c) => Math.min(c.w, c.h));
       const sliver10 = sizes.filter((v) => v < 0.1 - EPS).length; // < 10 cm: hampir mustahil dipasang rapi
       const slivers = sizes.filter((v) => v >= 0.1 - EPS && v < minSliver - EPS).length;
+      // sliver yang jatuh di ruang utama (mis. tembok ruang keluarga) lebih mengganggu daripada di ruang servis
+      const inMain = (c) => opts.mainRect && c.x2 > opts.mainRect.x1 + EPS && c.x1 < opts.mainRect.x2 - EPS && c.y2 > opts.mainRect.y1 + EPS && c.y1 < opts.mainRect.y2 - EPS;
+      const sliversMain = rectCuts.filter((c) => { const v = Math.min(c.w, c.h); return v >= 0.1 - EPS && v < minSliver - EPS && inMain(c); }).length;
       const distinct = new Set(sizes.map((v) => Math.round(v * 100))).size; // makin banyak jenis ukuran, makin "acak"
       const total = full + pack.tiles;
-      candidates.push({ name: `${label}${nx}/${ny}`, ox, oy, cells, full, cuts: cuts.length, cutTiles: pack.tiles, pack, slivers: sliver10 + slivers, sliver10, distinct, total });
+      candidates.push({ name: `${label}${nx}/${ny}`, ox, oy, cells, full, cuts: cuts.length, cutTiles: pack.tiles, pack, slivers: sliver10 + slivers, sliver10, sliversMain, distinct, total });
     }
   }
   // skor: keping + penalti sliver (<10 cm berat, 10–20 cm ringan) + penalti ragam ukuran potongan
   const wSliver = mode === 'hemat' ? 0.75 : 1.0;
-  const score = (c) => c.total + c.sliver10 * 3 + (c.slivers - c.sliver10) * wSliver + c.distinct * 0.4;
+  const score = (c) => c.total + c.sliver10 * 3 + (c.slivers - c.sliver10) * wSliver + (mode === 'rapi' ? c.sliversMain * 0.5 : 0) + c.distinct * 0.4;
   candidates.sort((p, q) => score(p) - score(q) || p.cuts - q.cuts);
   const best = opts.forceOrigin
     ? (() => {
