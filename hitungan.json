@@ -1,0 +1,3430 @@
+{
+  "cfg": {
+    "wastePct": 7,
+    "floorPcsPerBox": 3,
+    "wallPcsPerBox": 8,
+    "bathFloorMode": "80",
+    "wallZones": {
+      "bottomH": 0.9,
+      "topH": 1.5
+    },
+    "plinthStrips": 8,
+    "includeOptional": false
+  },
+  "floors": [
+    {
+      "id": "lt1-open",
+      "group": "Lantai 1",
+      "name": "Dapur + R. Makan + R. Keluarga (satu bidang menerus)",
+      "level": 0.05,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 3.575,
+          "x2": 8.28,
+          "y2": 6.925
+        },
+        {
+          "x1": 8.28,
+          "y1": 4.56,
+          "x2": 8.88,
+          "y2": 6.925
+        },
+        {
+          "x1": 4.825,
+          "y1": 6.925,
+          "x2": 8.88,
+          "y2": 8.425
+        },
+        {
+          "x1": 8.88,
+          "y1": 6.66,
+          "x2": 9.925,
+          "y2": 8.425
+        },
+        {
+          "x1": 6.575,
+          "y1": 8.425,
+          "x2": 9.925,
+          "y2": 13.425
+        }
+      ],
+      "plinth": {
+        "net": 24.6,
+        "strips": 33,
+        "tiles": 5,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kanan/depan",
+        "ox": 2.7250000000000005,
+        "oy": 3.0250000000000004,
+        "full": 55,
+        "cuts": 29,
+        "cutTiles": 16,
+        "slivers": 1,
+        "total": 71,
+        "area": 43.532700000000006,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "15×80",
+            "jumlah": 6
+          },
+          {
+            "ukuran": "25×80",
+            "jumlah": 5
+          },
+          {
+            "ukuran": "80×80 (L)",
+            "jumlah": 4
+          },
+          {
+            "ukuran": "45×80",
+            "jumlah": 3
+          },
+          {
+            "ukuran": "55×80",
+            "jumlah": 2
+          },
+          {
+            "ukuran": "25×45",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "45×70",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "70×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "30×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "30×60",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "60×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "25×75",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "7×55",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "37×80",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kanan/depan",
+            "total": 71,
+            "full": 55,
+            "cuts": 29,
+            "cutTiles": 16
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 71,
+            "full": 58,
+            "cuts": 27,
+            "cutTiles": 13
+          },
+          {
+            "name": "kanan/tengah",
+            "total": 74,
+            "full": 51,
+            "cuts": 33,
+            "cutTiles": 23
+          },
+          {
+            "name": "kanan/tengah-nat",
+            "total": 74,
+            "full": 51,
+            "cuts": 33,
+            "cutTiles": 23
+          }
+        ]
+      },
+      "area": 43.53,
+      "pieces": 71,
+      "full": 55,
+      "cutPieces": 29,
+      "cutTiles": 16
+    },
+    {
+      "id": "lt1-kt1",
+      "group": "Lantai 1",
+      "name": "Kamar Tidur 1",
+      "level": 0.05,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 8.575,
+          "x2": 6.425,
+          "y2": 11.925
+        }
+      ],
+      "plinth": {
+        "net": 12.5,
+        "strips": 17,
+        "tiles": 3,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 8.575,
+        "full": 16,
+        "cuts": 9,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 18,
+        "area": 11.2225,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "15×80",
+            "jumlah": 8
+          },
+          {
+            "ukuran": "15×15",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 11.22,
+      "pieces": 18,
+      "full": 16,
+      "cutPieces": 9,
+      "cutTiles": 2
+    },
+    {
+      "id": "lt1-toilet",
+      "group": "Lantai 1",
+      "name": "Toilet Lt.1 (lantai)",
+      "level": -0.03,
+      "finish": "kamar mandi",
+      "tile": "floor",
+      "isBathroom": true,
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 7.075,
+          "x2": 4.675,
+          "y2": 8.425
+        }
+      ],
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 7.075,
+        "full": 2,
+        "cuts": 2,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 4,
+        "area": 2.16,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "55×80",
+            "jumlah": 2
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 2.16,
+      "pieces": 4,
+      "full": 2,
+      "cutPieces": 2,
+      "cutTiles": 2,
+      "plinth": null
+    },
+    {
+      "id": "lt1-teras-depan",
+      "group": "Lantai luar (teras bawah)",
+      "name": "Teras Depan",
+      "level": -0.03,
+      "finish": "structured (kasar)",
+      "tile": "floor",
+      "outdoor": true,
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 12.075,
+          "x2": 6.425,
+          "y2": 13.5
+        }
+      ],
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 12.075,
+        "full": 4,
+        "cuts": 6,
+        "cutTiles": 4,
+        "slivers": 0,
+        "total": 8,
+        "area": 4.7738,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "63×80",
+            "jumlah": 4
+          },
+          {
+            "ukuran": "15×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "15×63",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kiri/depan",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kanan/depan",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          }
+        ]
+      },
+      "area": 4.77,
+      "pieces": 8,
+      "full": 4,
+      "cutPieces": 6,
+      "cutTiles": 4,
+      "plinth": null
+    },
+    {
+      "id": "lt1-teras-belakang",
+      "group": "Lantai luar (teras bawah)",
+      "name": "Teras Belakang",
+      "level": -0.03,
+      "finish": "structured (kasar)",
+      "tile": "floor",
+      "outdoor": true,
+      "rects": [
+        {
+          "x1": 6.575,
+          "y1": 2,
+          "x2": 9.925,
+          "y2": 3.425
+        }
+      ],
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 6.575,
+        "oy": 2,
+        "full": 4,
+        "cuts": 6,
+        "cutTiles": 4,
+        "slivers": 0,
+        "total": 8,
+        "area": 4.7738,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "63×80",
+            "jumlah": 4
+          },
+          {
+            "ukuran": "15×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "15×63",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kiri/depan",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kanan/depan",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          }
+        ]
+      },
+      "area": 4.77,
+      "pieces": 8,
+      "full": 4,
+      "cutPieces": 6,
+      "cutTiles": 4,
+      "plinth": null
+    },
+    {
+      "id": "lt2-open",
+      "group": "Lantai 2",
+      "name": "Selasar + R. Keluarga Lt.2 (satu bidang menerus)",
+      "level": 3.85,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 6.575,
+          "y1": 3.575,
+          "x2": 7.88,
+          "y2": 13.425
+        },
+        {
+          "x1": 7.88,
+          "y1": 9.06,
+          "x2": 9.925,
+          "y2": 13.425
+        }
+      ],
+      "plinth": {
+        "net": 13.35,
+        "strips": 18,
+        "tiles": 3,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 6.575,
+        "oy": 3.575,
+        "full": 27,
+        "cuts": 20,
+        "cutTiles": 8,
+        "slivers": 0,
+        "total": 35,
+        "area": 21.780700000000003,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "50×80",
+            "jumlah": 6
+          },
+          {
+            "ukuran": "15×80",
+            "jumlah": 5
+          },
+          {
+            "ukuran": "25×80",
+            "jumlah": 4
+          },
+          {
+            "ukuran": "12×80",
+            "jumlah": 2
+          },
+          {
+            "ukuran": "80×80 (L)",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "12×15",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "15×25",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 35,
+            "full": 27,
+            "cuts": 20,
+            "cutTiles": 8
+          },
+          {
+            "name": "kiri/depan",
+            "total": 36,
+            "full": 27,
+            "cuts": 17,
+            "cutTiles": 9
+          },
+          {
+            "name": "kanan/depan",
+            "total": 36,
+            "full": 27,
+            "cuts": 24,
+            "cutTiles": 9
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 36,
+            "full": 27,
+            "cuts": 26,
+            "cutTiles": 9
+          }
+        ]
+      },
+      "area": 21.78,
+      "pieces": 35,
+      "full": 27,
+      "cutPieces": 20,
+      "cutTiles": 8
+    },
+    {
+      "id": "lt2-kt2",
+      "group": "Lantai 2",
+      "name": "Kamar Tidur 2",
+      "level": 3.85,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 3.575,
+          "x2": 6.425,
+          "y2": 6.925
+        }
+      ],
+      "plinth": {
+        "net": 12.5,
+        "strips": 17,
+        "tiles": 3,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 3.575,
+        "full": 16,
+        "cuts": 9,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 18,
+        "area": 11.2225,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "15×80",
+            "jumlah": 8
+          },
+          {
+            "ukuran": "15×15",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 11.22,
+      "pieces": 18,
+      "full": 16,
+      "cutPieces": 9,
+      "cutTiles": 2
+    },
+    {
+      "id": "lt2-ktu",
+      "group": "Lantai 2",
+      "name": "Kamar Tidur Utama",
+      "level": 3.85,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 8.575,
+          "x2": 6.425,
+          "y2": 11.925
+        }
+      ],
+      "plinth": {
+        "net": 10.7,
+        "strips": 15,
+        "tiles": 2,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 8.575,
+        "full": 16,
+        "cuts": 9,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 18,
+        "area": 11.2225,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "15×80",
+            "jumlah": 8
+          },
+          {
+            "ukuran": "15×15",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 11.22,
+      "pieces": 18,
+      "full": 16,
+      "cutPieces": 9,
+      "cutTiles": 2
+    },
+    {
+      "id": "lt2-toilet-a",
+      "group": "Lantai 2",
+      "name": "Toilet Lt.2 kiri (lantai)",
+      "level": 3.83,
+      "finish": "kamar mandi",
+      "tile": "floor",
+      "isBathroom": true,
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 7.075,
+          "x2": 4.675,
+          "y2": 8.425
+        }
+      ],
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 7.075,
+        "full": 2,
+        "cuts": 2,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 4,
+        "area": 2.16,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "55×80",
+            "jumlah": 2
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 2.16,
+      "pieces": 4,
+      "full": 2,
+      "cutPieces": 2,
+      "cutTiles": 2,
+      "plinth": null
+    },
+    {
+      "id": "lt2-toilet-b",
+      "group": "Lantai 2",
+      "name": "Toilet Lt.2 kanan (lantai)",
+      "level": 3.83,
+      "finish": "kamar mandi",
+      "tile": "floor",
+      "isBathroom": true,
+      "rects": [
+        {
+          "x1": 4.825,
+          "y1": 7.075,
+          "x2": 6.425,
+          "y2": 8.425
+        }
+      ],
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 4.825,
+        "oy": 7.075,
+        "full": 2,
+        "cuts": 2,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 4,
+        "area": 2.16,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "55×80",
+            "jumlah": 2
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 4,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 2.16,
+      "pieces": 4,
+      "full": 2,
+      "cutPieces": 2,
+      "cutTiles": 2,
+      "plinth": null
+    },
+    {
+      "id": "lt2-balkon-depan",
+      "group": "Lantai luar (teras atas)",
+      "name": "Balkon Depan Lt.2 (termasuk sisi kiri KT Utama)",
+      "level": 3.83,
+      "finish": "structured (kasar)",
+      "tile": "floor",
+      "outdoor": true,
+      "rects": [
+        {
+          "x1": 1.575,
+          "y1": 8.425,
+          "x2": 2.925,
+          "y2": 12.075
+        },
+        {
+          "x1": 1.575,
+          "y1": 12.075,
+          "x2": 6.425,
+          "y2": 13.925
+        }
+      ],
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "tengah/depan",
+        "ox": 1.1999999999999995,
+        "oy": 8.325,
+        "full": 14,
+        "cuts": 19,
+        "cutTiles": 11,
+        "slivers": 0,
+        "total": 25,
+        "area": 13.9,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "42×80",
+            "jumlah": 8
+          },
+          {
+            "ukuran": "13×80",
+            "jumlah": 3
+          },
+          {
+            "ukuran": "25×80",
+            "jumlah": 3
+          },
+          {
+            "ukuran": "42×70",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "70×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "13×70",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "80×80 (L)",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "25×42",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "tengah/depan",
+            "total": 25,
+            "full": 14,
+            "cuts": 19,
+            "cutTiles": 11
+          },
+          {
+            "name": "tengah-nat/depan",
+            "total": 25,
+            "full": 14,
+            "cuts": 19,
+            "cutTiles": 11
+          },
+          {
+            "name": "tengah/belakang",
+            "total": 25,
+            "full": 10,
+            "cuts": 23,
+            "cutTiles": 15
+          },
+          {
+            "name": "tengah-nat/belakang",
+            "total": 25,
+            "full": 10,
+            "cuts": 23,
+            "cutTiles": 15
+          }
+        ]
+      },
+      "area": 13.9,
+      "pieces": 25,
+      "full": 14,
+      "cutPieces": 19,
+      "cutTiles": 11,
+      "plinth": null
+    },
+    {
+      "id": "lt2-balkon-belakang",
+      "group": "Lantai luar (teras atas)",
+      "name": "Balkon Belakang Lt.2",
+      "level": 3.83,
+      "finish": "structured (kasar)",
+      "tile": "floor",
+      "outdoor": true,
+      "rects": [
+        {
+          "x1": 6.575,
+          "y1": 2.075,
+          "x2": 9.925,
+          "y2": 3.425
+        }
+      ],
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 6.575,
+        "oy": 2.075,
+        "full": 4,
+        "cuts": 6,
+        "cutTiles": 4,
+        "slivers": 0,
+        "total": 8,
+        "area": 4.5225,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "55×80",
+            "jumlah": 4
+          },
+          {
+            "ukuran": "15×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "15×55",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kiri/depan",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          },
+          {
+            "name": "kanan/depan",
+            "total": 8,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4
+          }
+        ]
+      },
+      "area": 4.52,
+      "pieces": 8,
+      "full": 4,
+      "cutPieces": 6,
+      "cutTiles": 4,
+      "plinth": null
+    }
+  ],
+  "groups": [
+    {
+      "name": "Lantai 1",
+      "area": 56.91,
+      "pieces": 93,
+      "full": 73,
+      "cutTiles": 20,
+      "cutPieces": 40,
+      "items": [
+        {
+          "id": "lt1-open",
+          "group": "Lantai 1",
+          "name": "Dapur + R. Makan + R. Keluarga (satu bidang menerus)",
+          "level": 0.05,
+          "finish": "polos",
+          "tile": "floor",
+          "rects": [
+            {
+              "x1": 3.075,
+              "y1": 3.575,
+              "x2": 8.28,
+              "y2": 6.925
+            },
+            {
+              "x1": 8.28,
+              "y1": 4.56,
+              "x2": 8.88,
+              "y2": 6.925
+            },
+            {
+              "x1": 4.825,
+              "y1": 6.925,
+              "x2": 8.88,
+              "y2": 8.425
+            },
+            {
+              "x1": 8.88,
+              "y1": 6.66,
+              "x2": 9.925,
+              "y2": 8.425
+            },
+            {
+              "x1": 6.575,
+              "y1": 8.425,
+              "x2": 9.925,
+              "y2": 13.425
+            }
+          ],
+          "plinth": {
+            "net": 24.6,
+            "strips": 33,
+            "tiles": 5,
+            "stripsPerTile": 8
+          },
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kanan/depan",
+            "ox": 2.7250000000000005,
+            "oy": 3.0250000000000004,
+            "full": 55,
+            "cuts": 29,
+            "cutTiles": 16,
+            "slivers": 1,
+            "total": 71,
+            "area": 43.532700000000006,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "15×80",
+                "jumlah": 6
+              },
+              {
+                "ukuran": "25×80",
+                "jumlah": 5
+              },
+              {
+                "ukuran": "80×80 (L)",
+                "jumlah": 4
+              },
+              {
+                "ukuran": "45×80",
+                "jumlah": 3
+              },
+              {
+                "ukuran": "55×80",
+                "jumlah": 2
+              },
+              {
+                "ukuran": "25×45",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "45×70",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "70×80",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "30×80",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "30×60",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "60×80",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "25×75",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "7×55",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "37×80",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kanan/depan",
+                "total": 71,
+                "full": 55,
+                "cuts": 29,
+                "cutTiles": 16
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 71,
+                "full": 58,
+                "cuts": 27,
+                "cutTiles": 13
+              },
+              {
+                "name": "kanan/tengah",
+                "total": 74,
+                "full": 51,
+                "cuts": 33,
+                "cutTiles": 23
+              },
+              {
+                "name": "kanan/tengah-nat",
+                "total": 74,
+                "full": 51,
+                "cuts": 33,
+                "cutTiles": 23
+              }
+            ]
+          },
+          "area": 43.53,
+          "pieces": 71,
+          "full": 55,
+          "cutPieces": 29,
+          "cutTiles": 16
+        },
+        {
+          "id": "lt1-kt1",
+          "group": "Lantai 1",
+          "name": "Kamar Tidur 1",
+          "level": 0.05,
+          "finish": "polos",
+          "tile": "floor",
+          "rects": [
+            {
+              "x1": 3.075,
+              "y1": 8.575,
+              "x2": 6.425,
+              "y2": 11.925
+            }
+          ],
+          "plinth": {
+            "net": 12.5,
+            "strips": 17,
+            "tiles": 3,
+            "stripsPerTile": 8
+          },
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 3.075,
+            "oy": 8.575,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2,
+            "slivers": 0,
+            "total": 18,
+            "area": 11.2225,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "15×80",
+                "jumlah": 8
+              },
+              {
+                "ukuran": "15×15",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kiri/depan",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/depan",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              }
+            ]
+          },
+          "area": 11.22,
+          "pieces": 18,
+          "full": 16,
+          "cutPieces": 9,
+          "cutTiles": 2
+        },
+        {
+          "id": "lt1-toilet",
+          "group": "Lantai 1",
+          "name": "Toilet Lt.1 (lantai)",
+          "level": -0.03,
+          "finish": "kamar mandi",
+          "tile": "floor",
+          "isBathroom": true,
+          "rects": [
+            {
+              "x1": 3.075,
+              "y1": 7.075,
+              "x2": 4.675,
+              "y2": 8.425
+            }
+          ],
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 3.075,
+            "oy": 7.075,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2,
+            "slivers": 0,
+            "total": 4,
+            "area": 2.16,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "55×80",
+                "jumlah": 2
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kiri/depan",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/depan",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              }
+            ]
+          },
+          "area": 2.16,
+          "pieces": 4,
+          "full": 2,
+          "cutPieces": 2,
+          "cutTiles": 2,
+          "plinth": null
+        }
+      ],
+      "withWaste": 100,
+      "boxes": 34
+    },
+    {
+      "name": "Lantai luar (teras bawah)",
+      "area": 9.54,
+      "pieces": 16,
+      "full": 8,
+      "cutTiles": 8,
+      "cutPieces": 12,
+      "items": [
+        {
+          "id": "lt1-teras-depan",
+          "group": "Lantai luar (teras bawah)",
+          "name": "Teras Depan",
+          "level": -0.03,
+          "finish": "structured (kasar)",
+          "tile": "floor",
+          "outdoor": true,
+          "rects": [
+            {
+              "x1": 3.075,
+              "y1": 12.075,
+              "x2": 6.425,
+              "y2": 13.5
+            }
+          ],
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 3.075,
+            "oy": 12.075,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4,
+            "slivers": 0,
+            "total": 8,
+            "area": 4.7738,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "63×80",
+                "jumlah": 4
+              },
+              {
+                "ukuran": "15×80",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "15×63",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kiri/depan",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kanan/depan",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              }
+            ]
+          },
+          "area": 4.77,
+          "pieces": 8,
+          "full": 4,
+          "cutPieces": 6,
+          "cutTiles": 4,
+          "plinth": null
+        },
+        {
+          "id": "lt1-teras-belakang",
+          "group": "Lantai luar (teras bawah)",
+          "name": "Teras Belakang",
+          "level": -0.03,
+          "finish": "structured (kasar)",
+          "tile": "floor",
+          "outdoor": true,
+          "rects": [
+            {
+              "x1": 6.575,
+              "y1": 2,
+              "x2": 9.925,
+              "y2": 3.425
+            }
+          ],
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 6.575,
+            "oy": 2,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4,
+            "slivers": 0,
+            "total": 8,
+            "area": 4.7738,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "63×80",
+                "jumlah": 4
+              },
+              {
+                "ukuran": "15×80",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "15×63",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kiri/depan",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kanan/depan",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              }
+            ]
+          },
+          "area": 4.77,
+          "pieces": 8,
+          "full": 4,
+          "cutPieces": 6,
+          "cutTiles": 4,
+          "plinth": null
+        }
+      ],
+      "withWaste": 18,
+      "boxes": 6
+    },
+    {
+      "name": "Lantai 2",
+      "area": 48.54,
+      "pieces": 79,
+      "full": 63,
+      "cutTiles": 16,
+      "cutPieces": 42,
+      "items": [
+        {
+          "id": "lt2-open",
+          "group": "Lantai 2",
+          "name": "Selasar + R. Keluarga Lt.2 (satu bidang menerus)",
+          "level": 3.85,
+          "finish": "polos",
+          "tile": "floor",
+          "rects": [
+            {
+              "x1": 6.575,
+              "y1": 3.575,
+              "x2": 7.88,
+              "y2": 13.425
+            },
+            {
+              "x1": 7.88,
+              "y1": 9.06,
+              "x2": 9.925,
+              "y2": 13.425
+            }
+          ],
+          "plinth": {
+            "net": 13.35,
+            "strips": 18,
+            "tiles": 3,
+            "stripsPerTile": 8
+          },
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 6.575,
+            "oy": 3.575,
+            "full": 27,
+            "cuts": 20,
+            "cutTiles": 8,
+            "slivers": 0,
+            "total": 35,
+            "area": 21.780700000000003,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "50×80",
+                "jumlah": 6
+              },
+              {
+                "ukuran": "15×80",
+                "jumlah": 5
+              },
+              {
+                "ukuran": "25×80",
+                "jumlah": 4
+              },
+              {
+                "ukuran": "12×80",
+                "jumlah": 2
+              },
+              {
+                "ukuran": "80×80 (L)",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "12×15",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "15×25",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 35,
+                "full": 27,
+                "cuts": 20,
+                "cutTiles": 8
+              },
+              {
+                "name": "kiri/depan",
+                "total": 36,
+                "full": 27,
+                "cuts": 17,
+                "cutTiles": 9
+              },
+              {
+                "name": "kanan/depan",
+                "total": 36,
+                "full": 27,
+                "cuts": 24,
+                "cutTiles": 9
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 36,
+                "full": 27,
+                "cuts": 26,
+                "cutTiles": 9
+              }
+            ]
+          },
+          "area": 21.78,
+          "pieces": 35,
+          "full": 27,
+          "cutPieces": 20,
+          "cutTiles": 8
+        },
+        {
+          "id": "lt2-kt2",
+          "group": "Lantai 2",
+          "name": "Kamar Tidur 2",
+          "level": 3.85,
+          "finish": "polos",
+          "tile": "floor",
+          "rects": [
+            {
+              "x1": 3.075,
+              "y1": 3.575,
+              "x2": 6.425,
+              "y2": 6.925
+            }
+          ],
+          "plinth": {
+            "net": 12.5,
+            "strips": 17,
+            "tiles": 3,
+            "stripsPerTile": 8
+          },
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 3.075,
+            "oy": 3.575,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2,
+            "slivers": 0,
+            "total": 18,
+            "area": 11.2225,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "15×80",
+                "jumlah": 8
+              },
+              {
+                "ukuran": "15×15",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kiri/depan",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/depan",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              }
+            ]
+          },
+          "area": 11.22,
+          "pieces": 18,
+          "full": 16,
+          "cutPieces": 9,
+          "cutTiles": 2
+        },
+        {
+          "id": "lt2-ktu",
+          "group": "Lantai 2",
+          "name": "Kamar Tidur Utama",
+          "level": 3.85,
+          "finish": "polos",
+          "tile": "floor",
+          "rects": [
+            {
+              "x1": 3.075,
+              "y1": 8.575,
+              "x2": 6.425,
+              "y2": 11.925
+            }
+          ],
+          "plinth": {
+            "net": 10.7,
+            "strips": 15,
+            "tiles": 2,
+            "stripsPerTile": 8
+          },
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 3.075,
+            "oy": 8.575,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2,
+            "slivers": 0,
+            "total": 18,
+            "area": 11.2225,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "15×80",
+                "jumlah": 8
+              },
+              {
+                "ukuran": "15×15",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kiri/depan",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/depan",
+                "total": 18,
+                "full": 16,
+                "cuts": 9,
+                "cutTiles": 2
+              }
+            ]
+          },
+          "area": 11.22,
+          "pieces": 18,
+          "full": 16,
+          "cutPieces": 9,
+          "cutTiles": 2
+        },
+        {
+          "id": "lt2-toilet-a",
+          "group": "Lantai 2",
+          "name": "Toilet Lt.2 kiri (lantai)",
+          "level": 3.83,
+          "finish": "kamar mandi",
+          "tile": "floor",
+          "isBathroom": true,
+          "rects": [
+            {
+              "x1": 3.075,
+              "y1": 7.075,
+              "x2": 4.675,
+              "y2": 8.425
+            }
+          ],
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 3.075,
+            "oy": 7.075,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2,
+            "slivers": 0,
+            "total": 4,
+            "area": 2.16,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "55×80",
+                "jumlah": 2
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kiri/depan",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/depan",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              }
+            ]
+          },
+          "area": 2.16,
+          "pieces": 4,
+          "full": 2,
+          "cutPieces": 2,
+          "cutTiles": 2,
+          "plinth": null
+        },
+        {
+          "id": "lt2-toilet-b",
+          "group": "Lantai 2",
+          "name": "Toilet Lt.2 kanan (lantai)",
+          "level": 3.83,
+          "finish": "kamar mandi",
+          "tile": "floor",
+          "isBathroom": true,
+          "rects": [
+            {
+              "x1": 4.825,
+              "y1": 7.075,
+              "x2": 6.425,
+              "y2": 8.425
+            }
+          ],
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 4.825,
+            "oy": 7.075,
+            "full": 2,
+            "cuts": 2,
+            "cutTiles": 2,
+            "slivers": 0,
+            "total": 4,
+            "area": 2.16,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "55×80",
+                "jumlah": 2
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kiri/depan",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              },
+              {
+                "name": "kanan/depan",
+                "total": 4,
+                "full": 2,
+                "cuts": 2,
+                "cutTiles": 2
+              }
+            ]
+          },
+          "area": 2.16,
+          "pieces": 4,
+          "full": 2,
+          "cutPieces": 2,
+          "cutTiles": 2,
+          "plinth": null
+        }
+      ],
+      "withWaste": 85,
+      "boxes": 29
+    },
+    {
+      "name": "Lantai luar (teras atas)",
+      "area": 18.42,
+      "pieces": 33,
+      "full": 18,
+      "cutTiles": 15,
+      "cutPieces": 25,
+      "items": [
+        {
+          "id": "lt2-balkon-depan",
+          "group": "Lantai luar (teras atas)",
+          "name": "Balkon Depan Lt.2 (termasuk sisi kiri KT Utama)",
+          "level": 3.83,
+          "finish": "structured (kasar)",
+          "tile": "floor",
+          "outdoor": true,
+          "rects": [
+            {
+              "x1": 1.575,
+              "y1": 8.425,
+              "x2": 2.925,
+              "y2": 12.075
+            },
+            {
+              "x1": 1.575,
+              "y1": 12.075,
+              "x2": 6.425,
+              "y2": 13.925
+            }
+          ],
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "tengah/depan",
+            "ox": 1.1999999999999995,
+            "oy": 8.325,
+            "full": 14,
+            "cuts": 19,
+            "cutTiles": 11,
+            "slivers": 0,
+            "total": 25,
+            "area": 13.9,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "42×80",
+                "jumlah": 8
+              },
+              {
+                "ukuran": "13×80",
+                "jumlah": 3
+              },
+              {
+                "ukuran": "25×80",
+                "jumlah": 3
+              },
+              {
+                "ukuran": "42×70",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "70×80",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "13×70",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "80×80 (L)",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "25×42",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "tengah/depan",
+                "total": 25,
+                "full": 14,
+                "cuts": 19,
+                "cutTiles": 11
+              },
+              {
+                "name": "tengah-nat/depan",
+                "total": 25,
+                "full": 14,
+                "cuts": 19,
+                "cutTiles": 11
+              },
+              {
+                "name": "tengah/belakang",
+                "total": 25,
+                "full": 10,
+                "cuts": 23,
+                "cutTiles": 15
+              },
+              {
+                "name": "tengah-nat/belakang",
+                "total": 25,
+                "full": 10,
+                "cuts": 23,
+                "cutTiles": 15
+              }
+            ]
+          },
+          "area": 13.9,
+          "pieces": 25,
+          "full": 14,
+          "cutPieces": 19,
+          "cutTiles": 11,
+          "plinth": null
+        },
+        {
+          "id": "lt2-balkon-belakang",
+          "group": "Lantai luar (teras atas)",
+          "name": "Balkon Belakang Lt.2",
+          "level": 3.83,
+          "finish": "structured (kasar)",
+          "tile": "floor",
+          "outdoor": true,
+          "rects": [
+            {
+              "x1": 6.575,
+              "y1": 2.075,
+              "x2": 9.925,
+              "y2": 3.425
+            }
+          ],
+          "tileSpec": {
+            "w": 0.8,
+            "h": 0.8,
+            "label": "Granit 80×80"
+          },
+          "layout": {
+            "name": "kiri/belakang",
+            "ox": 6.575,
+            "oy": 2.075,
+            "full": 4,
+            "cuts": 6,
+            "cutTiles": 4,
+            "slivers": 0,
+            "total": 8,
+            "area": 4.5225,
+            "tileArea": 0.6400000000000001,
+            "cutList": [
+              {
+                "ukuran": "55×80",
+                "jumlah": 4
+              },
+              {
+                "ukuran": "15×80",
+                "jumlah": 1
+              },
+              {
+                "ukuran": "15×55",
+                "jumlah": 1
+              }
+            ],
+            "alternatives": [
+              {
+                "name": "kiri/belakang",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kiri/depan",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kanan/belakang",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              },
+              {
+                "name": "kanan/depan",
+                "total": 8,
+                "full": 4,
+                "cuts": 6,
+                "cutTiles": 4
+              }
+            ]
+          },
+          "area": 4.52,
+          "pieces": 8,
+          "full": 4,
+          "cutPieces": 6,
+          "cutTiles": 4,
+          "plinth": null
+        }
+      ],
+      "withWaste": 36,
+      "boxes": 12
+    }
+  ],
+  "bathFloorSummary": {
+    "area": 6.48,
+    "pieces": 12,
+    "tile": {
+      "w": 0.8,
+      "h": 0.8,
+      "label": "Granit 80×80"
+    },
+    "withWaste": 13,
+    "boxes": 5
+  },
+  "plinthItems": [
+    {
+      "id": "lt1-open",
+      "group": "Lantai 1",
+      "name": "Dapur + R. Makan + R. Keluarga (satu bidang menerus)",
+      "level": 0.05,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 3.575,
+          "x2": 8.28,
+          "y2": 6.925
+        },
+        {
+          "x1": 8.28,
+          "y1": 4.56,
+          "x2": 8.88,
+          "y2": 6.925
+        },
+        {
+          "x1": 4.825,
+          "y1": 6.925,
+          "x2": 8.88,
+          "y2": 8.425
+        },
+        {
+          "x1": 8.88,
+          "y1": 6.66,
+          "x2": 9.925,
+          "y2": 8.425
+        },
+        {
+          "x1": 6.575,
+          "y1": 8.425,
+          "x2": 9.925,
+          "y2": 13.425
+        }
+      ],
+      "plinth": {
+        "net": 24.6,
+        "strips": 33,
+        "tiles": 5,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kanan/depan",
+        "ox": 2.7250000000000005,
+        "oy": 3.0250000000000004,
+        "full": 55,
+        "cuts": 29,
+        "cutTiles": 16,
+        "slivers": 1,
+        "total": 71,
+        "area": 43.532700000000006,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "15×80",
+            "jumlah": 6
+          },
+          {
+            "ukuran": "25×80",
+            "jumlah": 5
+          },
+          {
+            "ukuran": "80×80 (L)",
+            "jumlah": 4
+          },
+          {
+            "ukuran": "45×80",
+            "jumlah": 3
+          },
+          {
+            "ukuran": "55×80",
+            "jumlah": 2
+          },
+          {
+            "ukuran": "25×45",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "45×70",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "70×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "30×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "30×60",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "60×80",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "25×75",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "7×55",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "37×80",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kanan/depan",
+            "total": 71,
+            "full": 55,
+            "cuts": 29,
+            "cutTiles": 16
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 71,
+            "full": 58,
+            "cuts": 27,
+            "cutTiles": 13
+          },
+          {
+            "name": "kanan/tengah",
+            "total": 74,
+            "full": 51,
+            "cuts": 33,
+            "cutTiles": 23
+          },
+          {
+            "name": "kanan/tengah-nat",
+            "total": 74,
+            "full": 51,
+            "cuts": 33,
+            "cutTiles": 23
+          }
+        ]
+      },
+      "area": 43.53,
+      "pieces": 71,
+      "full": 55,
+      "cutPieces": 29,
+      "cutTiles": 16
+    },
+    {
+      "id": "lt1-kt1",
+      "group": "Lantai 1",
+      "name": "Kamar Tidur 1",
+      "level": 0.05,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 8.575,
+          "x2": 6.425,
+          "y2": 11.925
+        }
+      ],
+      "plinth": {
+        "net": 12.5,
+        "strips": 17,
+        "tiles": 3,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 8.575,
+        "full": 16,
+        "cuts": 9,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 18,
+        "area": 11.2225,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "15×80",
+            "jumlah": 8
+          },
+          {
+            "ukuran": "15×15",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 11.22,
+      "pieces": 18,
+      "full": 16,
+      "cutPieces": 9,
+      "cutTiles": 2
+    },
+    {
+      "id": "lt2-open",
+      "group": "Lantai 2",
+      "name": "Selasar + R. Keluarga Lt.2 (satu bidang menerus)",
+      "level": 3.85,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 6.575,
+          "y1": 3.575,
+          "x2": 7.88,
+          "y2": 13.425
+        },
+        {
+          "x1": 7.88,
+          "y1": 9.06,
+          "x2": 9.925,
+          "y2": 13.425
+        }
+      ],
+      "plinth": {
+        "net": 13.35,
+        "strips": 18,
+        "tiles": 3,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 6.575,
+        "oy": 3.575,
+        "full": 27,
+        "cuts": 20,
+        "cutTiles": 8,
+        "slivers": 0,
+        "total": 35,
+        "area": 21.780700000000003,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "50×80",
+            "jumlah": 6
+          },
+          {
+            "ukuran": "15×80",
+            "jumlah": 5
+          },
+          {
+            "ukuran": "25×80",
+            "jumlah": 4
+          },
+          {
+            "ukuran": "12×80",
+            "jumlah": 2
+          },
+          {
+            "ukuran": "80×80 (L)",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "12×15",
+            "jumlah": 1
+          },
+          {
+            "ukuran": "15×25",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 35,
+            "full": 27,
+            "cuts": 20,
+            "cutTiles": 8
+          },
+          {
+            "name": "kiri/depan",
+            "total": 36,
+            "full": 27,
+            "cuts": 17,
+            "cutTiles": 9
+          },
+          {
+            "name": "kanan/depan",
+            "total": 36,
+            "full": 27,
+            "cuts": 24,
+            "cutTiles": 9
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 36,
+            "full": 27,
+            "cuts": 26,
+            "cutTiles": 9
+          }
+        ]
+      },
+      "area": 21.78,
+      "pieces": 35,
+      "full": 27,
+      "cutPieces": 20,
+      "cutTiles": 8
+    },
+    {
+      "id": "lt2-kt2",
+      "group": "Lantai 2",
+      "name": "Kamar Tidur 2",
+      "level": 3.85,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 3.575,
+          "x2": 6.425,
+          "y2": 6.925
+        }
+      ],
+      "plinth": {
+        "net": 12.5,
+        "strips": 17,
+        "tiles": 3,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 3.575,
+        "full": 16,
+        "cuts": 9,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 18,
+        "area": 11.2225,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "15×80",
+            "jumlah": 8
+          },
+          {
+            "ukuran": "15×15",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 11.22,
+      "pieces": 18,
+      "full": 16,
+      "cutPieces": 9,
+      "cutTiles": 2
+    },
+    {
+      "id": "lt2-ktu",
+      "group": "Lantai 2",
+      "name": "Kamar Tidur Utama",
+      "level": 3.85,
+      "finish": "polos",
+      "tile": "floor",
+      "rects": [
+        {
+          "x1": 3.075,
+          "y1": 8.575,
+          "x2": 6.425,
+          "y2": 11.925
+        }
+      ],
+      "plinth": {
+        "net": 10.7,
+        "strips": 15,
+        "tiles": 2,
+        "stripsPerTile": 8
+      },
+      "tileSpec": {
+        "w": 0.8,
+        "h": 0.8,
+        "label": "Granit 80×80"
+      },
+      "layout": {
+        "name": "kiri/belakang",
+        "ox": 3.075,
+        "oy": 8.575,
+        "full": 16,
+        "cuts": 9,
+        "cutTiles": 2,
+        "slivers": 0,
+        "total": 18,
+        "area": 11.2225,
+        "tileArea": 0.6400000000000001,
+        "cutList": [
+          {
+            "ukuran": "15×80",
+            "jumlah": 8
+          },
+          {
+            "ukuran": "15×15",
+            "jumlah": 1
+          }
+        ],
+        "alternatives": [
+          {
+            "name": "kiri/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kiri/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/belakang",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          },
+          {
+            "name": "kanan/depan",
+            "total": 18,
+            "full": 16,
+            "cuts": 9,
+            "cutTiles": 2
+          }
+        ]
+      },
+      "area": 11.22,
+      "pieces": 18,
+      "full": 16,
+      "cutPieces": 9,
+      "cutTiles": 2
+    }
+  ],
+  "plinthTotal": {
+    "length": 73.65,
+    "strips": 100,
+    "tiles": 13,
+    "boxes": 5
+  },
+  "baths": [
+    {
+      "id": "km-lt1",
+      "name": "Toilet Lt.1",
+      "walls": [
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 9,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 10,
+              "cuts": 5,
+              "cutTiles": 5,
+              "total": 15,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 5
+                }
+              ]
+            }
+          },
+          "total": 24,
+          "slivers": 0,
+          "wall": "Sisi dapur (y=7.0)",
+          "len": 1.6,
+          "area": 3.84,
+          "areaBawah": 1.44
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 0,
+              "cuts": 9,
+              "cutTiles": 4,
+              "total": 4,
+              "cutList": [
+                {
+                  "ukuran": "30×33",
+                  "jumlah": 3
+                },
+                {
+                  "ukuran": "18×30",
+                  "jumlah": 3
+                },
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 2,
+              "cuts": 13,
+              "cutTiles": 6,
+              "total": 8,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "30×33",
+                  "jumlah": 4
+                },
+                {
+                  "ukuran": "18×30",
+                  "jumlah": 4
+                }
+              ]
+            }
+          },
+          "total": 12,
+          "slivers": 0,
+          "wall": "Sisi koridor (x=4.75) — pintu",
+          "len": 1.35,
+          "area": 1.77,
+          "areaBawah": 0.59
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 9,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 10,
+              "cuts": 5,
+              "cutTiles": 5,
+              "total": 15,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 5
+                }
+              ]
+            }
+          },
+          "total": 24,
+          "slivers": 0,
+          "wall": "Sisi KT1 (y=8.5)",
+          "len": 1.6,
+          "area": 3.84,
+          "areaBawah": 1.44
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 1,
+              "total": 7,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 4,
+              "cuts": 11,
+              "cutTiles": 7,
+              "total": 11,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "20×60",
+                  "jumlah": 4
+                },
+                {
+                  "ukuran": "30×38",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "22×30",
+                  "jumlah": 1
+                }
+              ]
+            }
+          },
+          "total": 18,
+          "slivers": 0,
+          "wall": "Sisi luar (x=3.0) — jendela",
+          "len": 1.35,
+          "area": 2.94,
+          "areaBawah": 1.22
+        }
+      ],
+      "bawah": {
+        "full": 18,
+        "cuts": 18,
+        "cutTiles": 11,
+        "total": 29
+      },
+      "atas": {
+        "full": 26,
+        "cuts": 34,
+        "cutTiles": 23,
+        "total": 49
+      },
+      "areaBawah": 4.69,
+      "areaAtas": 7.7,
+      "perimeter": 5.9
+    },
+    {
+      "id": "km-lt2a",
+      "name": "Toilet Lt.2 kiri",
+      "walls": [
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 9,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 10,
+              "cuts": 5,
+              "cutTiles": 5,
+              "total": 15,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 5
+                }
+              ]
+            }
+          },
+          "total": 24,
+          "slivers": 0,
+          "wall": "Sisi KT2 (y=7.0)",
+          "len": 1.6,
+          "area": 3.84,
+          "areaBawah": 1.44
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 1,
+              "total": 7,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 10,
+              "cuts": 5,
+              "cutTiles": 2,
+              "total": 12,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 5
+                }
+              ]
+            }
+          },
+          "total": 19,
+          "slivers": 0,
+          "wall": "Sisi toilet kanan (x=4.75)",
+          "len": 1.35,
+          "area": 3.24,
+          "areaBawah": 1.22
+        },
+        {
+          "name": "simetris",
+          "ox": -0.09999999999999987,
+          "byZone": {
+            "bawah": {
+              "full": 0,
+              "cuts": 6,
+              "cutTiles": 6,
+              "total": 6,
+              "cutList": [
+                {
+                  "ukuran": "30×45",
+                  "jumlah": 6
+                }
+              ]
+            },
+            "atas": {
+              "full": 1,
+              "cuts": 10,
+              "cutTiles": 10,
+              "total": 11,
+              "cutList": [
+                {
+                  "ukuran": "30×45",
+                  "jumlah": 8
+                },
+                {
+                  "ukuran": "30×50",
+                  "jumlah": 2
+                }
+              ]
+            }
+          },
+          "total": 17,
+          "slivers": 0,
+          "wall": "Sisi KT Utama (y=8.5) — pintu",
+          "len": 1.6,
+          "area": 2.37,
+          "areaBawah": 0.81
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 1,
+              "total": 7,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 4,
+              "cuts": 11,
+              "cutTiles": 7,
+              "total": 11,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "20×60",
+                  "jumlah": 4
+                },
+                {
+                  "ukuran": "30×38",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "22×30",
+                  "jumlah": 1
+                }
+              ]
+            }
+          },
+          "total": 18,
+          "slivers": 0,
+          "wall": "Sisi luar (x=3.0) — jendela",
+          "len": 1.35,
+          "area": 2.94,
+          "areaBawah": 1.22
+        }
+      ],
+      "bawah": {
+        "full": 18,
+        "cuts": 15,
+        "cutTiles": 11,
+        "total": 29
+      },
+      "atas": {
+        "full": 25,
+        "cuts": 31,
+        "cutTiles": 24,
+        "total": 49
+      },
+      "areaBawah": 4.69,
+      "areaAtas": 7.7,
+      "perimeter": 5.9
+    },
+    {
+      "id": "km-lt2b",
+      "name": "Toilet Lt.2 kanan",
+      "walls": [
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 9,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 10,
+              "cuts": 5,
+              "cutTiles": 5,
+              "total": 15,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 5
+                }
+              ]
+            }
+          },
+          "total": 24,
+          "slivers": 0,
+          "wall": "Sisi KT2 (y=7.0)",
+          "len": 1.6,
+          "area": 3.84,
+          "areaBawah": 1.44
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 0,
+              "cuts": 9,
+              "cutTiles": 4,
+              "total": 4,
+              "cutList": [
+                {
+                  "ukuran": "30×33",
+                  "jumlah": 3
+                },
+                {
+                  "ukuran": "18×30",
+                  "jumlah": 3
+                },
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 2,
+              "cuts": 13,
+              "cutTiles": 6,
+              "total": 8,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "30×33",
+                  "jumlah": 4
+                },
+                {
+                  "ukuran": "18×30",
+                  "jumlah": 4
+                }
+              ]
+            }
+          },
+          "total": 12,
+          "slivers": 0,
+          "wall": "Sisi selasar (x=6.5) — pintu",
+          "len": 1.35,
+          "area": 1.77,
+          "areaBawah": 0.59
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 9,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 10,
+              "cuts": 5,
+              "cutTiles": 5,
+              "total": 15,
+              "cutList": [
+                {
+                  "ukuran": "30×40",
+                  "jumlah": 5
+                }
+              ]
+            }
+          },
+          "total": 24,
+          "slivers": 0,
+          "wall": "Sisi KT Utama (y=8.5)",
+          "len": 1.6,
+          "area": 3.84,
+          "areaBawah": 1.44
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 6,
+              "cuts": 3,
+              "cutTiles": 1,
+              "total": 7,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 10,
+              "cuts": 5,
+              "cutTiles": 2,
+              "total": 12,
+              "cutList": [
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 5
+                }
+              ]
+            }
+          },
+          "total": 19,
+          "slivers": 0,
+          "wall": "Sisi toilet kiri (x=4.75)",
+          "len": 1.35,
+          "area": 3.24,
+          "areaBawah": 1.22
+        }
+      ],
+      "bawah": {
+        "full": 18,
+        "cuts": 18,
+        "cutTiles": 11,
+        "total": 29
+      },
+      "atas": {
+        "full": 32,
+        "cuts": 28,
+        "cutTiles": 18,
+        "total": 50
+      },
+      "areaBawah": 4.69,
+      "areaAtas": 8,
+      "perimeter": 5.9
+    }
+  ],
+  "wall": {
+    "bawah": {
+      "pieces": 87,
+      "area": 14.07,
+      "withWaste": 94,
+      "boxes": 12
+    },
+    "atas": {
+      "pieces": 148,
+      "area": 23.4,
+      "withWaste": 159,
+      "boxes": 20
+    }
+  },
+  "total80": {
+    "pieces": 234,
+    "withWaste": 252,
+    "boxes": 84,
+    "m2": 161.28
+  },
+  "fieldNotes": {
+    "lt2": {
+      "text": "Lantai II: 60 m − 7,5 (lobang tangga) = 62,5 m (hitungannya tidak konsisten, 60−7,5 = 52,5)",
+      "m2": 62.5
+    },
+    "lt1": {
+      "text": "Lantai I: 60 m",
+      "m2": 60
+    },
+    "kmBawah": {
+      "text": "Dinding KM bawah (tinggi 100 cm): 10 m × 3 KM = 30 m",
+      "m2": 30
+    },
+    "kmAtas": {
+      "text": "Dinding KM atas (tinggi 140 cm): 14 × 3 = 42 m",
+      "m2": 42
+    },
+    "kmLantai": {
+      "text": "Lantai KM: 3 × 3 KM = 9 m",
+      "m2": 9
+    },
+    "plin": {
+      "text": "Plin dinding 10 cm ± 6 dus (atas & bawah)",
+      "boxes": 6
+    },
+    "terasAtas": {
+      "text": "Teras atas depan & belakang: 27 m",
+      "m2": 27
+    },
+    "terasBawah": {
+      "text": "Teras bawah: 21 m",
+      "m2": 21
+    }
+  }
+}

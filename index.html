@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rumah Mbak Alfi — Simulasi Granit 3D</title>
+<link rel="stylesheet" href="styles.css" />
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/" } }
+</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="hud" class="mini" title="Klik untuk buka/tutup info">
+  <div id="hud-mode" class="muted"></div>
+  <div id="hud-room">—</div>
+  <div id="hud-detail"></div>
+</div>
+
+<div id="crosshair" hidden></div>
+
+<div id="overlay">
+  <div class="card">
+    <h1>Rumah Mbak Alfi <span>simulasi pemasangan granit</span></h1>
+    <p><b>Klik untuk mulai jalan</b> · <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> + mouse · <kbd>Shift</kbd> lari · <kbd>Esc</kbd> lepas</p>
+    <p class="muted"><kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> teras · lantai 2 · depan rumah &nbsp; <kbd>M</kbd> orbit &nbsp; <kbd>H</kbd> irisan lantai &nbsp; <kbd>L</kbd> label potongan &nbsp; <kbd>G</kbd> model SKP/blok &nbsp; <kbd>P</kbd> panel hitungan</p>
+    <p class="legend"><i class="sw full"></i> utuh <i class="sw cut"></i> potongan <i class="sw L"></i> dicoak <i class="sw tk"></i> terakota <i class="sw pt"></i> putih</p>
+  </div>
+</div>
+
+<button id="toggle-panel" title="Buka/tutup panel">☰ Hitungan &amp; Gambar</button>
+
+<div id="viewbar">
+  <div class="grp">
+    <button data-view="walk" class="active" title="Jalan kaki (WASD)">🚶 Jalan</button>
+    <button data-view="orbit" title="Putar bebas: drag = putar, scroll = zoom, klik 2× di lantai = berdiri di sana">🛸 Orbit</button>
+    <button data-view="top" title="Tegak lurus dari atas (denah)">⬆ Atas</button>
+    <button data-view="roof" title="Pandangan drone: atap & fasad">🏠 Atap</button>
+  </div>
+  <div class="grp">
+    <span class="lbl">Irisan</span>
+    <button data-cut="lt1" title="Potong di +3,4 m: lihat lantai 1 dari atas">Lt 1</button>
+    <button data-cut="lt2" title="Potong di +7,1 m: buka atap, lihat lantai 2">Lt 2</button>
+    <button data-cut="none" class="active" title="Model utuh">Utuh</button>
+  </div>
+</div>
+
+<aside id="panel" class="open">
+  <nav id="tabs">
+    <button data-tab="hitung" class="active">Hitungan</button>
+    <button data-tab="arsitek">Gambar Arsitektur</button>
+    <button data-tab="render">3D Render</button>
+    <button data-tab="skp">Model SKP</button>
+    <button data-tab="setting">Setelan</button>
+  </nav>
+  <section id="tab-hitung" class="tab active"></section>
+  <section id="tab-arsitek" class="tab"></section>
+  <section id="tab-render" class="tab"></section>
+  <section id="tab-skp" class="tab">
+    <h2>3D Modeling_Rumah Mba Alfi_V2.skp</h2>
+    <p>File SketchUp 2023 (31 MB) disertakan di folder <code>models/</code>, plus versi glTF-nya (<code>models/rumah.glb</code>, dikompres dari 96 MB → 4,3 MB) yang dimuat langsung ke tampilan 3D. Tekan <kbd>G</kbd> untuk beralih antara model SKP asli dan model blok. Preview yang tertanam di file .skp:</p>
+    <div class="gallery small">
+      <img src="models/skp-preview-1.jpg" alt="preview skp 1" />
+      <img src="models/skp-preview-2.jpg" alt="preview skp 2" />
+      <img src="models/skp-preview-3.jpg" alt="preview skp 3" />
+    </div>
+    <p><a class="btn" href="models/3D%20Modeling_Rumah%20Mba%20Alfi_V2.skp" download>⬇ Download .skp</a></p>
+    <p><a class="btn" href="models/rumah-raw.glb" download>⬇ Download .glb asli (96 MB)</a></p>
+    <h3>Memperbarui model</h3>
+    <p class="muted">Kalau ada revisi SKP: export ulang ke .glb, lalu jalankan <code>python3 scripts/fixmodel.py in.glb /tmp/g.glb &amp;&amp; npx @gltf-transform/cli optimize /tmp/g.glb models/rumah.glb --compress meshopt --texture-compress webp --texture-size 1024 --palette false --simplify false</code>. Posisi/skala bisa dikoreksi di tab Setelan.</p>
+    <p id="glb-status" class="muted">Status: mengecek models/rumah.glb…</p>
+  </section>
+  <section id="tab-setting" class="tab">
+    <h2>Setelan hitungan</h2>
+    <div class="form">
+      <label>Granit 80×80 per dus <input id="s-pcs" type="number" min="1" max="4" value="3" /> <small>3 keping/dus (1,92 m²)</small></label>
+      <label>Granit 30×60 per dus <input id="s-wpcs" type="number" min="4" max="12" value="8" /> <small>umumnya 8 (1,44 m²)</small></label>
+      <label>Cadangan / waste (%) <input id="s-waste" type="number" min="0" max="30" value="7" /></label>
+      <label>Lantai kamar mandi
+        <select id="s-bath"><option value="80">Granit 80×80 (sesuai permintaan)</option><option value="40">Keramik 40×40 kasar (anti slip)</option></select>
+      </label>
+      <label>Zona dinding KM (bawah/atas, cm)
+        <select id="s-zones">
+          <option value="90/150">90 / 150 → 3 + 5 baris, tanpa potong horizontal (disarankan)</option>
+          <option value="120/120">120 / 120 → 4 + 4 baris</option>
+          <option value="100/140">100 / 140 (catatan tukang) → ada potongan 10 cm</option>
+        </select>
+      </label>
+      <label><input id="s-jemur" type="checkbox" /> Ikutkan ruang jemur (di gambar rabat beton)</label>
+      <label>Skala model GLB <input id="s-glbscale" type="number" step="0.001" value="1" /></label>
+      <label>Offset GLB x / y / z <span class="row"><input id="s-gx" type="number" step="0.1" value="0" /><input id="s-gy" type="number" step="0.1" value="0" /><input id="s-gz" type="number" step="0.1" value="0" /></span></label>
+      <button id="s-apply" class="btn">Hitung ulang &amp; bangun ulang</button>
+    </div>
+    <h3>Sumber ukuran</h3>
+    <p class="muted">Semua dimensi dari DED Antasena Karya Project (denah rencana hal. 42–43, denah penutup lantai hal. 54–55, tampak hal. 44). Grid as tembok, tebal tembok 15 cm, ukuran bersih = grid − 15 cm. Angka tukang (foto buku + chat) dipakai sebagai pembanding.</p>
+  </section>
+</aside>
+
+<div id="lightbox" hidden><img alt="" /><div id="lb-cap"></div><button id="lb-prev">‹</button><button id="lb-next">›</button><button id="lb-close">✕</button></div>
+
+<script type="module" src="src/app.js"></script>
+</body>
+</html>

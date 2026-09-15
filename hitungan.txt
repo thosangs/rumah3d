@@ -1,0 +1,79 @@
+
+=== GRANIT 80x80 (3 keping/dus, cadangan 7%) ===
+
+## Lantai 1  — 56.91 m² | 93 keping (utuh 73 + korban potong 20) → +cadangan 100 keping = 34 dus
+  - Dapur + R. Makan + R. Keluarga (satu bidang menerus)       43.53 m²   utuh 55   potongan 29 pcs   dari 16  keping → total 71 keping  [mulai: kanan/depan]
+      potongan: 15×80×6, 25×80×5, 80×80 (L)×4, 45×80×3, 55×80×2, 25×45×1, 45×70×1, 70×80×1, 30×80×1, 30×60×1, 60×80×1, 25×75×1, 7×55×1, 37×80×1
+  - Kamar Tidur 1                                              11.22 m²   utuh 16   potongan 9 pcs    dari 2   keping → total 18 keping  [mulai: kiri/belakang]
+      potongan: 15×80×8, 15×15×1
+  - Toilet Lt.1 (lantai)                                       2.16 m²    utuh 2    potongan 2 pcs    dari 2   keping → total 4 keping  [mulai: kiri/belakang]
+      potongan: 55×80×2
+
+## Lantai luar (teras bawah)  — 9.54 m² | 16 keping (utuh 8 + korban potong 8) → +cadangan 18 keping = 6 dus
+  - Teras Depan                                                4.77 m²    utuh 4    potongan 6 pcs    dari 4   keping → total 8 keping  [mulai: kiri/belakang]
+      potongan: 63×80×4, 15×80×1, 15×63×1
+  - Teras Belakang                                             4.77 m²    utuh 4    potongan 6 pcs    dari 4   keping → total 8 keping  [mulai: kiri/belakang]
+      potongan: 63×80×4, 15×80×1, 15×63×1
+
+## Lantai 2  — 48.54 m² | 79 keping (utuh 63 + korban potong 16) → +cadangan 85 keping = 29 dus
+  - Selasar + R. Keluarga Lt.2 (satu bidang menerus)           21.78 m²   utuh 27   potongan 20 pcs   dari 8   keping → total 35 keping  [mulai: kiri/belakang]
+      potongan: 50×80×6, 15×80×5, 25×80×4, 12×80×2, 80×80 (L)×1, 12×15×1, 15×25×1
+  - Kamar Tidur 2                                              11.22 m²   utuh 16   potongan 9 pcs    dari 2   keping → total 18 keping  [mulai: kiri/belakang]
+      potongan: 15×80×8, 15×15×1
+  - Kamar Tidur Utama                                          11.22 m²   utuh 16   potongan 9 pcs    dari 2   keping → total 18 keping  [mulai: kiri/belakang]
+      potongan: 15×80×8, 15×15×1
+  - Toilet Lt.2 kiri (lantai)                                  2.16 m²    utuh 2    potongan 2 pcs    dari 2   keping → total 4 keping  [mulai: kiri/belakang]
+      potongan: 55×80×2
+  - Toilet Lt.2 kanan (lantai)                                 2.16 m²    utuh 2    potongan 2 pcs    dari 2   keping → total 4 keping  [mulai: kiri/belakang]
+      potongan: 55×80×2
+
+## Lantai luar (teras atas)  — 18.42 m² | 33 keping (utuh 18 + korban potong 15) → +cadangan 36 keping = 12 dus
+  - Balkon Depan Lt.2 (termasuk sisi kiri KT Utama)            13.9 m²    utuh 14   potongan 19 pcs   dari 11  keping → total 25 keping  [mulai: tengah/depan]
+      potongan: 42×80×8, 13×80×3, 25×80×3, 42×70×1, 70×80×1, 13×70×1, 80×80 (L)×1, 25×42×1
+  - Balkon Belakang Lt.2                                       4.52 m²    utuh 4    potongan 6 pcs    dari 4   keping → total 8 keping  [mulai: kiri/belakang]
+      potongan: 55×80×4, 15×80×1, 15×55×1
+
+## Lantai kamar mandi (3 KM) Granit 80×80: 6.48 m² → 12 keping (+cadangan 13) = 5 dus
+
+## Plin 10 cm (dari 80x80 dibelah 8): panjang bersih 73.65 m → 100 potong 10×80 → 13 keping = 5 dus
+  - Dapur + R. Makan + R. Keluarga (satu bidang menerus)       24.6 m → 33 strip → 5 keping
+  - Kamar Tidur 1                                              12.5 m → 17 strip → 3 keping
+  - Selasar + R. Keluarga Lt.2 (satu bidang menerus)           13.35 m → 18 strip → 3 keping
+  - Kamar Tidur 2                                              12.5 m → 17 strip → 3 keping
+  - Kamar Tidur Utama                                          10.7 m → 15 strip → 2 keping
+
+## TOTAL granit 80x80 (lantai + plin): 234 keping, +cadangan 252 keping ≈ 161.28 m² = 84 dus
+
+=== DINDING KAMAR MANDI 30x60 (8 keping/dus) zona bawah 0.9 m terakota, atas 1.5 m putih ===
+
+## Toilet Lt.1 (keliling 5.9 m)  bawah 4.69 m² → 29 keping (utuh 18 + potong 18 pcs dari 11) | atas 7.7 m² → 49 keping (utuh 26 + potong 34 pcs dari 23)
+  - Sisi dapur (y=7.0)                   1.6 m  bawah 9 (30×40×3) | atas 15 (30×40×5) [dari kiri]
+  - Sisi koridor (x=4.75) — pintu        1.35 m  bawah 4 (30×33×3, 18×30×3, 15×30×3) | atas 8 (15×30×5, 30×33×4, 18×30×4) [dari kiri]
+  - Sisi KT1 (y=8.5)                     1.6 m  bawah 9 (30×40×3) | atas 15 (30×40×5) [dari kiri]
+  - Sisi luar (x=3.0) — jendela          1.35 m  bawah 7 (15×30×3) | atas 11 (15×30×5, 20×60×4, 30×38×1, 22×30×1) [dari kiri]
+
+## Toilet Lt.2 kiri (keliling 5.9 m)  bawah 4.69 m² → 29 keping (utuh 18 + potong 15 pcs dari 11) | atas 7.7 m² → 49 keping (utuh 25 + potong 31 pcs dari 24)
+  - Sisi KT2 (y=7.0)                     1.6 m  bawah 9 (30×40×3) | atas 15 (30×40×5) [dari kiri]
+  - Sisi toilet kanan (x=4.75)           1.35 m  bawah 7 (15×30×3) | atas 12 (15×30×5) [dari kiri]
+  - Sisi KT Utama (y=8.5) — pintu        1.6 m  bawah 6 (30×45×6) | atas 11 (30×45×8, 30×50×2) [simetris]
+  - Sisi luar (x=3.0) — jendela          1.35 m  bawah 7 (15×30×3) | atas 11 (15×30×5, 20×60×4, 30×38×1, 22×30×1) [dari kiri]
+
+## Toilet Lt.2 kanan (keliling 5.9 m)  bawah 4.69 m² → 29 keping (utuh 18 + potong 18 pcs dari 11) | atas 8 m² → 50 keping (utuh 32 + potong 28 pcs dari 18)
+  - Sisi KT2 (y=7.0)                     1.6 m  bawah 9 (30×40×3) | atas 15 (30×40×5) [dari kiri]
+  - Sisi selasar (x=6.5) — pintu         1.35 m  bawah 4 (30×33×3, 18×30×3, 15×30×3) | atas 8 (15×30×5, 30×33×4, 18×30×4) [dari kiri]
+  - Sisi KT Utama (y=8.5)                1.6 m  bawah 9 (30×40×3) | atas 15 (30×40×5) [dari kiri]
+  - Sisi toilet kiri (x=4.75)            1.35 m  bawah 7 (15×30×3) | atas 12 (15×30×5) [dari kiri]
+
+## TOTAL dinding: TERAKOTA 14.07 m² → 87 keping (+cadangan 94) = 12 dus | PUTIH 23.4 m² → 148 keping (+cadangan 159) = 20 dus
+
+=== PEMBANDING CATATAN TUKANG ===
+  - Lantai II: 60 m − 7,5 (lobang tangga) = 62,5 m (hitungannya tidak konsisten, 60−7,5 = 52,5)
+  - Lantai I: 60 m
+  - Dinding KM bawah (tinggi 100 cm): 10 m × 3 KM = 30 m
+  - Dinding KM atas (tinggi 140 cm): 14 × 3 = 42 m
+  - Lantai KM: 3 × 3 KM = 9 m
+  - Plin dinding 10 cm ± 6 dus (atas & bawah)
+  - Teras atas depan & belakang: 27 m
+  - Teras bawah: 21 m
+
+→ hitungan.json ditulis

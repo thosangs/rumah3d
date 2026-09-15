@@ -1,0 +1,9 @@
+# file berat / turunan — jangan di-commit ke GitHub (batas file 100 MB)
+# export glTF mentah 96 MB (sumber, simpan lokal):
+models/rumah-raw.glb
+# file SketchUp 31 MB:
+models/*.skp
+# hasil build (dibangun ulang oleh Actions / build-pages.mjs):
+dist/
+node_modules/
+.DS_Store
