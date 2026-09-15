@@ -207,26 +207,33 @@ export const FLOOR_AREAS = [
 // walls: panjang bersih tiap sisi; openings: bukaan (pintu/jendela) per sisi.
 // ---------------------------------------------------------------------------
 export const BATHROOMS = [
+  // Semua posisi bukaan & tinggi dinding diukur dari model SKP (GLB):
+  //  - pintu KM: kusen 70 cm lebar, tinggi 190 cm (lt.1) / 195 cm (lt.2), menempel sudut (bukan di tengah dinding)
+  //  - jendela KM 60×40, ambang 2,18 m, di tengah dinding luar
+  //  - ceilH: tinggi dinding dari lantai sampai bawah dak (toilet tidak berplafon di model) → keramik putih sampai atas
+  //  'at' = jarak bukaan dari titik nol tekstur dinding (sisi y1 → dari x1; sisi x2 → dari y1; sisi y2 → dari x2; sisi x1 → dari y2)
   {
     id: 'km-lt1',
     name: 'Toilet Lt.1',
     inner: { w: 1.6, d: 1.35 },
+    ceilH: 3.68, // bawah dak lt.2 (+3,65) − lantai toilet lt.1 (−0,03, turun 8 cm)
     // sisi: [belakang(y7), kanan(x4.75), depan(y8.5), kiri(x3)]
     walls: [
       { name: 'Sisi dapur (y=7.0)', len: 1.6, openings: [] },
-      { name: 'Sisi koridor (x=4.75) — pintu', len: 1.35, openings: [{ w: 0.7, h: 2.1, fromFloor: 0 }] },
+      { name: 'Sisi koridor (x=4.75) — pintu', len: 1.35, openings: [{ w: 0.7, h: 1.9, fromFloor: 0, at: 0 }] }, // pintu di sudut sisi dapur
       { name: 'Sisi KT1 (y=8.5)', len: 1.6, openings: [] },
-      { name: 'Sisi luar (x=3.0) — jendela', len: 1.35, openings: [{ w: 0.6, h: 0.4, fromFloor: 2.18 }] }, // jendela 60×40 diukur dari model SKP, puncak 2,58 m
+      { name: 'Sisi luar (x=3.0) — jendela', len: 1.35, openings: [{ w: 0.6, h: 0.4, fromFloor: 2.18 }] }, // jendela 60×40, puncak 2,58 m, di tengah
     ],
   },
   {
     id: 'km-lt2a',
     name: 'Toilet Lt.2 kiri',
     inner: { w: 1.6, d: 1.35 },
+    ceilH: 3.35, // bawah dak talang (+7,18) − lantai toilet lt.2 (+3,83)
     walls: [
       { name: 'Sisi KT2 (y=7.0)', len: 1.6, openings: [] },
       { name: 'Sisi toilet kanan (x=4.75)', len: 1.35, openings: [] },
-      { name: 'Sisi KT Utama (y=8.5) — pintu', len: 1.6, openings: [{ w: 0.7, h: 2.1, fromFloor: 0 }] },
+      { name: 'Sisi KT Utama (y=8.5) — pintu', len: 1.6, openings: [{ w: 0.7, h: 1.95, fromFloor: 0, at: 0.9 }] }, // pintu di sudut sisi luar (x=3)
       { name: 'Sisi luar (x=3.0) — jendela', len: 1.35, openings: [{ w: 0.6, h: 0.4, fromFloor: 2.18 }] }, // sama seperti lt.1
     ],
   },
@@ -234,9 +241,10 @@ export const BATHROOMS = [
     id: 'km-lt2b',
     name: 'Toilet Lt.2 kanan',
     inner: { w: 1.6, d: 1.35 },
+    ceilH: 3.35,
     walls: [
       { name: 'Sisi KT2 (y=7.0)', len: 1.6, openings: [] },
-      { name: 'Sisi selasar (x=6.5) — pintu', len: 1.35, openings: [{ w: 0.7, h: 2.1, fromFloor: 0 }] },
+      { name: 'Sisi selasar (x=6.5) — pintu', len: 1.35, openings: [{ w: 0.7, h: 1.95, fromFloor: 0, at: 0 }] }, // pintu di sudut sisi KT2
       { name: 'Sisi KT Utama (y=8.5)', len: 1.6, openings: [] },
       { name: 'Sisi toilet kiri (x=4.75)', len: 1.35, openings: [] },
     ],

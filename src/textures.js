@@ -89,7 +89,7 @@ export function floorTexture(area, layout, pxPerM = 110, showLabels = true) {
  * Tekstur dinding kamar mandi (2 motif). wallLayout dari layoutWall.
  * Canvas: lebar = len, tinggi = totalH. Bukaan pintu transparan.
  */
-export function wallTexture(wallLayout, zones, pxPerM = 160) {
+export function wallTexture(wallLayout, zones, pxPerM = 160, showLabels = false) {
   const W = wallLayout.len;
   const H = zones.bottomH + zones.topH;
   const cv = document.createElement('canvas');
@@ -100,8 +100,15 @@ export function wallTexture(wallLayout, zones, pxPerM = 160) {
   const Y = (y) => (H - y) * pxPerM; // y=0 lantai di bawah canvas
   for (const c of wallLayout.cells) {
     const pal = c.zone === 'bawah' ? COLORS.teraso : COLORS.putih;
-    ctx.fillStyle = c.full ? pal.full : pal.cut;
+    const color = c.full ? pal.full : pal.cut;
     const x = X(c.x1), y = Y(c.y2), w = (c.x2 - c.x1) * pxPerM, h = (c.y2 - c.y1) * pxPerM;
+    const parts = c.parts || [c];
+    // gambar hanya bagian keping yang ada (keping dicoak bukaan = bentuk L): clip ke union part
+    ctx.save();
+    ctx.beginPath();
+    for (const p of parts) ctx.rect(X(p.x1), Y(p.y2), (p.x2 - p.x1) * pxPerM, (p.y2 - p.y1) * pxPerM);
+    ctx.clip();
+    ctx.fillStyle = color;
     ctx.fillRect(x, y, w, h);
     if (c.zone === 'bawah') {
       // motif teraso: serpihan batu acak
@@ -112,15 +119,29 @@ export function wallTexture(wallLayout, zones, pxPerM = 160) {
         ctx.beginPath(); ctx.ellipse(x + Math.random() * w, y + Math.random() * h, s, s * (0.6 + Math.random() * 0.6), Math.random() * Math.PI, 0, Math.PI * 2); ctx.fill();
       }
     }
+    // nat: keliling kotak pembatas + tepi coakan (setengah garis terpotong clip → tebal 2× lalu 2 px efektif)
     ctx.strokeStyle = pal.grout;
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 4;
     ctx.strokeRect(x, y, w, h);
-    if (!c.full && Math.min(w, h) > 14) {
+    if (parts.length > 1) {
+      for (const p of parts) ctx.strokeRect(X(p.x1), Y(p.y2), (p.x2 - p.x1) * pxPerM, (p.y2 - p.y1) * pxPerM);
+      // garis antar part bukan nat → timpa dengan warna keping
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 5;
+      for (const a of parts) for (const b of parts) {
+        if (a === b) continue;
+        if (Math.abs(a.x2 - b.x1) < 1e-6) { const y1 = Math.max(a.y1, b.y1), y2 = Math.min(a.y2, b.y2); if (y2 > y1) { ctx.beginPath(); ctx.moveTo(X(a.x2), Y(y2) + 3); ctx.lineTo(X(a.x2), Y(y1) - 3); ctx.stroke(); } }
+        if (Math.abs(a.y2 - b.y1) < 1e-6) { const x1 = Math.max(a.x1, b.x1), x2 = Math.min(a.x2, b.x2); if (x2 > x1) { ctx.beginPath(); ctx.moveTo(X(x1) + 3, Y(a.y2)); ctx.lineTo(X(x2) - 3, Y(a.y2)); ctx.stroke(); } }
+      }
+    }
+    ctx.restore();
+    if (showLabels && !c.full && Math.min(w, h) > 10) {
+      const txt = `${Math.round(c.w * 100)}×${Math.round(c.h * 100)}`;
       ctx.fillStyle = 'rgba(30,20,10,0.8)';
-      ctx.font = `${Math.min(w, h) * 0.5}px system-ui, sans-serif`;
+      ctx.font = `${Math.min(h * 0.45, (w * 0.9) / (txt.length * 0.6), pxPerM * 0.12)}px system-ui, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(`${Math.round(c.w * 100)}×${Math.round(c.h * 100)}`, x + w / 2, y + h / 2);
+      ctx.fillText(txt, x + w / 2, y + h / 2);
     }
   }
   const tex = new THREE.CanvasTexture(cv);

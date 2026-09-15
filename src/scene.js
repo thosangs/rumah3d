@@ -138,12 +138,13 @@ export function buildBathWalls(results, group) {
     ];
     b.walls.forEach((wl, i) => {
       const s = sides[i];
-      const { texture, W, H } = wallTexture(wl, results.cfg.wallZones);
+      const { texture, W, H } = wallTexture(wl, b.zones, 160, window.__showLabels ?? false);
       const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.3, transparent: true });
       const m = new THREE.Mesh(new THREE.PlaneGeometry(W, H), mat);
       m.position.set(s.x, base + H / 2, s.z);
       m.rotation.y = s.rotY;
       m.name = `${b.id}-wall-${i}`;
+      m.userData.bathWall = { wl, zones: b.zones };
       group.add(m);
     });
   }

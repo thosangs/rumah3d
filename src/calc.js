@@ -6,13 +6,20 @@ export const DEFAULT_CONFIG = {
   floorPcsPerBox: 3, // granit 80×80: 3 keping/dus (1,92 m²)
   wallPcsPerBox: 8, // granit 30×60: umumnya 8 keping/dus (1,44 m²)
   bathFloorMode: '80', // '80' pakai granit 80×80 (sesuai permintaan) | '40' keramik 40×40 kasar
-  wallZones: { bottomH: 1.8, topH: 0.9 }, // teraso 180 cm (3 baris × 60 tegak) + putih polos sampai plafon 2,7 m (jendela toilet puncaknya 2,58 m)
+  wallZones: { bottomH: 1.8, topH: null }, // teraso 180 cm (3 baris × 60 tegak) + putih polos; topH null = sampai dak (ceilH tiap KM), angka = tinggi zona putih (plafon)
   plinthStrips: 8,
   includeOptional: false, // ruang jemur
   layoutMode: 'rapi', // 'rapi' = simetris/utuh dari tembok ruang utama | 'simetris' = simetris di semua ruang | 'hemat' = keping paling sedikit
 };
 
 const r2 = (v) => Math.round(v * 100) / 100;
+
+/** Zona dinding untuk satu KM: topH null → putih polos sampai bawah dak (ceilH dari model) */
+export function zonesFor(bath, cfg) {
+  const bottomH = cfg.wallZones.bottomH;
+  const topH = cfg.wallZones.topH ?? r2(Math.max(0, (bath.ceilH ?? 2.7) - bottomH));
+  return { bottomH, topH, toSlab: cfg.wallZones.topH == null };
+}
 
 export function computeAll(cfg = DEFAULT_CONFIG) {
   const floors = FLOOR_AREAS.filter((a) => cfg.includeOptional || !a.optional).map((a) => {
@@ -74,7 +81,7 @@ export function computeAll(cfg = DEFAULT_CONFIG) {
   plinthTotal.boxes = boxes(plinthTotal.tiles, cfg.floorPcsPerBox);
 
   // Dinding kamar mandi
-  const baths = BATHROOMS.map((b) => layoutBathroom(b, TILE_WALL, cfg.wallZones));
+  const baths = BATHROOMS.map((b) => layoutBathroom(b, TILE_WALL, zonesFor(b, cfg)));
   const wall = {
     bawah: { pieces: baths.reduce((s, b) => s + b.bawah.total, 0), area: r2(baths.reduce((s, b) => s + b.areaBawah, 0)) },
     atas: { pieces: baths.reduce((s, b) => s + b.atas.total, 0), area: r2(baths.reduce((s, b) => s + b.areaAtas, 0)) },

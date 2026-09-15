@@ -14,14 +14,14 @@ cd rumah-alfi-3d && python3 serve.py 8765
 lalu buka <http://localhost:8765>.
 
 Kontrol: klik untuk mengunci mouse, `W A S D` jalan, `Shift` lari, `1/2/3` lompat ke teras depan / lantai 2 / depan rumah,
-`M` mode orbit (denah), `H` sembunyikan lantai 2 + atap, `L` label ukuran potongan, `G` ganti model SKP asli ↔ model blok,
+`M` mode orbit (denah), `H` irisan lantai, `L` label ukuran potongan (default mati), `G` ganti model SKP asli ↔ model blok,
 `P` panel hitungan. Naik ke lantai 2 cukup jalan ke tangga di pojok kanan belakang ruang makan.
 
 ## Hitungan tanpa browser
 
 ```bash
-node scripts/hitung.mjs                # default: 2 keping/dus, cadangan 7%, zona KM 90/150
-node scripts/hitung.mjs --pcs=3 --waste=10 --zones=100/140 --bath=40 --jemur=1
+node scripts/hitung.mjs                # default: 3 keping/dus, cadangan 7%, dinding KM 180/dak
+node scripts/hitung.mjs --pcs=3 --waste=10 --zones=180/90 --bath=40 --jemur=1   # zones=180/dak = putih sampai dak
 ```
 
 Menulis `hitungan.json` dan mencetak tabel. Hasil terakhir juga ada di `hitungan.txt`.
@@ -41,7 +41,8 @@ Menulis `hitungan.json` dan mencetak tabel. Hasil terakhir juga ada di `hitungan
 - Model SKP (GLB) kavlingnya mulai di y = 0,5 m, jadi diposisikan dengan offset z = 19,5 (bukan 20) agar tembok-temboknya pas dengan denah DED. Tangga di model berbentuk L: 2 anak tangga awal ke arah kanan dari x 8,28 (y 3,56–4,56), lalu run lurus sepanjang tembok kanan naik ke depan sampai tiba di lantai 2 pada y 9,06 (riser 20 cm, tread 30 cm); void dak 2,0 × 5,5 m. Geometri di `data.js` diukur dari GLB.
 - GLB hasil export tidak membawa material kaca; `scripts/fixmodel.py` menandai panel tipis di bukaan jendela sebagai kaca, panel gerbang + screen carport sebagai plat perforated (dirender tembus pandang di three.js), dan mengecat material default abu menjadi putih hangat sesuai render DED. Jalankan `python3 scripts/fixmodel.py models/rumah-raw.glb /tmp/g.glb` lalu optimize ke `models/rumah.glb` (perintah di tab Model SKP, tambah `--palette false --simplify false`).
 - Ukuran ruang = grid as − 15 cm tebal tembok. Kamar mandi 1,60 × 1,35 m bersih (as 1,75 × 1,50).
-- Dinding KM granit 30×60 dipasang tegak, full dari lantai sampai plafon (asumsi 2,7 m karena jendela toilet puncaknya 2,58 m): bawah teraso titik biru 180 cm (3 baris × 60), sisanya putih polos. Jendela 60×40 di ambang 2,18 m diukur dari model.
-- Pintu KM 70 × 210, jendela KM 60 × 50 (ambang 170) di sisi luar.
+- Dinding KM granit 30×60 dipasang tegak, full dari lantai sampai bawah dak (toilet tidak berplafon di model: lt.1 3,68 m, lt.2 3,35 m; opsi plafon 2,7/3,0 m di Setelan): bawah teraso titik biru 180 cm (3 baris × 60), sisanya putih polos. Keping yang kena bukaan dicoak (bentuk L), tetap 1 keping.
+- Pintu KM kusen 70 cm, tinggi 190 cm (lt.1) / 195 cm (lt.2), menempel sudut; jendela KM 60 × 40 (ambang 2,18 m) di tengah dinding luar — semua diukur dari model SKP. Kalau pintu riil 210 cm, selisih ±1 keping per pintu.
+- Label ukuran potongan default mati; tombol **📐 Ukuran** di toolbar atau tekan `L`.
 - Ruang jemur di gambar rabat beton; kalau ikut digranit, centang di Setelan (menjelaskan angka "teras bawah 21 m²" dari tukang).
 - Granit 80×80 dihitung 3 keping/dus (1,92 m²); ubah di Setelan kalau merek lain.

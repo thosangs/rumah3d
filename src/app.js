@@ -126,7 +126,7 @@ addEventListener('keydown', (e) => {
     case 'Digit3': teleport(6.5, 18.5, 'lt1', 0); break;
     case 'KeyM': setMode(mode === 'walk' ? 'orbit' : 'walk'); break;
     case 'KeyH': setCut(cut === 'none' ? 'lt1' : cut === 'lt1' ? 'lt2' : 'none'); break;
-    case 'KeyL': showLabels = !showLabels; toggleLabels(); break;
+    case 'KeyL': setLabels(!showLabels); break;
     case 'KeyG': if (glbRoot) { glbOn = !glbOn; applyVisibility(); } break;
     case 'KeyP': togglePanel(); break;
   }
@@ -305,18 +305,27 @@ function updateHud() {
   hudDetail.innerHTML = `${cur.tileSpec.label} ${cur.finish} · luas bersih <b>${cur.area} m²</b> · utuh <b>${L.full}</b> + potongan <b>${L.cuts} pcs</b> (dari ${L.cutTiles} keping) = <b>${L.total} keping</b><br/>Mulai pasang dari: ${L.name}. Potongan: ${L.cutList.map((c) => `${c.ukuran}×${c.jumlah}`).join(', ') || '-'}`;
 }
 
-function toggleLabels() {
-  window.__showLabels = showLabels;
+function setLabels(on) {
+  showLabels = on;
+  window.__showLabels = on;
+  document.querySelectorAll('#viewbar [data-labels]').forEach((b) => b.classList.toggle('active', on));
   rebuildTexturesOnly();
 }
 async function rebuildTexturesOnly() {
-  const { floorTexture } = await import('./textures.js');
+  const { floorTexture, wallTexture } = await import('./textures.js');
   for (const g of built.floors) {
     const f = g.userData.area;
     const { texture } = floorTexture(f, f.layout, 110, showLabels);
     g.children.forEach((m) => { m.material.map.dispose(); m.material.map = texture; m.material.needsUpdate = true; });
   }
+  built.root.traverse((m) => {
+    const bw = m.userData?.bathWall;
+    if (!bw) return;
+    const { texture } = wallTexture(bw.wl, bw.zones, 160, showLabels);
+    m.material.map.dispose(); m.material.map = texture; m.material.needsUpdate = true;
+  });
 }
+document.querySelectorAll('#viewbar [data-labels]').forEach((b) => b.addEventListener('click', () => setLabels(!showLabels)));
 
 // ---------------------------------------------------------------------------
 // Panel & UI
@@ -340,8 +349,8 @@ if (panel) {
     cfg.wallPcsPerBox = +$('s-wpcs').value || 8;
     cfg.wastePct = +$('s-waste').value || 0;
     cfg.bathFloorMode = $('s-bath').value;
-    const [b, t] = $('s-zones').value.split('/').map(Number);
-    cfg.wallZones = { bottomH: b / 100, topH: t / 100 };
+    const [b, t] = $('s-zones').value.split('/');
+    cfg.wallZones = { bottomH: +b / 100, topH: t === 'dak' ? null : +t / 100 };
     cfg.includeOptional = $('s-jemur').checked;
     cfg.layoutMode = $('s-layout').value;
     rebuild();

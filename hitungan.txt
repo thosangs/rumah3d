@@ -44,27 +44,27 @@
 
 ## TOTAL granit 80x80 (lantai + plin, pola rapi): 269 keping, +cadangan 289 keping ≈ 184.96 m² = 97 dus  (pola hemat: 258 keping ≈ 93 dus)
 
-=== DINDING KAMAR MANDI 30x60 (8 keping/dus) zona bawah 1.8 m teraso, atas 0.9 m putih polos ===
+=== DINDING KAMAR MANDI 30x60 (8 keping/dus) zona bawah 1.8 m teraso, atas sampai dak (putih polos) ===
 
-## Toilet Lt.1 (keliling 5.9 m)  bawah 9.36 m² → 58 keping (utuh 42 + potong 21 pcs dari 16) | atas 4.87 m² → 40 keping (utuh 11 + potong 33 pcs dari 29)
-  - Sisi dapur (y=7.0)                   1.6 m  bawah 17 (10×60×3) | atas 11 (30×30×5, 10×60×1, 10×30×1) [dari kiri]
-  - Sisi koridor (x=4.75) — pintu        1.35 m  bawah 9 (23×60×6, 10×60×6) | atas 10 (30×30×6, 23×60×2, 23×30×2) [simetris]
-  - Sisi KT1 (y=8.5)                     1.6 m  bawah 17 (10×60×3) | atas 11 (30×30×5, 10×60×1, 10×30×1) [dari kiri]
-  - Sisi luar (x=3.0) — jendela          1.35 m  bawah 15 (15×60×3) | atas 8 (30×38×2, 12×30×2, 22×60×1, 15×60×1, 30×30×1, 22×30×1, 15×30×1) [dari kiri]
+## Toilet Lt.1 (keliling 5.9 m, tinggi 3.68 m)  bawah 9.36 m² → 59 keping (utuh 36 + potong 24 pcs dari 23) | atas 10.79 m² → 72 keping (utuh 34 + potong 54 pcs dari 38)
+  - Sisi dapur (y=7.0)                   1.6 m  bawah 18 (20×60×6) | atas 20 (20×60×6, 8×30×4, 8×20×2) [simetris]
+  - Sisi koridor (x=4.75) — pintu        1.35 m  bawah 8 (13×60×3, 23×60×3) | atas 16 (23×60×5, 8×30×3, 8×23×2, 23×50×1, 30×50×1, 30×60 (L)×1) [simetris]
+  - Sisi KT1 (y=8.5)                     1.6 m  bawah 18 (20×60×6) | atas 20 (20×60×6, 8×30×4, 8×20×2) [simetris]
+  - Sisi luar (x=3.0) — jendela          1.35 m  bawah 15 (23×60×6) | atas 16 (23×60×6, 30×60 (L)×4, 8×30×3, 8×23×2, 30×38×1, 30×42×1) [simetris]
 
-## Toilet Lt.2 kiri (keliling 5.9 m)  bawah 9.36 m² → 57 keping (utuh 45 + potong 18 pcs dari 12) | atas 4.87 m² → 40 keping (utuh 12 + potong 32 pcs dari 28)
-  - Sisi KT2 (y=7.0)                     1.6 m  bawah 17 (10×60×3) | atas 11 (30×30×5, 10×60×1, 10×30×1) [dari kiri]
-  - Sisi toilet kanan (x=4.75)           1.35 m  bawah 15 (15×60×3) | atas 10 (30×30×4, 15×60×1, 15×30×1) [dari kiri]
-  - Sisi KT Utama (y=8.5) — pintu        1.6 m  bawah 10 (15×60×3, 5×60×3, 10×60×3) | atas 11 (30×30×7, 15×60×1, 10×60×1, 10×30×1) [dari kiri]
-  - Sisi luar (x=3.0) — jendela          1.35 m  bawah 15 (15×60×3) | atas 8 (30×38×2, 12×30×2, 22×60×1, 15×60×1, 30×30×1, 22×30×1, 15×30×1) [dari kiri]
+## Toilet Lt.2 kiri (keliling 5.9 m, tinggi 3.35 m)  bawah 9.36 m² → 57 keping (utuh 42 + potong 15 pcs dari 15) | atas 8.8 m² → 65 keping (utuh 24 + potong 42 pcs dari 41)
+  - Sisi KT2 (y=7.0)                     1.6 m  bawah 18 (20×60×6) | atas 18 (20×60×4, 30×35×4, 20×35×2) [simetris]
+  - Sisi toilet kanan (x=4.75)           1.35 m  bawah 15 (15×60×3) | atas 15 (30×35×4, 15×60×2, 15×35×1) [dari kiri]
+  - Sisi KT Utama (y=8.5) — pintu        1.6 m  bawah 9 (tanpa potongan) | atas 17 (30×35×5, 30×45×2, 10×45×1, 10×60×1, 10×35×1) [dari kiri]
+  - Sisi luar (x=3.0) — jendela          1.35 m  bawah 15 (23×60×6) | atas 15 (23×60×4, 30×60 (L)×4, 30×35×3, 23×35×2, 30×38×1, 30×42×1) [simetris]
 
-## Toilet Lt.2 kanan (keliling 5.9 m)  bawah 9.36 m² → 58 keping (utuh 42 + potong 21 pcs dari 16) | atas 5.11 m² → 42 keping (utuh 14 + potong 30 pcs dari 28)
-  - Sisi KT2 (y=7.0)                     1.6 m  bawah 17 (10×60×3) | atas 11 (30×30×5, 10×60×1, 10×30×1) [dari kiri]
-  - Sisi selasar (x=6.5) — pintu         1.35 m  bawah 9 (23×60×6, 10×60×6) | atas 10 (30×30×6, 23×60×2, 23×30×2) [simetris]
-  - Sisi KT Utama (y=8.5)                1.6 m  bawah 17 (10×60×3) | atas 11 (30×30×5, 10×60×1, 10×30×1) [dari kiri]
-  - Sisi toilet kiri (x=4.75)            1.35 m  bawah 15 (15×60×3) | atas 10 (30×30×4, 15×60×1, 15×30×1) [dari kiri]
+## Toilet Lt.2 kanan (keliling 5.9 m, tinggi 3.35 m)  bawah 9.36 m² → 59 keping (utuh 39 + potong 21 pcs dari 20) | atas 9.04 m² → 66 keping (utuh 28 + potong 38 pcs dari 38)
+  - Sisi KT2 (y=7.0)                     1.6 m  bawah 18 (20×60×6) | atas 18 (20×60×4, 30×35×4, 20×35×2) [simetris]
+  - Sisi selasar (x=6.5) — pintu         1.35 m  bawah 8 (13×60×3, 23×60×3) | atas 15 (23×60×3, 30×35×3, 23×35×2, 23×45×1, 30×45×1, 30×60 (L)×1) [simetris]
+  - Sisi KT Utama (y=8.5)                1.6 m  bawah 18 (20×60×6) | atas 18 (20×60×4, 30×35×4, 20×35×2) [simetris]
+  - Sisi toilet kiri (x=4.75)            1.35 m  bawah 15 (15×60×3) | atas 15 (30×35×4, 15×60×2, 15×35×1) [dari kiri]
 
-## TOTAL dinding: TERASO 28.08 m² → 173 keping (+cadangan 186) = 24 dus | PUTIH 14.85 m² → 122 keping (+cadangan 131) = 17 dus
+## TOTAL dinding: TERASO 28.08 m² → 175 keping (+cadangan 188) = 24 dus | PUTIH 28.63 m² → 203 keping (+cadangan 218) = 28 dus
 
 === HITUNGAN RIIL vs TUKANG (dus) — 80×80: 3/dus, 30×60: 8/dus ===
   Lantai 1                           tukang 60 m²     94 kpg    32 dus   | riil 60.73 m²  104 kpg   35 dus   +7% → 38 dus
@@ -74,9 +74,9 @@
   Lantai KM (riil sudah di Lt1/Lt2)  tukang 9 m²      15 kpg    5 dus    | riil 6.48 m²   12 kpg    - dus    +7% → - dus
   Plin                               tukang — m²      18 kpg    6 dus    | riil — m²      13 kpg    5 dus    +7% → 5 dus
   TOTAL 80×80                        tukang 179.5 m²  301 kpg   102 dus  | riil 184.96 m² 269 kpg   90 dus   +7% → 97 dus
-  Dinding KM bawah (teraso)          tukang 30 m²     167 kpg   21 dus   | riil 28.08 m²  173 kpg   22 dus   +7% → 24 dus
-  Dinding KM atas (putih)            tukang 42 m²     234 kpg   30 dus   | riil 14.85 m²  122 kpg   16 dus   +7% → 17 dus
-  TOTAL 30×60                        tukang 72 m²     401 kpg   51 dus   | riil 42.93 m²  295 kpg   38 dus   +7% → 41 dus
+  Dinding KM bawah (teraso)          tukang 30 m²     167 kpg   21 dus   | riil 28.08 m²  175 kpg   22 dus   +7% → 24 dus
+  Dinding KM atas (putih)            tukang 42 m²     234 kpg   30 dus   | riil 28.63 m²  203 kpg   26 dus   +7% → 28 dus
+  TOTAL 30×60                        tukang 72 m²     401 kpg   51 dus   | riil 56.71 m²  378 kpg   48 dus   +7% → 52 dus
 
 === CATATAN TUKANG (asli) ===
   - Lantai II: 60 m − 7,5 (lobang tangga) = 62,5 m (hitungannya tidak konsisten, 60−7,5 = 52,5)

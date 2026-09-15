@@ -303,42 +303,37 @@ export function layoutWall(wall, tile, zones, opts = {}) {
         const cell = { x1: ox + i * tile.w, x2: ox + (i + 1) * tile.w, y1, y2 };
         const c = intersect(cell, rect);
         if (!c) continue;
-        // kurangi bukaan (asumsi bukaan memotong cell jadi persegi panjang; jika cell habis, skip)
-        let piece = c;
+        // kurangi bukaan: sisa cell = strip kiri/kanan setinggi cell + strip bawah/atas selebar bukaan.
+        // Kalau sisanya lebih dari satu persegi → keping dicoak (bentuk L), tetap 1 keping.
+        let parts = [c];
         let cutByOpening = false;
         for (const o of openings) {
-          const ov = intersect(piece, o);
-          if (!ov) continue;
-          cutByOpening = true;
-          // cell tertutup penuh bukaan?
-          if (near(rectArea(ov), rectArea(piece))) {
-            piece = null;
-            break;
+          const next = [];
+          for (const p of parts) {
+            const ov = intersect(p, o);
+            if (!ov) { next.push(p); continue; }
+            cutByOpening = true;
+            if (ov.x1 > p.x1 + EPS) next.push({ x1: p.x1, x2: ov.x1, y1: p.y1, y2: p.y2 });
+            if (ov.x2 < p.x2 - EPS) next.push({ x1: ov.x2, x2: p.x2, y1: p.y1, y2: p.y2 });
+            if (ov.y1 > p.y1 + EPS) next.push({ x1: ov.x1, x2: ov.x2, y1: p.y1, y2: ov.y1 });
+            if (ov.y2 < p.y2 - EPS) next.push({ x1: ov.x1, x2: ov.x2, y1: ov.y2, y2: p.y2 });
           }
-          // sisakan bagian terbesar di luar bukaan (kiri/kanan/atas/bawah)
-          const cands = [
-            { x1: piece.x1, x2: ov.x1, y1: piece.y1, y2: piece.y2 },
-            { x1: ov.x2, x2: piece.x2, y1: piece.y1, y2: piece.y2 },
-            { x1: piece.x1, x2: piece.x2, y1: piece.y1, y2: ov.y1 },
-            { x1: piece.x1, x2: piece.x2, y1: ov.y2, y2: piece.y2 },
-          ].filter((r) => r.x2 - r.x1 > EPS && r.y2 - r.y1 > EPS);
-          if (!cands.length) {
-            piece = null;
-            break;
-          }
-          cands.sort((a, b) => rectArea(b) - rectArea(a));
-          piece = cands[0];
+          parts = next;
         }
-        if (!piece) continue;
-        const w = piece.x2 - piece.x1;
-        const h = piece.y2 - piece.y1;
+        if (!parts.length) continue;
+        const ub = bbox(parts);
+        const area = parts.reduce((s, p) => s + rectArea(p), 0);
+        const isRect = near(area, rectArea(ub));
+        const w = ub.x2 - ub.x1;
+        const h = ub.y2 - ub.y1;
         cells.push({
-          ...piece,
+          ...ub,
           w: r2(w),
           h: r2(h),
-          full: near(w, tile.w) && near(h, tile.h),
+          full: isRect && near(w, tile.w) && near(h, tile.h),
           zone: inBottom ? 'bawah' : 'atas',
-          shape: 'rect',
+          shape: isRect ? 'rect' : 'L',
+          parts,
           cutByOpening,
         });
       }
@@ -350,7 +345,18 @@ export function layoutWall(wall, tile, zones, opts = {}) {
     'dari kiri': 0,
     'dari kanan': wall.len - nCols * tile.w,
     'simetris': (wall.len - nCols * tile.w) / 2,
+    'simetris, potongan sama di kedua ujung': (wall.len - (nCols - 1) * tile.w) / 2,
   };
+  // di samping bukaan (pintu): keping utuh disusun simetris di sisa dinding, atau rapat ke kusen
+  openings.forEach((o, k) => {
+    const segs = [[0, o.x1, 'kiri'], [o.x2, wall.len, 'kanan']].filter(([a, b]) => b - a > tile.w / 2);
+    for (const [a, b, sisi] of segs) {
+      const n = Math.floor((b - a) / tile.w + 1e-9);
+      origins[`simetris di ${sisi} bukaan ${k + 1}`] = a + (b - a - n * tile.w) / 2;
+    }
+    origins[`rapat kusen kanan bukaan ${k + 1}`] = o.x2;
+    origins[`rapat kusen kiri bukaan ${k + 1}`] = o.x1;
+  });
   const cands = Object.entries(origins).map(([name, ox]) => {
     const cells = tryOrigin(ox);
     const byZone = {};
@@ -361,10 +367,14 @@ export function layoutWall(wall, tile, zones, opts = {}) {
       byZone[z] = { full: zc.filter((c) => c.full).length, cuts: cuts.length, cutTiles: pack.tiles, total: zc.filter((c) => c.full).length + pack.tiles, cutList: describeCuts(zc) };
     }
     const total = byZone.bawah.total + byZone.atas.total;
-    const slivers = cells.filter((c) => !c.full && Math.min(c.w, c.h) < 0.08).length;
-    return { name, ox, cells, byZone, total, slivers };
+    // potongan sempit (< 10 cm) jelek & mudah pecah; kaki L yang sempit dihitung setengah
+    const slivers = cells.filter((c) => !c.full && c.shape === 'rect' && Math.min(c.w, c.h) < 0.12).length;
+    const sliversL = cells.filter((c) => c.shape === 'L' && c.parts.some((p) => Math.min(p.x2 - p.x1, p.y2 - p.y1) < 0.12)).length;
+    const cutsN = byZone.bawah.cuts + byZone.atas.cuts;
+    const score = total + slivers * 1.5 + sliversL * 0.5 + cutsN * 0.05;
+    return { name, ox, cells, byZone, total, slivers, score };
   });
-  cands.sort((a, b) => a.total - b.total || a.slivers - b.slivers);
+  cands.sort((a, b) => a.score - b.score || a.total - b.total);
   const best = opts.prefer ? cands.find((c) => c.name === opts.prefer) || cands[0] : cands[0];
   const grossArea = wall.len * totalH;
   const openArea = openings.reduce((s, o) => s + rectArea(intersect(o, rect) || { x1: 0, x2: 0, y1: 0, y2: 0 }), 0);
@@ -377,6 +387,8 @@ export function layoutBathroom(bath, tile, zones) {
   return {
     id: bath.id,
     name: bath.name,
+    zones,
+    ceilH: bath.ceilH,
     walls,
     bawah: { full: sum('bawah', 'full'), cuts: sum('bawah', 'cuts'), cutTiles: sum('bawah', 'cutTiles'), total: sum('bawah', 'total') },
     atas: { full: sum('atas', 'full'), cuts: sum('atas', 'cuts'), cutTiles: sum('atas', 'cutTiles'), total: sum('atas', 'total') },
