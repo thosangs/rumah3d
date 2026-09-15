@@ -393,6 +393,11 @@ gltfLoader.load(
       }
       for (const m of mats) {
         if (!m) continue;
+        if (m.name === 'Solarflat') {
+          // atap solarflat: lembar polikarbonat datar, tembus cahaya (bukan beton)
+          m.transparent = true; m.opacity = 0.45; m.depthWrite = false; m.roughness = 0.25; m.metalness = 0; m.side = THREE.DoubleSide;
+          continue;
+        }
         if (m.transparent) {
           // material kaca yang masih punya alpha → pastikan tembus pandang
           m.transparent = true;

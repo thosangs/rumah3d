@@ -126,10 +126,10 @@ export const FLOOR_AREAS = [
     finish: 'polos',
     tile: 'floor',
     rects: [
-      // selasar x 6.5–7.88 (kanan = void tangga 2,0 × 5,5 m) menerus ke ruang keluarga lt2
-      R(6.5 + HALF, 3.5 + HALF, 7.88, 13.5 - HALF),
+      // selasar x 6.5–8.43 (kanan = void tangga 1,5 × 5,5 m — revisi dari 2,0) menerus ke r. keluarga lt2
+      R(6.5 + HALF, 3.5 + HALF, 8.43, 13.5 - HALF),
       // ruang keluarga lt2 sisi kanan, mulai dari ujung tangga tiba (y 9.06)
-      R(7.88, 9.06, 10 - HALF, 13.5 - HALF),
+      R(8.43, 9.06, 10 - HALF, 13.5 - HALF),
     ],
     plinth: {
       // tembok belakang selasar 1.5, tembok KT2 x6.5 3.35, tembok toilet kanan 1.35,
@@ -292,8 +292,8 @@ export const WALLS = [
 
 // Railing (void & balkon) — segmen tinggi 1.0
 export const RAILINGS = [
-  { x1: 7.88, y1: 3.5 + HALF, x2: 7.88, y2: 9.06, level: 'lt2' }, // tepi void sisi selasar
-  { x1: 7.88, y1: 9.06, x2: 8.88, y2: 9.06, level: 'lt2' }, // tepi void di samping ujung tangga
+  { x1: 8.43, y1: 3.5 + HALF, x2: 8.43, y2: 9.06, level: 'lt2' }, // tepi void sisi selasar (void 1,5 m)
+  { x1: 8.43, y1: 9.06, x2: 8.88, y2: 9.06, level: 'lt2' }, // tepi void di ujung tangga tiba
   { x1: 1.5, y1: 8.5, x2: 1.5, y2: 14.0, level: 'lt2' }, // balkon depan kiri
   { x1: 1.5, y1: 14.0, x2: 6.5, y2: 14.0, level: 'lt2' }, // balkon depan
   { x1: 6.5, y1: 12, x2: 6.5, y2: 14.0, level: 'lt2' },
@@ -323,7 +323,7 @@ export const SLAB2 = {
     R(3, 13.5, 6.5, 14.0),
     R(6.5, 2.0, 10, 3.5),
   ],
-  voids: [R(7.88, 3.56, 10 - HALF, 9.06)],
+  voids: [R(8.43, 3.56, 10 - HALF, 9.06)], // lubang tangga 1,5 × 5,5 m (revisi dari 2,0)
 };
 
 // Lantai luar lainnya (bukan granit) untuk konteks

@@ -20,12 +20,14 @@ glass_idx = len(js['materials'])
 js['materials'].append({'name': 'Glass', 'pbrMetallicRoughness': {'baseColorFactor': [0.72, 0.84, 0.92, 0.28], 'metallicFactor': 0.1, 'roughnessFactor': 0.05}, 'alphaMode': 'BLEND', 'doubleSided': True})
 perf_idx = len(js['materials'])
 js['materials'].append({'name': 'Perforated', 'pbrMetallicRoughness': {'baseColorFactor': [0.12, 0.12, 0.13, 1], 'metallicFactor': 0.6, 'roughnessFactor': 0.5}, 'doubleSided': True})
+solar_idx = len(js['materials'])
+js['materials'].append({'name': 'Solarflat', 'pbrMetallicRoughness': {'baseColorFactor': [0.82, 0.86, 0.9, 0.4], 'metallicFactor': 0.0, 'roughnessFactor': 0.15}, 'alphaMode': 'BLEND', 'doubleSided': True})
 PERF_NODES = {421, 1200}  # screen samping carport (x 9.88) & screen kiri (x 0.14)
 perf_mats = set()
 for i, m in enumerate(js['materials']):
     pbr = m.get('pbrMetallicRoughness', {}); c = pbr.get('baseColorFactor')
     if c and c[0] < 0.01 and c[1] < 0.01 and 'baseColorTexture' in pbr: perf_mats.add(i)  # panel gerbang hitam bertekstur
-hits = []; perf = 0; painted = 0
+hits = []; perf = 0; painted = 0; solar = 0
 def walk(i, M):
     nd = js['nodes'][i]; W = M @ mat(nd)
     if 'mesh' in nd:
@@ -35,10 +37,13 @@ def walk(i, M):
                 pr['material'] = perf_idx; perf += 1; continue
             m = js['materials'][pr['material']] if 'material' in pr else {}
             pbr = m.get('pbrMetallicRoughness', {}); c = pbr.get('baseColorFactor', [1, 1, 1, 1])
-            if 'baseColorTexture' in pbr or abs(c[0] - 0.6) > 0.02 or abs(c[2] - 0.6) > 0.02: continue
             P = acc(pr['attributes']['POSITION'])
-            if len(P) != 36: continue
             Pw = (np.c_[P, np.ones(len(P))] @ W.T)[:, :3]; mn, mx = Pw.min(0), Pw.max(0); sz = mx - mn
+            # atap datar selasar samping (panel horizontal tipis, elev 4,0–5,4 m di area kiri-depan) → solarflat
+            if sz[1] < 0.2 and sz[0] > 0.8 and sz[2] > 0.8 and 4.0 < mn[1] < 5.4 and mn[0] > 1.4 and mx[0] < 5.7 and mn[2] > -11.3 and mx[2] < -5.3:
+                pr['material'] = solar_idx; global solar; solar += 1; continue
+            if 'baseColorTexture' in pbr or abs(c[0] - 0.6) > 0.02 or abs(c[2] - 0.6) > 0.02: continue
+            if len(P) != 36: continue
             if sorted(sz)[0] > 0.015 or sz[1] < 0.3 or max(sz[0], sz[2]) < 0.3: continue
             if not (2.85 <= mn[0] <= 9.95 and -16.2 <= mn[2] <= -5.8): continue
             pr['material'] = glass_idx; hits.append((round(float(mn[0]), 2), round(float(mn[1]), 2), round(float(mn[2]), 2), [round(float(v), 2) for v in sz]))
@@ -49,7 +54,7 @@ for m in js['materials']:
     pbr = m.get('pbrMetallicRoughness', {}); c = pbr.get('baseColorFactor')
     if c and 'baseColorTexture' not in pbr and abs(c[0] - 0.6) < 0.02 and abs(c[1] - 0.6) < 0.02 and abs(c[2] - 0.6) < 0.02:
         pbr['baseColorFactor'] = [0.84, 0.81, 0.76, 1]; pbr['roughnessFactor'] = 0.95; pbr['metallicFactor'] = 0; painted += 1
-print('kaca:', len(hits), '| panel perforated:', perf, '| material tembok dicat:', painted)
+print('kaca:', len(hits), '| perforated:', perf, '| solarflat:', solar, '| tembok dicat:', painted)
 jb = json.dumps(js, separators=(',', ':')).encode(); jb += b' ' * ((4 - len(jb) % 4) % 4)
 binp = bin_ + b'\0' * ((4 - len(bin_) % 4) % 4)
 out = struct.pack('<III', 0x46546C67, 2, 12 + 8 + len(jb) + 8 + len(binp)) + struct.pack('<II', len(jb), 0x4E4F534A) + jb + struct.pack('<II', len(binp), 0x004E4942) + binp

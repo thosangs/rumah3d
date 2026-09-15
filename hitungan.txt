@@ -15,9 +15,9 @@
   - Teras Belakang                                             4.77 m²    utuh 4    potongan 6 pcs    dari 4   keping → total 8 keping  [mulai: kiri/belakang]
       potongan: 63×80×4, 15×80×1, 15×63×1
 
-## Lantai 2  — 48.54 m² | 79 keping (utuh 63 + korban potong 16) → +cadangan 85 keping = 29 dus
-  - Selasar + R. Keluarga Lt.2 (satu bidang menerus)           21.78 m²   utuh 27   potongan 20 pcs   dari 8   keping → total 35 keping  [mulai: kiri/belakang]
-      potongan: 50×80×6, 15×80×5, 25×80×4, 12×80×2, 80×80 (L)×1, 12×15×1, 15×25×1
+## Lantai 2  — 51.56 m² | 84 keping (utuh 70 + korban potong 14) → +cadangan 90 keping = 30 dus
+  - Selasar + R. Keluarga Lt.2 (satu bidang menerus)           24.8 m²    utuh 34   potongan 17 pcs   dari 6   keping → total 40 keping  [mulai: kiri/depan]
+      potongan: 25×80×8, 15×80×5, 25×25×1, 80×80 (L)×1, 37×80×1, 15×37×1
   - Kamar Tidur 2                                              11.22 m²   utuh 16   potongan 9 pcs    dari 2   keping → total 18 keping  [mulai: kiri/belakang]
       potongan: 15×80×8, 15×15×1
   - Kamar Tidur Utama                                          11.22 m²   utuh 16   potongan 9 pcs    dari 2   keping → total 18 keping  [mulai: kiri/belakang]
@@ -42,7 +42,7 @@
   - Kamar Tidur 2                                              12.5 m → 17 strip → 3 keping
   - Kamar Tidur Utama                                          10.7 m → 15 strip → 2 keping
 
-## TOTAL granit 80x80 (lantai + plin): 234 keping, +cadangan 252 keping ≈ 161.28 m² = 84 dus
+## TOTAL granit 80x80 (lantai + plin): 239 keping, +cadangan 257 keping ≈ 164.48 m² = 86 dus
 
 === DINDING KAMAR MANDI 30x60 (8 keping/dus) zona bawah 0.9 m terakota, atas 1.5 m putih ===
 
