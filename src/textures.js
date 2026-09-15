@@ -49,10 +49,24 @@ export function floorTexture(area, layout, pxPerM = 110, showLabels = true) {
         }
       }
     }
-    // nat (grout) — gambar tepi setiap part
+    // nat (grout): satu keping = satu garis keliling. Keping yang melintasi batas dua persegi area
+    // tersimpan sebagai beberapa 'part'; garis di antara part BUKAN nat, jadi jangan digambar.
+    const lw = Math.max(1.5, pxPerM * 0.012);
     ctx.strokeStyle = pal.grout;
-    ctx.lineWidth = Math.max(1.5, pxPerM * 0.012);
-    for (const p of c.parts) ctx.strokeRect(X(p.x1), Y(p.y1), (p.x2 - p.x1) * pxPerM, (p.y2 - p.y1) * pxPerM);
+    ctx.lineWidth = lw;
+    if (c.shape === 'rect' || c.parts.length === 1) {
+      ctx.strokeRect(X(c.x1), Y(c.y1), (c.x2 - c.x1) * pxPerM, (c.y2 - c.y1) * pxPerM);
+    } else {
+      for (const p of c.parts) ctx.strokeRect(X(p.x1), Y(p.y1), (p.x2 - p.x1) * pxPerM, (p.y2 - p.y1) * pxPerM);
+      // hapus garis di sisi yang berimpit antara dua part (bentuk L)
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lw + 1;
+      for (const a of c.parts) for (const b of c.parts) {
+        if (a === b) continue;
+        if (Math.abs(a.x2 - b.x1) < 1e-6) { const y1 = Math.max(a.y1, b.y1), y2 = Math.min(a.y2, b.y2); if (y2 > y1) { ctx.beginPath(); ctx.moveTo(X(a.x2), Y(y1) + lw); ctx.lineTo(X(a.x2), Y(y2) - lw); ctx.stroke(); } }
+        if (Math.abs(a.y2 - b.y1) < 1e-6) { const x1 = Math.max(a.x1, b.x1), x2 = Math.min(a.x2, b.x2); if (x2 > x1) { ctx.beginPath(); ctx.moveTo(X(x1) + lw, Y(a.y2)); ctx.lineTo(X(x2) - lw, Y(a.y2)); ctx.stroke(); } }
+      }
+    }
     if (showLabels && !c.full) {
       const lbl = `${Math.round(c.w * 100)}×${Math.round(c.h * 100)}`;
       const fs = Math.min(c.w, c.h) * pxPerM * 0.45;
