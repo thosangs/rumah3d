@@ -6,7 +6,7 @@ export const COLORS = {
   polos: { full: '#f3efe7', cut: '#f2c9a3', L: '#d9c3ef', grout: '#b9b2a6' },
   structured: { full: '#cfcac1', cut: '#e5b98f', L: '#c9b6dc', grout: '#8f8a82' },
   bath: { full: '#dfe7ea', cut: '#f2c9a3', L: '#d9c3ef', grout: '#9aa4a8' },
-  teraso: { full: '#d8d3ca', cut: '#e6c8a6', grout: '#8f8a82', chips: ['#6d6a66', '#f5f2ec', '#a9a197', '#3b3a38', '#c4b7a6'] },
+  teraso: { full: '#eceef0', cut: '#e6c8a6', grout: '#a3a8ae', chips: ['#2f5da8', '#4a7fd0', '#1d3f7a', '#7fa3d8', '#c9d6ea', '#5b6f8c'] }, // teraso titik biru
   putih: { full: '#f7f7f4', cut: '#f2c9a3', grout: '#bdbdb8' },
 };
 

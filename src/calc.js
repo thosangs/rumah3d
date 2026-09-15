@@ -6,7 +6,7 @@ export const DEFAULT_CONFIG = {
   floorPcsPerBox: 3, // granit 80×80: 3 keping/dus (1,92 m²)
   wallPcsPerBox: 8, // granit 30×60: umumnya 8 keping/dus (1,44 m²)
   bathFloorMode: '80', // '80' pakai granit 80×80 (sesuai permintaan) | '40' keramik 40×40 kasar
-  wallZones: { bottomH: 1.8, topH: 0.6 }, // teraso 180 cm (6 baris) + putih polos sampai plafon 2,4 m (2 baris)
+  wallZones: { bottomH: 1.8, topH: 0.9 }, // teraso 180 cm (3 baris × 60 tegak) + putih polos sampai plafon 2,7 m (jendela toilet puncaknya 2,58 m)
   plinthStrips: 8,
   includeOptional: false, // ruang jemur
   layoutMode: 'rapi', // 'rapi' = simetris/utuh dari tembok ruang utama | 'simetris' = simetris di semua ruang | 'hemat' = keping paling sedikit

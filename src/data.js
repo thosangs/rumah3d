@@ -23,7 +23,7 @@ export const LEVELS = {
 };
 
 export const TILE_FLOOR = { w: 0.8, h: 0.8, label: 'Granit 80×80' };
-export const TILE_WALL = { w: 0.6, h: 0.3, label: 'Granit 30×60' };
+export const TILE_WALL = { w: 0.3, h: 0.6, label: 'Granit 30×60 tegak' }; // dipasang berdiri: 30 lebar × 60 tinggi
 export const TILE_BATH_FLOOR_ALT = { w: 0.4, h: 0.4, label: 'Keramik 40×40 kasar' };
 
 // Helper rect: {x1,y1,x2,y2}
@@ -216,7 +216,7 @@ export const BATHROOMS = [
       { name: 'Sisi dapur (y=7.0)', len: 1.6, openings: [] },
       { name: 'Sisi koridor (x=4.75) — pintu', len: 1.35, openings: [{ w: 0.7, h: 2.1, fromFloor: 0 }] },
       { name: 'Sisi KT1 (y=8.5)', len: 1.6, openings: [] },
-      { name: 'Sisi luar (x=3.0) — jendela', len: 1.35, openings: [{ w: 0.6, h: 0.5, fromFloor: 1.7 }] },
+      { name: 'Sisi luar (x=3.0) — jendela', len: 1.35, openings: [{ w: 0.6, h: 0.4, fromFloor: 2.18 }] }, // jendela 60×40 diukur dari model SKP, puncak 2,58 m
     ],
   },
   {
@@ -227,7 +227,7 @@ export const BATHROOMS = [
       { name: 'Sisi KT2 (y=7.0)', len: 1.6, openings: [] },
       { name: 'Sisi toilet kanan (x=4.75)', len: 1.35, openings: [] },
       { name: 'Sisi KT Utama (y=8.5) — pintu', len: 1.6, openings: [{ w: 0.7, h: 2.1, fromFloor: 0 }] },
-      { name: 'Sisi luar (x=3.0) — jendela', len: 1.35, openings: [{ w: 0.6, h: 0.5, fromFloor: 1.7 }] },
+      { name: 'Sisi luar (x=3.0) — jendela', len: 1.35, openings: [{ w: 0.6, h: 0.4, fromFloor: 2.18 }] }, // sama seperti lt.1
     ],
   },
   {

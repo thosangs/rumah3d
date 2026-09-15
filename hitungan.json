@@ -6,7 +6,7 @@
     "bathFloorMode": "80",
     "wallZones": {
       "bottomH": 1.8,
-      "topH": 0.6
+      "topH": 0.9
     },
     "plinthStrips": 8,
     "includeOptional": false,
@@ -3006,87 +3006,91 @@
           "ox": 0,
           "byZone": {
             "bawah": {
-              "full": 12,
-              "cuts": 6,
-              "cutTiles": 6,
-              "total": 18,
+              "full": 15,
+              "cuts": 3,
+              "cutTiles": 2,
+              "total": 17,
               "cutList": [
                 {
-                  "ukuran": "30×40",
-                  "jumlah": 6
+                  "ukuran": "10×60",
+                  "jumlah": 3
                 }
               ]
             },
             "atas": {
-              "full": 4,
-              "cuts": 2,
-              "cutTiles": 2,
-              "total": 6,
+              "full": 5,
+              "cuts": 7,
+              "cutTiles": 6,
+              "total": 11,
               "cutList": [
                 {
-                  "ukuran": "30×40",
-                  "jumlah": 2
+                  "ukuran": "30×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "10×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "10×30",
+                  "jumlah": 1
                 }
               ]
             }
           },
-          "total": 24,
+          "total": 28,
           "slivers": 0,
           "wall": "Sisi dapur (y=7.0)",
           "len": 1.6,
-          "area": 3.84,
+          "area": 4.32,
           "areaBawah": 2.88
         },
         {
-          "name": "dari kiri",
-          "ox": 0,
+          "name": "simetris",
+          "ox": -0.07499999999999996,
           "byZone": {
             "bawah": {
               "full": 0,
-              "cuts": 18,
-              "cutTiles": 8,
-              "total": 8,
+              "cuts": 12,
+              "cutTiles": 9,
+              "total": 9,
               "cutList": [
                 {
-                  "ukuran": "30×33",
+                  "ukuran": "23×60",
                   "jumlah": 6
                 },
                 {
-                  "ukuran": "18×30",
-                  "jumlah": 6
-                },
-                {
-                  "ukuran": "15×30",
+                  "ukuran": "10×60",
                   "jumlah": 6
                 }
               ]
             },
             "atas": {
-              "full": 2,
-              "cuts": 4,
-              "cutTiles": 2,
-              "total": 4,
+              "full": 0,
+              "cuts": 10,
+              "cutTiles": 10,
+              "total": 10,
               "cutList": [
                 {
-                  "ukuran": "15×30",
+                  "ukuran": "30×30",
+                  "jumlah": 6
+                },
+                {
+                  "ukuran": "23×60",
                   "jumlah": 2
                 },
                 {
-                  "ukuran": "30×33",
-                  "jumlah": 1
-                },
-                {
-                  "ukuran": "18×30",
-                  "jumlah": 1
+                  "ukuran": "23×30",
+                  "jumlah": 2
                 }
               ]
             }
           },
-          "total": 12,
+          "total": 19,
           "slivers": 0,
           "wall": "Sisi koridor (x=4.75) — pintu",
           "len": 1.35,
-          "area": 1.77,
+          "area": 2.18,
           "areaBawah": 1.17
         },
         {
@@ -3094,35 +3098,43 @@
           "ox": 0,
           "byZone": {
             "bawah": {
-              "full": 12,
-              "cuts": 6,
-              "cutTiles": 6,
-              "total": 18,
+              "full": 15,
+              "cuts": 3,
+              "cutTiles": 2,
+              "total": 17,
               "cutList": [
                 {
-                  "ukuran": "30×40",
-                  "jumlah": 6
+                  "ukuran": "10×60",
+                  "jumlah": 3
                 }
               ]
             },
             "atas": {
-              "full": 4,
-              "cuts": 2,
-              "cutTiles": 2,
-              "total": 6,
+              "full": 5,
+              "cuts": 7,
+              "cutTiles": 6,
+              "total": 11,
               "cutList": [
                 {
-                  "ukuran": "30×40",
-                  "jumlah": 2
+                  "ukuran": "30×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "10×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "10×30",
+                  "jumlah": 1
                 }
               ]
             }
           },
-          "total": 24,
+          "total": 28,
           "slivers": 0,
           "wall": "Sisi KT1 (y=8.5)",
           "len": 1.6,
-          "area": 3.84,
+          "area": 4.32,
           "areaBawah": 2.88
         },
         {
@@ -3130,68 +3142,76 @@
           "ox": 0,
           "byZone": {
             "bawah": {
-              "full": 10,
-              "cuts": 8,
-              "cutTiles": 4,
-              "total": 14,
+              "full": 12,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 15,
               "cutList": [
                 {
-                  "ukuran": "15×30",
-                  "jumlah": 6
-                },
-                {
-                  "ukuran": "20×60",
-                  "jumlah": 2
+                  "ukuran": "15×60",
+                  "jumlah": 3
                 }
               ]
             },
             "atas": {
-              "full": 0,
-              "cuts": 6,
-              "cutTiles": 4,
-              "total": 4,
+              "full": 1,
+              "cuts": 9,
+              "cutTiles": 7,
+              "total": 8,
               "cutList": [
                 {
-                  "ukuran": "15×30",
-                  "jumlah": 2
-                },
-                {
-                  "ukuran": "20×60",
-                  "jumlah": 2
-                },
-                {
                   "ukuran": "30×38",
+                  "jumlah": 2
+                },
+                {
+                  "ukuran": "12×30",
+                  "jumlah": 2
+                },
+                {
+                  "ukuran": "22×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "15×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "30×30",
                   "jumlah": 1
                 },
                 {
                   "ukuran": "22×30",
                   "jumlah": 1
+                },
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 1
                 }
               ]
             }
           },
-          "total": 18,
+          "total": 23,
           "slivers": 0,
           "wall": "Sisi luar (x=3.0) — jendela",
           "len": 1.35,
-          "area": 2.94,
-          "areaBawah": 2.37
+          "area": 3.41,
+          "areaBawah": 2.43
         }
       ],
       "bawah": {
-        "full": 34,
-        "cuts": 38,
-        "cutTiles": 24,
+        "full": 42,
+        "cuts": 21,
+        "cutTiles": 16,
         "total": 58
       },
       "atas": {
-        "full": 10,
-        "cuts": 14,
-        "cutTiles": 10,
-        "total": 20
+        "full": 11,
+        "cuts": 33,
+        "cutTiles": 29,
+        "total": 40
       },
-      "areaBawah": 9.3,
-      "areaAtas": 3.09,
+      "areaBawah": 9.36,
+      "areaAtas": 4.87,
       "perimeter": 5.9
     },
     {
@@ -3203,35 +3223,43 @@
           "ox": 0,
           "byZone": {
             "bawah": {
-              "full": 12,
-              "cuts": 6,
-              "cutTiles": 6,
-              "total": 18,
+              "full": 15,
+              "cuts": 3,
+              "cutTiles": 2,
+              "total": 17,
               "cutList": [
                 {
-                  "ukuran": "30×40",
-                  "jumlah": 6
+                  "ukuran": "10×60",
+                  "jumlah": 3
                 }
               ]
             },
             "atas": {
-              "full": 4,
-              "cuts": 2,
-              "cutTiles": 2,
-              "total": 6,
+              "full": 5,
+              "cuts": 7,
+              "cutTiles": 6,
+              "total": 11,
               "cutList": [
                 {
-                  "ukuran": "30×40",
-                  "jumlah": 2
+                  "ukuran": "30×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "10×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "10×30",
+                  "jumlah": 1
                 }
               ]
             }
           },
-          "total": 24,
+          "total": 28,
           "slivers": 0,
           "wall": "Sisi KT2 (y=7.0)",
           "len": 1.6,
-          "area": 3.84,
+          "area": 4.32,
           "areaBawah": 2.88
         },
         {
@@ -3240,74 +3268,98 @@
           "byZone": {
             "bawah": {
               "full": 12,
-              "cuts": 6,
-              "cutTiles": 2,
-              "total": 14,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 15,
               "cutList": [
                 {
-                  "ukuran": "15×30",
-                  "jumlah": 6
+                  "ukuran": "15×60",
+                  "jumlah": 3
                 }
               ]
             },
             "atas": {
               "full": 4,
-              "cuts": 2,
-              "cutTiles": 1,
-              "total": 5,
+              "cuts": 6,
+              "cutTiles": 6,
+              "total": 10,
               "cutList": [
                 {
+                  "ukuran": "30×30",
+                  "jumlah": 4
+                },
+                {
+                  "ukuran": "15×60",
+                  "jumlah": 1
+                },
+                {
                   "ukuran": "15×30",
-                  "jumlah": 2
+                  "jumlah": 1
                 }
               ]
             }
           },
-          "total": 19,
+          "total": 25,
           "slivers": 0,
           "wall": "Sisi toilet kanan (x=4.75)",
           "len": 1.35,
-          "area": 3.24,
+          "area": 3.65,
           "areaBawah": 2.43
         },
         {
-          "name": "simetris",
-          "ox": -0.09999999999999987,
+          "name": "dari kiri",
+          "ox": 0,
           "byZone": {
             "bawah": {
-              "full": 0,
-              "cuts": 12,
-              "cutTiles": 12,
-              "total": 12,
+              "full": 6,
+              "cuts": 9,
+              "cutTiles": 4,
+              "total": 10,
               "cutList": [
                 {
-                  "ukuran": "30×45",
-                  "jumlah": 12
+                  "ukuran": "15×60",
+                  "jumlah": 3
+                },
+                {
+                  "ukuran": "5×60",
+                  "jumlah": 3
+                },
+                {
+                  "ukuran": "10×60",
+                  "jumlah": 3
                 }
               ]
             },
             "atas": {
-              "full": 1,
-              "cuts": 4,
-              "cutTiles": 4,
-              "total": 5,
+              "full": 2,
+              "cuts": 10,
+              "cutTiles": 9,
+              "total": 11,
               "cutList": [
                 {
-                  "ukuran": "30×45",
-                  "jumlah": 2
+                  "ukuran": "30×30",
+                  "jumlah": 7
                 },
                 {
-                  "ukuran": "30×50",
-                  "jumlah": 2
+                  "ukuran": "15×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "10×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "10×30",
+                  "jumlah": 1
                 }
               ]
             }
           },
-          "total": 17,
-          "slivers": 0,
+          "total": 21,
+          "slivers": 3,
           "wall": "Sisi KT Utama (y=8.5) — pintu",
           "len": 1.6,
-          "area": 2.37,
+          "area": 2.85,
           "areaBawah": 1.62
         },
         {
@@ -3315,68 +3367,76 @@
           "ox": 0,
           "byZone": {
             "bawah": {
-              "full": 10,
-              "cuts": 8,
-              "cutTiles": 4,
-              "total": 14,
+              "full": 12,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 15,
               "cutList": [
                 {
-                  "ukuran": "15×30",
-                  "jumlah": 6
-                },
-                {
-                  "ukuran": "20×60",
-                  "jumlah": 2
+                  "ukuran": "15×60",
+                  "jumlah": 3
                 }
               ]
             },
             "atas": {
-              "full": 0,
-              "cuts": 6,
-              "cutTiles": 4,
-              "total": 4,
+              "full": 1,
+              "cuts": 9,
+              "cutTiles": 7,
+              "total": 8,
               "cutList": [
                 {
-                  "ukuran": "15×30",
-                  "jumlah": 2
-                },
-                {
-                  "ukuran": "20×60",
-                  "jumlah": 2
-                },
-                {
                   "ukuran": "30×38",
+                  "jumlah": 2
+                },
+                {
+                  "ukuran": "12×30",
+                  "jumlah": 2
+                },
+                {
+                  "ukuran": "22×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "15×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "30×30",
                   "jumlah": 1
                 },
                 {
                   "ukuran": "22×30",
                   "jumlah": 1
+                },
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 1
                 }
               ]
             }
           },
-          "total": 18,
+          "total": 23,
           "slivers": 0,
           "wall": "Sisi luar (x=3.0) — jendela",
           "len": 1.35,
-          "area": 2.94,
-          "areaBawah": 2.37
+          "area": 3.41,
+          "areaBawah": 2.43
         }
       ],
       "bawah": {
-        "full": 34,
-        "cuts": 32,
-        "cutTiles": 24,
-        "total": 58
+        "full": 45,
+        "cuts": 18,
+        "cutTiles": 12,
+        "total": 57
       },
       "atas": {
-        "full": 9,
-        "cuts": 14,
-        "cutTiles": 11,
-        "total": 20
+        "full": 12,
+        "cuts": 32,
+        "cutTiles": 28,
+        "total": 40
       },
-      "areaBawah": 9.3,
-      "areaAtas": 3.09,
+      "areaBawah": 9.36,
+      "areaAtas": 4.87,
       "perimeter": 5.9
     },
     {
@@ -3388,149 +3448,81 @@
           "ox": 0,
           "byZone": {
             "bawah": {
-              "full": 12,
-              "cuts": 6,
-              "cutTiles": 6,
-              "total": 18,
+              "full": 15,
+              "cuts": 3,
+              "cutTiles": 2,
+              "total": 17,
               "cutList": [
                 {
-                  "ukuran": "30×40",
-                  "jumlah": 6
+                  "ukuran": "10×60",
+                  "jumlah": 3
                 }
               ]
             },
             "atas": {
-              "full": 4,
-              "cuts": 2,
-              "cutTiles": 2,
-              "total": 6,
+              "full": 5,
+              "cuts": 7,
+              "cutTiles": 6,
+              "total": 11,
               "cutList": [
                 {
-                  "ukuran": "30×40",
-                  "jumlah": 2
+                  "ukuran": "30×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "10×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "10×30",
+                  "jumlah": 1
                 }
               ]
             }
           },
-          "total": 24,
+          "total": 28,
           "slivers": 0,
           "wall": "Sisi KT2 (y=7.0)",
           "len": 1.6,
-          "area": 3.84,
+          "area": 4.32,
           "areaBawah": 2.88
         },
         {
-          "name": "dari kiri",
-          "ox": 0,
+          "name": "simetris",
+          "ox": -0.07499999999999996,
           "byZone": {
             "bawah": {
               "full": 0,
-              "cuts": 18,
-              "cutTiles": 8,
-              "total": 8,
+              "cuts": 12,
+              "cutTiles": 9,
+              "total": 9,
               "cutList": [
                 {
-                  "ukuran": "30×33",
+                  "ukuran": "23×60",
                   "jumlah": 6
                 },
                 {
-                  "ukuran": "18×30",
-                  "jumlah": 6
-                },
-                {
-                  "ukuran": "15×30",
+                  "ukuran": "10×60",
                   "jumlah": 6
                 }
               ]
             },
             "atas": {
-              "full": 2,
-              "cuts": 4,
-              "cutTiles": 2,
-              "total": 4,
+              "full": 0,
+              "cuts": 10,
+              "cutTiles": 10,
+              "total": 10,
               "cutList": [
                 {
-                  "ukuran": "15×30",
+                  "ukuran": "30×30",
+                  "jumlah": 6
+                },
+                {
+                  "ukuran": "23×60",
                   "jumlah": 2
                 },
                 {
-                  "ukuran": "30×33",
-                  "jumlah": 1
-                },
-                {
-                  "ukuran": "18×30",
-                  "jumlah": 1
-                }
-              ]
-            }
-          },
-          "total": 12,
-          "slivers": 0,
-          "wall": "Sisi selasar (x=6.5) — pintu",
-          "len": 1.35,
-          "area": 1.77,
-          "areaBawah": 1.17
-        },
-        {
-          "name": "dari kiri",
-          "ox": 0,
-          "byZone": {
-            "bawah": {
-              "full": 12,
-              "cuts": 6,
-              "cutTiles": 6,
-              "total": 18,
-              "cutList": [
-                {
-                  "ukuran": "30×40",
-                  "jumlah": 6
-                }
-              ]
-            },
-            "atas": {
-              "full": 4,
-              "cuts": 2,
-              "cutTiles": 2,
-              "total": 6,
-              "cutList": [
-                {
-                  "ukuran": "30×40",
-                  "jumlah": 2
-                }
-              ]
-            }
-          },
-          "total": 24,
-          "slivers": 0,
-          "wall": "Sisi KT Utama (y=8.5)",
-          "len": 1.6,
-          "area": 3.84,
-          "areaBawah": 2.88
-        },
-        {
-          "name": "dari kiri",
-          "ox": 0,
-          "byZone": {
-            "bawah": {
-              "full": 12,
-              "cuts": 6,
-              "cutTiles": 2,
-              "total": 14,
-              "cutList": [
-                {
-                  "ukuran": "15×30",
-                  "jumlah": 6
-                }
-              ]
-            },
-            "atas": {
-              "full": 4,
-              "cuts": 2,
-              "cutTiles": 1,
-              "total": 5,
-              "cutList": [
-                {
-                  "ukuran": "15×30",
+                  "ukuran": "23×30",
                   "jumlah": 2
                 }
               ]
@@ -3538,43 +3530,131 @@
           },
           "total": 19,
           "slivers": 0,
+          "wall": "Sisi selasar (x=6.5) — pintu",
+          "len": 1.35,
+          "area": 2.18,
+          "areaBawah": 1.17
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 15,
+              "cuts": 3,
+              "cutTiles": 2,
+              "total": 17,
+              "cutList": [
+                {
+                  "ukuran": "10×60",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 5,
+              "cuts": 7,
+              "cutTiles": 6,
+              "total": 11,
+              "cutList": [
+                {
+                  "ukuran": "30×30",
+                  "jumlah": 5
+                },
+                {
+                  "ukuran": "10×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "10×30",
+                  "jumlah": 1
+                }
+              ]
+            }
+          },
+          "total": 28,
+          "slivers": 0,
+          "wall": "Sisi KT Utama (y=8.5)",
+          "len": 1.6,
+          "area": 4.32,
+          "areaBawah": 2.88
+        },
+        {
+          "name": "dari kiri",
+          "ox": 0,
+          "byZone": {
+            "bawah": {
+              "full": 12,
+              "cuts": 3,
+              "cutTiles": 3,
+              "total": 15,
+              "cutList": [
+                {
+                  "ukuran": "15×60",
+                  "jumlah": 3
+                }
+              ]
+            },
+            "atas": {
+              "full": 4,
+              "cuts": 6,
+              "cutTiles": 6,
+              "total": 10,
+              "cutList": [
+                {
+                  "ukuran": "30×30",
+                  "jumlah": 4
+                },
+                {
+                  "ukuran": "15×60",
+                  "jumlah": 1
+                },
+                {
+                  "ukuran": "15×30",
+                  "jumlah": 1
+                }
+              ]
+            }
+          },
+          "total": 25,
+          "slivers": 0,
           "wall": "Sisi toilet kiri (x=4.75)",
           "len": 1.35,
-          "area": 3.24,
+          "area": 3.65,
           "areaBawah": 2.43
         }
       ],
       "bawah": {
-        "full": 36,
-        "cuts": 36,
-        "cutTiles": 22,
+        "full": 42,
+        "cuts": 21,
+        "cutTiles": 16,
         "total": 58
       },
       "atas": {
         "full": 14,
-        "cuts": 10,
-        "cutTiles": 7,
-        "total": 21
+        "cuts": 30,
+        "cutTiles": 28,
+        "total": 42
       },
       "areaBawah": 9.36,
-      "areaAtas": 3.33,
+      "areaAtas": 5.11,
       "perimeter": 5.9
     }
   ],
   "wall": {
     "bawah": {
-      "pieces": 174,
-      "area": 27.96,
-      "withWaste": 187,
+      "pieces": 173,
+      "area": 28.08,
+      "withWaste": 186,
       "boxes": 24,
       "boxesNoWaste": 22
     },
     "atas": {
-      "pieces": 61,
-      "area": 9.51,
-      "withWaste": 66,
-      "boxes": 9,
-      "boxesNoWaste": 8
+      "pieces": 122,
+      "area": 14.85,
+      "withWaste": 131,
+      "boxes": 17,
+      "boxesNoWaste": 16
     }
   },
   "total80": {
@@ -4900,18 +4980,18 @@
     },
     "wall": {
       "bawah": {
-        "pieces": 174,
-        "area": 27.96,
-        "withWaste": 187,
+        "pieces": 173,
+        "area": 28.08,
+        "withWaste": 186,
         "boxes": 24,
         "boxesNoWaste": 22
       },
       "atas": {
-        "pieces": 61,
-        "area": 9.51,
-        "withWaste": 66,
-        "boxes": 9,
-        "boxesNoWaste": 8
+        "pieces": 122,
+        "area": 14.85,
+        "withWaste": 131,
+        "boxes": 17,
+        "boxesNoWaste": 16
       }
     }
   },
