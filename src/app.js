@@ -83,9 +83,10 @@ function applyVisibility() {
   built.gSite.visible = !on;
   built.gStruct1.visible = !on;
   built.gStruct2.visible = !on;
-  // saat model SKP tampil, angkat pola granit 2 cm supaya tidak z-fighting dengan lantai model
-  built.gFloors1.position.y = on ? 0.02 : 0;
-  built.gFloors2.position.y = on ? 0.02 : 0;
+  // saat model SKP tampil, angkat pola granit 5 cm: lantai model SKP (tekstur 60×60) puncaknya di ±+0,07 m,
+  // kalau hanya 2 cm grid 60×60-nya tembus (z-fighting) dan terlihat seperti dua pola bertumpuk
+  built.gFloors1.position.y = on ? 0.05 : 0;
+  built.gFloors2.position.y = on ? 0.05 : 0;
   if (glbRoot) glbRoot.visible = on;
   if (glbRoot && on && hideUpper) glbRoot.visible = true; // model SKP tidak bisa dipotong per lantai
   const hm = document.getElementById('hud-mode'); if (hm) hm.textContent = on ? 'Model SKP asli + pola granit' : 'Model blok + pola granit';

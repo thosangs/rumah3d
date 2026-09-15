@@ -52,7 +52,7 @@ export function buildFloors(results, group) {
   const meshes = [];
   for (const f of results.floors) {
     const { texture, bb } = floorTexture(f, f.layout, 110, window.__showLabels ?? false);
-    const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: f.outdoor ? 0.9 : 0.35, metalness: 0.02 });
+    const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: f.outdoor ? 0.9 : 0.35, metalness: 0.02, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
     const g = new THREE.Group();
     g.name = f.id;
     g.userData.area = f;
