@@ -342,6 +342,7 @@ if (panel) {
     const [b, t] = $('s-zones').value.split('/').map(Number);
     cfg.wallZones = { bottomH: b / 100, topH: t / 100 };
     cfg.includeOptional = $('s-jemur').checked;
+    cfg.layoutMode = $('s-layout').value;
     rebuild();
     lastHudId = null;
     if (glbRoot) {

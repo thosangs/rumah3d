@@ -9,7 +9,8 @@
       "topH": 0.6
     },
     "plinthStrips": 8,
-    "includeOptional": false
+    "includeOptional": false,
+    "layoutMode": "hemat"
   },
   "floors": [
     {
@@ -19,6 +20,12 @@
       "level": 0.05,
       "finish": "polos",
       "tile": "floor",
+      "mainRect": {
+        "x1": 6.575,
+        "y1": 8.425,
+        "x2": 9.925,
+        "y2": 13.425
+      },
       "rects": [
         {
           "x1": 3.075,
@@ -63,110 +70,113 @@
         "label": "Granit 80×80"
       },
       "layout": {
-        "name": "tepi x=8.88/depan",
-        "ox": 8.88,
-        "oy": 13.425,
-        "full": 52,
+        "name": "kiri/tepi y=6.66",
+        "ox": 3.075,
+        "oy": 6.66,
+        "full": 48,
         "cuts": 36,
-        "cutTiles": 20,
+        "cutTiles": 26,
         "slivers": 2,
-        "total": 72,
+        "sliver10": 0,
+        "distinct": 9,
+        "total": 74,
         "area": 43.532700000000006,
         "tileArea": 0.6400000000000001,
         "cutList": [
           {
-            "ukuran": "24×80",
+            "ukuran": "45×80",
             "jumlah": 8
           },
           {
-            "ukuran": "25×80",
+            "ukuran": "68×80",
             "jumlah": 6
           },
           {
-            "ukuran": "71×80",
-            "jumlah": 6
-          },
-          {
-            "ukuran": "21×80",
-            "jumlah": 3
+            "ukuran": "50×80",
+            "jumlah": 5
           },
           {
             "ukuran": "80×80 (L)",
             "jumlah": 3
           },
           {
-            "ukuran": "60×80",
+            "ukuran": "37×80",
+            "jumlah": 3
+          },
+          {
+            "ukuran": "26×80",
             "jumlah": 2
           },
           {
-            "ukuran": "21×25",
+            "ukuran": "21×80",
+            "jumlah": 2
+          },
+          {
+            "ukuran": "65×80",
             "jumlah": 1
           },
           {
-            "ukuran": "21×70",
+            "ukuran": "17×65",
             "jumlah": 1
           },
           {
-            "ukuran": "70×80",
+            "ukuran": "17×80",
             "jumlah": 1
           },
           {
-            "ukuran": "5×80",
+            "ukuran": "37×50",
             "jumlah": 1
           },
           {
-            "ukuran": "5×60",
+            "ukuran": "40×68",
             "jumlah": 1
           },
           {
-            "ukuran": "20×25",
+            "ukuran": "21×50",
             "jumlah": 1
           },
           {
-            "ukuran": "37×80",
-            "jumlah": 1
-          },
-          {
-            "ukuran": "24×37",
+            "ukuran": "37×45",
             "jumlah": 1
           }
         ],
         "alternatives": [
           {
-            "name": "tepi x=8.88/depan",
-            "total": 72,
-            "full": 52,
-            "cuts": 36,
-            "cutTiles": 20
-          },
-          {
-            "name": "tepi x=8.88/tengah",
-            "total": 72,
-            "full": 49,
-            "cuts": 39,
-            "cutTiles": 23
-          },
-          {
-            "name": "tepi x=8.88/tengah-nat",
-            "total": 72,
-            "full": 49,
-            "cuts": 39,
-            "cutTiles": 23
-          },
-          {
-            "name": "kiri/depan",
+            "name": "kiri/tepi y=6.66",
             "total": 74,
-            "full": 50,
-            "cuts": 34,
-            "cutTiles": 24
+            "full": 48,
+            "cuts": 36,
+            "cutTiles": 26
+          },
+          {
+            "name": "tengah/tepi y=6.66",
+            "total": 74,
+            "full": 45,
+            "cuts": 39,
+            "cutTiles": 29
+          },
+          {
+            "name": "tengah-nat/tepi y=6.66",
+            "total": 74,
+            "full": 45,
+            "cuts": 39,
+            "cutTiles": 29
+          },
+          {
+            "name": "kanan/tepi y=6.66",
+            "total": 71,
+            "full": 53,
+            "cuts": 31,
+            "cutTiles": 18
           }
         ]
       },
+      "altTotal": 74,
       "area": 43.53,
-      "pieces": 72,
-      "full": 52,
+      "pieces": 74,
+      "full": 48,
       "cutPieces": 36,
-      "cutTiles": 20
+      "cutTiles": 26
     },
     {
       "id": "lt1-kt1",
@@ -202,6 +212,8 @@
         "cuts": 13,
         "cutTiles": 8,
         "slivers": 5,
+        "sliver10": 0,
+        "distinct": 2,
         "total": 20,
         "area": 11.2225,
         "tileArea": 0.6400000000000001,
@@ -250,6 +262,7 @@
           }
         ]
       },
+      "altTotal": 20,
       "area": 11.22,
       "pieces": 20,
       "full": 12,
@@ -285,6 +298,8 @@
         "cuts": 2,
         "cutTiles": 2,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 1,
         "total": 4,
         "area": 2.16,
         "tileArea": 0.6400000000000001,
@@ -325,6 +340,7 @@
           }
         ]
       },
+      "altTotal": 4,
       "area": 2.16,
       "pieces": 4,
       "full": 2,
@@ -361,6 +377,8 @@
         "cuts": 12,
         "cutTiles": 6,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 2,
         "total": 9,
         "area": 4.7738,
         "tileArea": 0.6400000000000001,
@@ -409,6 +427,7 @@
           }
         ]
       },
+      "altTotal": 9,
       "area": 4.77,
       "pieces": 9,
       "full": 3,
@@ -445,6 +464,8 @@
         "cuts": 12,
         "cutTiles": 6,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 3,
         "total": 9,
         "area": 4.7738,
         "tileArea": 0.6400000000000001,
@@ -501,6 +522,7 @@
           }
         ]
       },
+      "altTotal": 9,
       "area": 4.77,
       "pieces": 9,
       "full": 3,
@@ -515,6 +537,12 @@
       "level": 3.85,
       "finish": "polos",
       "tile": "floor",
+      "mainRect": {
+        "x1": 6.575,
+        "y1": 9.06,
+        "x2": 9.925,
+        "y2": 13.425
+      },
       "rects": [
         {
           "x1": 6.575,
@@ -548,6 +576,8 @@
         "cuts": 22,
         "cutTiles": 12,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 3,
         "total": 41,
         "area": 24.797399999999996,
         "tileArea": 0.6400000000000001,
@@ -604,6 +634,7 @@
           }
         ]
       },
+      "altTotal": 40,
       "area": 24.8,
       "pieces": 41,
       "full": 29,
@@ -644,6 +675,8 @@
         "cuts": 13,
         "cutTiles": 8,
         "slivers": 5,
+        "sliver10": 0,
+        "distinct": 2,
         "total": 20,
         "area": 11.2225,
         "tileArea": 0.6400000000000001,
@@ -670,13 +703,6 @@
             "cutTiles": 8
           },
           {
-            "name": "kiri/tengah-nat",
-            "total": 20,
-            "full": 12,
-            "cuts": 13,
-            "cutTiles": 8
-          },
-          {
             "name": "kanan/tengah",
             "total": 20,
             "full": 12,
@@ -684,7 +710,14 @@
             "cutTiles": 8
           },
           {
-            "name": "kanan/tengah-nat",
+            "name": "tengah/belakang",
+            "total": 20,
+            "full": 12,
+            "cuts": 13,
+            "cutTiles": 8
+          },
+          {
+            "name": "tengah/depan",
             "total": 20,
             "full": 12,
             "cuts": 13,
@@ -692,6 +725,7 @@
           }
         ]
       },
+      "altTotal": 25,
       "area": 11.22,
       "pieces": 20,
       "full": 12,
@@ -732,6 +766,8 @@
         "cuts": 13,
         "cutTiles": 8,
         "slivers": 5,
+        "sliver10": 0,
+        "distinct": 2,
         "total": 20,
         "area": 11.2225,
         "tileArea": 0.6400000000000001,
@@ -780,6 +816,7 @@
           }
         ]
       },
+      "altTotal": 20,
       "area": 11.22,
       "pieces": 20,
       "full": 12,
@@ -815,6 +852,8 @@
         "cuts": 2,
         "cutTiles": 2,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 1,
         "total": 4,
         "area": 2.16,
         "tileArea": 0.6400000000000001,
@@ -855,6 +894,7 @@
           }
         ]
       },
+      "altTotal": 4,
       "area": 2.16,
       "pieces": 4,
       "full": 2,
@@ -891,6 +931,8 @@
         "cuts": 2,
         "cutTiles": 2,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 1,
         "total": 4,
         "area": 2.16,
         "tileArea": 0.6400000000000001,
@@ -931,6 +973,7 @@
           }
         ]
       },
+      "altTotal": 4,
       "area": 2.16,
       "pieces": 4,
       "full": 2,
@@ -973,6 +1016,8 @@
         "cuts": 15,
         "cutTiles": 11,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 4,
         "total": 25,
         "area": 13.9,
         "tileArea": 0.6400000000000001,
@@ -1018,14 +1063,14 @@
             "cutTiles": 11
           },
           {
-            "name": "tepi x=2.925/belakang",
+            "name": "tepi x=2.925/tengah",
             "total": 26,
-            "full": 10,
-            "cuts": 19,
-            "cutTiles": 16
+            "full": 9,
+            "cuts": 20,
+            "cutTiles": 17
           },
           {
-            "name": "tepi x=2.925/tengah",
+            "name": "tepi x=2.925/tengah-nat",
             "total": 26,
             "full": 9,
             "cuts": 20,
@@ -1033,6 +1078,7 @@
           }
         ]
       },
+      "altTotal": 25,
       "area": 13.9,
       "pieces": 25,
       "full": 14,
@@ -1069,6 +1115,8 @@
         "cuts": 12,
         "cutTiles": 6,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 3,
         "total": 9,
         "area": 4.5225,
         "tileArea": 0.6400000000000001,
@@ -1125,6 +1173,7 @@
           }
         ]
       },
+      "altTotal": 9,
       "area": 4.52,
       "pieces": 9,
       "full": 3,
@@ -1137,9 +1186,9 @@
     {
       "name": "Lantai 1",
       "area": 56.91,
-      "pieces": 96,
-      "full": 66,
-      "cutTiles": 30,
+      "pieces": 98,
+      "full": 62,
+      "cutTiles": 36,
       "cutPieces": 51,
       "items": [
         {
@@ -1149,6 +1198,12 @@
           "level": 0.05,
           "finish": "polos",
           "tile": "floor",
+          "mainRect": {
+            "x1": 6.575,
+            "y1": 8.425,
+            "x2": 9.925,
+            "y2": 13.425
+          },
           "rects": [
             {
               "x1": 3.075,
@@ -1193,110 +1248,113 @@
             "label": "Granit 80×80"
           },
           "layout": {
-            "name": "tepi x=8.88/depan",
-            "ox": 8.88,
-            "oy": 13.425,
-            "full": 52,
+            "name": "kiri/tepi y=6.66",
+            "ox": 3.075,
+            "oy": 6.66,
+            "full": 48,
             "cuts": 36,
-            "cutTiles": 20,
+            "cutTiles": 26,
             "slivers": 2,
-            "total": 72,
+            "sliver10": 0,
+            "distinct": 9,
+            "total": 74,
             "area": 43.532700000000006,
             "tileArea": 0.6400000000000001,
             "cutList": [
               {
-                "ukuran": "24×80",
+                "ukuran": "45×80",
                 "jumlah": 8
               },
               {
-                "ukuran": "25×80",
+                "ukuran": "68×80",
                 "jumlah": 6
               },
               {
-                "ukuran": "71×80",
-                "jumlah": 6
-              },
-              {
-                "ukuran": "21×80",
-                "jumlah": 3
+                "ukuran": "50×80",
+                "jumlah": 5
               },
               {
                 "ukuran": "80×80 (L)",
                 "jumlah": 3
               },
               {
-                "ukuran": "60×80",
+                "ukuran": "37×80",
+                "jumlah": 3
+              },
+              {
+                "ukuran": "26×80",
                 "jumlah": 2
               },
               {
-                "ukuran": "21×25",
+                "ukuran": "21×80",
+                "jumlah": 2
+              },
+              {
+                "ukuran": "65×80",
                 "jumlah": 1
               },
               {
-                "ukuran": "21×70",
+                "ukuran": "17×65",
                 "jumlah": 1
               },
               {
-                "ukuran": "70×80",
+                "ukuran": "17×80",
                 "jumlah": 1
               },
               {
-                "ukuran": "5×80",
+                "ukuran": "37×50",
                 "jumlah": 1
               },
               {
-                "ukuran": "5×60",
+                "ukuran": "40×68",
                 "jumlah": 1
               },
               {
-                "ukuran": "20×25",
+                "ukuran": "21×50",
                 "jumlah": 1
               },
               {
-                "ukuran": "37×80",
-                "jumlah": 1
-              },
-              {
-                "ukuran": "24×37",
+                "ukuran": "37×45",
                 "jumlah": 1
               }
             ],
             "alternatives": [
               {
-                "name": "tepi x=8.88/depan",
-                "total": 72,
-                "full": 52,
-                "cuts": 36,
-                "cutTiles": 20
-              },
-              {
-                "name": "tepi x=8.88/tengah",
-                "total": 72,
-                "full": 49,
-                "cuts": 39,
-                "cutTiles": 23
-              },
-              {
-                "name": "tepi x=8.88/tengah-nat",
-                "total": 72,
-                "full": 49,
-                "cuts": 39,
-                "cutTiles": 23
-              },
-              {
-                "name": "kiri/depan",
+                "name": "kiri/tepi y=6.66",
                 "total": 74,
-                "full": 50,
-                "cuts": 34,
-                "cutTiles": 24
+                "full": 48,
+                "cuts": 36,
+                "cutTiles": 26
+              },
+              {
+                "name": "tengah/tepi y=6.66",
+                "total": 74,
+                "full": 45,
+                "cuts": 39,
+                "cutTiles": 29
+              },
+              {
+                "name": "tengah-nat/tepi y=6.66",
+                "total": 74,
+                "full": 45,
+                "cuts": 39,
+                "cutTiles": 29
+              },
+              {
+                "name": "kanan/tepi y=6.66",
+                "total": 71,
+                "full": 53,
+                "cuts": 31,
+                "cutTiles": 18
               }
             ]
           },
+          "altTotal": 74,
           "area": 43.53,
-          "pieces": 72,
-          "full": 52,
+          "pieces": 74,
+          "full": 48,
           "cutPieces": 36,
-          "cutTiles": 20
+          "cutTiles": 26
         },
         {
           "id": "lt1-kt1",
@@ -1332,6 +1390,8 @@
             "cuts": 13,
             "cutTiles": 8,
             "slivers": 5,
+            "sliver10": 0,
+            "distinct": 2,
             "total": 20,
             "area": 11.2225,
             "tileArea": 0.6400000000000001,
@@ -1380,6 +1440,7 @@
               }
             ]
           },
+          "altTotal": 20,
           "area": 11.22,
           "pieces": 20,
           "full": 12,
@@ -1415,6 +1476,8 @@
             "cuts": 2,
             "cutTiles": 2,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 1,
             "total": 4,
             "area": 2.16,
             "tileArea": 0.6400000000000001,
@@ -1455,6 +1518,7 @@
               }
             ]
           },
+          "altTotal": 4,
           "area": 2.16,
           "pieces": 4,
           "full": 2,
@@ -1463,9 +1527,9 @@
           "plinth": null
         }
       ],
-      "withWaste": 103,
+      "withWaste": 105,
       "boxes": 35,
-      "boxesNoWaste": 32
+      "boxesNoWaste": 33
     },
     {
       "name": "Lantai luar (teras bawah)",
@@ -1504,6 +1568,8 @@
             "cuts": 12,
             "cutTiles": 6,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 2,
             "total": 9,
             "area": 4.7738,
             "tileArea": 0.6400000000000001,
@@ -1552,6 +1618,7 @@
               }
             ]
           },
+          "altTotal": 9,
           "area": 4.77,
           "pieces": 9,
           "full": 3,
@@ -1588,6 +1655,8 @@
             "cuts": 12,
             "cutTiles": 6,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 3,
             "total": 9,
             "area": 4.7738,
             "tileArea": 0.6400000000000001,
@@ -1644,6 +1713,7 @@
               }
             ]
           },
+          "altTotal": 9,
           "area": 4.77,
           "pieces": 9,
           "full": 3,
@@ -1671,6 +1741,12 @@
           "level": 3.85,
           "finish": "polos",
           "tile": "floor",
+          "mainRect": {
+            "x1": 6.575,
+            "y1": 9.06,
+            "x2": 9.925,
+            "y2": 13.425
+          },
           "rects": [
             {
               "x1": 6.575,
@@ -1704,6 +1780,8 @@
             "cuts": 22,
             "cutTiles": 12,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 3,
             "total": 41,
             "area": 24.797399999999996,
             "tileArea": 0.6400000000000001,
@@ -1760,6 +1838,7 @@
               }
             ]
           },
+          "altTotal": 40,
           "area": 24.8,
           "pieces": 41,
           "full": 29,
@@ -1800,6 +1879,8 @@
             "cuts": 13,
             "cutTiles": 8,
             "slivers": 5,
+            "sliver10": 0,
+            "distinct": 2,
             "total": 20,
             "area": 11.2225,
             "tileArea": 0.6400000000000001,
@@ -1826,13 +1907,6 @@
                 "cutTiles": 8
               },
               {
-                "name": "kiri/tengah-nat",
-                "total": 20,
-                "full": 12,
-                "cuts": 13,
-                "cutTiles": 8
-              },
-              {
                 "name": "kanan/tengah",
                 "total": 20,
                 "full": 12,
@@ -1840,7 +1914,14 @@
                 "cutTiles": 8
               },
               {
-                "name": "kanan/tengah-nat",
+                "name": "tengah/belakang",
+                "total": 20,
+                "full": 12,
+                "cuts": 13,
+                "cutTiles": 8
+              },
+              {
+                "name": "tengah/depan",
                 "total": 20,
                 "full": 12,
                 "cuts": 13,
@@ -1848,6 +1929,7 @@
               }
             ]
           },
+          "altTotal": 25,
           "area": 11.22,
           "pieces": 20,
           "full": 12,
@@ -1888,6 +1970,8 @@
             "cuts": 13,
             "cutTiles": 8,
             "slivers": 5,
+            "sliver10": 0,
+            "distinct": 2,
             "total": 20,
             "area": 11.2225,
             "tileArea": 0.6400000000000001,
@@ -1936,6 +2020,7 @@
               }
             ]
           },
+          "altTotal": 20,
           "area": 11.22,
           "pieces": 20,
           "full": 12,
@@ -1971,6 +2056,8 @@
             "cuts": 2,
             "cutTiles": 2,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 1,
             "total": 4,
             "area": 2.16,
             "tileArea": 0.6400000000000001,
@@ -2011,6 +2098,7 @@
               }
             ]
           },
+          "altTotal": 4,
           "area": 2.16,
           "pieces": 4,
           "full": 2,
@@ -2047,6 +2135,8 @@
             "cuts": 2,
             "cutTiles": 2,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 1,
             "total": 4,
             "area": 2.16,
             "tileArea": 0.6400000000000001,
@@ -2087,6 +2177,7 @@
               }
             ]
           },
+          "altTotal": 4,
           "area": 2.16,
           "pieces": 4,
           "full": 2,
@@ -2142,6 +2233,8 @@
             "cuts": 15,
             "cutTiles": 11,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 4,
             "total": 25,
             "area": 13.9,
             "tileArea": 0.6400000000000001,
@@ -2187,14 +2280,14 @@
                 "cutTiles": 11
               },
               {
-                "name": "tepi x=2.925/belakang",
+                "name": "tepi x=2.925/tengah",
                 "total": 26,
-                "full": 10,
-                "cuts": 19,
-                "cutTiles": 16
+                "full": 9,
+                "cuts": 20,
+                "cutTiles": 17
               },
               {
-                "name": "tepi x=2.925/tengah",
+                "name": "tepi x=2.925/tengah-nat",
                 "total": 26,
                 "full": 9,
                 "cuts": 20,
@@ -2202,6 +2295,7 @@
               }
             ]
           },
+          "altTotal": 25,
           "area": 13.9,
           "pieces": 25,
           "full": 14,
@@ -2238,6 +2332,8 @@
             "cuts": 12,
             "cutTiles": 6,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 3,
             "total": 9,
             "area": 4.5225,
             "tileArea": 0.6400000000000001,
@@ -2294,6 +2390,7 @@
               }
             ]
           },
+          "altTotal": 9,
           "area": 4.52,
           "pieces": 9,
           "full": 3,
@@ -2326,6 +2423,12 @@
       "level": 0.05,
       "finish": "polos",
       "tile": "floor",
+      "mainRect": {
+        "x1": 6.575,
+        "y1": 8.425,
+        "x2": 9.925,
+        "y2": 13.425
+      },
       "rects": [
         {
           "x1": 3.075,
@@ -2370,110 +2473,113 @@
         "label": "Granit 80×80"
       },
       "layout": {
-        "name": "tepi x=8.88/depan",
-        "ox": 8.88,
-        "oy": 13.425,
-        "full": 52,
+        "name": "kiri/tepi y=6.66",
+        "ox": 3.075,
+        "oy": 6.66,
+        "full": 48,
         "cuts": 36,
-        "cutTiles": 20,
+        "cutTiles": 26,
         "slivers": 2,
-        "total": 72,
+        "sliver10": 0,
+        "distinct": 9,
+        "total": 74,
         "area": 43.532700000000006,
         "tileArea": 0.6400000000000001,
         "cutList": [
           {
-            "ukuran": "24×80",
+            "ukuran": "45×80",
             "jumlah": 8
           },
           {
-            "ukuran": "25×80",
+            "ukuran": "68×80",
             "jumlah": 6
           },
           {
-            "ukuran": "71×80",
-            "jumlah": 6
-          },
-          {
-            "ukuran": "21×80",
-            "jumlah": 3
+            "ukuran": "50×80",
+            "jumlah": 5
           },
           {
             "ukuran": "80×80 (L)",
             "jumlah": 3
           },
           {
-            "ukuran": "60×80",
+            "ukuran": "37×80",
+            "jumlah": 3
+          },
+          {
+            "ukuran": "26×80",
             "jumlah": 2
           },
           {
-            "ukuran": "21×25",
+            "ukuran": "21×80",
+            "jumlah": 2
+          },
+          {
+            "ukuran": "65×80",
             "jumlah": 1
           },
           {
-            "ukuran": "21×70",
+            "ukuran": "17×65",
             "jumlah": 1
           },
           {
-            "ukuran": "70×80",
+            "ukuran": "17×80",
             "jumlah": 1
           },
           {
-            "ukuran": "5×80",
+            "ukuran": "37×50",
             "jumlah": 1
           },
           {
-            "ukuran": "5×60",
+            "ukuran": "40×68",
             "jumlah": 1
           },
           {
-            "ukuran": "20×25",
+            "ukuran": "21×50",
             "jumlah": 1
           },
           {
-            "ukuran": "37×80",
-            "jumlah": 1
-          },
-          {
-            "ukuran": "24×37",
+            "ukuran": "37×45",
             "jumlah": 1
           }
         ],
         "alternatives": [
           {
-            "name": "tepi x=8.88/depan",
-            "total": 72,
-            "full": 52,
-            "cuts": 36,
-            "cutTiles": 20
-          },
-          {
-            "name": "tepi x=8.88/tengah",
-            "total": 72,
-            "full": 49,
-            "cuts": 39,
-            "cutTiles": 23
-          },
-          {
-            "name": "tepi x=8.88/tengah-nat",
-            "total": 72,
-            "full": 49,
-            "cuts": 39,
-            "cutTiles": 23
-          },
-          {
-            "name": "kiri/depan",
+            "name": "kiri/tepi y=6.66",
             "total": 74,
-            "full": 50,
-            "cuts": 34,
-            "cutTiles": 24
+            "full": 48,
+            "cuts": 36,
+            "cutTiles": 26
+          },
+          {
+            "name": "tengah/tepi y=6.66",
+            "total": 74,
+            "full": 45,
+            "cuts": 39,
+            "cutTiles": 29
+          },
+          {
+            "name": "tengah-nat/tepi y=6.66",
+            "total": 74,
+            "full": 45,
+            "cuts": 39,
+            "cutTiles": 29
+          },
+          {
+            "name": "kanan/tepi y=6.66",
+            "total": 71,
+            "full": 53,
+            "cuts": 31,
+            "cutTiles": 18
           }
         ]
       },
+      "altTotal": 74,
       "area": 43.53,
-      "pieces": 72,
-      "full": 52,
+      "pieces": 74,
+      "full": 48,
       "cutPieces": 36,
-      "cutTiles": 20
+      "cutTiles": 26
     },
     {
       "id": "lt1-kt1",
@@ -2509,6 +2615,8 @@
         "cuts": 13,
         "cutTiles": 8,
         "slivers": 5,
+        "sliver10": 0,
+        "distinct": 2,
         "total": 20,
         "area": 11.2225,
         "tileArea": 0.6400000000000001,
@@ -2557,6 +2665,7 @@
           }
         ]
       },
+      "altTotal": 20,
       "area": 11.22,
       "pieces": 20,
       "full": 12,
@@ -2570,6 +2679,12 @@
       "level": 3.85,
       "finish": "polos",
       "tile": "floor",
+      "mainRect": {
+        "x1": 6.575,
+        "y1": 9.06,
+        "x2": 9.925,
+        "y2": 13.425
+      },
       "rects": [
         {
           "x1": 6.575,
@@ -2603,6 +2718,8 @@
         "cuts": 22,
         "cutTiles": 12,
         "slivers": 0,
+        "sliver10": 0,
+        "distinct": 3,
         "total": 41,
         "area": 24.797399999999996,
         "tileArea": 0.6400000000000001,
@@ -2659,6 +2776,7 @@
           }
         ]
       },
+      "altTotal": 40,
       "area": 24.8,
       "pieces": 41,
       "full": 29,
@@ -2699,6 +2817,8 @@
         "cuts": 13,
         "cutTiles": 8,
         "slivers": 5,
+        "sliver10": 0,
+        "distinct": 2,
         "total": 20,
         "area": 11.2225,
         "tileArea": 0.6400000000000001,
@@ -2725,13 +2845,6 @@
             "cutTiles": 8
           },
           {
-            "name": "kiri/tengah-nat",
-            "total": 20,
-            "full": 12,
-            "cuts": 13,
-            "cutTiles": 8
-          },
-          {
             "name": "kanan/tengah",
             "total": 20,
             "full": 12,
@@ -2739,7 +2852,14 @@
             "cutTiles": 8
           },
           {
-            "name": "kanan/tengah-nat",
+            "name": "tengah/belakang",
+            "total": 20,
+            "full": 12,
+            "cuts": 13,
+            "cutTiles": 8
+          },
+          {
+            "name": "tengah/depan",
             "total": 20,
             "full": 12,
             "cuts": 13,
@@ -2747,6 +2867,7 @@
           }
         ]
       },
+      "altTotal": 25,
       "area": 11.22,
       "pieces": 20,
       "full": 12,
@@ -2787,6 +2908,8 @@
         "cuts": 13,
         "cutTiles": 8,
         "slivers": 5,
+        "sliver10": 0,
+        "distinct": 2,
         "total": 20,
         "area": 11.2225,
         "tileArea": 0.6400000000000001,
@@ -2835,6 +2958,7 @@
           }
         ]
       },
+      "altTotal": 20,
       "area": 11.22,
       "pieces": 20,
       "full": 12,
@@ -3430,10 +3554,12 @@
     }
   },
   "total80": {
-    "pieces": 250,
-    "withWaste": 269,
-    "boxes": 90,
-    "m2": 172.16,
+    "altPieces": 256,
+    "altBoxes": 92,
+    "pieces": 252,
+    "withWaste": 271,
+    "boxes": 91,
+    "m2": 173.44,
     "boxesNoWaste": 84
   },
   "tukang": {
@@ -3492,9 +3618,9 @@
     "lt1": {
       "name": "Lantai 1",
       "area": 56.91,
-      "pieces": 96,
-      "full": 66,
-      "cutTiles": 30,
+      "pieces": 98,
+      "full": 62,
+      "cutTiles": 36,
       "cutPieces": 51,
       "items": [
         {
@@ -3504,6 +3630,12 @@
           "level": 0.05,
           "finish": "polos",
           "tile": "floor",
+          "mainRect": {
+            "x1": 6.575,
+            "y1": 8.425,
+            "x2": 9.925,
+            "y2": 13.425
+          },
           "rects": [
             {
               "x1": 3.075,
@@ -3548,110 +3680,113 @@
             "label": "Granit 80×80"
           },
           "layout": {
-            "name": "tepi x=8.88/depan",
-            "ox": 8.88,
-            "oy": 13.425,
-            "full": 52,
+            "name": "kiri/tepi y=6.66",
+            "ox": 3.075,
+            "oy": 6.66,
+            "full": 48,
             "cuts": 36,
-            "cutTiles": 20,
+            "cutTiles": 26,
             "slivers": 2,
-            "total": 72,
+            "sliver10": 0,
+            "distinct": 9,
+            "total": 74,
             "area": 43.532700000000006,
             "tileArea": 0.6400000000000001,
             "cutList": [
               {
-                "ukuran": "24×80",
+                "ukuran": "45×80",
                 "jumlah": 8
               },
               {
-                "ukuran": "25×80",
+                "ukuran": "68×80",
                 "jumlah": 6
               },
               {
-                "ukuran": "71×80",
-                "jumlah": 6
-              },
-              {
-                "ukuran": "21×80",
-                "jumlah": 3
+                "ukuran": "50×80",
+                "jumlah": 5
               },
               {
                 "ukuran": "80×80 (L)",
                 "jumlah": 3
               },
               {
-                "ukuran": "60×80",
+                "ukuran": "37×80",
+                "jumlah": 3
+              },
+              {
+                "ukuran": "26×80",
                 "jumlah": 2
               },
               {
-                "ukuran": "21×25",
+                "ukuran": "21×80",
+                "jumlah": 2
+              },
+              {
+                "ukuran": "65×80",
                 "jumlah": 1
               },
               {
-                "ukuran": "21×70",
+                "ukuran": "17×65",
                 "jumlah": 1
               },
               {
-                "ukuran": "70×80",
+                "ukuran": "17×80",
                 "jumlah": 1
               },
               {
-                "ukuran": "5×80",
+                "ukuran": "37×50",
                 "jumlah": 1
               },
               {
-                "ukuran": "5×60",
+                "ukuran": "40×68",
                 "jumlah": 1
               },
               {
-                "ukuran": "20×25",
+                "ukuran": "21×50",
                 "jumlah": 1
               },
               {
-                "ukuran": "37×80",
-                "jumlah": 1
-              },
-              {
-                "ukuran": "24×37",
+                "ukuran": "37×45",
                 "jumlah": 1
               }
             ],
             "alternatives": [
               {
-                "name": "tepi x=8.88/depan",
-                "total": 72,
-                "full": 52,
-                "cuts": 36,
-                "cutTiles": 20
-              },
-              {
-                "name": "tepi x=8.88/tengah",
-                "total": 72,
-                "full": 49,
-                "cuts": 39,
-                "cutTiles": 23
-              },
-              {
-                "name": "tepi x=8.88/tengah-nat",
-                "total": 72,
-                "full": 49,
-                "cuts": 39,
-                "cutTiles": 23
-              },
-              {
-                "name": "kiri/depan",
+                "name": "kiri/tepi y=6.66",
                 "total": 74,
-                "full": 50,
-                "cuts": 34,
-                "cutTiles": 24
+                "full": 48,
+                "cuts": 36,
+                "cutTiles": 26
+              },
+              {
+                "name": "tengah/tepi y=6.66",
+                "total": 74,
+                "full": 45,
+                "cuts": 39,
+                "cutTiles": 29
+              },
+              {
+                "name": "tengah-nat/tepi y=6.66",
+                "total": 74,
+                "full": 45,
+                "cuts": 39,
+                "cutTiles": 29
+              },
+              {
+                "name": "kanan/tepi y=6.66",
+                "total": 71,
+                "full": 53,
+                "cuts": 31,
+                "cutTiles": 18
               }
             ]
           },
+          "altTotal": 74,
           "area": 43.53,
-          "pieces": 72,
-          "full": 52,
+          "pieces": 74,
+          "full": 48,
           "cutPieces": 36,
-          "cutTiles": 20
+          "cutTiles": 26
         },
         {
           "id": "lt1-kt1",
@@ -3687,6 +3822,8 @@
             "cuts": 13,
             "cutTiles": 8,
             "slivers": 5,
+            "sliver10": 0,
+            "distinct": 2,
             "total": 20,
             "area": 11.2225,
             "tileArea": 0.6400000000000001,
@@ -3735,6 +3872,7 @@
               }
             ]
           },
+          "altTotal": 20,
           "area": 11.22,
           "pieces": 20,
           "full": 12,
@@ -3770,6 +3908,8 @@
             "cuts": 2,
             "cutTiles": 2,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 1,
             "total": 4,
             "area": 2.16,
             "tileArea": 0.6400000000000001,
@@ -3810,6 +3950,7 @@
               }
             ]
           },
+          "altTotal": 4,
           "area": 2.16,
           "pieces": 4,
           "full": 2,
@@ -3818,9 +3959,9 @@
           "plinth": null
         }
       ],
-      "withWaste": 103,
+      "withWaste": 105,
       "boxes": 35,
-      "boxesNoWaste": 32
+      "boxesNoWaste": 33
     },
     "lt2": {
       "name": "Lantai 2",
@@ -3837,6 +3978,12 @@
           "level": 3.85,
           "finish": "polos",
           "tile": "floor",
+          "mainRect": {
+            "x1": 6.575,
+            "y1": 9.06,
+            "x2": 9.925,
+            "y2": 13.425
+          },
           "rects": [
             {
               "x1": 6.575,
@@ -3870,6 +4017,8 @@
             "cuts": 22,
             "cutTiles": 12,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 3,
             "total": 41,
             "area": 24.797399999999996,
             "tileArea": 0.6400000000000001,
@@ -3926,6 +4075,7 @@
               }
             ]
           },
+          "altTotal": 40,
           "area": 24.8,
           "pieces": 41,
           "full": 29,
@@ -3966,6 +4116,8 @@
             "cuts": 13,
             "cutTiles": 8,
             "slivers": 5,
+            "sliver10": 0,
+            "distinct": 2,
             "total": 20,
             "area": 11.2225,
             "tileArea": 0.6400000000000001,
@@ -3992,13 +4144,6 @@
                 "cutTiles": 8
               },
               {
-                "name": "kiri/tengah-nat",
-                "total": 20,
-                "full": 12,
-                "cuts": 13,
-                "cutTiles": 8
-              },
-              {
                 "name": "kanan/tengah",
                 "total": 20,
                 "full": 12,
@@ -4006,7 +4151,14 @@
                 "cutTiles": 8
               },
               {
-                "name": "kanan/tengah-nat",
+                "name": "tengah/belakang",
+                "total": 20,
+                "full": 12,
+                "cuts": 13,
+                "cutTiles": 8
+              },
+              {
+                "name": "tengah/depan",
                 "total": 20,
                 "full": 12,
                 "cuts": 13,
@@ -4014,6 +4166,7 @@
               }
             ]
           },
+          "altTotal": 25,
           "area": 11.22,
           "pieces": 20,
           "full": 12,
@@ -4054,6 +4207,8 @@
             "cuts": 13,
             "cutTiles": 8,
             "slivers": 5,
+            "sliver10": 0,
+            "distinct": 2,
             "total": 20,
             "area": 11.2225,
             "tileArea": 0.6400000000000001,
@@ -4102,6 +4257,7 @@
               }
             ]
           },
+          "altTotal": 20,
           "area": 11.22,
           "pieces": 20,
           "full": 12,
@@ -4137,6 +4293,8 @@
             "cuts": 2,
             "cutTiles": 2,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 1,
             "total": 4,
             "area": 2.16,
             "tileArea": 0.6400000000000001,
@@ -4177,6 +4335,7 @@
               }
             ]
           },
+          "altTotal": 4,
           "area": 2.16,
           "pieces": 4,
           "full": 2,
@@ -4213,6 +4372,8 @@
             "cuts": 2,
             "cutTiles": 2,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 1,
             "total": 4,
             "area": 2.16,
             "tileArea": 0.6400000000000001,
@@ -4253,6 +4414,7 @@
               }
             ]
           },
+          "altTotal": 4,
           "area": 2.16,
           "pieces": 4,
           "full": 2,
@@ -4302,6 +4464,8 @@
             "cuts": 12,
             "cutTiles": 6,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 2,
             "total": 9,
             "area": 4.7738,
             "tileArea": 0.6400000000000001,
@@ -4350,6 +4514,7 @@
               }
             ]
           },
+          "altTotal": 9,
           "area": 4.77,
           "pieces": 9,
           "full": 3,
@@ -4386,6 +4551,8 @@
             "cuts": 12,
             "cutTiles": 6,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 3,
             "total": 9,
             "area": 4.7738,
             "tileArea": 0.6400000000000001,
@@ -4442,6 +4609,7 @@
               }
             ]
           },
+          "altTotal": 9,
           "area": 4.77,
           "pieces": 9,
           "full": 3,
@@ -4497,6 +4665,8 @@
             "cuts": 15,
             "cutTiles": 11,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 4,
             "total": 25,
             "area": 13.9,
             "tileArea": 0.6400000000000001,
@@ -4542,14 +4712,14 @@
                 "cutTiles": 11
               },
               {
-                "name": "tepi x=2.925/belakang",
+                "name": "tepi x=2.925/tengah",
                 "total": 26,
-                "full": 10,
-                "cuts": 19,
-                "cutTiles": 16
+                "full": 9,
+                "cuts": 20,
+                "cutTiles": 17
               },
               {
-                "name": "tepi x=2.925/tengah",
+                "name": "tepi x=2.925/tengah-nat",
                 "total": 26,
                 "full": 9,
                 "cuts": 20,
@@ -4557,6 +4727,7 @@
               }
             ]
           },
+          "altTotal": 25,
           "area": 13.9,
           "pieces": 25,
           "full": 14,
@@ -4593,6 +4764,8 @@
             "cuts": 12,
             "cutTiles": 6,
             "slivers": 0,
+            "sliver10": 0,
+            "distinct": 3,
             "total": 9,
             "area": 4.5225,
             "tileArea": 0.6400000000000001,
@@ -4649,6 +4822,7 @@
               }
             ]
           },
+          "altTotal": 9,
           "area": 4.52,
           "pieces": 9,
           "full": 3,
@@ -4679,10 +4853,12 @@
       "boxes": 5
     },
     "total80": {
-      "pieces": 250,
-      "withWaste": 269,
-      "boxes": 90,
-      "m2": 172.16,
+      "altPieces": 256,
+      "altBoxes": 92,
+      "pieces": 252,
+      "withWaste": 271,
+      "boxes": 91,
+      "m2": 173.44,
       "boxesNoWaste": 84
     },
     "wall": {

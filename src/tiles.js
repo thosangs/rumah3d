@@ -204,20 +204,36 @@ export function describeCuts(cells) {
  */
 export function layoutFloor(rects, tile, opts = {}) {
   const minSliver = opts.minSliver ?? 0.2; // potongan < 20 cm dianggap jelek
+  const mode = opts.mode ?? 'rapi'; // 'rapi' = simetris/utuh dari tembok ruang utama | 'simetris' = simetris di semua ruang | 'hemat' = keping paling sedikit
   const bb = bbox(rects);
-  const W = bb.x2 - bb.x1;
-  const H = bb.y2 - bb.y1;
-  const cx = bb.x1 + (W - Math.ceil(W / tile.w) * tile.w) / 2; // grid simetris (potongan sama kiri-kanan)
-  const cy = bb.y1 + (H - Math.ceil(H / tile.h) * tile.h) / 2;
-  const cx2 = bb.x1 + W / 2 - tile.w / 2; // nat di tengah
-  const cy2 = bb.y1 + H / 2 - tile.h / 2;
-  // kandidat titik mulai: tepi luar, tengah, dan SETIAP tepi persegi region (tembok dalam, sisi tangga, tepi void)
-  // supaya keping utuh bisa diletakkan di tepi yang paling terlihat dan potongan jatuh di tembok.
   const r3 = (v) => Math.round(v * 1000) / 1000;
-  const xs = { kiri: bb.x1, kanan: bb.x2, tengah: cx, 'tengah-nat': cx2 };
-  const ys = { belakang: bb.y1, depan: bb.y2, tengah: cy, 'tengah-nat': cy2 };
-  for (const r of rects) for (const e of [r.x1, r.x2]) if (!Object.values(xs).some((v) => Math.abs(v - e) < EPS)) xs[`tepi x=${r3(e)}`] = e;
-  for (const r of rects) for (const e of [r.y1, r.y2]) if (!Object.values(ys).some((v) => Math.abs(v - e) < EPS)) ys[`tepi y=${r3(e)}`] = e;
+  // titik mulai simetris untuk sebuah persegi: potongan sama besar di kedua sisi ('tengah') atau nat tepat di tengah ('tengah-nat')
+  const center = (r) => {
+    const W = r.x2 - r.x1, H = r.y2 - r.y1;
+    return {
+      xs: { tengah: r.x1 + (W - Math.ceil(W / tile.w) * tile.w) / 2, 'tengah-nat': r.x1 + W / 2 - tile.w / 2 },
+      ys: { tengah: r.y1 + (H - Math.ceil(H / tile.h) * tile.h) / 2, 'tengah-nat': r.y1 + H / 2 - tile.h / 2 },
+    };
+  };
+  let xs, ys, label;
+  if (mode === 'rapi' || mode === 'simetris') {
+    // ruang utama = rect bertanda main, atau rect terluas; grid dipusatkan di sana
+    const main = opts.mainRect || rects.reduce((m, r) => (rectArea(r) > rectArea(m) ? r : m), rects[0]);
+    const c = center(main);
+    // pilihan: simetris di ruang utama, atau keping utuh mulai dari salah satu tembok ruang utama (potongan hanya di sisi lawan)
+    xs = { simetris: c.xs.tengah, 'simetris (nat tengah)': c.xs['tengah-nat'] };
+    ys = { simetris: c.ys.tengah, 'simetris (nat tengah)': c.ys['tengah-nat'] };
+    if (mode === 'rapi') { Object.assign(xs, { 'utuh dari tembok kiri': main.x1, 'utuh dari tembok kanan': main.x2 }); Object.assign(ys, { 'utuh dari belakang': main.y1, 'utuh dari depan': main.y2 }); }
+    label = 'ruang utama: ';
+  } else {
+    const c = center(bb);
+    xs = { kiri: bb.x1, kanan: bb.x2, ...c.xs };
+    ys = { belakang: bb.y1, depan: bb.y2, ...c.ys };
+    // + setiap tepi persegi region (tembok dalam, sisi tangga, tepi void)
+    for (const r of rects) for (const e of [r.x1, r.x2]) if (!Object.values(xs).some((v) => Math.abs(v - e) < EPS)) xs[`tepi x=${r3(e)}`] = e;
+    for (const r of rects) for (const e of [r.y1, r.y2]) if (!Object.values(ys).some((v) => Math.abs(v - e) < EPS)) ys[`tepi y=${r3(e)}`] = e;
+    label = '';
+  }
   const candidates = [];
   for (const [nx, ox] of Object.entries(xs)) {
     for (const [ny, oy] of Object.entries(ys)) {
@@ -225,14 +241,18 @@ export function layoutFloor(rects, tile, opts = {}) {
       const full = cells.filter((c) => c.full).length;
       const cuts = cells.filter((c) => !c.full);
       const pack = packCuts(cuts, tile);
-      const slivers = cuts.filter((c) => Math.min(c.w, c.h) < minSliver - EPS).length;
+      const sizes = cuts.filter((c) => c.shape !== 'L').map((c) => Math.min(c.w, c.h));
+      const sliver10 = sizes.filter((v) => v < 0.1 - EPS).length; // < 10 cm: hampir mustahil dipasang rapi
+      const slivers = sizes.filter((v) => v >= 0.1 - EPS && v < minSliver - EPS).length;
+      const distinct = new Set(sizes.map((v) => Math.round(v * 100))).size; // makin banyak jenis ukuran, makin "acak"
       const total = full + pack.tiles;
-      candidates.push({ name: `${nx}/${ny}`, ox, oy, cells, full, cuts: cuts.length, cutTiles: pack.tiles, pack, slivers, total });
+      candidates.push({ name: `${label}${nx}/${ny}`, ox, oy, cells, full, cuts: cuts.length, cutTiles: pack.tiles, pack, slivers: sliver10 + slivers, sliver10, distinct, total });
     }
   }
-  // skor: total keping + penalti potongan sempit (jelek & rawan pecah) → tukang biasanya geser grid
-  const score = (c) => c.total + c.slivers * 0.75;
-  candidates.sort((a, b) => score(a) - score(b) || a.cuts - b.cuts);
+  // skor: keping + penalti sliver (<10 cm berat, 10–20 cm ringan) + penalti ragam ukuran potongan
+  const wSliver = mode === 'hemat' ? 0.75 : 1.0;
+  const score = (c) => c.total + c.sliver10 * 3 + (c.slivers - c.sliver10) * wSliver + c.distinct * 0.4;
+  candidates.sort((p, q) => score(p) - score(q) || p.cuts - q.cuts);
   const best = opts.forceOrigin
     ? (() => {
         const cells = gridCells(rects, tile, opts.forceOrigin.x, opts.forceOrigin.y);

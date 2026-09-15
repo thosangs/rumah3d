@@ -10,6 +10,7 @@ for (const a of process.argv.slice(2)) {
   if (k === 'bath') cfg.bathFloorMode = v;
   if (k === 'zones') { const [b, t] = v.split('/').map(Number); cfg.wallZones = { bottomH: b / 100, topH: t / 100 }; }
   if (k === 'jemur') cfg.includeOptional = v !== '0';
+  if (k === 'pola') cfg.layoutMode = v; // rapi | hemat
 }
 const R = computeAll(cfg);
 
@@ -27,7 +28,7 @@ console.log(`\n## Lantai kamar mandi (3 KM) ${R.bathFloorSummary.tile.label}: ${
 console.log(`\n## Plin 10 cm (dari 80x80 dibelah ${cfg.plinthStrips}): panjang bersih ${R.plinthTotal.length} m → ${R.plinthTotal.strips} potong 10×80 → ${R.plinthTotal.tiles} keping = ${R.plinthTotal.boxes} dus`);
 for (const f of R.plinthItems) console.log(`  - ${pad(f.name, 58)} ${f.plinth.net} m → ${f.plinth.strips} strip → ${f.plinth.tiles} keping`);
 
-console.log(`\n## TOTAL granit 80x80 (lantai + plin): ${R.total80.pieces} keping, +cadangan ${R.total80.withWaste} keping ≈ ${R.total80.m2} m² = ${R.total80.boxes} dus`);
+console.log(`\n## TOTAL granit 80x80 (lantai + plin, pola ${cfg.layoutMode}): ${R.total80.pieces} keping, +cadangan ${R.total80.withWaste} keping ≈ ${R.total80.m2} m² = ${R.total80.boxes} dus  (pola ${cfg.layoutMode === 'hemat' ? 'rapi' : 'hemat'}: ${R.total80.altPieces} keping ≈ ${R.total80.altBoxes} dus)`);
 
 console.log(`\n=== DINDING KAMAR MANDI 30x60 (${cfg.wallPcsPerBox} keping/dus) zona bawah ${cfg.wallZones.bottomH} m teraso, atas ${cfg.wallZones.topH} m putih polos ===`);
 for (const b of R.baths) {

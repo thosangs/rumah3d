@@ -41,6 +41,7 @@ export const FLOOR_AREAS = [
     level: LEVELS.lt1,
     finish: 'polos',
     tile: 'floor',
+    mainRect: R(6.5 + HALF, 8.5 - HALF, 10 - HALF, 13.5 - HALF), // ruang keluarga: pola dipusatkan di sini
     rects: [
       // dapur + ruang makan (y 3.5–7.0); tapak tangga L (anak tangga awal x 8.28–9.925, y 3.56–4.56;
       // run sepanjang tembok kanan x 8.88–9.925, y 4.56–9.06) dikeluarkan
@@ -125,6 +126,7 @@ export const FLOOR_AREAS = [
     level: LEVELS.lt2,
     finish: 'polos',
     tile: 'floor',
+    mainRect: R(6.5 + HALF, 9.06, 10 - HALF, 13.5 - HALF), // ruang keluarga lt2 selebar penuh
     rects: [
       // selasar x 6.5–8.43 (kanan = void tangga 1,5 × 5,5 m — revisi dari 2,0) menerus ke r. keluarga lt2
       R(6.5 + HALF, 3.5 + HALF, 8.43, 13.5 - HALF),

@@ -9,6 +9,7 @@ export const DEFAULT_CONFIG = {
   wallZones: { bottomH: 1.8, topH: 0.6 }, // teraso 180 cm (6 baris) + putih polos sampai plafon 2,4 m (2 baris)
   plinthStrips: 8,
   includeOptional: false, // ruang jemur
+  layoutMode: 'rapi', // 'rapi' = simetris/utuh dari tembok ruang utama | 'simetris' = simetris di semua ruang | 'hemat' = keping paling sedikit
 };
 
 const r2 = (v) => Math.round(v * 100) / 100;
@@ -16,12 +17,14 @@ const r2 = (v) => Math.round(v * 100) / 100;
 export function computeAll(cfg = DEFAULT_CONFIG) {
   const floors = FLOOR_AREAS.filter((a) => cfg.includeOptional || !a.optional).map((a) => {
     const tile = a.isBathroom && cfg.bathFloorMode === '40' ? TILE_BATH_FLOOR_ALT : TILE_FLOOR;
-    const lay = layoutFloor(a.rects, tile);
+    const lay = layoutFloor(a.rects, tile, { mode: cfg.layoutMode, mainRect: a.mainRect });
+    const layAlt = layoutFloor(a.rects, tile, { mode: cfg.layoutMode === 'hemat' ? 'rapi' : 'hemat', mainRect: a.mainRect });
     const pl = a.plinth ? plinth(a.plinth.length, a.plinth.doors, TILE_FLOOR, cfg.plinthStrips) : null;
     return {
       ...a,
       tileSpec: tile,
       layout: lay,
+      altTotal: layAlt.total, // total keping kalau pakai pola yang satunya
       area: r2(regionArea(a.rects)),
       pieces: lay.total,
       full: lay.full,
@@ -83,7 +86,9 @@ export function computeAll(cfg = DEFAULT_CONFIG) {
 
   // Total granit 80×80 (lantai semua + plin)
   const floorGroups = Object.values(groups);
+  const altPieces = floors.filter((f) => !(f.isBathroom && cfg.bathFloorMode === '40')).reduce((s, f) => s + f.altTotal, 0) + plinthTotal.tiles;
   const total80 = {
+    altPieces, altBoxes: boxes(withWaste(altPieces, cfg.wastePct), cfg.floorPcsPerBox),
     pieces: floorGroups.reduce((s, g) => s + g.pieces, 0) + plinthTotal.tiles,
     withWaste: floorGroups.reduce((s, g) => s + g.withWaste, 0) + plinthTotal.tiles,
   };
