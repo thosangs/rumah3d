@@ -203,7 +203,7 @@ export function describeCuts(cells) {
  * Kriteria: total keping paling sedikit; hindari potongan sempit (< minSliver).
  */
 export function layoutFloor(rects, tile, opts = {}) {
-  const minSliver = opts.minSliver ?? 0.1;
+  const minSliver = opts.minSliver ?? 0.2; // potongan < 20 cm dianggap jelek
   const bb = bbox(rects);
   const W = bb.x2 - bb.x1;
   const H = bb.y2 - bb.y1;
@@ -211,8 +211,13 @@ export function layoutFloor(rects, tile, opts = {}) {
   const cy = bb.y1 + (H - Math.ceil(H / tile.h) * tile.h) / 2;
   const cx2 = bb.x1 + W / 2 - tile.w / 2; // nat di tengah
   const cy2 = bb.y1 + H / 2 - tile.h / 2;
-  const xs = { 'kiri': bb.x1, 'kanan': bb.x2 - Math.ceil(W / tile.w) * tile.w, 'tengah': cx, 'tengah-nat': cx2 };
-  const ys = { 'belakang': bb.y1, 'depan': bb.y2 - Math.ceil(H / tile.h) * tile.h, 'tengah': cy, 'tengah-nat': cy2 };
+  // kandidat titik mulai: tepi luar, tengah, dan SETIAP tepi persegi region (tembok dalam, sisi tangga, tepi void)
+  // supaya keping utuh bisa diletakkan di tepi yang paling terlihat dan potongan jatuh di tembok.
+  const r3 = (v) => Math.round(v * 1000) / 1000;
+  const xs = { kiri: bb.x1, kanan: bb.x2, tengah: cx, 'tengah-nat': cx2 };
+  const ys = { belakang: bb.y1, depan: bb.y2, tengah: cy, 'tengah-nat': cy2 };
+  for (const r of rects) for (const e of [r.x1, r.x2]) if (!Object.values(xs).some((v) => Math.abs(v - e) < EPS)) xs[`tepi x=${r3(e)}`] = e;
+  for (const r of rects) for (const e of [r.y1, r.y2]) if (!Object.values(ys).some((v) => Math.abs(v - e) < EPS)) ys[`tepi y=${r3(e)}`] = e;
   const candidates = [];
   for (const [nx, ox] of Object.entries(xs)) {
     for (const [ny, oy] of Object.entries(ys)) {

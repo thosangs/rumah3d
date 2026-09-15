@@ -27,9 +27,13 @@ perf_mats = set()
 for i, m in enumerate(js['materials']):
     pbr = m.get('pbrMetallicRoughness', {}); c = pbr.get('baseColorFactor')
     if c and c[0] < 0.01 and c[1] < 0.01 and 'baseColorTexture' in pbr: perf_mats.add(i)  # panel gerbang hitam bertekstur
-hits = []; perf = 0; painted = 0; solar = 0
+DROP_NODES = {479}  # daun pintu toilet lt.1 salinan posisi terbuka (dobel dengan node 476 yang tertutup di kusen)
+hits = []; perf = 0; painted = 0; solar = 0; dropped = 0
 def walk(i, M):
+    global dropped
     nd = js['nodes'][i]; W = M @ mat(nd)
+    if i in DROP_NODES and 'mesh' in nd:
+        del nd['mesh']; dropped += 1
     if 'mesh' in nd:
         for pr in js['meshes'][nd['mesh']]['primitives']:
             global perf
@@ -58,7 +62,7 @@ for m in js['materials']:
     pbr = m.get('pbrMetallicRoughness', {}); c = pbr.get('baseColorFactor')
     if c and 'baseColorTexture' not in pbr and abs(c[0] - 0.6) < 0.02 and abs(c[1] - 0.6) < 0.02 and abs(c[2] - 0.6) < 0.02:
         pbr['baseColorFactor'] = [0.84, 0.81, 0.76, 1]; pbr['roughnessFactor'] = 0.95; pbr['metallicFactor'] = 0; painted += 1
-print('kaca:', len(hits), '| perforated:', perf, '| solarflat:', solar, '| tembok dicat:', painted)
+print('kaca:', len(hits), '| perforated:', perf, '| solarflat:', solar, '| tembok dicat:', painted, '| pintu dobel dihapus:', dropped)
 jb = json.dumps(js, separators=(',', ':')).encode(); jb += b' ' * ((4 - len(jb) % 4) % 4)
 binp = bin_ + b'\0' * ((4 - len(bin_) % 4) % 4)
 out = struct.pack('<III', 0x46546C67, 2, 12 + 8 + len(jb) + 8 + len(binp)) + struct.pack('<II', len(jb), 0x4E4F534A) + jb + struct.pack('<II', len(binp), 0x004E4942) + binp

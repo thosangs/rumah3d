@@ -1,5 +1,6 @@
 // Panel hitungan + galeri gambar
 const r1 = (v) => Math.round(v * 10) / 10;
+const boxesOf = (pcs, per) => Math.ceil(pcs / per);
 
 export function renderHitungan(R, el, onPick) {
   if (!el) return;
@@ -26,8 +27,8 @@ export function renderHitungan(R, el, onPick) {
 
   h += `<div class="ok"><b>TOTAL granit 80×80 (semua lantai + plin): ${R.total80.pieces} keping → dengan cadangan ${cfg.wastePct}% = ${R.total80.withWaste} keping ≈ ${R.total80.m2} m² = ${R.total80.boxes} dus</b> (${cfg.floorPcsPerBox} keping/dus). Beli granit polos &amp; structured terpisah: polos ${R.groups.filter((g) => !g.name.includes('luar')).reduce((s, g) => s + g.withWaste, 0) + R.plinthTotal.tiles} keping, structured (luar) ${R.groups.filter((g) => g.name.includes('luar')).reduce((s, g) => s + g.withWaste, 0)} keping.</div>`;
 
-  h += `<h3>Dinding kamar mandi — granit 30×60 (dipasang mendatar), bawah terakota ${Math.round(cfg.wallZones.bottomH * 100)} cm, atas putih ${Math.round(cfg.wallZones.topH * 100)} cm</h3>`;
-  h += `<table><thead><tr><th>Kamar mandi / sisi</th><th class="num">Panjang</th><th class="num">Terakota</th><th class="num">Putih</th></tr></thead><tbody>`;
+  h += `<h3>Dinding kamar mandi — granit 30×60 dipasang mendatar, full sampai plafon ${r1(cfg.wallZones.bottomH + cfg.wallZones.topH)} m: bawah motif teraso ${Math.round(cfg.wallZones.bottomH * 100)} cm, sisanya putih polos ${Math.round(cfg.wallZones.topH * 100)} cm</h3>`;
+  h += `<table><thead><tr><th>Kamar mandi / sisi</th><th class="num">Panjang</th><th class="num">Teraso</th><th class="num">Putih polos</th></tr></thead><tbody>`;
   for (const b of R.baths) {
     h += `<tr class="total"><td>${b.name} <span class="badge">keliling ${b.perimeter} m</span></td><td class="num">${b.areaBawah + b.areaAtas} m²</td><td class="num">${b.bawah.total} keping<br/><span class="cuts">${b.bawah.full} utuh + ${b.bawah.cuts} potongan</span></td><td class="num">${b.atas.total} keping<br/><span class="cuts">${b.atas.full} utuh + ${b.atas.cuts} potongan</span></td></tr>`;
     for (const w of b.walls) {
@@ -35,23 +36,28 @@ export function renderHitungan(R, el, onPick) {
     }
   }
   h += `<tr class="total"><td>Total 3 kamar mandi</td><td class="num">${r1(R.wall.bawah.area + R.wall.atas.area)} m²</td><td class="num">${R.wall.bawah.area} m² · ${R.wall.bawah.pieces} keping<br/>+${cfg.wastePct}% = ${R.wall.bawah.withWaste} = <b>${R.wall.bawah.boxes} dus</b></td><td class="num">${R.wall.atas.area} m² · ${R.wall.atas.pieces} keping<br/>+${cfg.wastePct}% = ${R.wall.atas.withWaste} = <b>${R.wall.atas.boxes} dus</b></td></tr></tbody></table>
-  <p class="muted">Tinggi pintu 210 cm = 7 baris × 30 cm, jadi di atas pintu pas 1 baris penuh. Jendela kecil diasumsikan 60×50 cm di sisi luar (ambang 170 cm). Kalau tinggi zona dipakai 100/140 cm seperti catatan tukang, tiap dinding butuh 1 baris potongan 10 cm memanjang — ubah di Setelan untuk membandingkan.</p>`;
+  <p class="muted">Teraso 180 cm = 6 baris × 30 cm pas, tanpa potongan mendatar. Pintu 210 cm memotong 1 baris zona putih (30 cm di atas pintu). Tinggi plafon toilet diasumsikan 2,4 m — kalau plafonnya 2,7 atau 3,0 m, pilih di Setelan (zona putih ikut bertambah).</p>`;
 
   h += `<h3>Lantai kamar mandi</h3><p>${R.bathFloorSummary.tile.label}: 3 KM × 1,60 × 1,35 m = ${R.bathFloorSummary.area} m² → ${R.bathFloorSummary.pieces} keping (+cadangan ${R.bathFloorSummary.withWaste}) = ${R.bathFloorSummary.boxes} dus. ${cfg.bathFloorMode === '80' ? 'Catatan: 80×80 di ruang 1,6 × 1,35 m hampir semuanya potongan, dan permukaan polos licin saat basah. Gambar DED memakai keramik 30×30 structured; opsi 40×40 kasar bisa dipilih di Setelan.' : ''}</p>`;
 
-  h += `<h3>Pembanding dengan catatan tukang</h3><table><thead><tr><th>Item</th><th class="num">Tukang</th><th class="num">Dari gambar</th><th>Catatan</th></tr></thead><tbody>`;
-  const g = (name) => R.groups.find((x) => x.name === name);
-  const rows = [
-    ['Lantai 1 (granit polos)', '60 m²', `${g('Lantai 1')?.area} m² (${g('Lantai 1')?.pieces} keping)`, 'Sudah termasuk 3 lantai toilet? Kalau ya selisih ±2–3 m². Angka tukang wajar (≈ +4% cadangan).'],
-    ['Lantai 2 (granit polos)', '62,5 m²', `${g('Lantai 2')?.area} m² (${g('Lantai 2')?.pieces} keping)`, 'Catatan tukang "60 − 7,5 = 62,5" salah hitung. Void 2,0 × 5,5 m & tangga L mengikuti model SketchUp. Beda ±14 m² ≈ 22 keping ≈ 11 dus.'],
-    ['Teras bawah (structured)', '21 m²', `${g('Lantai luar (teras bawah)')?.area} m²`, 'Gambar: teras depan 3,35×1,43 (tanpa 2 anak tangga) + teras belakang. 21 m² tercapai kalau ruang jemur (7 m²) ikut digranit — cek dulu ke tukang.'],
-    ['Teras atas (structured)', '27 m²', `${g('Lantai luar (teras atas)')?.area} m²`, 'Gambar: balkon depan + strip kiri KT utama + balkon belakang = 18,4 m². Selisih 8,6 m² ≈ 13 keping — tanya apa ada area lain (mis. dak tambahan).'],
-    ['Dinding KM bawah (terakota)', '30 m²', `${R.wall.bawah.area} m²`, `Tukang pakai keliling 10 m/KM; gambar 5,9 m/KM (1,75 × 1,5 as). Beda ±${r1(30 - R.wall.bawah.area)} m² ≈ ${Math.ceil((30 - R.wall.bawah.area) / 1.44)} dus.`],
-    ['Dinding KM atas (putih)', '42 m²', `${R.wall.atas.area} m²`, `Beda ±${r1(42 - R.wall.atas.area)} m² ≈ ${Math.ceil((42 - R.wall.atas.area) / 1.44)} dus. Kalau KM di lapangan memang lebih besar dari gambar, ukur ulang dulu sebelum beli.`],
-    ['Lantai KM', '9 m²', `${R.bathFloorSummary.area} m²`, 'Tukang pakai luas as (1,75×1,5 ≈ 2,6 → dibulatkan 3); bersih 2,16 m²/KM.'],
-    ['Plin', '± 6 dus', `${R.plinthTotal.tiles} keping = ${R.plinthTotal.boxes} dus`, 'Cocok.'],
-  ];
-  for (const r of rows) h += `<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td><td class="cuts">${r[3]}</td></tr>`;
+  // ---------------- Hitungan riil vs hitungan tukang (m², keping, dus) ----------------
+  const T = R.tukang, Ri = R.riil, P80 = cfg.floorPcsPerBox, P36 = cfg.wallPcsPerBox;
+  const cell = (m2, pcs, dus) => `<td class="num">${m2 == null ? '—' : m2 + ' m²'}</td><td class="num">${pcs ?? '—'}</td><td class="num"><b>${dus ?? '—'}</b></td>`;
+  h += `<h3>Hitungan riil (dari gambar) vs hitungan tukang</h3>
+  <p class="muted">Dus dihitung dengan isi yang sama: 80×80 = ${P80} keping/dus (${(P80 * 0.64).toFixed(2)} m²), 30×60 = ${P36} keping/dus (${(P36 * 0.18).toFixed(2)} m²). Angka tukang dari foto buku + chat; kolom "riil" = hitung keping per keping dari denah, lalu ditambah cadangan ${cfg.wastePct}%.</p>
+  <table><thead><tr><th rowspan="2">Item</th><th colspan="3">Tukang</th><th colspan="4">Riil</th></tr>
+  <tr><th class="num">m²</th><th class="num">keping</th><th class="num">dus</th><th class="num">m²</th><th class="num">keping</th><th class="num">dus pas</th><th class="num">dus +${cfg.wastePct}%</th></tr></thead><tbody>`;
+  const row = (name, t, m2, pcs, dusPas, dusW, note) => `<tr><td>${name}${note ? `<div class="cuts">${note}</div>` : ''}</td>${cell(t?.m2, t?.pcs, t?.boxes)}${cell(m2, pcs, dusPas)}<td class="num"><b>${dusW ?? '—'}</b></td></tr>`;
+  h += row('Lantai 1 · granit polos', T.lt1, Ri.lt1.area, Ri.lt1.pieces, Ri.lt1.boxesNoWaste, Ri.lt1.boxes, 'Riil sudah termasuk lantai toilet lt.1 (80×80).');
+  h += row('Lantai 2 · granit polos', T.lt2, Ri.lt2.area, Ri.lt2.pieces, Ri.lt2.boxesNoWaste, Ri.lt2.boxes, 'Tukang "60 − 7,5 = 62,5" salah hitung. Riil: void 1,5 × 5,5 m, termasuk 2 lantai toilet lt.2.');
+  h += row('Teras bawah · structured', T.terasBawah, Ri.terasBawah.area, Ri.terasBawah.pieces, Ri.terasBawah.boxesNoWaste, Ri.terasBawah.boxes, 'Riil: teras depan + belakang. 21 m² tukang baru tercapai kalau ruang jemur (7 m²) ikut digranit.');
+  h += row('Teras atas · structured', T.terasAtas, Ri.terasAtas.area, Ri.terasAtas.pieces, Ri.terasAtas.boxesNoWaste, Ri.terasAtas.boxes, 'Riil: balkon depan + strip kiri KT utama + balkon belakang.');
+  h += row('Lantai kamar mandi (3 KM)', T.kmLantai, Ri.kmLantai.area, Ri.kmLantai.pieces, null, null, 'Riil sudah masuk di baris Lantai 1 & 2, tidak dijumlah dua kali.');
+  h += row('Plin 10 cm', T.plin, null, Ri.plin.tiles, boxesOf(Ri.plin.tiles, P80), Ri.plin.boxes, `${Ri.plin.strips} strip 10×80 dari ${Ri.plin.tiles} keping.`);
+  h += `<tr class="total"><td>TOTAL granit 80×80</td>${cell(T.total80.m2, T.total80.pcs, T.total80.boxes)}${cell(r1(Ri.total80.withWaste * 0.64), Ri.total80.pieces, Ri.total80.boxesNoWaste)}<td class="num"><b>${Ri.total80.boxes}</b></td></tr>`;
+  h += row(`Dinding KM bawah · ${Math.round(cfg.wallZones.bottomH * 100)} cm (tukang: 100 cm)`, T.kmBawah, Ri.wall.bawah.area, Ri.wall.bawah.pieces, Ri.wall.bawah.boxesNoWaste, Ri.wall.bawah.boxes, 'Tukang pakai keliling 10 m/KM; denah 5,9 m/KM. Motif teraso.');
+  h += row(`Dinding KM atas · ${Math.round(cfg.wallZones.topH * 100)} cm (tukang: 140 cm)`, T.kmAtas, Ri.wall.atas.area, Ri.wall.atas.pieces, Ri.wall.atas.boxesNoWaste, Ri.wall.atas.boxes, 'Putih polos, dari 180 cm sampai plafon.');
+  h += `<tr class="total"><td>TOTAL granit 30×60 (dinding KM)</td>${cell(T.wall.m2, T.wall.pcs, T.wall.boxes)}${cell(r1(Ri.wall.bawah.area + Ri.wall.atas.area), Ri.wall.bawah.pieces + Ri.wall.atas.pieces, Ri.wall.bawah.boxesNoWaste + Ri.wall.atas.boxesNoWaste)}<td class="num"><b>${Ri.wall.bawah.boxes + Ri.wall.atas.boxes}</b></td></tr>`;
   h += `</tbody></table>
   <div class="warn"><b>Saran urutan pasang (80×80):</b> ruang terbuka lantai 1 (dapur–r. makan–r. keluarga) dipasang sebagai satu grid menerus, mulai dari sudut depan-kanan (pintu utama) supaya keping utuh terlihat di area yang paling dilihat, dan potongan jatuh di bawah kitchen set / di tepi tangga. Kamar tidur 3,35 × 3,35 m: 4 keping utuh + 1 strip 15 cm per baris (8 strip 15×80 + 1 sudut 15×15 → cukup 2 keping korban). Nat 2–3 mm, mulai pasang dari pintu ke dalam.</div>`;
   el.innerHTML = h;

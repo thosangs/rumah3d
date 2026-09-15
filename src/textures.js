@@ -6,7 +6,7 @@ export const COLORS = {
   polos: { full: '#f3efe7', cut: '#f2c9a3', L: '#d9c3ef', grout: '#b9b2a6' },
   structured: { full: '#cfcac1', cut: '#e5b98f', L: '#c9b6dc', grout: '#8f8a82' },
   bath: { full: '#dfe7ea', cut: '#f2c9a3', L: '#d9c3ef', grout: '#9aa4a8' },
-  terakota: { full: '#b8613f', cut: '#d98a63', grout: '#6f3a26' },
+  teraso: { full: '#d8d3ca', cut: '#e6c8a6', grout: '#8f8a82', chips: ['#6d6a66', '#f5f2ec', '#a9a197', '#3b3a38', '#c4b7a6'] },
   putih: { full: '#f7f7f4', cut: '#f2c9a3', grout: '#bdbdb8' },
 };
 
@@ -85,10 +85,19 @@ export function wallTexture(wallLayout, zones, pxPerM = 160) {
   const X = (x) => x * pxPerM;
   const Y = (y) => (H - y) * pxPerM; // y=0 lantai di bawah canvas
   for (const c of wallLayout.cells) {
-    const pal = c.zone === 'bawah' ? COLORS.terakota : COLORS.putih;
+    const pal = c.zone === 'bawah' ? COLORS.teraso : COLORS.putih;
     ctx.fillStyle = c.full ? pal.full : pal.cut;
     const x = X(c.x1), y = Y(c.y2), w = (c.x2 - c.x1) * pxPerM, h = (c.y2 - c.y1) * pxPerM;
     ctx.fillRect(x, y, w, h);
+    if (c.zone === 'bawah') {
+      // motif teraso: serpihan batu acak
+      const n = Math.round((w * h) / 45);
+      for (let k = 0; k < n; k++) {
+        ctx.fillStyle = pal.chips[(Math.random() * pal.chips.length) | 0];
+        const s = 0.8 + Math.random() * 2.2; // serpihan 0,5–2 cm
+        ctx.beginPath(); ctx.ellipse(x + Math.random() * w, y + Math.random() * h, s, s * (0.6 + Math.random() * 0.6), Math.random() * Math.PI, 0, Math.PI * 2); ctx.fill();
+      }
+    }
     ctx.strokeStyle = pal.grout;
     ctx.lineWidth = 2;
     ctx.strokeRect(x, y, w, h);

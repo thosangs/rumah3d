@@ -204,7 +204,7 @@ export const FLOOR_AREAS = [
 ];
 
 // ---------------------------------------------------------------------------
-// KAMAR MANDI — dinding (granit 30x60, 2 motif: bawah terakota, atas putih)
+// KAMAR MANDI — dinding (granit 30x60 full sampai plafon, 2 motif: bawah teraso 180 cm, sisanya putih polos)
 // walls: panjang bersih tiap sisi; openings: bukaan (pintu/jendela) per sisi.
 // ---------------------------------------------------------------------------
 export const BATHROOMS = [

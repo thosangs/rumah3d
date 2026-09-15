@@ -6,7 +6,7 @@ export const DEFAULT_CONFIG = {
   floorPcsPerBox: 3, // granit 80×80: 3 keping/dus (1,92 m²)
   wallPcsPerBox: 8, // granit 30×60: umumnya 8 keping/dus (1,44 m²)
   bathFloorMode: '80', // '80' pakai granit 80×80 (sesuai permintaan) | '40' keramik 40×40 kasar
-  wallZones: { bottomH: 0.9, topH: 1.5 }, // 3 baris terakota + 5 baris putih = 2,4 m (tanpa potongan horizontal)
+  wallZones: { bottomH: 1.8, topH: 0.6 }, // teraso 180 cm (6 baris) + putih polos sampai plafon 2,4 m (2 baris)
   plinthStrips: 8,
   includeOptional: false, // ruang jemur
 };
@@ -90,5 +90,26 @@ export function computeAll(cfg = DEFAULT_CONFIG) {
   total80.boxes = boxes(total80.withWaste, cfg.floorPcsPerBox);
   total80.m2 = r2(total80.withWaste * 0.64);
 
-  return { cfg, floors, groups: floorGroups, bathFloorSummary, plinthItems, plinthTotal, baths, wall, total80, fieldNotes: FIELD_NOTES };
+  // dus tanpa cadangan (pembanding apple-to-apple dengan angka tukang)
+  for (const g of floorGroups) g.boxesNoWaste = boxes(g.pieces, cfg.floorPcsPerBox);
+  total80.boxesNoWaste = boxes(total80.pieces, cfg.floorPcsPerBox);
+  for (const z of ['bawah', 'atas']) wall[z].boxesNoWaste = boxes(wall[z].pieces, cfg.wallPcsPerBox);
+
+  // Hitungan tukang (catatan buku + chat) dikonversi ke keping & dus dengan isi dus yang sama
+  const fb = (m2, tileArea, perBox) => { const pcs = Math.ceil(m2 / tileArea - 1e-9); return { m2, pcs, boxes: boxes(pcs, perBox) }; };
+  const P80 = cfg.floorPcsPerBox, P36 = cfg.wallPcsPerBox;
+  const tukang = {
+    lt1: fb(60, 0.64, P80), lt2: fb(62.5, 0.64, P80), terasBawah: fb(21, 0.64, P80), terasAtas: fb(27, 0.64, P80),
+    kmLantai: fb(9, 0.64, P80), plin: { m2: null, pcs: 6 * P80, boxes: 6 },
+    kmBawah: fb(30, 0.18, P36), kmAtas: fb(42, 0.18, P36),
+  };
+  tukang.total80 = ['lt1', 'lt2', 'terasBawah', 'terasAtas', 'kmLantai', 'plin'].reduce((a, k) => ({ m2: a.m2 + (tukang[k].m2 || 0), pcs: a.pcs + tukang[k].pcs, boxes: a.boxes + tukang[k].boxes }), { m2: 0, pcs: 0, boxes: 0 });
+  tukang.wall = { m2: 72, pcs: tukang.kmBawah.pcs + tukang.kmAtas.pcs, boxes: tukang.kmBawah.boxes + tukang.kmAtas.boxes };
+  const riilTerasBawah = floorGroups.find((g) => g.name === 'Lantai luar (teras bawah)');
+  const riilTerasAtas = floorGroups.find((g) => g.name === 'Lantai luar (teras atas)');
+  const riil = {
+    lt1: floorGroups.find((g) => g.name === 'Lantai 1'), lt2: floorGroups.find((g) => g.name === 'Lantai 2'),
+    terasBawah: riilTerasBawah, terasAtas: riilTerasAtas, kmLantai: bathFloorSummary, plin: plinthTotal, total80, wall,
+  };
+  return { cfg, floors, groups: floorGroups, bathFloorSummary, plinthItems, plinthTotal, baths, wall, total80, tukang, riil, fieldNotes: FIELD_NOTES };
 }

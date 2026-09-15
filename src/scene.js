@@ -128,7 +128,7 @@ export function buildBathWalls(results, group) {
     if (!area) continue;
     const r = area.rects[0];
     const base = area.level;
-    const off = 0.004;
+    const off = 0.02; // 2 cm ke dalam ruang supaya tidak z-fighting dengan tembok model SKP
     // urutan sisi: [belakang(y1), kanan(x2), depan(y2), kiri(x1)]
     const sides = [
       { z: r.y1 + off, x: (r.x1 + r.x2) / 2, rotY: 0, len: r.x2 - r.x1 },
@@ -336,7 +336,7 @@ export function buildAll(results) {
   }
   const bw = new THREE.Group();
   buildBathWalls(results, bw);
-  for (const m of [...bw.children]) (m.position.y > LEVELS.dak2 ? gStruct2 : gStruct1).add(m);
+  for (const m of [...bw.children]) (m.position.y > LEVELS.dak2 ? gFloors2 : gFloors1).add(m); // ikut grup pola granit: selalu tampil, juga di mode model SKP
   buildStairs(gStruct1);
   buildSlab(gStruct2);
   buildRailings(gStruct2);
