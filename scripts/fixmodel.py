@@ -39,8 +39,12 @@ def walk(i, M):
             pbr = m.get('pbrMetallicRoughness', {}); c = pbr.get('baseColorFactor', [1, 1, 1, 1])
             P = acc(pr['attributes']['POSITION'])
             Pw = (np.c_[P, np.ones(len(P))] @ W.T)[:, :3]; mn, mx = Pw.min(0), Pw.max(0); sz = mx - mn
-            # atap datar selasar samping (panel horizontal tipis, elev 4,0–5,4 m di area kiri-depan) → solarflat
-            if sz[1] < 0.2 and sz[0] > 0.8 and sz[2] > 0.8 and 4.0 < mn[1] < 5.4 and mn[0] > 1.4 and mx[0] < 5.7 and mn[2] > -11.3 and mx[2] < -5.3:
+            # atap solarflat (panel horizontal tipis di area depan/samping, bukan pelat lantai):
+            #  - kanopi selasar samping nempel tembok  (x 0,0–1,7 · tinggi ±3,65 m)
+            #  - kanopi balkon depan                    (x 1,4–5,7 · tinggi 4,0–5,4 m)
+            if sz[1] < 0.2 and sz[0] > 0.8 and sz[2] > 0.8 and mn[2] > -11.4 and mx[2] < -5.3 and (
+                (mn[0] >= -0.1 and mx[0] < 1.7 and 3.3 < mn[1] < 4.1) or
+                (mn[0] > 1.4 and mx[0] < 5.7 and 4.0 < mn[1] < 5.4)):
                 pr['material'] = solar_idx; global solar; solar += 1; continue
             if 'baseColorTexture' in pbr or abs(c[0] - 0.6) > 0.02 or abs(c[2] - 0.6) > 0.02: continue
             if len(P) != 36: continue
