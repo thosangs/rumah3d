@@ -8,7 +8,7 @@ for (const a of process.argv.slice(2)) {
   if (k === 'pcs') cfg.floorPcsPerBox = +v;
   if (k === 'waste') cfg.wastePct = +v;
   if (k === 'bath') cfg.bathFloorMode = v;
-  if (k === 'zones') { const [b, t] = v.split('/'); cfg.wallZones = { bottomH: +b / 100, topH: t === 'dak' ? null : +t / 100 }; }
+  if (k === 'zones') { const [b, t] = v.split('/'); cfg.wallZones = { bottomH: b === 'beda' ? null : +b / 100, topH: t === 'dak' ? null : +t / 100 }; }
   if (k === 'jemur') cfg.includeOptional = v !== '0';
   if (k === 'pola') cfg.layoutMode = v; // rapi | hemat
 }
@@ -30,9 +30,9 @@ for (const f of R.plinthItems) console.log(`  - ${pad(f.name, 58)} ${f.plinth.ne
 
 console.log(`\n## TOTAL granit 80x80 (lantai + plin, pola ${cfg.layoutMode}): ${R.total80.pieces} keping, +cadangan ${R.total80.withWaste} keping ≈ ${R.total80.m2} m² = ${R.total80.boxes} dus  (pola ${cfg.layoutMode === 'hemat' ? 'rapi' : 'hemat'}: ${R.total80.altPieces} keping ≈ ${R.total80.altBoxes} dus)`);
 
-console.log(`\n=== DINDING KAMAR MANDI 30x60 (${cfg.wallPcsPerBox} keping/dus) zona bawah ${cfg.wallZones.bottomH} m teraso, atas ${cfg.wallZones.topH == null ? 'sampai dak (putih polos)' : cfg.wallZones.topH + ' m putih polos'} ===`);
+console.log(`\n=== DINDING KAMAR MANDI 30x60 (${cfg.wallPcsPerBox} keping/dus) zona bawah ${cfg.wallZones.bottomH == null ? 'teraso beda tiap KM (180/120/60 cm)' : cfg.wallZones.bottomH + ' m teraso'}, atas ${cfg.wallZones.topH == null ? 'sampai dak (putih polos)' : cfg.wallZones.topH + ' m putih polos'} ===`);
 for (const b of R.baths) {
-  console.log(`\n## ${b.name} (keliling ${b.perimeter} m, tinggi ${(b.zones.bottomH + b.zones.topH).toFixed(2)} m)  bawah ${b.areaBawah} m² → ${b.bawah.total} keping (utuh ${b.bawah.full} + potong ${b.bawah.cuts} pcs dari ${b.bawah.cutTiles}) | atas ${b.areaAtas} m² → ${b.atas.total} keping (utuh ${b.atas.full} + potong ${b.atas.cuts} pcs dari ${b.atas.cutTiles})`);
+  console.log(`\n## ${b.name} (keliling ${b.perimeter} m, tinggi ${(b.zones.bottomH + b.zones.topH).toFixed(2)} m, teraso ${Math.round(b.zones.bottomH * 100)} cm)  bawah ${b.areaBawah} m² → ${b.bawah.total} keping (utuh ${b.bawah.full} + potong ${b.bawah.cuts} pcs dari ${b.bawah.cutTiles}) | atas ${b.areaAtas} m² → ${b.atas.total} keping (utuh ${b.atas.full} + potong ${b.atas.cuts} pcs dari ${b.atas.cutTiles})`);
   for (const w of b.walls) {
     console.log(`  - ${pad(w.wall, 36)} ${w.len} m  bawah ${w.byZone.bawah.total} (${w.byZone.bawah.cutList.map((c) => c.ukuran + '×' + c.jumlah).join(', ') || 'tanpa potongan'}) | atas ${w.byZone.atas.total} (${w.byZone.atas.cutList.map((c) => c.ukuran + '×' + c.jumlah).join(', ') || 'tanpa potongan'}) [${w.name}]`);
   }

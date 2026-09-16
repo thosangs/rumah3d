@@ -6,7 +6,7 @@ export const DEFAULT_CONFIG = {
   floorPcsPerBox: 3, // granit 80×80: 3 keping/dus (1,92 m²)
   wallPcsPerBox: 8, // granit 30×60: umumnya 8 keping/dus (1,44 m²)
   bathFloorMode: '80', // '80' pakai granit 80×80 (sesuai permintaan) | '40' keramik 40×40 kasar
-  wallZones: { bottomH: 1.8, topH: null }, // teraso 180 cm (3 baris × 60 tegak) + putih polos; topH null = sampai dak (ceilH tiap KM), angka = tinggi zona putih (plafon)
+  wallZones: { bottomH: null, topH: null }, // bottomH null = tinggi teraso beda tiap KM (terasoH: 180/120/60), angka = sama semua; topH null = putih sampai dak (ceilH tiap KM), angka = tinggi zona putih (plafon)
   plinthStrips: 8,
   includeOptional: false, // ruang jemur
   layoutMode: 'rapi', // 'rapi' = simetris/utuh dari tembok ruang utama | 'simetris' = simetris di semua ruang | 'hemat' = keping paling sedikit
@@ -16,7 +16,7 @@ const r2 = (v) => Math.round(v * 100) / 100;
 
 /** Zona dinding untuk satu KM: topH null → putih polos sampai bawah dak (ceilH dari model) */
 export function zonesFor(bath, cfg) {
-  const bottomH = cfg.wallZones.bottomH;
+  const bottomH = cfg.wallZones.bottomH ?? bath.terasoH ?? 1.8;
   const topH = cfg.wallZones.topH ?? r2(Math.max(0, (bath.ceilH ?? 2.7) - bottomH));
   return { bottomH, topH, toSlab: cfg.wallZones.topH == null };
 }

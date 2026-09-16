@@ -217,6 +217,7 @@ export const BATHROOMS = [
     name: 'Toilet Lt.1',
     inner: { w: 1.6, d: 1.35 },
     ceilH: 3.68, // bawah dak lt.2 (+3,65) − lantai toilet lt.1 (−0,03, turun 8 cm)
+    terasoH: 1.8, // tinggi zona teraso KM ini (3 baris × 60) — pembanding: lt.2 kiri 120, lt.2 kanan 60
     // sisi: [belakang(y7), kanan(x4.75), depan(y8.5), kiri(x3)]
     walls: [
       { name: 'Sisi dapur (y=7.0)', len: 1.6, openings: [] },
@@ -230,6 +231,7 @@ export const BATHROOMS = [
     name: 'Toilet Lt.2 kiri',
     inner: { w: 1.6, d: 1.35 },
     ceilH: 3.35, // bawah dak talang (+7,18) − lantai toilet lt.2 (+3,83)
+    terasoH: 1.2, // 2 baris teraso
     walls: [
       { name: 'Sisi KT2 (y=7.0)', len: 1.6, openings: [] },
       { name: 'Sisi toilet kanan (x=4.75)', len: 1.35, openings: [] },
@@ -242,6 +244,7 @@ export const BATHROOMS = [
     name: 'Toilet Lt.2 kanan',
     inner: { w: 1.6, d: 1.35 },
     ceilH: 3.35,
+    terasoH: 0.6, // 1 baris teraso
     walls: [
       { name: 'Sisi KT2 (y=7.0)', len: 1.6, openings: [] },
       { name: 'Sisi selasar (x=6.5) — pintu', len: 1.35, openings: [{ w: 0.7, h: 1.95, fromFloor: 0, at: 0 }] }, // pintu di sudut sisi KT2

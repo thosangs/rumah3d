@@ -350,7 +350,7 @@ if (panel) {
     cfg.wastePct = +$('s-waste').value || 0;
     cfg.bathFloorMode = $('s-bath').value;
     const [b, t] = $('s-zones').value.split('/');
-    cfg.wallZones = { bottomH: +b / 100, topH: t === 'dak' ? null : +t / 100 };
+    cfg.wallZones = { bottomH: b === 'beda' ? null : +b / 100, topH: t === 'dak' ? null : +t / 100 };
     cfg.includeOptional = $('s-jemur').checked;
     cfg.layoutMode = $('s-layout').value;
     rebuild();
