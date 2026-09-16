@@ -43,7 +43,6 @@ Menulis `hitungan.json` dan mencetak tabel. Hasil terakhir juga ada di `hitungan
 - Ukuran ruang = grid as − 15 cm tebal tembok. Kamar mandi 1,60 × 1,35 m bersih (as 1,75 × 1,50).
 - Dinding KM granit 30×60 dipasang tegak, full dari lantai sampai bawah dak (toilet tidak berplafon di model: lt.1 3,68 m, lt.2 3,35 m; opsi plafon 2,7/3,0 m di Setelan): bawah teraso titik biru, sisanya putih polos. Tinggi teraso default beda tiap KM sebagai pembanding: Lt.1 180 cm, Lt.2 kiri 120 cm, Lt.2 kanan 60 cm (`terasoH` di `data.js`; samakan lewat Setelan atau `--zones=180/dak`). Keping yang kena bukaan dicoak (bentuk L), tetap 1 keping.
 - Pintu KM kusen 70 cm, tinggi 190 cm (lt.1) / 195 cm (lt.2), menempel sudut; jendela KM 60 × 40 (ambang 2,18 m) di tengah dinding luar — semua diukur dari model SKP. Kalau pintu riil 210 cm, selisih ±1 keping per pintu.
-- Plin 10 cm digambar di 3D di kaki tembok ruang dalam (bentang pintu dilewati), sambungannya segaris nat lantai.
 - Label ukuran potongan default mati; tombol **📐 Ukuran** di toolbar atau tekan `L`.
 - Ruang jemur di gambar rabat beton; kalau ikut digranit, centang di Setelan (menjelaskan angka "teras bawah 21 m²" dari tukang).
 - Granit 80×80 dihitung 3 keping/dus (1,92 m²); ubah di Setelan kalau merek lain.

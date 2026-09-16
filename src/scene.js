@@ -1,7 +1,7 @@
 // Membangun geometri rumah dari data.js
 import * as THREE from 'three';
 import { LEVELS, WALL_T, HALF, WALLS, RAILINGS, STAIRS, SLAB2, SITE, BATHROOMS, FLOOR_AREAS } from './data.js';
-import { floorTexture, wallTexture, noiseTexture, COLORS } from './textures.js';
+import { floorTexture, wallTexture, noiseTexture } from './textures.js';
 
 // Konversi denah (x, y) → dunia (x, z): x sama, z = y (depan rumah = +z)
 const P = (x, y) => new THREE.Vector3(x, 0, y);
@@ -147,95 +147,6 @@ export function buildBathWalls(results, group) {
       m.userData.bathWall = { wl, zones: b.zones };
       group.add(m);
     });
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Plin 10 cm (dari granit 80×80 dibelah) di kaki tembok ruang dalam
-// ---------------------------------------------------------------------------
-function subInterval(ivs, a, b) {
-  const out = [];
-  for (const [p, q] of ivs) {
-    if (b <= p || a >= q) { out.push([p, q]); continue; }
-    if (a > p) out.push([p, a]);
-    if (b < q) out.push([b, q]);
-  }
-  return out;
-}
-/** Tepi luar gabungan beberapa persegi (sisi yang bersebelahan dengan persegi lain dibuang) */
-function boundaryEdges(rects) {
-  const edges = [];
-  for (const r of rects) {
-    const sides = [
-      { horiz: true, line: r.y1, a: r.x1, b: r.x2, out: -1 },
-      { horiz: true, line: r.y2, a: r.x1, b: r.x2, out: 1 },
-      { horiz: false, line: r.x1, a: r.y1, b: r.y2, out: -1 },
-      { horiz: false, line: r.x2, a: r.y1, b: r.y2, out: 1 },
-    ];
-    for (const s of sides) {
-      let ivs = [[s.a, s.b]];
-      const probe = s.line + s.out * 0.01;
-      for (const o of rects) {
-        if (o === r) continue;
-        const l1 = s.horiz ? o.y1 : o.x1, l2 = s.horiz ? o.y2 : o.x2;
-        if (!(l1 < probe && probe < l2)) continue;
-        ivs = subInterval(ivs, s.horiz ? o.x1 : o.y1, s.horiz ? o.x2 : o.y2);
-      }
-      for (const [a, b] of ivs) if (b - a > 0.02) edges.push({ ...s, a, b });
-    }
-  }
-  return edges;
-}
-const plinthTexCache = new Map();
-function plinthTexture(color, grout) {
-  if (plinthTexCache.has(color)) return plinthTexCache.get(color);
-  const cv = document.createElement('canvas');
-  cv.width = 160; cv.height = 20; // 1 strip 80 × 10 cm
-  const ctx = cv.getContext('2d');
-  ctx.fillStyle = color; ctx.fillRect(0, 0, 160, 20);
-  ctx.fillStyle = grout; ctx.fillRect(158, 0, 2, 20); ctx.fillRect(0, 0, 160, 1.5);
-  const tex = new THREE.CanvasTexture(cv);
-  tex.colorSpace = THREE.SRGBColorSpace;
-  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-  plinthTexCache.set(color, tex);
-  return tex;
-}
-export function buildPlinth(results, gFloors1, gFloors2) {
-  const T = 0.012, H = 0.1;
-  for (const f of results.plinthItems) {
-    const lvl = f.level > 2 ? 'lt2' : 'lt1';
-    const pal = f.outdoor ? COLORS.structured : COLORS.polos;
-    const base = plinthTexture(pal.full, pal.grout);
-    const walls = WALLS.filter((w) => w.level === lvl);
-    for (const e of boundaryEdges(f.rects)) {
-      // buang bentang pintu (sill 0) dari tembok yang segaris dengan tepi ini
-      let ivs = [[e.a, e.b]];
-      for (const w of walls) {
-        const horiz = Math.abs(w.y1 - w.y2) < 1e-6;
-        if (horiz !== e.horiz) continue;
-        const line = horiz ? w.y1 : w.x1;
-        if (Math.abs(line - e.line) > HALF + 0.03) continue;
-        const start = horiz ? Math.min(w.x1, w.x2) : Math.min(w.y1, w.y2);
-        for (const o of w.openings) if (!o.sill) ivs = subInterval(ivs, start + o.at - 0.02, start + o.at + o.w + 0.02);
-      }
-      for (const [a, b] of ivs) {
-        const len = b - a;
-        if (len < 0.03) continue;
-        const tex = base.clone();
-        tex.needsUpdate = true;
-        tex.repeat.set(len / 0.8, 1);
-        const origin = e.horiz ? f.layout.ox : f.layout.oy; // sambungan plin segaris nat lantai
-        tex.offset.set((((a - origin) % 0.8) + 0.8) % 0.8 / 0.8, 0);
-        const mat = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.35 });
-        const y = f.level + H / 2 + 0.002;
-        const inward = -e.out * (T / 2 + 0.001);
-        const m = e.horiz
-          ? box(len, H, T, mat, (a + b) / 2, y, e.line + inward)
-          : box(T, H, len, mat, e.line + inward, y, (a + b) / 2);
-        m.name = `plin-${f.id}`;
-        (lvl === 'lt2' ? gFloors2 : gFloors1).add(m);
-      }
-    }
   }
 }
 
@@ -427,7 +338,6 @@ export function buildAll(results) {
   const bw = new THREE.Group();
   buildBathWalls(results, bw);
   for (const m of [...bw.children]) (m.position.y > LEVELS.dak2 ? gFloors2 : gFloors1).add(m); // ikut grup pola granit: selalu tampil, juga di mode model SKP
-  buildPlinth(results, gFloors1, gFloors2);
   buildStairs(gStruct1);
   buildSlab(gStruct2);
   buildRailings(gStruct2);
