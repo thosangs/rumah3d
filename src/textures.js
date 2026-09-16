@@ -2,12 +2,14 @@
 import * as THREE from 'three';
 import { bbox } from './tiles.js';
 
+// Warna potongan dibuat tipis ("transparan"): keping utuh + sedikit rona hangat (potongan) / lavender (dicoak)
 export const COLORS = {
-  polos: { full: '#f3efe7', cut: '#f2c9a3', L: '#d9c3ef', grout: '#b9b2a6' },
-  structured: { full: '#cfcac1', cut: '#e5b98f', L: '#c9b6dc', grout: '#8f8a82' },
-  bath: { full: '#dfe7ea', cut: '#f2c9a3', L: '#d9c3ef', grout: '#9aa4a8' },
-  teraso: { full: '#eceef0', cut: '#e6c8a6', grout: '#a3a8ae', chips: ['#2f5da8', '#4a7fd0', '#1d3f7a', '#7fa3d8', '#c9d6ea', '#5b6f8c'] }, // teraso titik biru
-  putih: { full: '#f7f7f4', cut: '#f2c9a3', grout: '#bdbdb8' },
+  polos: { full: '#f3efe7', cut: '#efe3d0', L: '#e7dfec', grout: '#b9b2a6' },
+  structured: { full: '#cfcac1', cut: '#d3c4ad', L: '#cbc3d1', grout: '#8f8a82' },
+  bath: { full: '#dfe7ea', cut: '#e2ded2', L: '#dcdae6', grout: '#9aa4a8' },
+  // teraso: dasar putih, serpihan kecil abu / abu tua / hitam / krem, jarang (seperti contoh foto)
+  teraso: { full: '#f4f4f1', cut: '#efe9dc', grout: '#b5b5b0', chips: ['#c3c5c8', '#b9bcc0', '#b9bcc0', '#a4a6a9', '#8d8f92', '#8d8f92', '#6f7276', '#4b4e53', '#2c2e31', '#c8a97e'] },
+  putih: { full: '#f7f7f4', cut: '#f0eadf', grout: '#bdbdb8' },
 };
 
 function palette(area) {
@@ -111,12 +113,22 @@ export function wallTexture(wallLayout, zones, pxPerM = 160, showLabels = false)
     ctx.fillStyle = color;
     ctx.fillRect(x, y, w, h);
     if (c.zone === 'bawah') {
-      // motif teraso: serpihan batu acak
-      const n = Math.round((w * h) / 45);
+      // motif teraso: serpihan batu bersudut (segitiga/segi-4/5) kecil & jarang, dasar putih
+      const n = Math.round((w * h) / 140);
       for (let k = 0; k < n; k++) {
         ctx.fillStyle = pal.chips[(Math.random() * pal.chips.length) | 0];
-        const s = 0.8 + Math.random() * 2.2; // serpihan 0,5–2 cm
-        ctx.beginPath(); ctx.ellipse(x + Math.random() * w, y + Math.random() * h, s, s * (0.6 + Math.random() * 0.6), Math.random() * Math.PI, 0, Math.PI * 2); ctx.fill();
+        const big = Math.random() < 0.06;
+        const s = (big ? 2.5 : 0.7) + Math.random() * (big ? 2 : 1.5); // px @240 px/m: ±0,3–0,9 cm, sesekali 1–2 cm
+        const cx = x + Math.random() * w, cy = y + Math.random() * h;
+        const m = 3 + ((Math.random() * 3) | 0);
+        const rot = Math.random() * Math.PI * 2;
+        ctx.beginPath();
+        for (let v = 0; v < m; v++) {
+          const ang = rot + (v / m) * Math.PI * 2 + (Math.random() - 0.5) * 0.7;
+          const rr = s * (0.55 + Math.random() * 0.6);
+          if (v === 0) ctx.moveTo(cx + Math.cos(ang) * rr, cy + Math.sin(ang) * rr); else ctx.lineTo(cx + Math.cos(ang) * rr, cy + Math.sin(ang) * rr);
+        }
+        ctx.closePath(); ctx.fill();
       }
     }
     // nat: keliling kotak pembatas + tepi coakan (setengah garis terpotong clip → tebal 2× lalu 2 px efektif)

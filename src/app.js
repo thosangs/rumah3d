@@ -321,7 +321,7 @@ async function rebuildTexturesOnly() {
   built.root.traverse((m) => {
     const bw = m.userData?.bathWall;
     if (!bw) return;
-    const { texture } = wallTexture(bw.wl, bw.zones, 160, showLabels);
+    const { texture } = wallTexture(bw.wl, bw.zones, 240, showLabels);
     m.material.map.dispose(); m.material.map = texture; m.material.needsUpdate = true;
   });
 }

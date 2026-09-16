@@ -285,7 +285,7 @@ export const WALLS = [
   { x1: 6.5, y1: 8.5, x2: 6.5, y2: 12, level: 'lt1', h: H1, openings: [] }, // KT1 kanan
   { x1: 3, y1: 8.5, x2: 6.5, y2: 8.5, level: 'lt1', h: H1, openings: [door(2.6)] }, // KT1 belakang (pintu KT1)
   { x1: 3, y1: 7, x2: 6.5, y2: 7, level: 'lt1', h: H1, openings: [] }, // dapur/toilet
-  { x1: 4.75, y1: 7, x2: 4.75, y2: 8.5, level: 'lt1', h: H1, openings: [door(0.3, 0.7)] }, // toilet kanan (pintu)
+  { x1: 4.75, y1: 7, x2: 4.75, y2: 8.5, level: 'lt1', h: H1, openings: [door(0.075, 0.7, 1.9)] }, // toilet kanan (pintu)
   // ---------- LANTAI 2 ----------
   { x1: 3, y1: 3.5, x2: 10, y2: 3.5, level: 'lt2', h: H2, openings: [door(3.7), win(1.0, 1.2)] },
   { x1: 3, y1: 3.5, x2: 3, y2: 12, level: 'lt2', h: H2, openings: [win(1.2, 1.2), win(4.0, 0.6, 0.5, 1.7), door(5.3)] }, // kiri (pintu KTU ke balkon)
@@ -294,9 +294,9 @@ export const WALLS = [
   { x1: 3, y1: 12, x2: 6.5, y2: 12, level: 'lt2', h: H2, openings: [win(0.6, 2.4, 1.8, 0.4)] },
   { x1: 6.5, y1: 8.5, x2: 6.5, y2: 12, level: 'lt2', h: H2, openings: [door(0.2)] }, // KTU kanan (pintu)
   { x1: 6.5, y1: 3.5, x2: 6.5, y2: 7, level: 'lt2', h: H2, openings: [door(2.4)] }, // KT2 kanan (pintu)
-  { x1: 6.5, y1: 7, x2: 6.5, y2: 8.5, level: 'lt2', h: H2, openings: [door(0.3, 0.7)] }, // toilet kanan (pintu)
+  { x1: 6.5, y1: 7, x2: 6.5, y2: 8.5, level: 'lt2', h: H2, openings: [door(0.075, 0.7, 1.95)] }, // toilet kanan (pintu)
   { x1: 3, y1: 7, x2: 6.5, y2: 7, level: 'lt2', h: H2, openings: [] },
-  { x1: 3, y1: 8.5, x2: 6.5, y2: 8.5, level: 'lt2', h: H2, openings: [door(0.3, 0.7)] }, // pintu toilet kiri dari KTU
+  { x1: 3, y1: 8.5, x2: 6.5, y2: 8.5, level: 'lt2', h: H2, openings: [door(0.075, 0.7, 1.95)] }, // pintu toilet kiri dari KTU
   { x1: 4.75, y1: 7, x2: 4.75, y2: 8.5, level: 'lt2', h: H2, openings: [] },
 ];
 
