@@ -47,7 +47,7 @@ const html = `<!doctype html>
   <div class="card">
     <h1>Rumah Mbak Alfi <span>walkthrough 3D</span></h1>
     <p><b>Klik untuk mulai jalan</b> · <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> + mouse · <kbd>Shift</kbd> lari · <kbd>Esc</kbd> lepas</p>
-    <p class="muted"><kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> teras · lantai 2 · depan rumah &nbsp; <kbd>M</kbd> orbit &nbsp; <kbd>H</kbd> irisan lantai &nbsp; <kbd>G</kbd> model SKP/blok &nbsp; <kbd>L</kbd> ukuran potongan</p>
+    <p class="muted"><kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> teras · lantai 2 · depan rumah &nbsp; <kbd>M</kbd> orbit &nbsp; <kbd>H</kbd> irisan lantai &nbsp; <kbd>G</kbd> model SKP/blok &nbsp; <kbd>L</kbd> ukuran potongan &nbsp; <kbd>C</kbd> warna potongan &nbsp; <kbd>F</kbd> furnitur</p>
     <p class="muted">Toolbar kanan bawah: ganti tampilan (Jalan / Orbit / Atas / Atap) &amp; irisan lantai. Di mode orbit, klik 2× di lantai untuk berdiri di sana.</p>
   </div>
 </div>
@@ -66,6 +66,8 @@ const html = `<!doctype html>
     <button data-cut="none" class="active" title="Model utuh">Utuh</button>
   </div>
   <div class="grp">
+    <button data-furniture class="active" title="Furnitur & interior sesuai render (tombol F)">🛋 Interior</button>
+    <button data-cutcolors title="Warnai keping potongan / dicoak (tombol C) — default semua putih">🎨 Potongan</button>
     <button data-labels title="Tampilkan ukuran potongan di keramik (tombol L)">📐 Ukuran</button>
   </div>
 </div>

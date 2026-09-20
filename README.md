@@ -14,7 +14,7 @@ cd rumah-alfi-3d && python3 serve.py 8765
 lalu buka <http://localhost:8765>.
 
 Kontrol: klik untuk mengunci mouse, `W A S D` jalan, `Shift` lari, `1/2/3` lompat ke teras depan / lantai 2 / depan rumah,
-`M` mode orbit (denah), `H` irisan lantai, `L` label ukuran potongan (default mati), `G` ganti model SKP asli ↔ model blok,
+`M` mode orbit (denah), `H` irisan lantai, `L` label ukuran potongan (default mati), `C` warna potongan, `F` furnitur, `G` ganti model SKP asli ↔ model blok,
 `P` panel hitungan. Naik ke lantai 2 cukup jalan ke tangga di pojok kanan belakang ruang makan.
 
 ## Hitungan tanpa browser
@@ -32,6 +32,7 @@ Menulis `hitungan.json` dan mencetak tabel. Hasil terakhir juga ada di `hitungan
 - `src/tiles.js` — mesin hitung: grid keramik per region, pemilihan titik mulai (4 sudut + tengah), pengemasan potongan ke keping utuh, dinding KM 2 zona, plin.
 - `src/calc.js` — rangkuman total, dus, cadangan.
 - `src/textures.js`, `src/scene.js`, `src/app.js`, `src/ui.js` — three.js + panel.
+- `src/furniture.js` — furnitur & aksesori prosedural mengikuti render konsep (sofa L, TV wall + LED, meja makan, ranjang 3 kamar, lemari, meja kerja, gorden, railing oval, lampu gantung, downlight). Model SKP hanya memuat kitchen set & tangga.
 - `drawings/hal-XX.jpg` — 78 halaman PDF `1. GAMBAR RUMAH MBAK ALFI.pdf` (80 dpi).
 - `models/` — `.skp` asli, `rumah-raw.glb` (export glTF 96 MB), `rumah.glb` (dikompres meshopt + WebP, 4,2 MB, yang dimuat web).
 - `vendor/three/` — three.js 0.170 (module, PointerLock/Orbit controls, GLTFLoader, meshopt decoder).
@@ -43,6 +44,8 @@ Menulis `hitungan.json` dan mencetak tabel. Hasil terakhir juga ada di `hitungan
 - Ukuran ruang = grid as − 15 cm tebal tembok. Kamar mandi 1,60 × 1,35 m bersih (as 1,75 × 1,50).
 - Dinding KM granit 30×60 dipasang tegak, full dari lantai sampai bawah dak (toilet tidak berplafon di model: lt.1 3,68 m, lt.2 3,35 m; opsi plafon 2,7/3,0 m di Setelan): bawah teraso titik biru, sisanya putih polos. Tinggi teraso default beda tiap KM sebagai pembanding: Lt.1 180 cm, Lt.2 kiri 120 cm, Lt.2 kanan 60 cm (`terasoH` di `data.js`; samakan lewat Setelan atau `--zones=180/dak`). Keping yang kena bukaan dicoak (bentuk L), tetap 1 keping.
 - Pintu KM kusen 70 cm, tinggi 190 cm (lt.1) / 195 cm (lt.2), menempel sudut; jendela KM 60 × 40 (ambang 2,18 m) di tengah dinding luar — semua diukur dari model SKP. Kalau pintu riil 210 cm, selisih ±1 keping per pintu.
+- Warna lantai default semua putih; tombol **🎨 Potongan** (atau `C`) mewarnai keping potongan/dicoak. Tombol **🛋 Interior** (atau `F`) menyembunyikan furnitur.
+- Pencahayaan: environment map langit (pantulan di granit/kaca), matahari bayangan halus, downlight hangat per ruang, LED strip & lampu gantung emissive. Warna model SKP disesuaikan saat dimuat: tembok krem hangat, atap/list charcoal, lampu menyala.
 - Label ukuran potongan default mati; tombol **📐 Ukuran** di toolbar atau tekan `L`.
 - Ruang jemur di gambar rabat beton; kalau ikut digranit, centang di Setelan (menjelaskan angka "teras bawah 21 m²" dari tukang).
 - Granit 80×80 dihitung 3 keping/dus (1,92 m²); ubah di Setelan kalau merek lain.

@@ -51,8 +51,8 @@ export function rectMesh(r, y, mat, uvFromBB = null) {
 export function buildFloors(results, group) {
   const meshes = [];
   for (const f of results.floors) {
-    const { texture, bb } = floorTexture(f, f.layout, 110, window.__showLabels ?? false);
-    const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: f.outdoor ? 0.9 : 0.35, metalness: 0.02, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+    const { texture, bb } = floorTexture(f, f.layout, 110, window.__showLabels ?? false, window.__showCutColors ?? false);
+    const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: f.outdoor ? 0.85 : f.isBathroom ? 0.5 : 0.22, metalness: 0.0, envMapIntensity: f.outdoor ? 0.4 : 1.0, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
     const g = new THREE.Group();
     g.name = f.id;
     g.userData.area = f;
@@ -138,8 +138,8 @@ export function buildBathWalls(results, group) {
     ];
     b.walls.forEach((wl, i) => {
       const s = sides[i];
-      const { texture, W, H } = wallTexture(wl, b.zones, 240, window.__showLabels ?? false);
-      const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.3, transparent: true });
+      const { texture, W, H } = wallTexture(wl, b.zones, 240, window.__showLabels ?? false, window.__showCutColors ?? false);
+      const mat = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.25, transparent: true });
       const m = new THREE.Mesh(new THREE.PlaneGeometry(W, H), mat);
       m.position.set(s.x, base + H / 2, s.z);
       m.rotation.y = s.rotY;

@@ -4,7 +4,7 @@ import { bbox } from './tiles.js';
 
 // Warna potongan dibuat tipis ("transparan"): keping utuh + sedikit rona hangat (potongan) / lavender (dicoak)
 export const COLORS = {
-  polos: { full: '#f3efe7', cut: '#efe3d0', L: '#e7dfec', grout: '#b9b2a6' },
+  polos: { full: '#f4f1ea', cut: '#efe3d0', L: '#e7dfec', grout: '#c9c3b8' },
   structured: { full: '#cfcac1', cut: '#d3c4ad', L: '#cbc3d1', grout: '#8f8a82' },
   bath: { full: '#dfe7ea', cut: '#e2ded2', L: '#dcdae6', grout: '#9aa4a8' },
   // teraso: dasar putih, serpihan kecil abu / abu tua / hitam / krem, jarang (seperti contoh foto)
@@ -22,7 +22,7 @@ function palette(area) {
  * Gambar pola lantai untuk satu area. Mengembalikan {texture, bb}.
  * Canvas menutupi bounding box region; bagian di luar region transparan.
  */
-export function floorTexture(area, layout, pxPerM = 110, showLabels = true) {
+export function floorTexture(area, layout, pxPerM = 110, showLabels = true, showCutColors = false) {
   const bb = bbox(area.rects);
   const W = bb.x2 - bb.x1;
   const H = bb.y2 - bb.y1;
@@ -37,7 +37,7 @@ export function floorTexture(area, layout, pxPerM = 110, showLabels = true) {
   const Y = (y) => (y - bb.y1) * pxPerM;
 
   for (const c of layout.cells) {
-    const color = c.full ? pal.full : c.shape === 'L' ? pal.L : pal.cut;
+    const color = !showCutColors || c.full ? pal.full : c.shape === 'L' ? pal.L : pal.cut;
     for (const p of c.parts) {
       ctx.fillStyle = color;
       ctx.fillRect(X(p.x1), Y(p.y1), (p.x2 - p.x1) * pxPerM, (p.y2 - p.y1) * pxPerM);
@@ -91,7 +91,7 @@ export function floorTexture(area, layout, pxPerM = 110, showLabels = true) {
  * Tekstur dinding kamar mandi (2 motif). wallLayout dari layoutWall.
  * Canvas: lebar = len, tinggi = totalH. Bukaan pintu transparan.
  */
-export function wallTexture(wallLayout, zones, pxPerM = 160, showLabels = false) {
+export function wallTexture(wallLayout, zones, pxPerM = 160, showLabels = false, showCutColors = false) {
   const W = wallLayout.len;
   const H = zones.bottomH + zones.topH;
   const cv = document.createElement('canvas');
@@ -102,7 +102,7 @@ export function wallTexture(wallLayout, zones, pxPerM = 160, showLabels = false)
   const Y = (y) => (H - y) * pxPerM; // y=0 lantai di bawah canvas
   for (const c of wallLayout.cells) {
     const pal = c.zone === 'bawah' ? COLORS.teraso : COLORS.putih;
-    const color = c.full ? pal.full : pal.cut;
+    const color = !showCutColors || c.full ? pal.full : pal.cut;
     const x = X(c.x1), y = Y(c.y2), w = (c.x2 - c.x1) * pxPerM, h = (c.y2 - c.y1) * pxPerM;
     const parts = c.parts || [c];
     // gambar hanya bagian keping yang ada (keping dicoak bukaan = bentuk L): clip ke union part

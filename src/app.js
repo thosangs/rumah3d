@@ -6,6 +6,7 @@ import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { computeAll, DEFAULT_CONFIG } from './calc.js';
 import { LEVELS, STAIRS, SLAB2, SITE } from './data.js';
 import { buildAll } from './scene.js';
+import { buildFurniture } from './furniture.js';
 import { renderHitungan, renderGalleries, bindLightbox } from './ui.js';
 
 // ---------------------------------------------------------------------------
@@ -18,7 +19,7 @@ renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.05;
+renderer.toneMappingExposure = 1.0;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xbfd8ee);
@@ -26,24 +27,54 @@ scene.fog = new THREE.Fog(0xbfd8ee, 60, 140);
 
 const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.05, 300);
 
-const hemi = new THREE.HemisphereLight(0xcfe3ff, 0x7a7466, 0.7);
+// Pencahayaan: langit (environment map gradien → pantulan lembut di granit & kaca), matahari dengan bayangan halus,
+// hemisphere tipis, downlight hangat tiap ruang (point light), LED strip/lampu gantung emissive di furnitur.
+{
+  const cv = document.createElement('canvas'); cv.width = 512; cv.height = 256;
+  const ctx = cv.getContext('2d');
+  const gr = ctx.createLinearGradient(0, 0, 0, 256);
+  gr.addColorStop(0, '#5f93d6'); gr.addColorStop(0.42, '#bcd3ea'); gr.addColorStop(0.5, '#efe9df'); gr.addColorStop(0.56, '#a49c90'); gr.addColorStop(1, '#5c574f');
+  ctx.fillStyle = gr; ctx.fillRect(0, 0, 512, 256);
+  ctx.fillStyle = 'rgba(255,250,235,0.95)'; ctx.beginPath(); ctx.ellipse(150, 62, 26, 18, 0, 0, Math.PI * 2); ctx.fill(); // cakram matahari
+  const eq = new THREE.CanvasTexture(cv); eq.mapping = THREE.EquirectangularReflectionMapping; eq.colorSpace = THREE.SRGBColorSpace;
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromEquirectangular(eq).texture;
+  scene.environmentIntensity = 0.55;
+  pmrem.dispose(); eq.dispose();
+}
+const hemi = new THREE.HemisphereLight(0xd6e6f7, 0x6f6a60, 0.35);
 scene.add(hemi);
-const sun = new THREE.DirectionalLight(0xfff4e0, 3.2);
+const sun = new THREE.DirectionalLight(0xfff1dc, 2.8);
 sun.position.set(-9, 18, 26); // matahari dari depan-kiri (menyorot fasad & masuk lewat jendela depan)
 sun.castShadow = true;
-sun.shadow.mapSize.set(1536, 1536);
+sun.shadow.mapSize.set(2048, 2048);
 sun.shadow.camera.left = -16; sun.shadow.camera.right = 16;
 sun.shadow.camera.top = 16; sun.shadow.camera.bottom = -16;
 sun.shadow.camera.near = 1; sun.shadow.camera.far = 70;
-sun.shadow.bias = -0.0005;
+sun.shadow.bias = -0.0004;
+sun.shadow.normalBias = 0.02;
+sun.shadow.radius = 4;
 sun.target.position.set(5, 0, 10);
 scene.add(sun, sun.target);
-// lampu dalam ruangan supaya interior tidak gelap
-for (const [x, y, z] of [[6.5, 3.3, 6], [8.2, 3.3, 11], [4.75, 7.0, 7.5], [8.2, 7.0, 11]]) {
-  const pl = new THREE.PointLight(0xfff1dc, 8, 11, 1.6);
+// downlight hangat per ruang (x, y, z, intensitas)
+const ROOM_LIGHTS = [
+  [8.3, 3.0, 10.9, 14], // r. keluarga
+  [7.35, 3.4, 6.0, 9], // r. makan
+  [4.3, 3.4, 5.2, 8], // dapur
+  [7.2, 3.4, 7.7, 5], // koridor
+  [4.75, 3.0, 10.2, 8], // KT1
+  [8.4, 6.9, 11.3, 10], // r. keluarga lt2
+  [7.5, 6.9, 6.0, 7], // selasar lt2
+  [4.75, 6.9, 5.2, 8], // KT2
+  [4.75, 6.9, 10.2, 8], // KT utama
+];
+for (const [x, y, z, i] of ROOM_LIGHTS) {
+  const pl = new THREE.PointLight(0xffe4c2, i, 9, 1.7);
   pl.position.set(x, y, z);
   scene.add(pl);
 }
+// cahaya LED hangat lembut di TV wall & lemari bawah tangga (tanpa bayangan)
+for (const [x, y, z, i] of [[6.9, 1.6, 10.9, 3], [9.4, 1.6, 7.0, 1.5]]) { const pl = new THREE.PointLight(0xffc98a, i, 4, 2); pl.position.set(x, y, z); scene.add(pl); }
 
 // ---------------------------------------------------------------------------
 // State
@@ -54,6 +85,8 @@ let cfg = { ...DEFAULT_CONFIG, wallZones: { ...DEFAULT_CONFIG.wallZones } };
 let results = computeAll(cfg);
 let built = null;
 let showLabels = false; // label ukuran potongan: tekan L
+let showCutColors = false; // warna keping potongan/dicoak: tekan C (default semua putih)
+let showFurniture = true; // furnitur & aksesori interior: tekan F
 let hideUpper = false;
 let glbRoot = null;
 
@@ -70,6 +103,11 @@ function rebuild() {
   }
   results = computeAll(cfg);
   built = buildAll(results);
+  const fur = buildFurniture((z) => stairHeight(9.4, z));
+  fur.lt1.position.y = LEVELS.lt1; fur.lt2.position.y = LEVELS.lt2;
+  fur.lt1.visible = fur.lt2.visible = showFurniture;
+  built.gFloors1.add(fur.lt1); built.gFloors2.add(fur.lt2);
+  built.furniture = fur;
   scene.add(built.root);
   applyVisibility();
   renderHitungan(results, document.getElementById('tab-hitung'), (areaId) => teleportToArea(areaId));  // no-op kalau panel tak ada
@@ -127,6 +165,8 @@ addEventListener('keydown', (e) => {
     case 'KeyM': setMode(mode === 'walk' ? 'orbit' : 'walk'); break;
     case 'KeyH': setCut(cut === 'none' ? 'lt1' : cut === 'lt1' ? 'lt2' : 'none'); break;
     case 'KeyL': setLabels(!showLabels); break;
+    case 'KeyC': setCutColors(!showCutColors); break;
+    case 'KeyF': setFurniture(!showFurniture); break;
     case 'KeyG': if (glbRoot) { glbOn = !glbOn; applyVisibility(); } break;
     case 'KeyP': togglePanel(); break;
   }
@@ -311,21 +351,36 @@ function setLabels(on) {
   document.querySelectorAll('#viewbar [data-labels]').forEach((b) => b.classList.toggle('active', on));
   rebuildTexturesOnly();
 }
+function setCutColors(on) {
+  showCutColors = on;
+  window.__showCutColors = on;
+  document.querySelectorAll('#viewbar [data-cutcolors]').forEach((b) => b.classList.toggle('active', on));
+  document.querySelectorAll('.legend').forEach((el) => el.classList.toggle('dim', !on));
+  rebuildTexturesOnly();
+}
+function setFurniture(on) {
+  showFurniture = on;
+  document.querySelectorAll('#viewbar [data-furniture]').forEach((b) => b.classList.toggle('active', on));
+  if (built?.furniture) { built.furniture.lt1.visible = on; built.furniture.lt2.visible = on; }
+}
 async function rebuildTexturesOnly() {
   const { floorTexture, wallTexture } = await import('./textures.js');
   for (const g of built.floors) {
     const f = g.userData.area;
-    const { texture } = floorTexture(f, f.layout, 110, showLabels);
+    const { texture } = floorTexture(f, f.layout, 110, showLabels, showCutColors);
     g.children.forEach((m) => { m.material.map.dispose(); m.material.map = texture; m.material.needsUpdate = true; });
   }
   built.root.traverse((m) => {
     const bw = m.userData?.bathWall;
     if (!bw) return;
-    const { texture } = wallTexture(bw.wl, bw.zones, 240, showLabels);
+    const { texture } = wallTexture(bw.wl, bw.zones, 240, showLabels, showCutColors);
     m.material.map.dispose(); m.material.map = texture; m.material.needsUpdate = true;
   });
 }
 document.querySelectorAll('#viewbar [data-labels]').forEach((b) => b.addEventListener('click', () => setLabels(!showLabels)));
+document.querySelectorAll('#viewbar [data-cutcolors]').forEach((b) => b.addEventListener('click', () => setCutColors(!showCutColors)));
+document.querySelectorAll('#viewbar [data-furniture]').forEach((b) => b.addEventListener('click', () => setFurniture(!showFurniture)));
+document.querySelectorAll('.legend').forEach((el) => el.classList.add('dim'));
 
 // ---------------------------------------------------------------------------
 // Panel & UI
@@ -404,6 +459,15 @@ gltfLoader.load(
       }
       for (const m of mats) {
         if (!m) continue;
+        if (!m.map && !m.transparent) {
+          const c = m.color;
+          // cat tembok (dari fixmodel: 0.84/0.81/0.76) → krem hangat seperti render; atap & list beton abu 0.27 → charcoal;
+          // lampu (oranye SketchUp) → menyala; kusen/railing hitam sedikit metalik
+          if (Math.abs(c.r - 0.84) < 0.03 && Math.abs(c.g - 0.81) < 0.03 && Math.abs(c.b - 0.76) < 0.03) { c.set(0xe9dfcd); m.roughness = 0.92; }
+          else if (Math.abs(c.r - 0.27) < 0.02 && Math.abs(c.g - 0.27) < 0.02 && Math.abs(c.b - 0.27) < 0.02) { c.set(0x33373d); m.roughness = 0.7; }
+          else if (c.r > 0.9 && c.g > 0.55 && c.g < 0.85 && c.b < 0.3) { c.set(0xfff0d0); m.emissive = new THREE.Color(0xffd9a0); m.emissiveIntensity = 2.5; }
+          else if (c.r < 0.2 && c.g < 0.2 && c.b < 0.22) { m.metalness = 0.45; m.roughness = 0.5; }
+        }
         if (m.name === 'Solarflat') {
           // atap solarflat: lembar polikarbonat datar, tembus cahaya (bukan beton)
           m.transparent = true; m.opacity = 0.45; m.depthWrite = false; m.roughness = 0.25; m.metalness = 0; m.side = THREE.DoubleSide;
