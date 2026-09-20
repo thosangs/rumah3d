@@ -92,9 +92,11 @@ export function sofaL(len = 2.6, depth = 0.95, chaise = 1.6) {
 export function armchair() {
   const g = new THREE.Group();
   g.add(CYL(0.4, 0.38, 0.32, FM.fabricCream, 0, 0.32, 0, 28)); // dudukan
-  const back = mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.42, 28, 1, true, Math.PI * 0.75, Math.PI * 1.5), FM.fabricCream, 0, 0.66, 0);
+  // sandaran melengkung: busur 270°, terbuka di +z (depan)
+  const back = mesh(new THREE.CylinderGeometry(0.42, 0.42, 0.42, 28, 1, true, Math.PI * 0.25, Math.PI * 1.5), FM.fabricCream, 0, 0.66, 0);
   back.material = FM.fabricCream.clone(); back.material.side = THREE.DoubleSide; g.add(back);
-  const rim = mesh(new THREE.TorusGeometry(0.4, 0.06, 10, 28, Math.PI * 1.5), FM.fabricCream, 0, 0.86, 0); rim.rotation.x = Math.PI / 2; rim.rotation.z = Math.PI * 0.75; g.add(rim);
+  const arc = []; for (let i = 0; i <= 28; i++) { const t = Math.PI * 0.25 + (i / 28) * Math.PI * 1.5; arc.push(new THREE.Vector3(Math.sin(t) * 0.4, 0, Math.cos(t) * 0.4)); }
+  g.add(mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(arc), 28, 0.06, 10, false), FM.fabricCream, 0, 0.86, 0));
   g.add(CYL(0.36, 0.36, 0.08, FM.fabricBeige, 0, 0.5, 0.02, 28));
   g.add(CYL(0.2, 0.25, 0.16, FM.black, 0, 0.08, 0, 16));
   return g;
@@ -112,15 +114,14 @@ export function plant(h = 1.8, potR = 0.28, potMat = FM.pot) {
   const seed = h * 7 + potR;
   let s = seed;
   const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
-  const n = Math.round(h * 9);
+  const n = Math.round(h * 16);
   for (let i = 0; i < n; i++) {
-    const t = 0.35 + 0.65 * (i / n);
+    const t = 0.45 + 0.55 * (i / n);
     const y = potR * 1.9 + (h - potR * 1.9) * t;
-    const a = rnd() * Math.PI * 2, r = 0.15 + rnd() * 0.45 * (0.5 + t);
-    const leaf = mesh(new THREE.IcosahedronGeometry(0.06 + rnd() * 0.09, 0), rnd() < 0.5 ? FM.green : FM.green2, Math.cos(a) * r, y, Math.sin(a) * r);
-    leaf.rotation.set(rnd() * 3, rnd() * 3, rnd() * 3); leaf.scale.set(1.6, 0.35, 1.0);
+    const a = rnd() * Math.PI * 2, r = 0.05 + rnd() * 0.22 * (0.6 + t); // daun rapat di sekitar batang
+    const leaf = mesh(new THREE.IcosahedronGeometry(0.07 + rnd() * 0.08, 0), rnd() < 0.5 ? FM.green : FM.green2, Math.cos(a) * r, y, Math.sin(a) * r);
+    leaf.rotation.set(rnd() * 3, rnd() * 3, rnd() * 3); leaf.scale.set(1.8, 0.4, 1.1);
     g.add(leaf);
-    g.add(mesh(new THREE.CylinderGeometry(0.006, 0.01, r, 5), FM.walnutDark, Math.cos(a) * r / 2, y - 0.05, Math.sin(a) * r / 2).rotateZ(Math.PI / 2 - 0.3).rotateY(-a));
   }
   return g;
 }
@@ -178,12 +179,13 @@ export function bed(w = 1.6, l = 2.0, style = 'beige') {
   }
   // headboard
   if (style === 'beige') {
-    for (let i = 0; i < 6; i++) g.add(B((w + 0.5) / 6 - 0.02, 1.15, 0.08, FM.fabricBeige, -(w + 0.5) / 2 + (w + 0.5) / 12 + i * (w + 0.5) / 6, 0.6 + 0.575, -0.04));
+    const hb = w + 0.3;
+    for (let i = 0; i < 6; i++) g.add(B(hb / 6 - 0.02, 1.15, 0.08, FM.fabricBeige, -hb / 2 + hb / 12 + i * (hb / 6), 0.6 + 0.575, -0.04));
   } else if (style === 'dark') {
     g.add(B(w + 0.4, 0.5, 0.06, FM.fabricDark, 0, 0.5, -0.03)); // headboard kain gelap rendah
-    const s = B(w + 0.9, 0.9, 0.05, slatMat(w + 0.9), 0, 1.55, -0.03); g.add(s); // panel slat walnut di atas
-    g.add(B(w + 0.9, 0.02, 0.06, FM.led, 0, 1.09, -0.02)); // LED bawah panel
-    g.add(B(w + 0.9, 0.02, 0.06, FM.led, 0, 2.01, -0.02));
+    const s = B(w + 0.6, 0.9, 0.05, slatMat(w + 0.6), 0, 1.55, -0.03); g.add(s); // panel slat walnut di atas
+    g.add(B(w + 0.6, 0.02, 0.06, FM.led, 0, 1.09, -0.02)); // LED bawah panel
+    g.add(B(w + 0.6, 0.02, 0.06, FM.led, 0, 2.01, -0.02));
   } else {
     const hw = w + 0.6;
     for (let i = 0; i < 3; i++) g.add(B(hw / 3 - 0.02, 1.2, 0.06, i === 1 ? FM.walnutDark : FM.walnut, -hw / 2 + hw / 6 + i * (hw / 3), 0.6 + 0.4, -0.03));
@@ -268,7 +270,7 @@ export function curtain(w, h, mat = FM.curtain) {
 export function ringPendant(drop = 0.9) {
   const g = new THREE.Group(); // titik nol = plafon
   g.add(CYL(0.06, 0.06, 0.03, FM.blackMatte, 0, -0.015, 0, 16));
-  const rings = [[0.55, -drop], [0.4, -drop + 0.35], [0.28, -drop + 0.6]];
+  const rings = [[0.45, -drop], [0.33, -drop + 0.28], [0.22, -drop + 0.5]];
   for (const [r, y] of rings) {
     const t = mesh(new THREE.TorusGeometry(r, 0.015, 8, 48), FM.brass, 0, y, 0); t.rotation.x = Math.PI / 2 + 0.15; g.add(t);
     const l = mesh(new THREE.TorusGeometry(r, 0.008, 6, 48), FM.bulb, 0, y - 0.01, 0); l.rotation.x = Math.PI / 2 + 0.15; g.add(l);
@@ -348,24 +350,26 @@ export function buildFurniture(stairHeightAt) {
   const CEIL1_BACK = 3.55; // bawah dak
   const y2 = 0; // grup lt1/lt2 sudah diposisikan di elevasi lantainya masing-masing
 
+  // Ukuran ranjang: KT1 single 120×200, KT2 queen 160×200, KT utama king 180×200. Kamar 3,35 × 3,35 m → furnitur dibuat
+  // seperlunya (ranjang + 1 nakas + lemari ≤ 1,2 m + 1 meja) supaya ada ruang jalan ≥ 60 cm.
+
   // ---- Ruang keluarga lt1 (x 6.575–9.925, z 8.425–13.425) ----
-  put(lt1, rug(3.0, 2.7), 8.35, 10.8);
   put(lt1, tvWall(3.0, 3.0), 6.575 + 0.03, 10.9, Math.PI / 2); // menempel tembok KT1, menghadap +x
-  put(lt1, sofaL(2.6, 0.95, 1.7), 9.35, 10.6, -Math.PI / 2); // sandaran ke tembok kanan (x=10), chaise di ujung belakang
-  put(lt1, roundTable(0.45, 0.42), 7.9, 10.55);
-  put(lt1, roundTable(0.3, 0.52), 7.85, 11.55);
-  put(lt1, armchair(), 7.35, 9.15, -Math.PI * 0.25);
+  put(lt1, sofaL(2.6, 0.95, 1.7), 9.4, 10.6, -Math.PI / 2); // sandaran ke tembok kanan (x=10), chaise di ujung depan menjorok ke ruang
+  put(lt1, roundTable(0.42, 0.42), 7.95, 10.45);
+  put(lt1, roundTable(0.28, 0.5), 7.7, 11.45);
+  put(lt1, armchair(), 8.3, 12.8, Math.PI + 0.5); // di depan jendela depan, menghadap sofa/TV
   put(lt1, plant(1.9, 0.3), 9.55, 8.85);
-  put(lt1, plant(1.4, 0.24), 9.55, 13.0);
-  put(lt1, curtain(1.9, 2.95), 9.85, 9.75, -Math.PI / 2); // jendela kanan belakang (z 9–10.5)
-  put(lt1, curtain(1.9, 2.95), 9.85, 11.75, -Math.PI / 2); // jendela kanan depan (z 11–12.5)
-  put(lt1, curtain(2.0, 2.95), 9.1, 13.35, Math.PI); // jendela depan (x 8.3–10)
-  put(lt1, ringPendant(0.85), 8.3, 10.9, 0, CEIL1_FRONT);
+  put(lt1, plant(1.3, 0.22), 7.05, 8.8);
+  put(lt1, curtain(1.9, 2.95), 9.9, 9.75, -Math.PI / 2); // jendela kanan belakang (z 9–10.5)
+  put(lt1, curtain(1.9, 2.95), 9.9, 11.75, -Math.PI / 2); // jendela kanan depan (z 11–12.5)
+  put(lt1, curtain(2.0, 2.95), 9.1, 13.38, Math.PI); // jendela depan (x 8.3–10)
+  put(lt1, ringPendant(0.65), 8.3, 10.9, 0, CEIL1_FRONT);
   for (const [x, z] of [[7.2, 9.3], [9.3, 9.3], [7.2, 12.6], [9.3, 12.6]]) put(lt1, downlight(), x, z, 0, CEIL1_FRONT);
 
   // ---- Ruang makan (x 6.5–8.3, z 4.6–7.0) + lemari bawah tangga ----
-  put(lt1, diningSet(1.6, 0.85), 7.35, 6.0, Math.PI / 2); // meja memanjang searah tangga
-  put(lt1, moleculePendant(1.2), 7.35, 6.0, Math.PI / 2, CEIL1_BACK);
+  put(lt1, diningSet(1.5, 0.8), 7.3, 6.0, Math.PI / 2); // meja memanjang searah tangga
+  put(lt1, moleculePendant(1.2), 7.3, 6.0, Math.PI / 2, CEIL1_BACK);
   put(lt1, underStairCabinet(5.0, 9.0, (z) => stairHeightAt(z) - LEVELS.lt1, 0.98, [6.5, 7.6]), 9.4, 0); // x 8.91–9.89
   put(lt1, plant(1.6, 0.28), 8.0, 3.9);
   put(lt1, downlight(), 7.3, 4.6, 0, CEIL1_BACK); put(lt1, downlight(), 4.2, 5.2, 0, CEIL1_BACK); put(lt1, downlight(), 7.2, 7.7, 0, CEIL1_BACK);
@@ -373,48 +377,47 @@ export function buildFurniture(stairHeightAt) {
   put(lt1, railingOval(9.06 - 4.56, 1.0, 0.2 / 0.3), 8.86, 4.56, -Math.PI / 2, 0.6); // lokal +x → +z dunia, mulai dari bordes +0,6
   put(lt1, railingOval(0.9, 1.0, 0), 8.28, 3.62, -Math.PI / 2, 0); // pengaman winder sisi dapur (x 8.28)
 
-  // ---- KT1 (x 3.075–6.425, z 8.575–11.925) ----
-  put(lt1, bed(1.6, 2.0, 'beige'), 4.25, 8.62, 0); // headboard di tembok belakang
-  put(lt1, sideTable(0.42, true), 5.3, 8.85);
-  put(lt1, desk(1.2, 0.5), 4.75, 11.55, Math.PI); // di bawah jendela depan
-  put(lt1, chair(FM.fabricCream), 4.75, 11.0, 0);
-  put(lt1, wardrobe(1.7, 2.4, 0.6, FM.cream, 3, false), 6.1, 10.5, -Math.PI / 2); // tembok kanan
+  // ---- KT1 (x 3.075–6.425, z 8.575–11.925) — single 120×200, headboard di tembok belakang ----
+  put(lt1, bed(1.2, 2.0, 'beige'), 3.85, 8.62, 0);
+  put(lt1, sideTable(0.4, true), 4.9, 8.85);
+  put(lt1, desk(1.1, 0.5), 4.75, 11.6, Math.PI); // di bawah jendela depan
+  put(lt1, chair(FM.fabricCream), 4.75, 11.05, 0);
+  put(lt1, wardrobe(1.2, 2.4, 0.55, FM.cream, 2, false), 6.13, 10.5, -Math.PI / 2); // tembok kanan
   put(lt1, curtain(1.7, 2.95, FM.curtainCream), 3.17, 10.75, Math.PI / 2); // jendela kiri z 10–11.5
   put(lt1, downlight(), 4.0, 9.6, 0, CEIL1_FRONT); put(lt1, downlight(), 5.5, 11.2, 0, CEIL1_FRONT);
 
   // ---- Lantai 2: r. keluarga / kerja (x 6.575–9.925, z 9.06–13.425) ----
-  put(lt2, rug(2.6, 2.0, FM.rug2), 8.5, 11.6, 0, y2);
   put(lt2, desk(1.4, 0.6, FM.walnut), 8.6, 12.55, Math.PI, y2);
   put(lt2, officeChair(), 8.6, 11.85, 0, y2);
   put(lt2, sideboard(1.6, 0.8, 0.45), 9.65, 10.9, -Math.PI / 2, y2);
-  put(lt2, plant(1.7, 0.26, FM.potWhite), 7.0, 9.6, 0, y2);
+  put(lt2, plant(1.7, 0.26, FM.potWhite), 6.95, 9.7, 0, y2);
   put(lt2, plant(1.4, 0.24, FM.potWhite), 9.6, 12.95, 0, y2);
-  put(lt2, curtain(2.0, 2.9), 9.1, 13.35, Math.PI, y2);
-  put(lt2, curtain(2.0, 2.9), 9.85, 11.4, -Math.PI / 2, y2);
+  put(lt2, curtain(2.0, 2.9), 9.1, 13.38, Math.PI, y2);
+  put(lt2, curtain(2.0, 2.9), 9.9, 11.4, -Math.PI / 2, y2);
   for (const [x, z] of [[7.3, 10.0], [9.2, 10.0], [7.3, 12.6], [9.2, 12.6], [7.5, 4.6], [7.5, 7.5]]) put(lt2, downlight(), x, z, 0, y2 + 3.3);
   // railing void (x 8.43, z 3.575–9.06) + ujung tangga tiba (z 9.06, x 8.43–8.88)
   put(lt2, railingOval(9.06 - 3.575, 1.0, 0), 8.43, 3.575, -Math.PI / 2, y2);
   put(lt2, railingOval(0.45, 1.0, 0), 8.43, 9.06, 0, y2);
 
-  // ---- KT2 (x 3.075–6.425, z 3.575–6.925) — ranjang gelap, headboard di tembok toilet (z 6.925) ----
-  put(lt2, bed(1.6, 2.0, 'dark'), 4.4, 6.88, Math.PI, y2); // headboard di −z lokal → menghadap tembok z=6.925
-  put(lt2, sideTable(0.4, false, FM.white), 5.55, 6.6, 0, y2);
-  put(lt2, desk(1.1, 0.5, FM.white), 3.4, 4.5, Math.PI / 2, y2); // tembok kiri
-  put(lt2, officeChair(), 4.0, 4.5, -Math.PI / 2, y2);
-  put(lt2, B(1.0, 1.6, 0.03, FM.black, 0, 0, 0), 3.12, 4.5, Math.PI / 2, y2 + 1.7); // rak ambalan hitam di atas meja
-  for (let i = 0; i < 3; i++) put(lt2, B(0.9, 0.02, 0.25, FM.walnut, 0, 0, 0), 3.24, 4.5, Math.PI / 2, y2 + 1.3 + i * 0.35);
-  put(lt2, wardrobe(1.3, 2.4, 0.6, FM.cream, 2, true), 5.75, 3.9, 0, y2); // tembok belakang, samping jendela
+  // ---- KT2 (x 3.075–6.425, z 3.575–6.925) — queen 160×200, ranjang gelap, headboard di tembok toilet (z 6.925) ----
+  put(lt2, bed(1.6, 2.0, 'dark'), 4.3, 6.88, Math.PI, y2); // headboard di −z lokal → menghadap tembok z=6.925
+  put(lt2, sideTable(0.4, false, FM.white), 5.4, 6.65, 0, y2);
+  put(lt2, desk(1.0, 0.5, FM.white), 3.4, 4.4, Math.PI / 2, y2); // tembok kiri
+  put(lt2, officeChair(), 3.95, 4.4, -Math.PI / 2, y2);
+  put(lt2, B(0.9, 1.3, 0.03, FM.black, 0, 0, 0), 3.12, 4.4, Math.PI / 2, y2 + 1.75); // rak ambalan hitam di atas meja
+  for (let i = 0; i < 3; i++) put(lt2, B(0.8, 0.02, 0.22, FM.walnut, 0, 0, 0), 3.22, 4.4, Math.PI / 2, y2 + 1.35 + i * 0.35);
+  put(lt2, wardrobe(1.2, 2.4, 0.55, FM.cream, 2, true), 5.8, 3.87, 0, y2); // tembok belakang, samping jendela
   put(lt2, curtain(1.2, 2.9, FM.curtainCream), 4.55, 3.66, 0, y2); // jendela belakang x 4–5.2
   put(lt2, downlight(), 4.4, 5.6, 0, y2 + 3.3); put(lt2, downlight(), 5.6, 4.3, 0, y2 + 3.3);
 
-  // ---- KT utama (x 3.075–6.425, z 8.575–11.925) — headboard walnut di tembok kanan (x 6.425) ----
-  put(lt2, bed(1.8, 2.0, 'walnut'), 6.38, 10.7, -Math.PI / 2, y2); // headboard −z lokal → +x dunia
-  put(lt2, wardrobe(1.5, 2.4, 0.6, FM.creamPanel, 3, false, true), 4.85, 8.9, 0, y2); // tembok belakang
-  put(lt2, desk(1.1, 0.45, FM.cream, FM.walnut), 3.35, 10.9, Math.PI / 2, y2); // meja rias tembok kiri
-  put(lt2, chair(FM.fabricCream), 3.95, 10.9, -Math.PI / 2, y2);
-  const mirror = mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.02, 40), FM.mirror, 3.13, y2 + 1.55, 10.9); mirror.rotation.z = Math.PI / 2; lt2.add(mirror);
-  const mirrorRim = mesh(new THREE.TorusGeometry(0.41, 0.02, 8, 40), FM.walnut, 3.12, y2 + 1.55, 10.9); mirrorRim.rotation.y = Math.PI / 2; lt2.add(mirrorRim);
-  put(lt2, B(1.3, 2.6, 0.04, slatMat(1.3), 0, 0, 0), 3.11, 10.9, Math.PI / 2, 1.3); // panel slat walnut di belakang meja rias
+  // ---- KT utama (x 3.075–6.425, z 8.575–11.925) — king 180×200, headboard walnut di tembok kanan (x 6.425) ----
+  put(lt2, bed(1.8, 2.0, 'walnut'), 6.38, 10.65, -Math.PI / 2, y2); // headboard −z lokal → +x dunia; bebas dari ayunan pintu (z 8.7–9.6)
+  put(lt2, wardrobe(1.3, 2.4, 0.55, FM.creamPanel, 3, false, true), 4.6, 8.86, 0, y2); // tembok belakang, antara pintu toilet & pintu kamar
+  put(lt2, desk(1.0, 0.45, FM.cream, FM.walnut), 3.32, 10.7, Math.PI / 2, y2); // meja rias tembok kiri
+  put(lt2, chair(FM.fabricCream), 3.88, 10.7, -Math.PI / 2, y2);
+  const mirror = mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.02, 40), FM.mirror, 3.13, y2 + 1.55, 10.7); mirror.rotation.z = Math.PI / 2; lt2.add(mirror);
+  const mirrorRim = mesh(new THREE.TorusGeometry(0.39, 0.02, 8, 40), FM.walnut, 3.12, y2 + 1.55, 10.7); mirrorRim.rotation.y = Math.PI / 2; lt2.add(mirrorRim);
+  put(lt2, B(1.0, 2.6, 0.04, slatMat(1.0), 0, 0, 0), 3.11, 10.7, Math.PI / 2, 1.3); // panel slat walnut di belakang meja rias
   put(lt2, curtain(2.4, 2.9), 4.8, 11.83, Math.PI, y2); // jendela depan x 3.6–6.0
   put(lt2, downlight(), 4.0, 9.7, 0, y2 + 3.3); put(lt2, downlight(), 5.6, 11.2, 0, y2 + 3.3);
 

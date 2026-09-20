@@ -542,7 +542,7 @@ function animate() {
 }
 animate();
 
-window.__dbg = { teleport, camera, player, setMode, scene, get results() { return results; }, get glb() { return glbRoot; } };
+window.__dbg = { teleport, camera, player, setMode, scene, render: () => renderer.render(scene, camera), get results() { return results; }, get glb() { return glbRoot; } };
 
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
