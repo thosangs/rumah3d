@@ -32,7 +32,7 @@ Menulis `hitungan.json` dan mencetak tabel. Hasil terakhir juga ada di `hitungan
 - `src/tiles.js` — mesin hitung: grid keramik per region, pemilihan titik mulai (4 sudut + tengah), pengemasan potongan ke keping utuh, dinding KM 2 zona, plin.
 - `src/calc.js` — rangkuman total, dus, cadangan.
 - `src/textures.js`, `src/scene.js`, `src/app.js`, `src/ui.js` — three.js + panel.
-- `src/furniture.js` — furnitur & aksesori prosedural mengikuti render konsep (sofa L, TV wall + LED, meja makan, ranjang 3 kamar, lemari, meja kerja, gorden, railing oval, lampu gantung, downlight). Model SKP hanya memuat kitchen set & tangga.
+- `src/furniture.js` — furnitur & aksesori prosedural mengikuti render konsep (sofa L, TV wall + LED, meja makan, ranjang 3 kamar, lemari, meja kerja, gorden, railing oval, lampu gantung, downlight). Model SKP hanya memuat kitchen set & tangga. Penempatan mengikuti bukaan nyata di GLB (bukan DED): pintu utama di tembok x=6,5 dari teras depan, jendela r. keluarga hanya di tembok depan, tembok kanan polos, jendela KT1 & KT2 di tembok kiri, pintu geser balkon KT utama di tembok kiri. Meja kerja menghadap jendela; jalur pintu & tangga dibiarkan kosong.
 - `drawings/hal-XX.jpg` — 78 halaman PDF `1. GAMBAR RUMAH MBAK ALFI.pdf` (80 dpi).
 - `models/` — `.skp` asli, `rumah-raw.glb` (export glTF 96 MB), `rumah.glb` (dikompres meshopt + WebP, 4,2 MB, yang dimuat web).
 - `vendor/three/` — three.js 0.170 (module, PointerLock/Orbit controls, GLTFLoader, meshopt decoder).

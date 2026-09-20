@@ -179,7 +179,7 @@ export function bed(w = 1.6, l = 2.0, style = 'beige') {
   }
   // headboard
   if (style === 'beige') {
-    const hb = w + 0.3;
+    const hb = w + 0.2;
     for (let i = 0; i < 6; i++) g.add(B(hb / 6 - 0.02, 1.15, 0.08, FM.fabricBeige, -hb / 2 + hb / 12 + i * (hb / 6), 0.6 + 0.575, -0.04));
   } else if (style === 'dark') {
     g.add(B(w + 0.4, 0.5, 0.06, FM.fabricDark, 0, 0.5, -0.03)); // headboard kain gelap rendah
@@ -337,89 +337,114 @@ export function underStairCabinet(from, to, hAt, depth = 0.98, nicheAt = [6.5, 7
   g.add(B(depth - 0.1, 0.02, nicheAt[1] - nicheAt[0] - 0.05, FM.walnut, -0.02, 1.55, (nicheAt[0] + nicheAt[1]) / 2));
   return g;
 }
+/** Panel dinding: bidang krem besar + 2 list walnut vertikal di kedua ujung, menempel tembok di −z lokal */
+export function wallPanels(w = 4.8, h = 2.9) {
+  const g = new THREE.Group();
+  const n = Math.max(2, Math.round((w - 0.6) / 1.2));
+  const pw = (w - 0.6) / n;
+  for (let i = 0; i < n; i++) g.add(B(pw - 0.02, h - 0.2, 0.03, i % 2 ? FM.creamPanel : FM.cream, -w / 2 + 0.3 + pw / 2 + i * pw, 0.1 + (h - 0.2) / 2, 0.015));
+  g.add(B(0.3, h, 0.05, FM.walnut, -w / 2 + 0.15, h / 2, 0.025));
+  g.add(B(0.3, h, 0.05, FM.walnut, w / 2 - 0.15, h / 2, 0.025));
+  return g;
+}
 export function decorVase(h = 0.3, mat = FM.blackMatte) { return CYL(0.05, 0.08, h, mat, 0, h / 2, 0, 16); }
 
 // ---------------------------------------------------------------------------
 // Penempatan sesuai denah (x = sumbu x denah, z = sumbu y denah)
 // ---------------------------------------------------------------------------
 export function buildFurniture(stairHeightAt) {
+  // Semua posisi bukaan dari model GLB (bukan asumsi DED):
+  //  lt1: pintu utama di tembok x=6,5 (z 12,36–13,26, dari teras depan) · jendela r. keluarga hanya di tembok depan
+  //       (3 jendela tinggi x 7,06–7,47 / 8,02–8,43 / 8,97–9,38) · tembok kanan x=10 polos · pintu KT1 di z=8,5 (x 5,59–6,39)
+  //       · jendela KT1 di tembok kiri z 8,78–9,91 · pintu belakang x 6,61–7,41 · jendela tangga x 9,02–9,64
+  //  lt2: tembok depan kaca penuh x 6,94–9,48 · pintu balkon di x=6,5 (z 12,36–13,26) · pintu KT2 z 6,09–6,89 ·
+  //       jendela KT2 tembok kiri z 5,65–6,64 · pintu KTU z 8,61–9,41 · pintu geser balkon KTU tembok kiri z 8,6–10,09
+  // Ranjang: KT1 single 120×200, KT2 queen 160×200, KT utama king 180×200. Meja kerja selalu menghadap jendela.
   const lt1 = new THREE.Group(); lt1.name = 'furnitur-lt1';
   const lt2 = new THREE.Group(); lt2.name = 'furnitur-lt2';
   const put = (grp, obj, x, z, ry = 0, y = 0) => { obj.position.set(x, y, z); obj.rotation.y = ry; grp.add(obj); return obj; };
   const CEIL1_FRONT = 3.1; // plafon zona depan lt1 (model: +3,15) — relatif lantai
   const CEIL1_BACK = 3.55; // bawah dak
-  const y2 = 0; // grup lt1/lt2 sudah diposisikan di elevasi lantainya masing-masing
-
-  // Ukuran ranjang: KT1 single 120×200, KT2 queen 160×200, KT utama king 180×200. Kamar 3,35 × 3,35 m → furnitur dibuat
-  // seperlunya (ranjang + 1 nakas + lemari ≤ 1,2 m + 1 meja) supaya ada ruang jalan ≥ 60 cm.
+  const CEIL2 = 3.3;
 
   // ---- Ruang keluarga lt1 (x 6.575–9.925, z 8.425–13.425) ----
-  put(lt1, tvWall(3.0, 3.0), 6.575 + 0.03, 10.9, Math.PI / 2); // menempel tembok KT1, menghadap +x
-  put(lt1, sofaL(2.6, 0.95, 1.7), 9.4, 10.6, -Math.PI / 2); // sandaran ke tembok kanan (x=10), chaise di ujung depan menjorok ke ruang
-  put(lt1, roundTable(0.42, 0.42), 7.95, 10.45);
-  put(lt1, roundTable(0.28, 0.5), 7.7, 11.45);
-  put(lt1, armchair(), 8.3, 12.8, Math.PI + 0.5); // di depan jendela depan, menghadap sofa/TV
-  put(lt1, plant(1.9, 0.3), 9.55, 8.85);
-  put(lt1, plant(1.3, 0.22), 7.05, 8.8);
-  put(lt1, curtain(1.9, 2.95), 9.9, 9.75, -Math.PI / 2); // jendela kanan belakang (z 9–10.5)
-  put(lt1, curtain(1.9, 2.95), 9.9, 11.75, -Math.PI / 2); // jendela kanan depan (z 11–12.5)
-  put(lt1, curtain(2.0, 2.95), 9.1, 13.38, Math.PI); // jendela depan (x 8.3–10)
+  // TV wall di tembok KT1 (x 6,575); pintu utama tepat di kirinya (z 12,36–13,26) seperti render hal. 23.
+  // Sofa membelakangi tembok kanan (polos, diberi panel krem+walnut seperti hal. 22); gorden di 3 jendela tembok depan.
+  // Jalur: pintu utama → lurus ke koridor lewat lorong x 7,0–7,9 (antara konsol TV dan meja).
+  put(lt1, tvWall(2.8, 3.0), 6.575 + 0.03, 10.7, Math.PI / 2); // panel z 9.3–12.1
+  put(lt1, wallPanels(4.8, 2.95), 9.925 - 0.03, 10.9, -Math.PI / 2); // panel dinding di belakang sofa
+  const sofa = put(lt1, sofaL(2.6, 0.85, 1.5), 9.5, 10.75, -Math.PI / 2); // badan z 9.45–12.05, depan di x 9.08
+  sofa.scale.x = -1; // chaise di ujung belakang (dekat koridor), menjorok ke x 8.5
+  put(lt1, roundTable(0.38, 0.42), 8.45, 11.2); // x 8.07–8.83, sela 0,25 ke sofa
+  put(lt1, roundTable(0.25, 0.5), 8.3, 12.1);
+  put(lt1, armchair(), 8.85, 12.75, Math.PI + 0.6); // di depan jendela depan, menghadap sofa/TV
+  put(lt1, plant(1.9, 0.3), 9.55, 8.85); // pojok belakang kanan
+  put(lt1, plant(1.3, 0.22), 9.6, 13.05); // pojok depan kanan
+  put(lt1, curtain(2.8, 2.95), 8.25, 13.38, Math.PI); // 3 jendela tinggi tembok depan (x 6.9–9.6)
   put(lt1, ringPendant(0.65), 8.3, 10.9, 0, CEIL1_FRONT);
   for (const [x, z] of [[7.2, 9.3], [9.3, 9.3], [7.2, 12.6], [9.3, 12.6]]) put(lt1, downlight(), x, z, 0, CEIL1_FRONT);
 
-  // ---- Ruang makan (x 6.5–8.3, z 4.6–7.0) + lemari bawah tangga ----
-  put(lt1, diningSet(1.5, 0.8), 7.3, 6.0, Math.PI / 2); // meja memanjang searah tangga
-  put(lt1, moleculePendant(1.2), 7.3, 6.0, Math.PI / 2, CEIL1_BACK);
+  // ---- Ruang makan: di depan lemari bawah tangga (hal. 25–26). Ruang bebas x 3,66–8,9 (kitchen set di tembok kiri) ----
+  put(lt1, diningSet(1.6, 0.8), 7.5, 6.0, Math.PI / 2); // meja x 7.1–7.9, z 5.2–6.8; kursi x ±0.75 → 6.5–7.0 & 8.0–8.5
+  put(lt1, moleculePendant(1.2), 7.5, 6.0, Math.PI / 2, CEIL1_BACK);
   put(lt1, underStairCabinet(5.0, 9.0, (z) => stairHeightAt(z) - LEVELS.lt1, 0.98, [6.5, 7.6]), 9.4, 0); // x 8.91–9.89
-  put(lt1, plant(1.6, 0.28), 8.0, 3.9);
+  put(lt1, plant(1.5, 0.26), 8.0, 3.9); // sudut antara pintu belakang & anak tangga awal
   put(lt1, downlight(), 7.3, 4.6, 0, CEIL1_BACK); put(lt1, downlight(), 4.2, 5.2, 0, CEIL1_BACK); put(lt1, downlight(), 7.2, 7.7, 0, CEIL1_BACK);
-  // railing tangga: sisi terbuka run (x 8.88, z 4.56→9.06, naik 0,2/0,3) + bordes winder (z 3.575–4.56 di x 8.28)
-  put(lt1, railingOval(9.06 - 4.56, 1.0, 0.2 / 0.3), 8.86, 4.56, -Math.PI / 2, 0.6); // lokal +x → +z dunia, mulai dari bordes +0,6
-  put(lt1, railingOval(0.9, 1.0, 0), 8.28, 3.62, -Math.PI / 2, 0); // pengaman winder sisi dapur (x 8.28)
+  // Railing tangga: naik dari sisi r. makan (x<8,28) ke bordes winder, belok ke run di x 8,88–9,925.
+  //  - tepi winder sisi r. makan (z 4,56; x 8,28→8,88) naik 0,2→0,6
+  //  - sisi terbuka run (x 8,88; z 4,56→9,06) naik 0,6→3,8
+  put(lt1, railingOval(0.6, 1.0, 0.4 / 0.6), 8.28, 4.53, 0, 0.2);
+  put(lt1, railingOval(9.06 - 4.56, 1.0, (3.8 - 0.6) / (9.06 - 4.56)), 8.86, 4.56, -Math.PI / 2, 0.6);
 
-  // ---- KT1 (x 3.075–6.425, z 8.575–11.925) — single 120×200, headboard di tembok belakang ----
-  put(lt1, bed(1.2, 2.0, 'beige'), 3.85, 8.62, 0);
-  put(lt1, sideTable(0.4, true), 4.9, 8.85);
-  put(lt1, desk(1.1, 0.5), 4.75, 11.6, Math.PI); // di bawah jendela depan
-  put(lt1, chair(FM.fabricCream), 4.75, 11.05, 0);
-  put(lt1, wardrobe(1.2, 2.4, 0.55, FM.cream, 2, false), 6.13, 10.5, -Math.PI / 2); // tembok kanan
-  put(lt1, curtain(1.7, 2.95, FM.curtainCream), 3.17, 10.75, Math.PI / 2); // jendela kiri z 10–11.5
+  // ---- KT1 (x 3.075–6.425, z 8.575–11.925) — single 120×200 ----
+  // Pintu di z 8,5 (x 5,59–6,39, ayunan ke z≤9,3). Jendela tinggi di tembok kiri z 8,78–9,91 → meja kerja di bawahnya
+  // menghadap jendela (−x). Headboard di tembok belakang, bebas dari ayunan pintu. Lemari di tembok depan (polos).
+  put(lt1, bed(1.2, 2.0, 'beige'), 4.85, 8.62, 0); // x 4.2–5.5, z 8.62–10.67
+  put(lt1, desk(1.1, 0.5), 3.35, 9.35, Math.PI / 2); // x 3.1–3.6, z 8.8–9.9
+  put(lt1, chair(FM.fabricCream), 3.85, 9.35, -Math.PI / 2); // menghadap −x (jendela)
+  put(lt1, wardrobe(1.2, 2.4, 0.55, FM.cream, 2, false), 4.85, 11.65, Math.PI); // tembok depan, depan kaki ranjang (sela 0,7)
+  put(lt1, curtain(1.4, 2.95, FM.curtainCream), 3.17, 9.35, Math.PI / 2);
   put(lt1, downlight(), 4.0, 9.6, 0, CEIL1_FRONT); put(lt1, downlight(), 5.5, 11.2, 0, CEIL1_FRONT);
 
   // ---- Lantai 2: r. keluarga / kerja (x 6.575–9.925, z 9.06–13.425) ----
-  put(lt2, desk(1.4, 0.6, FM.walnut), 8.6, 12.55, Math.PI, y2);
-  put(lt2, officeChair(), 8.6, 11.85, 0, y2);
-  put(lt2, sideboard(1.6, 0.8, 0.45), 9.65, 10.9, -Math.PI / 2, y2);
-  put(lt2, plant(1.7, 0.26, FM.potWhite), 6.95, 9.7, 0, y2);
-  put(lt2, plant(1.4, 0.24, FM.potWhite), 9.6, 12.95, 0, y2);
-  put(lt2, curtain(2.0, 2.9), 9.1, 13.38, Math.PI, y2);
-  put(lt2, curtain(2.0, 2.9), 9.9, 11.4, -Math.PI / 2, y2);
-  for (const [x, z] of [[7.3, 10.0], [9.2, 10.0], [7.3, 12.6], [9.2, 12.6], [7.5, 4.6], [7.5, 7.5]]) put(lt2, downlight(), x, z, 0, y2 + 3.3);
+  // Tembok depan kaca penuh (x 6,94–9,48) → meja kerja menghadap kaca; sideboard di tembok KT utama (x 6,575);
+  // pintu balkon di x 6,5 (z 12,36–13,26) → sisi kiri depan dibiarkan kosong.
+  put(lt2, desk(1.4, 0.6, FM.walnut), 8.5, 12.65, Math.PI); // x 7.8–9.2, z 12.35–12.95
+  put(lt2, officeChair(), 8.5, 11.95, 0); // menghadap +z (kaca)
+  put(lt2, sideboard(1.6, 0.8, 0.45), 6.575 + 0.25, 10.8, Math.PI / 2); // tembok KTU, z 10.0–11.6
+  put(lt2, plant(1.6, 0.26, FM.potWhite), 6.9, 9.8); // sudut tembok KTU, di luar ayunan pintu (z ≤ 9,41)
+  put(lt2, plant(1.3, 0.22, FM.potWhite), 9.7, 13.05);
+  put(lt2, curtain(2.7, 2.9), 8.2, 13.38, Math.PI); // gorden kaca depan
+  for (const [x, z] of [[7.3, 10.0], [9.2, 10.0], [7.3, 12.6], [9.2, 12.6], [7.5, 4.6], [7.5, 7.5]]) put(lt2, downlight(), x, z, 0, CEIL2);
   // railing void (x 8.43, z 3.575–9.06) + ujung tangga tiba (z 9.06, x 8.43–8.88)
-  put(lt2, railingOval(9.06 - 3.575, 1.0, 0), 8.43, 3.575, -Math.PI / 2, y2);
-  put(lt2, railingOval(0.45, 1.0, 0), 8.43, 9.06, 0, y2);
+  put(lt2, railingOval(9.06 - 3.575, 1.0, 0), 8.43, 3.575, -Math.PI / 2);
+  put(lt2, railingOval(0.45, 1.0, 0), 8.43, 9.06, 0);
 
-  // ---- KT2 (x 3.075–6.425, z 3.575–6.925) — queen 160×200, ranjang gelap, headboard di tembok toilet (z 6.925) ----
-  put(lt2, bed(1.6, 2.0, 'dark'), 4.3, 6.88, Math.PI, y2); // headboard di −z lokal → menghadap tembok z=6.925
-  put(lt2, sideTable(0.4, false, FM.white), 5.4, 6.65, 0, y2);
-  put(lt2, desk(1.0, 0.5, FM.white), 3.4, 4.4, Math.PI / 2, y2); // tembok kiri
-  put(lt2, officeChair(), 3.95, 4.4, -Math.PI / 2, y2);
-  put(lt2, B(0.9, 1.3, 0.03, FM.black, 0, 0, 0), 3.12, 4.4, Math.PI / 2, y2 + 1.75); // rak ambalan hitam di atas meja
-  for (let i = 0; i < 3; i++) put(lt2, B(0.8, 0.02, 0.22, FM.walnut, 0, 0, 0), 3.22, 4.4, Math.PI / 2, y2 + 1.35 + i * 0.35);
-  put(lt2, wardrobe(1.2, 2.4, 0.55, FM.cream, 2, true), 5.8, 3.87, 0, y2); // tembok belakang, samping jendela
-  put(lt2, curtain(1.2, 2.9, FM.curtainCream), 4.55, 3.66, 0, y2); // jendela belakang x 4–5.2
-  put(lt2, downlight(), 4.4, 5.6, 0, y2 + 3.3); put(lt2, downlight(), 5.6, 4.3, 0, y2 + 3.3);
+  // ---- KT2 (x 3.075–6.425, z 3.575–6.925) — queen 160×200 ----
+  // Pintu di x 6,5 (z 6,09–6,89, ayunan x≥5,6). Jendela di tembok kiri z 5,65–6,64 → meja kerja di bawahnya menghadap −x.
+  // Headboard di tembok belakang (polos), lemari di tembok toilet (z 6,925) di antara meja & ayunan pintu.
+  put(lt2, bed(1.6, 2.0, 'dark'), 4.95, 3.62, 0); // x 4.1–5.8, z 3.62–5.67
+  put(lt2, sideTable(0.35, false, FM.white), 6.05, 3.9); // kanan headboard
+  put(lt2, sideTable(0.3, false, FM.white), 3.85, 3.9); // kiri headboard
+  put(lt2, desk(1.0, 0.5, FM.white), 3.35, 6.15, Math.PI / 2); // x 3.1–3.6, z 5.65–6.65 (bawah jendela)
+  put(lt2, officeChair(), 3.9, 6.15, -Math.PI / 2); // menghadap jendela
+  put(lt2, wardrobe(1.2, 2.4, 0.55, FM.cream, 2, true), 4.85, 6.65, Math.PI); // tembok toilet, z 6.37–6.92, x 4.25–5.45
+  put(lt2, curtain(1.2, 2.9, FM.curtainCream), 3.17, 6.15, Math.PI / 2);
+  put(lt2, downlight(), 4.4, 4.6, 0, CEIL2); put(lt2, downlight(), 5.0, 6.0, 0, CEIL2);
 
-  // ---- KT utama (x 3.075–6.425, z 8.575–11.925) — king 180×200, headboard walnut di tembok kanan (x 6.425) ----
-  put(lt2, bed(1.8, 2.0, 'walnut'), 6.38, 10.65, -Math.PI / 2, y2); // headboard −z lokal → +x dunia; bebas dari ayunan pintu (z 8.7–9.6)
-  put(lt2, wardrobe(1.3, 2.4, 0.55, FM.creamPanel, 3, false, true), 4.6, 8.86, 0, y2); // tembok belakang, antara pintu toilet & pintu kamar
-  put(lt2, desk(1.0, 0.45, FM.cream, FM.walnut), 3.32, 10.7, Math.PI / 2, y2); // meja rias tembok kiri
-  put(lt2, chair(FM.fabricCream), 3.88, 10.7, -Math.PI / 2, y2);
-  const mirror = mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.02, 40), FM.mirror, 3.13, y2 + 1.55, 10.7); mirror.rotation.z = Math.PI / 2; lt2.add(mirror);
-  const mirrorRim = mesh(new THREE.TorusGeometry(0.39, 0.02, 8, 40), FM.walnut, 3.12, y2 + 1.55, 10.7); mirrorRim.rotation.y = Math.PI / 2; lt2.add(mirrorRim);
-  put(lt2, B(1.0, 2.6, 0.04, slatMat(1.0), 0, 0, 0), 3.11, 10.7, Math.PI / 2, 1.3); // panel slat walnut di belakang meja rias
-  put(lt2, curtain(2.4, 2.9), 4.8, 11.83, Math.PI, y2); // jendela depan x 3.6–6.0
-  put(lt2, downlight(), 4.0, 9.7, 0, y2 + 3.3); put(lt2, downlight(), 5.6, 11.2, 0, y2 + 3.3);
+  // ---- KT utama (x 3.075–6.425, z 8.575–11.925) — king 180×200 ----
+  // Pintu kamar di x 6,5 (z 8,61–9,41), pintu toilet di z 8,5 (x 3,06–3,76), pintu geser balkon di tembok kiri z 8,6–10,09.
+  // Jalur z 8,6–9,45 dibiarkan kosong menghubungkan ketiga pintu. Headboard walnut di tembok kanan (z 9,45–11,35),
+  // meja rias + cermin bundar di tembok kiri setelah pintu geser, lemari lengkung kecil di tembok depan sisi kiri.
+  put(lt2, bed(1.8, 2.0, 'walnut'), 6.38, 10.4, -Math.PI / 2); // z 9.45–11.35, x 6.38→4.33
+  put(lt2, desk(1.0, 0.45, FM.cream, FM.walnut), 3.32, 10.65, Math.PI / 2); // meja rias z 10.15–11.15
+  put(lt2, chair(FM.fabricCream), 3.82, 10.65, -Math.PI / 2);
+  const mirror = mesh(new THREE.CylinderGeometry(0.36, 0.36, 0.02, 40), FM.mirror, 3.13, 1.55, 10.65); mirror.rotation.z = Math.PI / 2; lt2.add(mirror);
+  const mirrorRim = mesh(new THREE.TorusGeometry(0.37, 0.02, 8, 40), FM.walnut, 3.12, 1.55, 10.65); mirrorRim.rotation.y = Math.PI / 2; lt2.add(mirrorRim);
+  put(lt2, B(1.0, 2.6, 0.04, slatMat(1.0), 0, 0, 0), 3.11, 10.65, Math.PI / 2, 1.3); // panel slat walnut di belakang meja rias
+  put(lt2, wardrobe(1.0, 2.4, 0.55, FM.creamPanel, 2, false, true), 3.6, 11.65, Math.PI).scale.x = -1; // x 3.1–4.1 (+lengkung ke 4.37 sisi ruang), z 11.37–11.92
+  put(lt2, curtain(1.3, 2.9), 3.17, 9.55, Math.PI / 2); // gorden pintu geser balkon
+  put(lt2, downlight(), 4.0, 9.7, 0, CEIL2); put(lt2, downlight(), 5.6, 11.2, 0, CEIL2);
 
   return { lt1, lt2 };
 }
