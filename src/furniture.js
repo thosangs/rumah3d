@@ -153,7 +153,7 @@ export function underStairCabinet(from, to, hAt, depth = 0.98, nicheAt = [6.55, 
   // menutup gerigi balok anak tangga model SKP supaya sisi tangga rata seperti render
   {
     const { run } = STAIRS;
-    const nosing = (z) => (run.from - LEVELS.lt1) + 0.2 + (z - run.yStart) * (0.2 / 0.3);
+    const nosing = (z) => (run.from - LEVELS.lt1) + (z - run.yStart) * (0.2 / 0.3) - 0.01; // garis lewat sudut belakang-atas tiap trap → selalu ≤ permukaan injak; gerigi trap tetap terlihat di atasnya (seperti render)
     const z1 = from, z2 = to;
     const b1 = stairSoffitAt(z1) - 0.025, b2 = stairSoffitAt(z2) - 0.025, t1 = nosing(z1), t2 = nosing(z2);
     const x0 = -0.545, x1 = -0.521; // x 8.855–8.879: tepat di luar balok anak tangga (x ≥ 8.88)
