@@ -26,7 +26,7 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xbfd8ee);
 scene.fog = new THREE.Fog(0xbfd8ee, 60, 140);
 
-const camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 0.05, 300);
+const camera = new THREE.PerspectiveCamera(62, innerWidth / innerHeight, 0.05, 300);
 
 // Pencahayaan: langit (environment map gradien → pantulan lembut di granit & kaca), matahari dengan bayangan halus,
 // hemisphere tipis, downlight hangat tiap ruang (point light), LED strip/lampu gantung emissive di furnitur.
@@ -92,7 +92,7 @@ const SHOT = (() => {
   const q = new URLSearchParams(location.search);
   if (!q.has('shot')) return null;
   const v3 = (k, d) => { const a = (q.get(k) || '').split(',').map(Number); return a.length === 3 && a.every((n) => !isNaN(n)) ? a : d; };
-  return { cam: v3('cam', [8.3, 1.65, 8.6]), look: v3('look', [8.3, 1.4, 12]), cut: q.get('cut') || 'none', fov: +q.get('fov') || 70, nofur: q.has('nofur') };
+  return { cam: v3('cam', [8.3, 1.65, 8.6]), look: v3('look', [8.3, 1.4, 12]), cut: q.get('cut') || 'none', fov: +q.get('fov') || 62, nofur: q.has('nofur') };
 })();
 if (SHOT) { document.body.classList.add('shot'); showFurniture = !SHOT.nofur; }
 let shotFrames = 0;

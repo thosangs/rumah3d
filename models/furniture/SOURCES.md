@@ -40,3 +40,5 @@ Halaman model menyatakan "Free Download"; FurniMesh menyebut hasil generasinya b
 | fm_desk_walnut.glb | Walnut Waterfall Desk | https://furnimesh.com/library/tables/desk/a-modern-desk-featuring-a-distinctive-waterfall-fboct1/ |
 | fm_office_chair_mesh.glb | Contemporary Black Mesh Office Chair | https://furnimesh.com/library/seating/office-chair/a-contemporary-black-chair-featuring-a-breathable-9o84qz/ |
 | fm_dresser_wood.glb | Contemporary Wood Dresser | https://furnimesh.com/library/storage/dresser/a-threedrawer-dresser-with-rounded-corners-and-kznzyz/ |
+| fm_olive_tree.glb | Realistic Potted Plant (faux olive tree) | https://furnimesh.com/library/decor/plant/a-faux-olive-tree-presented-in-a-kdkvhn/ |
+| fm_olive_tree2.glb | Modern Concrete Potted Plant (artificial olive tree) | https://furnimesh.com/library/decor/plant/an-artificial-olive-tree-presented-in-a-pxobbm/ |

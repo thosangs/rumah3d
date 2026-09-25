@@ -36,6 +36,7 @@ export const ASSETS = {
   round_table_s: { file: 'bl_round_table_s.glb' },
   ring_pendant: { file: 'bl_ring_pendant.glb', anchor: 'top' },
   molecule_pendant: { file: 'bl_molecule_pendant.glb', anchor: 'top' },
+  concrete_pot: { file: 'bl_concrete_pot.glb' }, // pot beton abu 0.6 m (tinggi 0.62)
   // --- Poly Haven CC0 ---
   plant_tree: { file: 'ph_pachira_aquatica_01.glb', height: 1.9, pick: /_d$/ }, // pohon pot tinggi (file berisi 4 varian berjajar; dipakai varian d saja)
   plant_tree2: { file: 'ph_pachira_aquatica_01.glb', height: 1.6, pick: /_b$/ }, // varian b, lebih kecil
@@ -65,6 +66,8 @@ export const ASSETS = {
   fm_desk_walnut: { file: 'fm_desk_walnut.glb', width: 1.4 }, // meja walnut waterfall
   fm_office_chair_mesh: { file: 'fm_office_chair_mesh.glb', height: 1.0 }, // kursi kantor mesh hitam
   fm_dresser_wood: { file: 'fm_dresser_wood.glb', width: 1.4 }, // dresser 3 laci kayu
+  fm_olive_tree: { file: 'fm_olive_tree.glb', height: 2.0 }, // pohon zaitun ranting jarang dalam pot (render r. makan hal. 25–27)
+  fm_olive_tree2: { file: 'fm_olive_tree2.glb', height: 2.0 }, // pohon zaitun pot beton (alternatif)
 };
 
 const loader = new GLTFLoader();

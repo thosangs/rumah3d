@@ -19,6 +19,8 @@ export const LAYOUT = { lt1: [...ruangKeluarga, ...ruangMakan, ...kt1], lt2: [..
 const std = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0, ...o });
 export const FM = {
   cream: std(0xeae3d5, { roughness: 0.6 }),
+  doorPanel: std(0xe4d9c3, { roughness: 0.45 }), // panel pintu lemari krem satin (sedikit lebih gelap & lebih licin dari tembok)
+  seam: std(0x8f8477, { roughness: 0.9 }), // celah/nat antar panel
   walnut: std(0x6b4a2f, { roughness: 0.55 }),
   walnutDark: std(0x54392a, { roughness: 0.6 }),
   black: std(0x17181a, { roughness: 0.45, metalness: 0.5 }),
@@ -62,25 +64,85 @@ export function railingOval(len, h = 1.0, slope = 0) {
   }
   return g;
 }
-/** Lemari bawah tangga: kotak-kotak krem mengikuti bawah anak tangga, plus niche walnut terbuka */
-export function underStairCabinet(from, to, hAt, depth = 0.98, nicheAt = [6.5, 7.6]) {
+/** Prisma dengan atas miring: alas di y=0, tinggi hLo di z1 dan hHi di z2, lebar depth di sumbu x (pusat x=0). */
+function slopedBox(depth, z1, z2, hLo, hHi, mat) {
+  const x0 = -depth / 2, x1 = depth / 2;
+  const v = [
+    [x0, 0, z1], [x1, 0, z1], [x1, 0, z2], [x0, 0, z2], // 0-3 alas
+    [x0, hLo, z1], [x1, hLo, z1], [x1, hHi, z2], [x0, hHi, z2], // 4-7 atas (miring)
+  ];
+  const f = [
+    [0, 2, 1], [0, 3, 2], // bawah
+    [4, 5, 6], [4, 6, 7], // atas miring
+    [0, 1, 5], [0, 5, 4], // sisi z1
+    [3, 7, 6], [3, 6, 2], // sisi z2
+    [0, 4, 7], [0, 7, 3], // muka -x (depan lemari)
+    [1, 2, 6], [1, 6, 5], // muka +x (tembok)
+  ];
+  const pos = [];
+  for (const t of f) for (const k of t) pos.push(...v[k]);
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.computeVertexNormals();
+  return mesh(g, mat);
+}
+/** Lemari bawah tangga seperti render hal. 25–26: pintu panel krem lebar ±0,62 m dengan celah tipis, atas mengikuti
+ *  kemiringan tangga, plin hitam 8 cm, garis horizontal di y 1,0, dan niche walnut 2 baris × 3 kotak berlampu LED.
+ *  from..to = bentang z; hAt(z) = tinggi bawah anak tangga (dari lantai); depth = kedalaman (x). Muka lemari di x lokal −depth/2. */
+export function underStairCabinet(from, to, hAt, depth = 0.98, nicheAt = [6.55, 8.05]) {
   const g = new THREE.Group();
-  const step = 0.3;
-  for (let z = from; z < to - 1e-6; z += step) {
-    const z2 = Math.min(z + step, to);
-    const hh = Math.max(0.1, hAt(z2) - 0.1);
-    const inNiche = z >= nicheAt[0] - 1e-6 && z2 <= nicheAt[1] + 1e-6;
-    if (inNiche) {
-      g.add(B(depth, 1.1, z2 - z, FM.cream, 0, 0.55, (z + z2) / 2));
-      g.add(B(depth, hh - 2.0, z2 - z, FM.cream, 0, 2.0 + (hh - 2.0) / 2, (z + z2) / 2));
-      g.add(B(depth - 0.04, 0.9, z2 - z, FM.walnut, -0.02, 1.55, (z + z2) / 2));
-      g.add(B(0.4, 0.86, z2 - z - 0.02, FM.walnutDark, -depth / 2 + 0.2, 1.55, (z + z2) / 2));
-      g.add(B(0.02, 0.86, 0.02, FM.led, -depth / 2 + 0.41, 1.55, (z + z2) / 2));
-    } else g.add(B(depth, hh, z2 - z, FM.cream, 0, hh / 2, (z + z2) / 2));
-    g.add(B(0.006, Math.min(hh, 2.3) - 0.06, 0.008, FM.blackMatte, -depth / 2 - 0.003, Math.min(hh, 2.3) / 2, z2 - 0.004));
+  const gap = 0.014, plinthH = 0.08;
+  const under = (z) => Math.max(0.3, hAt(z) - 0.06);
+  const face = -depth / 2;
+  // badan (satu prisma miring per 30 cm supaya kemiringan halus) mundur 1,5 cm di belakang bidang pintu
+  const [q1, q2] = nicheAt, qy1 = 1.05, qy2 = 1.95, qd = 0.35;
+  for (let z = from; z < to - 1e-6; z += 0.3) {
+    const z2 = Math.min(z + 0.3, to);
+    const bodyDepth = depth - 0.03;
+    if (z2 > q1 + 1e-6 && z < q2 - 1e-6) {
+      // segmen niche: badan bawah (0..qy1), badan atas (qy2..bawah tangga), dan badan belakang niche (di balik kedalaman qd)
+      g.add(slopedBox(bodyDepth, z, z2, qy1, qy1, FM.seam)).position.x = 0.015;
+      const up = slopedBox(bodyDepth, z, z2, under(z) - qy2, under(z2) - qy2, FM.seam); up.position.set(0.015, qy2, 0); g.add(up);
+      const back = slopedBox(bodyDepth - qd, z, z2, qy2 - qy1, qy2 - qy1, FM.seam); back.position.set(0.015 + qd / 2, qy1, 0); g.add(back);
+    } else {
+      g.add(slopedBox(bodyDepth, z, z2, under(z), under(z2), FM.seam)).position.x = 0.015; // badan gelap → celah antar pintu terbaca sebagai garis
+    }
   }
-  g.add(B(0.03, 0.9, 0.03, FM.brass, -depth / 2 + 0.2, 1.55, (nicheAt[0] + nicheAt[1]) / 2));
-  g.add(B(depth - 0.1, 0.02, nicheAt[1] - nicheAt[0] - 0.05, FM.walnut, -0.02, 1.55, (nicheAt[0] + nicheAt[1]) / 2));
+  // pintu-pintu panel krem (lebar ±0,62 m) sebagai prisma tipis di bidang muka, celah 6 mm
+  const nDoors = Math.max(1, Math.round((to - from) / 0.62));
+  const dw = (to - from) / nDoors;
+  for (let i = 0; i < nDoors; i++) {
+    const z1 = from + i * dw + gap / 2, z2 = from + (i + 1) * dw - gap / 2;
+    const [n1, n2] = nicheAt;
+    // bagian bawah pintu (y plin..1.0) & bagian atas (1.0..bawah tangga) dipisah garis horizontal 6 mm; di zona niche
+    // bagian atas dilubangi (niche y 1.05–1.95) → sisakan panel atas niche saja
+    const p1 = slopedBox(0.02, z1, z2, 1.0 - gap / 2 - plinthH, 1.0 - gap / 2 - plinthH, FM.doorPanel); p1.position.set(face + 0.01, plinthH, 0); g.add(p1);
+    const lo = 1.0 + gap / 2;
+    const inNiche = z2 > n1 + 1e-6 && z1 < n2 - 1e-6;
+    if (inNiche) {
+      const top = 1.95 + gap;
+      const pTop = slopedBox(0.02, z1, z2, under(z1) - top, under(z2) - top, FM.doorPanel); pTop.position.set(face + 0.01, top, 0); g.add(pTop);
+      const pMid = slopedBox(0.02, z1, z2, 1.05 - lo, 1.05 - lo, FM.doorPanel); pMid.position.set(face + 0.01, lo, 0); g.add(pMid);
+    } else {
+      const p2 = slopedBox(0.02, z1, z2, under(z1) - lo, under(z2) - lo, FM.doorPanel); p2.position.set(face + 0.01, lo, 0); g.add(p2);
+    }
+  }
+  // plin hitam di kaki lemari
+  g.add(B(0.03, plinthH, to - from, FM.blackMatte, face + 0.02, plinthH / 2, (from + to) / 2));
+  // niche walnut: kotak masuk 0,35 m, 2 baris × 3 kolom, LED strip di bawah tiap rak
+  const [n1, n2] = nicheAt, nw = n2 - n1, ny1 = 1.05, ny2 = 1.95, nd = 0.35;
+  g.add(B(0.02, ny2 - ny1, nw, FM.walnutDark, face + nd - 0.01, (ny1 + ny2) / 2, (n1 + n2) / 2)); // panel belakang walnut gelap
+  const inner = (w, h, d, x, y, z) => g.add(B(w, h, d, FM.walnut, x, y, z));
+  inner(nd, 0.02, nw, face + nd / 2, ny1 + 0.01, (n1 + n2) / 2); // dasar
+  inner(nd, 0.02, nw, face + nd / 2, ny2 - 0.01, (n1 + n2) / 2); // langit-langit
+  inner(nd, 0.02, nw, face + nd / 2, (ny1 + ny2) / 2, (n1 + n2) / 2); // rak tengah
+  for (let c = 0; c <= 3; c++) inner(nd, ny2 - ny1, 0.02, face + nd / 2, (ny1 + ny2) / 2, n1 + (c / 3) * nw); // sekat vertikal
+  for (const y of [ny2 - 0.03, (ny1 + ny2) / 2 - 0.03]) g.add(B(0.02, 0.008, nw - 0.06, FM.led, face + 0.03, y, (n1 + n2) / 2)); // LED
+  // pajangan kecil: vas & buku
+  g.add(CYL(0.05, 0.035, 0.22, FM.cream, face + 0.17, ny1 + 0.13, n1 + nw / 6, 16));
+  g.add(CYL(0.035, 0.03, 0.16, FM.blackMatte, face + 0.17, (ny1 + ny2) / 2 + 0.1, n1 + nw / 2, 16));
+  g.add(B(0.14, 0.05, 0.2, FM.walnutDark, face + 0.2, (ny1 + ny2) / 2 + 0.045, n1 + (5 / 6) * nw));
+  g.add(B(0.14, 0.18, 0.04, FM.cream, face + 0.2, ny1 + 0.11, n1 + (5 / 6) * nw));
   return g;
 }
 
@@ -93,7 +155,7 @@ export function buildFurniture(stairHeightAt) {
   for (const it of LAYOUT.lt1) placeAsset(lt1, it.a, it);
   for (const it of LAYOUT.lt2) placeAsset(lt2, it.a, it);
 
-  put(lt1, underStairCabinet(5.0, 9.0, (z) => stairHeightAt(z) - LEVELS.lt1, 0.98, [6.5, 7.6]), 9.4, 0);
+  put(lt1, underStairCabinet(5.0, 9.0, (z) => stairHeightAt(z) - LEVELS.lt1, 0.98, [6.55, 8.05]), 9.4, 0); // muka lemari x 8.91
   put(lt1, railingOval(0.6, 1.0, 0.4 / 0.6), 8.28, 4.53, 0, 0.2);
   put(lt1, railingOval(9.06 - 4.56, 1.0, (3.8 - 0.6) / (9.06 - 4.56)), 8.86, 4.56, -Math.PI / 2, 0.6);
   put(lt2, railingOval(9.06 - 3.575, 1.0, 0), 8.43, 3.575, -Math.PI / 2);

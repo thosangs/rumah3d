@@ -196,11 +196,17 @@ def office_chair():
 
 def dining_table():
     start()
-    box('top', 1.6, 0.8, 0.035, 0, 0, 0.745, M['marble'], bevel=0.005, seg=2)
+    box('top', 1.6, 0.8, 0.03, 0, 0, 0.745, M['marble'], bevel=0.004, seg=2)
+    box('topEdge', 1.6, 0.8, 0.012, 0, 0, 0.724, M['black'])  # bibir hitam tipis di bawah top
+    t = 0.035
     for sx in (-1, 1):
-        box('legFrameV', 0.05, 0.7, 0.72, sx * 0.72, 0, 0.36, M['black'])
-        box('legFrameH', 0.05, 0.7, 0.05, sx * 0.72, 0, 0.025, M['black'])
-    box('beam', 1.34, 0.05, 0.05, 0, 0, 0.7, M['black'])
+        for sy in (-1, 1):
+            box('leg', t, t, 0.72, sx * (0.8 - t / 2 - 0.02), sy * (0.4 - t / 2 - 0.02), 0.36, M['black'])
+        box('apronShort', t, 0.72, t, sx * (0.8 - t / 2 - 0.02), 0, 0.72 - t / 2 - 0.012, M['black'])
+        box('sledLong', 1.52, t, t, 0, sy * 0, 0.02, M['black']) if False else None
+    for sy in (-1, 1):
+        box('apronLong', 1.52, t, t, 0, sy * (0.4 - t / 2 - 0.02), 0.72 - t / 2 - 0.012, M['black'])
+        box('stretcher', 1.52, t, t, 0, sy * (0.4 - t / 2 - 0.02), 0.06, M['black'])  # rangka bawah (sled)
     export('dining_table')
 
 def tv():
@@ -272,10 +278,12 @@ def tv_wall():
 
 def dining_chair():
     start()
-    box('seat', 0.44, 0.44, 0.07, 0, 0, 0.46, M['fabricBeige'], bevel=0.03, seg=4, subsurf=1)
-    b = box('back', 0.42, 0.06, 0.44, 0, 0.19, 0.72, M['fabricBeige'], bevel=0.025, seg=4, subsurf=1); b.rotation_euler.x = math.radians(-5)
-    for (x, y) in [(-0.18, -0.18), (0.18, -0.18), (-0.18, 0.18), (0.18, 0.18)]:
-        cyl('leg', 0.011, 0.44, x, y, 0.22, M['black'], 8)
+    tan = mat('fabricTan', srgb('#c8a67c'), 1.0)
+    box('seat', 0.46, 0.46, 0.09, 0, 0, 0.455, tan, bevel=0.045, seg=5, subsurf=2)
+    b = box('back', 0.44, 0.07, 0.42, 0, 0.2, 0.73, tan, bevel=0.035, seg=5, subsurf=2); b.rotation_euler.x = math.radians(-7)
+    box('backJoin', 0.3, 0.05, 0.08, 0, 0.19, 0.5, tan, bevel=0.02, seg=3)
+    for (x, y) in [(-0.19, -0.19), (0.19, -0.19), (-0.19, 0.2), (0.19, 0.2)]:
+        l = cyl('leg', 0.009, 0.43, x, y, 0.215, M['black'], 8); l.rotation_euler.x = math.radians(4 if y < 0 else -4)
     export('dining_chair')
 
 def armchair_cream():
@@ -324,31 +332,42 @@ def molecule_pendant():
         bpy.ops.mesh.primitive_uv_sphere_add(radius=0.06, location=(x, 0, -1.1 + dz)); s = bpy.context.active_object; s.data.materials.append(mat('bulb', srgb('#fff6e6'), 1, 0, emit=srgb('#ffe9c4'), emit_str=4)); bpy.ops.object.shade_smooth()
     export('molecule_pendant')
 
+def concrete_pot():
+    start()
+    grey = mat('concrete', srgb('#8a8783'), 0.9)
+    cyl('pot', 0.3, 0.62, 0, 0, 0.31, grey, 48, r2=0.24)
+    cyl('soil', 0.27, 0.02, 0, 0, 0.61, mat('soil', srgb('#3b2f26'), 1.0), 48)
+    export('concrete_pot')
+
+BUILD_ONLY = set(sys.argv[sys.argv.index('--') + 2:]) if '--' in sys.argv and len(sys.argv) > sys.argv.index('--') + 2 else set()
+def want(name): return not BUILD_ONLY or name in BUILD_ONLY
 # ---------------------------------------------------------------------------
-sofa_l()
-bed('bed_single_beige', 1.2, 2.0, 'beige')
-bed('bed_queen_dark', 1.6, 2.0, 'dark')
-bed('bed_king_walnut', 1.8, 2.0, 'walnut')
-wardrobe('wardrobe_120_cream', 1.2, 2.4, 0.55, 'cream', 2)
-wardrobe('wardrobe_120_mirror', 1.2, 2.4, 0.55, 'cream', 2, mirror=True)
-wardrobe('wardrobe_100_curved', 1.0, 2.4, 0.55, 'cream', 2, curved=True)
-desk('desk_white_110', 1.1, 0.5, 'white', 'black')
-desk('desk_walnut_140', 1.4, 0.6, 'walnut', 'black')
-vanity()
-office_chair()
-dining_table()
-dining_chair()
-tv()
-tv_console()
-tv_wall()
-wall_panels()
-curtain('curtain_dark', 'curtain')
-curtain('curtain_cream', 'curtainCream')
-nightstand_float()
-sideboard()
-armchair_cream()
-round_table('round_table_l', 0.38, 0.42)
-round_table('round_table_s', 0.25, 0.5)
-ring_pendant()
-molecule_pendant()
+if want('sofa_l'): sofa_l()
+if want('concrete_pot'): concrete_pot()
+if False: sofa_l()
+if want('bed_single_beige'): bed('bed_single_beige', 1.2, 2.0, 'beige')
+if want('bed_queen_dark'): bed('bed_queen_dark', 1.6, 2.0, 'dark')
+if want('bed_king_walnut'): bed('bed_king_walnut', 1.8, 2.0, 'walnut')
+if want('wardrobe_120_cream'): wardrobe('wardrobe_120_cream', 1.2, 2.4, 0.55, 'cream', 2)
+if want('wardrobe_120_mirror'): wardrobe('wardrobe_120_mirror', 1.2, 2.4, 0.55, 'cream', 2, mirror=True)
+if want('wardrobe_100_curved'): wardrobe('wardrobe_100_curved', 1.0, 2.4, 0.55, 'cream', 2, curved=True)
+if want('desk_white_110'): desk('desk_white_110', 1.1, 0.5, 'white', 'black')
+if want('desk_walnut_140'): desk('desk_walnut_140', 1.4, 0.6, 'walnut', 'black')
+if want('vanity'): vanity()
+if want('office_chair'): office_chair()
+if want('dining_table'): dining_table()
+if want('dining_chair'): dining_chair()
+if want('tv'): tv()
+if want('tv_console'): tv_console()
+if want('tv_wall'): tv_wall()
+if want('wall_panels'): wall_panels()
+if want('curtain_dark'): curtain('curtain_dark', 'curtain')
+if want('curtain_cream'): curtain('curtain_cream', 'curtainCream')
+if want('nightstand_float'): nightstand_float()
+if want('sideboard'): sideboard()
+if want('armchair_cream'): armchair_cream()
+if want('round_table_l'): round_table('round_table_l', 0.38, 0.42)
+if want('round_table_s'): round_table('round_table_s', 0.25, 0.5)
+if want('ring_pendant'): ring_pendant()
+if want('molecule_pendant'): molecule_pendant()
 print('SELESAI')

@@ -15,10 +15,10 @@ export default [
   // (muka dudukan sisi tangga x 7.73, sisi dapur x 7.07); kaki depan bebas dari panel kaki meja (z 5.355–5.405 /
   // 6.795–6.845) dan balok tengah (x 7.375–7.425). Punggung sisi tangga x ≈ 8.25 → 0.66 m ke muka lemari bawah
   // tangga (x 8.91), cukup untuk buka pintu lemari & lewat. Tint 0xeecdc4 → hasil render piksel ≈ (150,111,84), G/R 0.74 B/R 0.56 ≈ boucle hal. 25 (157,115,86).
-  { a: 'dining_chair', x: 6.85, z: 5.7, ry: Math.PI / 2, tint: 0xeecdc4, note: 'sisi dapur, menghadap +x ke meja' },
-  { a: 'dining_chair', x: 6.85, z: 6.5, ry: Math.PI / 2, tint: 0xeecdc4 },
-  { a: 'dining_chair', x: 7.95, z: 5.7, ry: -Math.PI / 2, tint: 0xeecdc4, note: 'sisi tangga, menghadap -x ke meja; punggung 0.66 m dari muka lemari bawah tangga' },
-  { a: 'dining_chair', x: 7.95, z: 6.5, ry: -Math.PI / 2, tint: 0xeecdc4 },
+  { a: 'dining_chair', x: 6.85, z: 5.7, ry: Math.PI / 2, note: 'sisi dapur, menghadap +x ke meja' },
+  { a: 'dining_chair', x: 6.85, z: 6.5, ry: Math.PI / 2 },
+  { a: 'dining_chair', x: 7.95, z: 5.7, ry: -Math.PI / 2, note: 'sisi tangga, menghadap -x ke meja; punggung 0.66 m dari muka lemari bawah tangga' },
+  { a: 'dining_chair', x: 7.95, z: 6.5, ry: -Math.PI / 2 },
   // Lampu gantung molekul emas di atas tengah meja (hal. 25/27), kanopi di plafon 3.55; scale 1.3 → batang 1.43 m,
   // bar 1.46 m searah meja (< panjang top 1.6 m), bola terendah ±1.83 m ≈ 1.07 m di atas top (render hal. 26 ±0.9–1.0 m).
   // Bar di x 7.4 ± 0.08, jauh dari kepala orang yang berdiri dari kursi (x ≤ 6.85 / ≥ 7.95).
@@ -31,7 +31,7 @@ export default [
   // Posisi dipilih agar tajuk: (1) di luar frustum kanan kamera makan-dari-koridor (cam 7.4,8.1; FOV 70° → setengah sudut
   // horizontal 50.8°; jarak tajuk ke bidang frustum ≈ +0.09 m), (2) di belakang kamera rk-dari-koridor (z maks 8.43 < 8.6),
   // (3) tidak menembus muka lemari (x maks 8.85 < 8.91), (4) pot (z 7.8–8.2) di ujung koridor, jauh dari anak tangga winder.
-  { a: 'plant_tree', x: 8.42, z: 8.0, scale: 0.85 },
+  { a: 'fm_olive_tree', x: 8.35, z: 8.35, scale: 1, note: 'pohon zaitun ranting jarang dalam pot (render hal. 25–27) di depan bagian tinggi lemari, kanan niche; ganti ke plant_tree + concrete_pot kalau aset belum ada' },
   // Koridor (hal. 28): tanaman pot di pojok tembok toilet (muka x 4.825) × tembok belakang KT1 (muka z 8.425).
   // Normalisasi aset menggeser isi +0.047 x / +0.0925 z; pada scale 0.9 pot x 5.00–5.43, z 7.97–8.40, daun x 4.85–5.49,
   // z 7.80–8.39 → bebas kedua tembok, di luar ayunan pintu toilet (z ≤ 7.775) & pintu KT1 (x ≥ 5.59). Tinggi ±0.77 m.
