@@ -5,7 +5,7 @@
 //  - Elemen parametrik yang mengikuti geometri rumah tetap dibangun di sini: railing tangga/void motif oval,
 //    lemari bawah tangga, downlight plafon.
 import * as THREE from 'three';
-import { LEVELS } from './data.js';
+import { LEVELS, STAIRS } from './data.js';
 import { placeAsset } from './assets.js';
 import ruangKeluarga from './layout/ruang-keluarga.js';
 import ruangMakan from './layout/ruang-makan.js';
@@ -19,7 +19,8 @@ export const LAYOUT = { lt1: [...ruangKeluarga, ...ruangMakan, ...kt1], lt2: [..
 const std = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0, ...o });
 export const FM = {
   cream: std(0xeae3d5, { roughness: 0.6 }),
-  doorPanel: std(0xe4d9c3, { roughness: 0.45 }), // panel pintu lemari krem satin (sedikit lebih gelap & lebih licin dari tembok)
+  doorPanel: std(0xe4d9c3, { roughness: 0.45 }),
+  stairSoffit: std(0xeeeae2, { roughness: 0.9 }), // pelat bawah tangga (warna tangga model) // panel pintu lemari krem satin (sedikit lebih gelap & lebih licin dari tembok)
   seam: std(0x8f8477, { roughness: 0.9 }), // celah/nat antar panel
   walnut: std(0x6b4a2f, { roughness: 0.55 }),
   walnutDark: std(0x54392a, { roughness: 0.6 }),
@@ -86,13 +87,20 @@ function slopedBox(depth, z1, z2, hLo, hHi, mat) {
   g.computeVertexNormals();
   return mesh(g, mat);
 }
+/** Garis bawah run tangga (soffit) relatif lantai lt1: trap j menempati z [yStart+0.3j, yStart+0.6j... ] dengan alas 0.6+0.2j;
+ *  garis melewati sudut dalam tiap trap (ujung +z), jadi selalu ≤ alas trap di setiap z. */
+export function stairSoffitAt(z) {
+  const { run } = STAIRS;
+  const base = run.from - LEVELS.lt1; // +0.6
+  return base + (z - (run.yStart + 0.3)) * (0.2 / 0.3);
+}
 /** Lemari bawah tangga seperti render hal. 25–26: pintu panel krem lebar ±0,62 m dengan celah tipis, atas mengikuti
  *  kemiringan tangga, plin hitam 8 cm, garis horizontal di y 1,0, dan niche walnut 2 baris × 3 kotak berlampu LED.
  *  from..to = bentang z; hAt(z) = tinggi bawah anak tangga (dari lantai); depth = kedalaman (x). Muka lemari di x lokal −depth/2. */
 export function underStairCabinet(from, to, hAt, depth = 0.98, nicheAt = [6.55, 8.05]) {
   const g = new THREE.Group();
   const gap = 0.014, plinthH = 0.08;
-  const under = (z) => Math.max(0.3, hAt(z) - 0.06);
+  const under = (z) => Math.max(0.3, stairSoffitAt(z) - 0.02); // hAt tidak dipakai: garis soffit dihitung dari data tangga
   const face = -depth / 2;
   // badan (satu prisma miring per 30 cm supaya kemiringan halus) mundur 1,5 cm di belakang bidang pintu
   const [q1, q2] = nicheAt, qy1 = 1.05, qy2 = 1.95, qd = 0.35;
@@ -127,6 +135,34 @@ export function underStairCabinet(from, to, hAt, depth = 0.98, nicheAt = [6.55, 
       const p2 = slopedBox(0.02, z1, z2, under(z1) - lo, under(z2) - lo, FM.doorPanel); p2.position.set(face + 0.01, lo, 0); g.add(p2);
     }
   }
+  // soffit tangga: pelat miring krem (warna tangga) dari garis bawah trap ke atas 0,19 m — selalu di dalam volume trap
+  {
+    const sof = slopedBox(1.02, from, to, 0.19, 0.19, FM.stairSoffit); sof.position.set(0.02, 0, 0);
+    // geser tiap vertex atas/bawah mengikuti garis miring: pakai dua prisma agar sederhana → bangun langsung
+    g.remove(sof);
+    const z1 = from, z2 = to, y1 = stairSoffitAt(z1) - 0.005, y2 = stairSoffitAt(z2) - 0.005;
+    const geo = new THREE.BufferGeometry();
+    const x0 = -0.49, x1 = 0.53; // x lokal: muka lemari −0.49 … tembok +0.53 (lebar run 8.88–9.925 relatif pusat 9.4)
+    const v = [[x0, y1, z1], [x1, y1, z1], [x1, y2, z2], [x0, y2, z2], [x0, y1 + 0.19, z1], [x1, y1 + 0.19, z1], [x1, y2 + 0.19, z2], [x0, y2 + 0.19, z2]];
+    const f = [[0, 2, 1], [0, 3, 2], [4, 5, 6], [4, 6, 7], [0, 1, 5], [0, 5, 4], [3, 7, 6], [3, 6, 2], [0, 4, 7], [0, 7, 3], [1, 2, 6], [1, 6, 5]];
+    const pos = []; for (const t of f) for (const k of t) pos.push(...v[k]);
+    geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.computeVertexNormals();
+    g.add(mesh(geo, FM.stairSoffit));
+  }
+  // stringer: panel tipis di sisi terbuka tangga (x lokal −0.50), dari garis soffit sampai garis nosing (sudut atas-depan trap),
+  // menutup gerigi balok anak tangga model SKP supaya sisi tangga rata seperti render
+  {
+    const { run } = STAIRS;
+    const nosing = (z) => (run.from - LEVELS.lt1) + 0.2 + (z - run.yStart) * (0.2 / 0.3);
+    const z1 = from, z2 = to;
+    const b1 = stairSoffitAt(z1) - 0.025, b2 = stairSoffitAt(z2) - 0.025, t1 = nosing(z1), t2 = nosing(z2);
+    const x0 = -0.545, x1 = -0.521; // x 8.855–8.879: tepat di luar balok anak tangga (x ≥ 8.88)
+    const v = [[x0, b1, z1], [x1, b1, z1], [x1, b2, z2], [x0, b2, z2], [x0, t1, z1], [x1, t1, z1], [x1, t2, z2], [x0, t2, z2]];
+    const f = [[0, 2, 1], [0, 3, 2], [4, 5, 6], [4, 6, 7], [0, 1, 5], [0, 5, 4], [3, 7, 6], [3, 6, 2], [0, 4, 7], [0, 7, 3], [1, 2, 6], [1, 6, 5]];
+    const pos = []; for (const t of f) for (const k of t) pos.push(...v[k]);
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.computeVertexNormals();
+    g.add(mesh(geo, FM.stairSoffit));
+  }
   // plin hitam di kaki lemari
   g.add(B(0.03, plinthH, to - from, FM.blackMatte, face + 0.02, plinthH / 2, (from + to) / 2));
   // niche walnut: kotak masuk 0,35 m, 2 baris × 3 kolom, LED strip di bawah tiap rak
@@ -155,7 +191,7 @@ export function buildFurniture(stairHeightAt) {
   for (const it of LAYOUT.lt1) placeAsset(lt1, it.a, it);
   for (const it of LAYOUT.lt2) placeAsset(lt2, it.a, it);
 
-  put(lt1, underStairCabinet(5.0, 9.0, (z) => stairHeightAt(z) - LEVELS.lt1, 0.98, [6.55, 8.05]), 9.4, 0); // muka lemari x 8.91
+  put(lt1, underStairCabinet(4.86, 9.06, (z) => stairHeightAt(z) - LEVELS.lt1, 0.98, [6.55, 8.05]), 9.4, 0); // muka lemari x 8.91; bentang = run tangga
   put(lt1, railingOval(0.6, 1.0, 0.4 / 0.6), 8.28, 4.53, 0, 0.2);
   put(lt1, railingOval(9.06 - 4.56, 1.0, (3.8 - 0.6) / (9.06 - 4.56)), 8.86, 4.56, -Math.PI / 2, 0.6);
   put(lt2, railingOval(9.06 - 3.575, 1.0, 0), 8.43, 3.575, -Math.PI / 2);

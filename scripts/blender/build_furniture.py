@@ -196,17 +196,17 @@ def office_chair():
 
 def dining_table():
     start()
-    box('top', 1.6, 0.8, 0.03, 0, 0, 0.745, M['marble'], bevel=0.004, seg=2)
-    box('topEdge', 1.6, 0.8, 0.012, 0, 0, 0.724, M['black'])  # bibir hitam tipis di bawah top
+    box('top', 1.4, 0.75, 0.03, 0, 0, 0.745, M['marble'], bevel=0.004, seg=2)
+    box('topEdge', 1.4, 0.75, 0.012, 0, 0, 0.724, M['black'])  # bibir hitam tipis di bawah top
     t = 0.035
     for sx in (-1, 1):
         for sy in (-1, 1):
-            box('leg', t, t, 0.72, sx * (0.8 - t / 2 - 0.02), sy * (0.4 - t / 2 - 0.02), 0.36, M['black'])
-        box('apronShort', t, 0.72, t, sx * (0.8 - t / 2 - 0.02), 0, 0.72 - t / 2 - 0.012, M['black'])
+            box('leg', t, t, 0.72, sx * (0.7 - t / 2 - 0.02), sy * (0.375 - t / 2 - 0.02), 0.36, M['black'])
+        box('apronShort', t, 0.67, t, sx * (0.7 - t / 2 - 0.02), 0, 0.72 - t / 2 - 0.012, M['black'])
         box('sledLong', 1.52, t, t, 0, sy * 0, 0.02, M['black']) if False else None
     for sy in (-1, 1):
-        box('apronLong', 1.52, t, t, 0, sy * (0.4 - t / 2 - 0.02), 0.72 - t / 2 - 0.012, M['black'])
-        box('stretcher', 1.52, t, t, 0, sy * (0.4 - t / 2 - 0.02), 0.06, M['black'])  # rangka bawah (sled)
+        box('apronLong', 1.32, t, t, 0, sy * (0.375 - t / 2 - 0.02), 0.72 - t / 2 - 0.012, M['black'])
+        box('stretcher', 1.32, t, t, 0, sy * (0.375 - t / 2 - 0.02), 0.06, M['black'])  # rangka bawah (sled)
     export('dining_table')
 
 def tv():

@@ -9,20 +9,20 @@ export default [
   // Meja makan marmer hitam 160×80 kaki rangka besi hitam (hal. 25–26), memanjang searah tangga (sumbu z),
   // 1.1 m dari lemari bawah tangga supaya kursi sisi tangga masih bisa ditarik; ujung -z z 5.3 menyisakan jalur
   // 0.9 m (z 4.4–5.3) dari sisi dapur ke anak tangga winder di belakang kulkas/pintu belakang.
-  { a: 'dining_table', x: 7.4, z: 6.1, ry: Math.PI / 2, note: 'top marmer hitam #2a2c30 + kaki rangka hitam; fm_dining_table_charcoal punya lubang artefak di top' },
+  { a: 'dining_table', x: 7.4, z: 6.1, ry: Math.PI / 2, note: 'meja 140×75 (diperkecil dari 160×80); top marmer hitam #2a2c30 + kaki rangka hitam; fm_dining_table_charcoal punya lubang artefak di top' },
   // 4 kursi makan kain caramel kaki besi hitam ramping (render: boucle tan) — tint menghangatkan beige Blender.
   // Kedalaman kursi (bbox GLB) z lokal −0.301..+0.22 (sandaran miring 5°). Kursi diselipkan ±7 cm di bawah top meja
   // (muka dudukan sisi tangga x 7.73, sisi dapur x 7.07); kaki depan bebas dari panel kaki meja (z 5.355–5.405 /
   // 6.795–6.845) dan balok tengah (x 7.375–7.425). Punggung sisi tangga x ≈ 8.25 → 0.66 m ke muka lemari bawah
   // tangga (x 8.91), cukup untuk buka pintu lemari & lewat. Tint 0xeecdc4 → hasil render piksel ≈ (150,111,84), G/R 0.74 B/R 0.56 ≈ boucle hal. 25 (157,115,86).
-  { a: 'dining_chair', x: 6.85, z: 5.7, ry: Math.PI / 2, note: 'sisi dapur, menghadap +x ke meja' },
-  { a: 'dining_chair', x: 6.85, z: 6.5, ry: Math.PI / 2 },
-  { a: 'dining_chair', x: 7.95, z: 5.7, ry: -Math.PI / 2, note: 'sisi tangga, menghadap -x ke meja; punggung 0.66 m dari muka lemari bawah tangga' },
-  { a: 'dining_chair', x: 7.95, z: 6.5, ry: -Math.PI / 2 },
+  { a: 'dining_chair', x: 6.95, z: 5.75, ry: Math.PI / 2, scale: 0.93, note: 'sisi dapur, menghadap +x ke meja' },
+  { a: 'dining_chair', x: 6.95, z: 6.45, ry: Math.PI / 2, scale: 0.93 },
+  { a: 'dining_chair', x: 7.85, z: 5.75, ry: -Math.PI / 2, scale: 0.93, note: 'sisi tangga, menghadap -x ke meja; punggung 0.66 m dari muka lemari bawah tangga' },
+  { a: 'dining_chair', x: 7.85, z: 6.45, ry: -Math.PI / 2, scale: 0.93 },
   // Lampu gantung molekul emas di atas tengah meja (hal. 25/27), kanopi di plafon 3.55; scale 1.3 → batang 1.43 m,
   // bar 1.46 m searah meja (< panjang top 1.6 m), bola terendah ±1.83 m ≈ 1.07 m di atas top (render hal. 26 ±0.9–1.0 m).
   // Bar di x 7.4 ± 0.08, jauh dari kepala orang yang berdiri dari kursi (x ≤ 6.85 / ≥ 7.95).
-  { a: 'molecule_pendant', x: 7.4, z: 6.1, y: 3.55, ry: Math.PI / 2, scale: 1.3 },
+  { a: 'molecule_pendant', x: 7.4, z: 6.1, y: 3.55, ry: Math.PI / 2, scale: 1.15 },
   // Vas bunga kecil di atas meja (hal. 25/28) → tanaman pot mini di atas top (top 0.745+0.0175). Digeser dari tengah
   // (7.4, 6.1) ke (7.2, 6.3) supaya di view tangga-bawah tidak segaris dengan pachira (tajuk seolah tumbuh dari pot meja).
   { a: 'plant_small', x: 7.2, z: 6.3, y: 0.763 },
