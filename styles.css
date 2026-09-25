@@ -90,3 +90,5 @@ code { background: #1c2027; padding: 1px 5px; border-radius: 4px; font-size: 12p
 #viewbar .lbl { color: var(--muted); font-size: 12px; padding: 0 6px 0 8px; }
 #panel.open ~ #viewbar { right: min(576px, calc(100% - 16px)); }
 @media (max-width: 700px) { #viewbar { left: 8px; right: 8px; align-items: stretch; } #viewbar .grp { justify-content: space-between; } }
+
+body.shot #viewbar, body.shot #hud, body.shot #overlay, body.shot #crosshair, body.shot #toggle-panel, body.shot #panel { display: none !important; }

@@ -17,6 +17,7 @@ await cp(join(root, 'vendor'), join(dist, 'vendor'), { recursive: true });
 await cp(join(root, 'styles.css'), join(dist, 'styles.css'));
 await mkdir(join(dist, 'models'), { recursive: true });
 await cp(join(root, 'models', 'rumah.glb'), join(dist, 'models', 'rumah.glb'));
+await cp(join(root, 'models', 'furniture'), join(dist, 'models', 'furniture'), { recursive: true }); // aset furnitur GLB (Blender, Poly Haven, FurniMesh)
 // TIDAK disalin: drawings/ (7,9 MB PDF), models/rumah-raw.glb (96 MB), *.skp (31 MB)
 
 await writeFile(join(dist, '.nojekyll'), ''); // cegah Jekyll mengabaikan folder
@@ -81,6 +82,8 @@ await writeFile(join(dist, 'index.html'), html);
 // laporan ukuran
 async function du(p) { try { return (await stat(p)).size; } catch { return 0; } }
 const glb = await du(join(dist, 'models', 'rumah.glb'));
+const { readdir } = await import('node:fs/promises');
+let fur = 0; for (const f of await readdir(join(dist, 'models', 'furniture'))) fur += await du(join(dist, 'models', 'furniture', f));
 console.log('dist/ siap.');
-console.log(`  index.html 3D-only, models/rumah.glb ${(glb / 1048576).toFixed(1)} MB`);
+console.log(`  index.html 3D-only, models/rumah.glb ${(glb / 1048576).toFixed(1)} MB, models/furniture ${(fur / 1048576).toFixed(1)} MB`);
 console.log('  Deploy: publish isi folder dist/ ke GitHub Pages (lihat README).');

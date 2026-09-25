@@ -7,6 +7,7 @@ import { computeAll, DEFAULT_CONFIG } from './calc.js';
 import { LEVELS, STAIRS, SLAB2, SITE } from './data.js';
 import { buildAll } from './scene.js';
 import { buildFurniture } from './furniture.js';
+import { assetsPending } from './assets.js';
 import { renderHitungan, renderGalleries, bindLightbox } from './ui.js';
 
 // ---------------------------------------------------------------------------
@@ -87,6 +88,14 @@ let built = null;
 let showLabels = false; // label ukuran potongan: tekan L
 let showCutColors = false; // warna keping potongan/dicoak: tekan C (default semua putih)
 let showFurniture = true; // furnitur & aksesori interior: tekan F
+const SHOT = (() => {
+  const q = new URLSearchParams(location.search);
+  if (!q.has('shot')) return null;
+  const v3 = (k, d) => { const a = (q.get(k) || '').split(',').map(Number); return a.length === 3 && a.every((n) => !isNaN(n)) ? a : d; };
+  return { cam: v3('cam', [8.3, 1.65, 8.6]), look: v3('look', [8.3, 1.4, 12]), cut: q.get('cut') || 'none', fov: +q.get('fov') || 70, nofur: q.has('nofur') };
+})();
+if (SHOT) { document.body.classList.add('shot'); showFurniture = !SHOT.nofur; }
+let shotFrames = 0;
 let hideUpper = false;
 let glbRoot = null;
 
@@ -244,6 +253,21 @@ function setView(v) {
   flyTo(pv.pos, pv.target);
   if (v === 'roof' && cut !== 'none') setCut('none');
   applyVisibility();
+}
+/** Kamera statis untuk screenshot headless (scripts/shot.mjs) */
+function applyShot() {
+  mode = 'orbit';
+  plc.unlock();
+  orbit.enabled = false;
+  overlay.hidden = true; crosshair.hidden = true;
+  camera.fov = SHOT.fov; camera.updateProjectionMatrix();
+  camera.position.set(...SHOT.cam);
+  orbit.target.set(...SHOT.look);
+  camera.lookAt(...SHOT.look);
+  if (SHOT.cut !== 'none') setCut(SHOT.cut);
+  applyVisibility();
+  window.__shotReady = true;
+  document.title = 'SHOT-READY';
 }
 function setMode(m) {
   mode = m;
@@ -489,6 +513,7 @@ gltfLoader.load(
     scene.add(glbRoot);
     glbOn = true;
     applyVisibility();
+    if (SHOT) applyShot();
     const bb = new THREE.Box3().setFromObject(glbRoot);
     const size = bb.getSize(new THREE.Vector3());
     if ($('glb-status')) {
@@ -538,6 +563,12 @@ function animate() {
     orbit.update();
   }
   renderer.render(scene, camera);
+  // mode screenshot headless: setelah model & semua aset termuat, render beberapa frame lagi lalu berhenti
+  // (halaman idle → Chrome langsung memotret, tidak menunggu virtual-time-budget habis)
+  if (SHOT && window.__shotReady && assetsPending() === 0) {
+    shotFrames++;
+    if (shotFrames > 6) { document.title = 'SHOT-DONE'; return; }
+  }
   requestAnimationFrame(animate);
 }
 animate();
