@@ -3,40 +3,30 @@
 // z 3.56–4.16 (x 3.06–5.44); kulkas x 5.5–6.4, z 3.6–4.4; pintu belakang x 6.61–7.41 di z 3.5; anak tangga awal
 // (winder) x 8.28–8.88, z 3.56–4.56 naik ke +x; run tangga x 8.88–9.925, z 4.56→9.06; lemari bawah tangga x 8.91–9.89
 // (prosedural, di furniture.js; niche walnut berlampu z 6.5–7.6). Ruang bebas lantai untuk meja: x 3.66–8.9, z 4.4–6.9.
-// Koridor: x 4.825–9.925, z 6.925–8.425. Pintu toilet di tembok x 4.75, z 7.075–7.775. Bawah dak (plafon) 3.55 m.
+// TEMBOK SISI TOILET (dicek dari GLB 25/9): tembok z 6.92–7.08 menerus x 3.0–6.5 setinggi dak (bukan hanya di depan toilet).
+// Di baliknya: toilet x 3–4.75 dan lorong kecil x 4.825–6.425, z 7.075–8.425 (pintu toilet di muka x 4.825 z 7.075–7.775,
+// pintu KT1 di z 8.5 x 5.59–6.39) yang terbuka ke sisi +x. Ruang makan tersambung ke ruang keluarga hanya lewat
+// bukaan x 6.5–8.9 di z 7.0. Muka tembok yang bisa ditempeli furnitur: z 6.925, x 3.66 (ujung kitchen set) – 6.5 = 2,84 m.
+// Bawah dak (plafon) 3.55 m.
 // Konvensi: x,z denah (m); y tinggi dari lantai; ry radian (depan aset = +z lokal; ry=+PI/2 → hadap +x; ry=-PI/2 → hadap -x).
-// SIRKULASI (revisi): meja 140×75 memanjang searah tangga di TENGAH antara dapur & tangga (x 6.025–6.775), kursi barat x 5.75 & timur
-// x 7.05 → jalur timur x 7.5–8.9 (1,4 m) bebas dari koridor/ruang keluarga ke anak tangga winder (z 3.56–4.56) & pintu belakang
-// (x 6.61–7.41); jalur barat ke dapur x 3.66–5.5 (1,8 m). Pohon di pojok koridor depan lemari (x ≥ 8.25) tidak menutup jalur.
+// EKSPERIMEN (25/9): meja diputar 90° (memanjang sumbu x), sisi panjang nempel tembok toilet, ditengahkan di bentang
+// 3.66–6.5. Kursi 4: 1 ujung barat, 2 sisi selatan, 1 ujung timur. Jalur bukaan z 7.0 (x 6.5–8.9) → tangga / pintu belakang
+// bebas 2,4 m; jalur ke dapur lewat selatan kursi (z < 5.7, 1,3 m ke kulkas). Ujung kitchen set z 6.2–6.94 terhalang kursi barat.
 export default [
-  // Meja makan marmer hitam 160×80 kaki rangka besi hitam (hal. 25–26), memanjang searah tangga (sumbu z),
-  // 1.1 m dari lemari bawah tangga supaya kursi sisi tangga masih bisa ditarik; ujung -z z 5.3 menyisakan jalur
-  // 0.9 m (z 4.4–5.3) dari sisi dapur ke anak tangga winder di belakang kulkas/pintu belakang.
-  { a: 'dining_table', x: 6.4, z: 6.05, ry: Math.PI / 2, note: 'meja 140×75 (diperkecil dari 160×80); top marmer hitam #2a2c30 + kaki rangka hitam; fm_dining_table_charcoal punya lubang artefak di top' },
-  // 4 kursi makan kain caramel kaki besi hitam ramping (render: boucle tan) — tint menghangatkan beige Blender.
-  // Kedalaman kursi (bbox GLB) z lokal −0.301..+0.22 (sandaran miring 5°). Kursi diselipkan ±7 cm di bawah top meja
-  // (muka dudukan sisi tangga x 7.73, sisi dapur x 7.07); kaki depan bebas dari panel kaki meja (z 5.355–5.405 /
-  // 6.795–6.845) dan balok tengah (x 7.375–7.425). Punggung sisi tangga x ≈ 8.25 → 0.66 m ke muka lemari bawah
-  // tangga (x 8.91), cukup untuk buka pintu lemari & lewat. Tint 0xeecdc4 → hasil render piksel ≈ (150,111,84), G/R 0.74 B/R 0.56 ≈ boucle hal. 25 (157,115,86).
-  { a: 'dining_chair', x: 5.75, z: 5.7, ry: Math.PI / 2, scale: 0.93, note: 'sisi dapur, menghadap +x ke meja' },
-  { a: 'dining_chair', x: 5.75, z: 6.4, ry: Math.PI / 2, scale: 0.93 },
-  { a: 'dining_chair', x: 7.05, z: 5.7, ry: -Math.PI / 2, scale: 0.93, note: 'sisi tangga, menghadap -x ke meja; punggung 0.66 m dari muka lemari bawah tangga' },
-  { a: 'dining_chair', x: 7.05, z: 6.4, ry: -Math.PI / 2, scale: 0.93 },
-  // Lampu gantung molekul emas di atas tengah meja (hal. 25/27), kanopi di plafon 3.55; scale 1.3 → batang 1.43 m,
-  // bar 1.46 m searah meja (< panjang top 1.6 m), bola terendah ±1.83 m ≈ 1.07 m di atas top (render hal. 26 ±0.9–1.0 m).
-  // Bar di x 7.4 ± 0.08, jauh dari kepala orang yang berdiri dari kursi (x ≤ 6.85 / ≥ 7.95).
-  { a: 'molecule_pendant', x: 6.4, z: 6.05, y: 3.55, ry: Math.PI / 2, scale: 1.15 },
-  // Vas bunga kecil di atas meja (hal. 25/28) → tanaman pot mini di atas top (top 0.745+0.0175). Digeser dari tengah
-  // (7.4, 6.1) ke (7.2, 6.3) supaya di view tangga-bawah tidak segaris dengan pachira (tajuk seolah tumbuh dari pot meja).
-  { a: 'plant_small', x: 6.25, z: 6.25, y: 0.763 },
-  // Pohon pot di depan bagian tinggi lemari bawah tangga, di kanan niche (hal. 25/26/27). GLB pachira (diganti 20/9 sore)
-  // kini 1 pohon varian d: tinggi 1.9 m, lebar ±1.0 m pada scale 1 → scale 0.85 ≈ 1.6 m, tajuk R≈0.43 m.
-  // Posisi dipilih agar tajuk: (1) di luar frustum kanan kamera makan-dari-koridor (cam 7.4,8.1; FOV 70° → setengah sudut
-  // horizontal 50.8°; jarak tajuk ke bidang frustum ≈ +0.09 m), (2) di belakang kamera rk-dari-koridor (z maks 8.43 < 8.6),
-  // (3) tidak menembus muka lemari (x maks 8.85 < 8.91), (4) pot (z 7.8–8.2) di ujung koridor, jauh dari anak tangga winder.
+  // Meja makan marmer hitam 140×75 kaki rangka besi hitam (hal. 25–26), memanjang sumbu x, sisi panjang nempel tembok toilet.
+  { a: 'dining_table', x: 5.08, z: 6.54, ry: 0, note: 'meja 140×75: x 4.38–5.78, z 6.165–6.915 (1 cm dari muka tembok 6.925); kaki x 4.40/5.76, z 6.20/6.88; stretcher bawah y 0.06 di z 6.185–6.22' },
+  // 4 kursi makan kain caramel kaki besi hitam (bbox lokal z −0.301..+0.22 × scale 0.93 → punggung −0.28, muka +0.205; kaki di ±0.177).
+  { a: 'dining_chair', x: 4.225, z: 6.54, ry: Math.PI / 2, scale: 0.93, note: 'ujung barat, menghadap +x; muka x 4.43 (5 cm di bawah top), punggung x 3.945 → 28 cm dari ujung kitchen set (x 3.66)' },
+  { a: 'dining_chair', x: 4.73, z: 5.98, ry: 0, scale: 0.93, note: 'sisi selatan kiri, menghadap +z (tembok); muka z 6.185 (2 cm di bawah top), kaki depan z 6.157 bebas stretcher (≥6.185); punggung z 5.70' },
+  { a: 'dining_chair', x: 5.43, z: 5.98, ry: 0, scale: 0.93, note: 'sisi selatan kanan; jarak antar kursi 0.27 m' },
+  { a: 'dining_chair', x: 5.935, z: 6.54, ry: -Math.PI / 2, scale: 0.93, note: 'ujung timur, menghadap −x; muka x 5.73, punggung x 6.215 → 28 cm sebelum ujung tembok (x 6.5)' },
+  // Lampu gantung molekul emas di atas tengah meja (hal. 25/27), kanopi di plafon 3.55; bar searah meja (sumbu x).
+  { a: 'molecule_pendant', x: 5.08, z: 6.54, y: 3.55, ry: 0, scale: 1.15 },
+  // Vas bunga kecil di atas meja (hal. 25/28) → tanaman pot mini di atas top (top 0.745+0.0175), agak ke timur.
+  { a: 'plant_small', x: 5.3, z: 6.6, y: 0.763 },
+  // Pohon pot di depan bagian tinggi lemari bawah tangga, di kanan niche (hal. 25/26/27), pot di ujung bukaan ke ruang keluarga.
   { a: 'fm_olive_tree', x: 8.55, z: 8.15, scale: 1, note: 'pohon zaitun ranting jarang dalam pot (render hal. 25–27) di depan bagian tinggi lemari, kanan niche; ganti ke plant_tree + concrete_pot kalau aset belum ada' },
-  // Koridor (hal. 28): tanaman pot di pojok tembok toilet (muka x 4.825) × tembok belakang KT1 (muka z 8.425).
-  // Normalisasi aset menggeser isi +0.047 x / +0.0925 z; pada scale 0.9 pot x 5.00–5.43, z 7.97–8.40, daun x 4.85–5.49,
-  // z 7.80–8.39 → bebas kedua tembok, di luar ayunan pintu toilet (z ≤ 7.775) & pintu KT1 (x ≥ 5.59). Tinggi ±0.77 m.
+  // Lorong kecil depan toilet (hal. 28): tanaman pot di pojok muka toilet (x 4.825) × tembok belakang KT1 (muka z 8.425).
+  // Pada scale 0.9 pot x 5.00–5.43, z 7.97–8.40 → bebas kedua tembok, di luar ayunan pintu toilet (z ≤ 7.775) & pintu KT1 (x ≥ 5.59).
   { a: 'plant_pot', x: 5.17, z: 8.10, scale: 0.9 },
 ];
