@@ -13,7 +13,7 @@ cd rumah-alfi-3d && python3 serve.py 8765
 
 lalu buka <http://localhost:8765>.
 
-Kontrol: klik untuk mengunci mouse, `W A S D` jalan, `Shift` lari, `1/2/3` lompat ke teras depan / lantai 2 / depan rumah,
+Kontrol: klik untuk mengunci mouse, `W A S D` jalan, `Shift` lari, `Spasi` lompat, `1/2/3` lompat ke teras depan / lantai 2 / depan rumah,
 `M` mode orbit (denah), `H` irisan lantai, `L` label ukuran potongan (default mati), `C` warna potongan, `F` furnitur, `G` ganti model SKP asli ↔ model blok,
 `P` panel hitungan. Naik ke lantai 2 cukup jalan ke tangga di pojok kanan belakang ruang makan.
 

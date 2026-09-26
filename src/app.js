@@ -159,7 +159,7 @@ plc.addEventListener('unlock', () => { crosshair.hidden = true; if (mode === 'wa
 let panelOpenedByKey = false;
 
 const keys = new Set();
-const player = { x: 4.75, y: LEVELS.teras, z: 13.2, level: 'lt1', vy: 0 };
+const player = { x: 4.75, y: LEVELS.teras, z: 13.2, level: 'lt1', vy: 0, air: false };
 const EYE = 1.62;
 camera.position.set(player.x, player.y + EYE, player.z);
 camera.rotation.set(0, -Math.PI / 2, 0); // hadap ke pintu utama
@@ -178,6 +178,7 @@ addEventListener('keydown', (e) => {
     case 'KeyF': setFurniture(!showFurniture); break;
     case 'KeyG': if (glbRoot) { glbOn = !glbOn; applyVisibility(); } break;
     case 'KeyP': togglePanel(); break;
+    case 'Space': e.preventDefault(); if (mode === 'walk' && !player.air) { player.air = true; player.vy = 3.6; } break; // lompat ±0,65 m
   }
 });
 addEventListener('keyup', (e) => keys.delete(e.code));
@@ -555,7 +556,14 @@ function animate() {
     let gh = groundHeight(player.x, player.z, player.level);
     if (gh === null) { player.level = 'lt1'; gh = groundHeight(player.x, player.z, 'lt1'); }
     if (sh === null && player.level === 'lt2' && Math.abs(player.y - LEVELS.lt2) > 1.2 && player.y < 2.0) player.level = 'lt1';
-    player.y += (gh - player.y) * Math.min(1, dt * 10);
+    if (player.air) {
+      // lompat: gravitasi sampai menyentuh lantai/anak tangga di bawahnya
+      player.vy -= 9.8 * dt;
+      player.y += player.vy * dt;
+      if (player.y <= gh) { player.y = gh; player.vy = 0; player.air = false; }
+    } else {
+      player.y += (gh - player.y) * Math.min(1, dt * 10);
+    }
     camera.position.set(player.x, player.y + EYE, player.z);
     updateHud();
   } else {

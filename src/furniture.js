@@ -149,19 +149,32 @@ export function underStairCabinet(from, to, hAt, depth = 0.98, nicheAt = [6.55, 
     geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.computeVertexNormals();
     g.add(mesh(geo, FM.stairSoffit));
   }
-  // stringer: panel tipis di sisi terbuka tangga (x lokal −0.50), dari garis soffit sampai garis nosing (sudut atas-depan trap),
-  // menutup gerigi balok anak tangga model SKP supaya sisi tangga rata seperti render
+  // stringer: panel tipis di sisi terbuka tangga (x 8.855–8.885, menutup sisi balok anak tangga model SKP di x ≥ 8.88)
+  // dari garis soffit sampai gerigi trap. Tepi atasnya MENGIKUTI profil anak tangga (riser 20 × injakan 30), bukan garis
+  // lurus, supaya sisi tangga rata satu bidang seperti render hal. 25–27 (tidak ada selisih antara panel dan trap).
+  // Gigi panel 2 mm di atas permukaan injak dan 2 mm di depan riser → tidak z-fighting dengan balok trap.
   {
     const { run } = STAIRS;
-    const nosing = (z) => (run.from - LEVELS.lt1) + (z - run.yStart) * (0.2 / 0.3) - 0.01; // garis lewat sudut belakang-atas tiap trap → selalu ≤ permukaan injak; gerigi trap tetap terlihat di atasnya (seperti render)
+    const rise = 0.2, tread = 0.3, lift = 0.002;
+    const topAt = (j) => (run.from - LEVELS.lt1) + rise * (j + 1); // permukaan injak trap j (trap 0: 0.8)
+    const zAt = (j) => run.yStart + tread * j; // muka riser trap j (trap 0: 4.56)
     const z1 = from, z2 = to;
-    const b1 = stairSoffitAt(z1) - 0.025, b2 = stairSoffitAt(z2) - 0.025, t1 = nosing(z1), t2 = nosing(z2);
-    const x0 = -0.545, x1 = -0.521; // x 8.855–8.879: tepat di luar balok anak tangga (x ≥ 8.88)
-    const v = [[x0, b1, z1], [x1, b1, z1], [x1, b2, z2], [x0, b2, z2], [x0, t1, z1], [x1, t1, z1], [x1, t2, z2], [x0, t2, z2]];
-    const f = [[0, 2, 1], [0, 3, 2], [4, 5, 6], [4, 6, 7], [0, 1, 5], [0, 5, 4], [3, 7, 6], [3, 6, 2], [0, 4, 7], [0, 7, 3], [1, 2, 6], [1, 6, 5]];
-    const pos = []; for (const t of f) for (const k of t) pos.push(...v[k]);
-    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.computeVertexNormals();
-    g.add(mesh(geo, FM.stairSoffit));
+    const jFirst = Math.max(0, Math.round((z1 - run.yStart) / tread)); // trap pertama yang risernya di z1
+    const jLast = Math.round((z2 - run.yStart) / tread) - 1; // trap terakhir (injakannya berakhir di z2)
+    const sh = new THREE.Shape(); // bidang (u = z dunia, v = y)
+    sh.moveTo(z1, stairSoffitAt(z1) - 0.025);
+    sh.lineTo(z2, stairSoffitAt(z2) - 0.025);
+    sh.lineTo(z2, topAt(jLast) + lift);
+    for (let j = jLast; j >= jFirst; j--) {
+      sh.lineTo(zAt(j) - lift, topAt(j) + lift); // injakan trap j, dari belakang ke depan
+      sh.lineTo(zAt(j) - lift, topAt(j - 1) + lift); // riser trap j turun ke injakan trap j−1
+    }
+    sh.closePath();
+    const geo = new THREE.ExtrudeGeometry(sh, { depth: 0.03, bevelEnabled: false });
+    const m = mesh(geo, FM.stairSoffit);
+    m.rotation.y = -Math.PI / 2; // u → z dunia, tebal ekstrusi → −x
+    m.position.x = -0.515; // x 8.885 → 8.855
+    g.add(m);
   }
   // plin hitam di kaki lemari
   g.add(B(0.03, plinthH, to - from, FM.blackMatte, face + 0.02, plinthH / 2, (from + to) / 2));
