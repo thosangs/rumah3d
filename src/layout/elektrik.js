@@ -6,7 +6,7 @@
 // saklar 140 cm; box MCB pusat 175 cm; kWh meter pusat 170 cm; lampu sorot/dinding luar: fasad 230 cm, pagar 175–220 cm;
 // lampu dinding lt2 mengikuti titik lampu yang sudah ada di fasad model SKP (x 6.1, 130 cm di atas lantai lt2).
 // n = arah muka perangkat (normal tembok ke dalam ruang). t: stopkontak | saklar1 (tunggal) | saklar2 (ganda) | mcb | kwh | sconce.
-// ac: true = stop kontak AC (h 2.2); baru: true = tambahan revisi 4/10/2026 (tidak ada di gambar DED): 3 AC, 2 dinding TV, 2 dapur.
+// ac: true = stop kontak AC (h 2.4, di samping unit indoor yang dipasang tepat di atas kusen jendela/pintu geser); baru: true = tambahan revisi 4/10/2026 (tidak ada di gambar DED): 3 AC, 2 dinding TV, 2 dapur.
 // Koordinat tembok sudah di-snap ke muka tembok model SKP (raycast): kiri 3.061, kanan 9.88, belakang 3.56, dst.
 export const PERANGKAT = [
   // ---------------- LANTAI 1: stop kontak 13 (sesuai legenda gambar) ----------------
@@ -27,7 +27,7 @@ export const PERANGKAT = [
   { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 11.19, n: '-x', h: 0.4, r: 'R. keluarga, tembok kanan' },
   { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.35, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, di bawah TV di atas konsol (TV/set-top box) — tambahan' },
   { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.90, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, di bawah TV (speaker/konsol game) — tambahan' },
-  { lvl: 'lt1', t: 'stopkontak', x: 3.065, z: 11.8, n: '+x', h: 2.2, ac: true, baru: true, r: 'REVISI: stop kontak AC KT1, tembok kiri (luar) di samping unit indoor, di atas box MCB — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 3.065, z: 10.2, n: '+x', h: 2.4, ac: true, baru: true, r: 'REVISI: stop kontak AC KT1, tembok kiri di kanan unit indoor yang di atas jendela — tambahan' },
   // ---------------- LANTAI 1: saklar 7 (2 tunggal + 5 ganda) ----------------
   { lvl: 'lt1', t: 'saklar2', x: 7.75, z: 3.564, n: '+z', h: 1.4, r: 'dapur, kanan pintu belakang → lampu teras belakang + area jemur' },
   { lvl: 'lt1', t: 'saklar2', x: 6.30, z: 6.937, n: '-z', h: 1.4, r: 'ruang makan, tembok toilet → lampu dapur, r. makan, lorong' },
@@ -54,8 +54,13 @@ export const PERANGKAT = [
   { lvl: 'lt2', t: 'stopkontak', x: 9.876, z: 12.41, n: '-x', h: 0.4, r: 'R. keluarga lt2, tembok kanan depan' },
   { lvl: 'lt2', t: 'stopkontak', x: 9.876, z: 12.63, n: '-x', h: 0.4, r: 'R. keluarga lt2, tembok kanan depan' },
   { lvl: 'lt2', t: 'stopkontak', x: 9.876, z: 12.85, n: '-x', h: 0.4, r: 'R. keluarga lt2, tembok kanan depan' },
-  { lvl: 'lt2', t: 'stopkontak', x: 5.30, z: 3.564, n: '+z', h: 2.2, ac: true, baru: true, r: 'REVISI: stop kontak AC KT2, tembok belakang (ke balkon belakang) di samping unit indoor — tambahan' },
-  { lvl: 'lt2', t: 'stopkontak', x: 3.065, z: 11.7, n: '+x', h: 2.2, ac: true, baru: true, r: 'REVISI: stop kontak AC KTU, tembok kiri (ke balkon) di samping unit indoor — tambahan' },
+  { lvl: 'lt2', t: 'stopkontak', x: 3.065, z: 5.45, n: '+x', h: 2.4, ac: true, baru: true, r: 'REVISI: stop kontak AC KT2, tembok kiri di kiri unit indoor yang di atas jendela — tambahan' },
+  { lvl: 'lt2', t: 'stopkontak', x: 3.065, z: 10.3, n: '+x', h: 2.4, ac: true, baru: true, r: 'REVISI: stop kontak AC KTU, tembok kiri di kanan unit indoor yang di atas pintu geser balkon — tambahan' },
+  // R. keluarga lt2: 3 stop kontak DED semuanya di tembok kanan depan → tambah di tembok seberang (tembok KTU, muka x 6.563):
+  // 1 rendah di strip bebas antara ayunan pintu KTU (z ≤ 9.41) dan sideboard (z 10.03–11.85), 2 di atas sideboard (top 0.8) untuk lampu/charger.
+  { lvl: 'lt2', t: 'stopkontak', x: 6.563, z: 9.72, n: '+x', h: 0.4, baru: true, r: 'REVISI: R. keluarga lt2, tembok KTU (seberang), strip bebas di kanan pintu KTU — tambahan' },
+  { lvl: 'lt2', t: 'stopkontak', x: 6.563, z: 10.90, n: '+x', h: 1.05, baru: true, r: 'REVISI: R. keluarga lt2, tembok KTU di atas sideboard (top 0.80) — tambahan' },
+  { lvl: 'lt2', t: 'stopkontak', x: 6.563, z: 11.12, n: '+x', h: 1.05, baru: true, r: 'REVISI: R. keluarga lt2, tembok KTU di atas sideboard — tambahan' },
   // ---------------- LANTAI 2: saklar 8 (4 tunggal + 4 ganda) ----------------
   { lvl: 'lt2', t: 'saklar1', x: 7.73, z: 3.564, n: '+z', h: 1.4, r: 'selasar, kanan pintu balkon belakang → lampu balkon' },
   { lvl: 'lt2', t: 'saklar2', x: 6.435, z: 5.88, n: '-x', h: 1.4, r: 'KT2, samping pintu → lampu KT2' },

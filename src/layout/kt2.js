@@ -33,6 +33,6 @@ export default [
   // Gorden krem menutup jendela penuh (lebar 1.72 m, z 5.19–6.91 < tembok toilet 6.925; lewat 46 cm dari kusen dekat z 5.65),
   // menggantung rapat tembok di x 3.12–3.26 di belakang meja (meja mulai x 3.33) → sinar pandang kamera (3.5, 4.0) yang menyerempet
   // tembok tidak lagi lolos ke kusen jendela. Tipis 14 cm, tidak mengganggu area kamera z 4–5.
-  { a: 'curtain_cream', x: 3.12, z: 6.05, ry: Math.PI / 2, sx: 0.82 },
-  { a: 'ac_indoor', x: 4.62, z: 3.564, y: 2.45, ry: 0, note: 'AC indoor di tembok belakang di atas headboard, x 4.2–5.05, y 2.3–2.6 (plafon 3.3); stop kontak AC di x 5.3 h 2.2' },
+  { a: 'curtain_cream', x: 3.12, z: 6.05, ry: Math.PI / 2, sx: 1.096, scale: 0.748, note: 'rel gorden di 2.17, tepat di atas kusen & di bawah AC; lebar tetap 1.72 (z 5.19–6.91)' },
+  { a: 'ac_indoor', x: 3.065, z: 6.15, y: 2.38, ry: Math.PI / 2, note: 'AC indoor DI ATAS JENDELA tembok kiri (jendela z 5.6–6.7, puncak kusen 2.12): unit z 5.725–6.575, y 2.235–2.525 (plafon 3.3); stop kontak AC di z 5.45 h 2.4' },
 ];

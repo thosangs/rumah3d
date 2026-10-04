@@ -15,6 +15,6 @@ export default [
   { a: 'vanity', x: 6.19, z: 10.05, ry: -Math.PI / 2, note: 'meja rias + cermin bundar di tembok kanan dekat pintu, z 9.55–10.55 (ayunan pintu z≤9.41)' },
   { a: 'dining_chair', x: 6.16, z: 10.05, ry: Math.PI / 2, note: 'kursi krem menghadap cermin (+x), muka dudukan x 6.38 < punggung meja 6.415; dudukan y≤0.495 < laci 0.60; punggung miring sampai lokal z −0.297 → x 5.863 → lorong ke alas ranjang 0.62 m; di tinggi top meja punggung x ≤ 5.935 (3 cm dari tepi top 5.965)' },
   { a: 'plant_small', x: 6.3, z: 10.42, y: 0.76, note: 'dekor kecil di atas meja rias' },
-  { a: 'curtain_dark', x: 3.17, z: 9.93, ry: Math.PI / 2, sx: 0.45, flat: 0xb3aca2, note: 'gorden tipis abu hangat (greige, seperti hal-39) ditumpuk ke sisi ranjang: kain z 9.48–10.38, rel z 9.455–10.405 → sepenuhnya di luar jalur z 8.6–9.45 & ayunan pintu toilet; menutup bagian jauh pintu geser (≤10.09) + tembok setelah kusen' },
-  { a: 'ac_indoor', x: 3.065, z: 11.02, y: 2.45, ry: Math.PI / 2, note: 'AC indoor di tembok kiri (ke balkon) z 10.6–11.45, y 2.3–2.6; stop kontak AC di z 11.7 h 2.2' },
+  { a: 'curtain_dark', x: 3.17, z: 9.93, ry: Math.PI / 2, sx: 0.602, scale: 0.748, flat: 0xb3aca2, note: 'gorden tipis abu hangat (greige, seperti hal-39) ditumpuk ke sisi ranjang: kain z 9.48–10.38, rel z 9.455–10.405 → sepenuhnya di luar jalur z 8.6–9.45 & ayunan pintu toilet; menutup bagian jauh pintu geser (≤10.09) + tembok setelah kusen' },
+  { a: 'ac_indoor', x: 3.065, z: 9.345, y: 2.38, ry: Math.PI / 2, note: 'AC indoor DI ATAS PINTU GESER balkon (bukaan z 8.6–10.09, puncak kusen 2.12): unit z 8.92–9.77, y 2.235–2.525 (plafon 3.3); stop kontak AC di z 10.3 h 2.4' },
 ];

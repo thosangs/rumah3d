@@ -16,6 +16,6 @@ export default [
   { a: 'dining_chair', x: 3.87, z: 9.14, ry: -Math.PI / 2, note: 'kursi krem kaki hitam menghadap jendela (−x): x 3.65–4.17, z 8.92–9.36; ruang tarik kursi ±1.4 m ke arah +x' },
   { a: 'plant_small', x: 3.5, z: 9.5, y: 0.76, note: 'tanaman kecil di atas meja (hal. 33: diffuser/tanaman di meja)' },
   { a: 'fm_wardrobe_grey', x: 5.85, z: 11.63, ry: Math.PI, flat: 0xa3968a, note: 'lemari 2 pintu 1.15×0.59×2.3 di pojok kanan tembok depan (x 5.275–6.425, z 11.335–11.925), menghadap −z; area buka pintu z 10.7–11.335 kosong; warna polos taupe seperti render' },
-  { a: 'curtain_cream', x: 3.17, z: 9.35, ry: Math.PI / 2, sx: 0.7, note: 'tirai krem setinggi plafon, jendela z 8.78–9.91 (lebar tirai 1.4, z 8.65–10.05; tebal x 3.16–3.30)' },
-  { a: 'ac_indoor', x: 3.065, z: 10.85, y: 2.45, ry: Math.PI / 2, note: 'AC indoor di tembok kiri (luar) z 10.43–11.28, y 2.3–2.6; stop kontak AC di z 11.8 h 2.2 (lapisan listrik)' },
+  { a: 'curtain_cream', x: 3.17, z: 9.35, ry: Math.PI / 2, sx: 0.967, scale: 0.724, note: 'tirai krem, rel di 2.10 (tepat di atas kusen, di bawah AC); jendela z 8.85–9.95 (lebar tirai 1.4, z 8.65–10.05; tebal x 3.16–3.30)' },
+  { a: 'ac_indoor', x: 3.065, z: 9.40, y: 2.32, ry: Math.PI / 2, note: 'AC indoor DI ATAS JENDELA (jendela z 8.85–9.95, puncak kusen 2.05): unit z 8.975–9.825, y 2.175–2.465; stop kontak AC di z 10.2 h 2.4 (lapisan listrik)' },
 ];

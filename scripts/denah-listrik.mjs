@@ -5,7 +5,33 @@ import { writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { WALLS, RAILINGS, STAIRS, SLAB2, SITE, HALF } from '../src/data.js';
+import { WALLS as WALLS_BLOK, RAILINGS, STAIRS, SLAB2, SITE, HALF } from '../src/data.js';
+
+// Bukaan (pintu/jendela) untuk denah 2D DIUKUR DARI MODEL SKP (raycast, 4/10/2026) — bukan dari model blok data.js yang
+// posisinya hanya perkiraan (mis. jendela KT2 di blok z 4.7–5.9, di SKP z 5.6–6.7). Kunci: `${level}|${x1},${y1}-${x2},${y2}`.
+const door = (at, w = 0.9, h = 2.1) => ({ at, w, h, sill: 0 });
+const win = (at, w, h = 1.2, sill = 0.9) => ({ at, w, h, sill });
+const BUKAAN_SKP = {
+  'lt1|3,3.5-10,3.5': [door(3.61, 0.8), win(6.02, 0.62, 1.2, 1.3)], // pintu belakang x 6.61–7.41; jendela tangga x 9.02–9.64
+  'lt1|3,3.5-3,12': [win(2.1, 1.0, 0.7, 1.0), win(4.0, 0.6, 0.4, 2.18), win(5.35, 1.1, 1.75, 0.3)], // jendela dapur z 5.6–6.6; jendela toilet 60×40; jendela KT1 z 8.85–9.95
+  'lt1|10,3.5-10,13.5': [], // tembok kanan polos
+  'lt1|6.5,13.5-10,13.5': [win(0.56, 0.41, 2.46, 0.19), win(1.52, 0.41, 2.46, 0.19), win(2.47, 0.41, 2.46, 0.19)], // 3 jendela tinggi x 7.06–7.47 / 8.02–8.43 / 8.97–9.38; pintu utama ada di tembok x 6.5
+  'lt1|3,12-6.5,12': [], // tembok depan KT1 polos
+  'lt1|3,8.5-6.5,8.5': [door(2.59, 0.8)], // pintu KT1 x 5.59–6.39
+  'lt2|3,3.5-10,3.5': [door(3.7)], // pintu balkon belakang; tembok belakang KT2 polos
+  'lt2|3,3.5-3,12': [win(2.1, 1.1, 1.2, 0.9), win(4.0, 0.6, 0.4, 2.18), { ...door(5.1, 1.49, 2.12), slide: true }], // jendela KT2 z 5.6–6.7; jendela toilet; pintu geser balkon z 8.6–10.09
+  'lt2|10,3.5-10,13.5': [], // tembok kanan polos
+  'lt2|6.5,13.5-10,13.5': [win(0.44, 2.54, 2.14, 0.1)], // kaca penuh x 6.94–9.48; pintu balkon ada di tembok x 6.5
+  'lt2|3,12-6.5,12': [], // tembok depan KTU polos
+  'lt2|6.5,8.5-6.5,12': [door(0.11, 0.8)], // pintu KTU z 8.61–9.41
+  'lt2|6.5,3.5-6.5,7': [door(2.59, 0.8)], // pintu KT2 z 6.09–6.89
+};
+// Tembok teras/balkon depan di x 6.5 (z 12–13.5) tidak ada di model blok → ditambah: pintu utama (lt1) / pintu balkon (lt2) z 12.36–13.26.
+const WALLS = [
+  ...WALLS_BLOK.map((w) => ({ ...w, openings: BUKAAN_SKP[`${w.level}|${w.x1},${w.y1}-${w.x2},${w.y2}`] ?? w.openings })),
+  { x1: 6.5, y1: 12, x2: 6.5, y2: 13.5, level: 'lt1', openings: [door(0.36, 0.9)] },
+  { x1: 6.5, y1: 12, x2: 6.5, y2: 13.5, level: 'lt2', openings: [door(0.36, 0.9)] },
+];
 import { PERANGKAT, LAMPU, JALUR } from '../src/layout/elektrik.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -52,7 +78,12 @@ function tembok(lvl) {
       // arah ke dalam ruang: ke sisi titik pusat rumah
       const mx = horiz ? w.x1 + o.at + o.w / 2 : w.x1, mz = horiz ? w.y1 : w.y1 + o.at + o.w / 2;
       const dir = horiz ? (8.5 > mz ? 1 : -1) : (6.5 > mx ? 1 : -1);
-      if (isDoor) {
+      if (isDoor && o.slide) {
+        // pintu geser: dua daun sejajar tembok, saling bergeser (tanpa busur)
+        const a = o.at, b = o.at + o.w, mid = o.at + o.w / 2;
+        const seg = (p, q, off) => horiz ? `<line x1="${X(p)}" y1="${Y(w.y1) + off}" x2="${X(q)}" y2="${Y(w.y1) + off}" stroke="${INK}" stroke-width="1.8"/>` : `<line x1="${X(w.x1) + off}" y1="${Y(p)}" x2="${X(w.x1) + off}" y2="${Y(q)}" stroke="${INK}" stroke-width="1.8"/>`;
+        s += seg(a, mid + 0.05, -2.5) + seg(mid - 0.05, b, 2.5);
+      } else if (isDoor) {
         // kusen (garis tipis sisi tembok) + daun + busur 90°
         const hx = horiz ? w.x1 + o.at : w.x1, hz = horiz ? w.y1 : w.y1 + o.at; // engsel
         const ex = horiz ? hx : hx + dir * o.w, ez = horiz ? hz + dir * o.w : hz; // ujung daun terbuka
@@ -125,7 +156,11 @@ function perangkat(lvl) {
     const std = d.t === 'stopkontak' ? 0.4 : d.t.startsWith('saklar') ? 1.4 : null;
     const dup = labeled.some((q) => q.t === d.t && Math.abs(q.h - d.h) < 0.01 && Math.hypot(q.x - d.x, q.z - d.z) < 0.35);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) labeled.push(d);
-    if (std != null && Math.abs(d.h - std) > 0.01 && !dup) s += `<text x="${cx + (nx ? nx * 14 : 11)}" y="${cy + (nz ? nz * 16 : 4) + (nx ? 3 : 0)}" font-size="8" fill="${col}" text-anchor="${nx < 0 ? 'end' : nx > 0 ? 'start' : 'middle'}">+${d.h.toFixed(2)}</text>`;
+    if (std != null && Math.abs(d.h - std) > 0.01 && !dup) {
+      const atas = nx !== 0 && !d.ac;
+      const lx = atas ? cx : cx + (nx ? nx * 14 : 11), ly = atas ? cy - 11 : cy + (nz ? nz * 16 : 4) + (nx ? 3 : 0);
+      s += `<text x="${lx}" y="${ly}" font-size="8" fill="${col}" text-anchor="${atas ? 'middle' : nx < 0 ? 'end' : nx > 0 ? 'start' : 'middle'}">+${d.h.toFixed(2)}</text>`;
+    }
   }
   return s;
 }
@@ -134,7 +169,7 @@ function legenda(lvl) {
   const n = (f) => P.filter(f).length;
   const rows = [
     ['stopkontak', 'Stop kontak 1 ph 10/16 A, h 40 cm (dapur 115, mesin cuci 120)', n((d) => d.t === 'stopkontak' && !d.ac && !d.baru), n((d) => d.t === 'stopkontak' && !d.ac && d.baru)],
-    ['ac', 'Stop kontak AC, h 220 cm, grup MCB sendiri', 0, n((d) => d.ac)],
+    ['ac', 'Stop kontak AC, h 240 cm (unit indoor di atas jendela)', 0, n((d) => d.ac)],
     ['saklar1', 'Saklar tunggal, h 140 cm', n((d) => d.t === 'saklar1'), 0],
     ['saklar2', 'Saklar ganda, h 140 cm', n((d) => d.t === 'saklar2'), 0],
     ['lampu5', 'Lampu LED downlight 5 W', L.filter((l) => l.w === 5).length, 0],
