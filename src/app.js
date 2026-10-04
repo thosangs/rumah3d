@@ -415,16 +415,40 @@ function setFurniture(on) {
   if (built?.furniture) { built.furniture.lt1.visible = on; built.furniture.lt2.visible = on; }
   for (const m of glbFurniture) m.visible = on;
 }
-/** Tandai mesh SKP yang merupakan furnitur lepas: kulkas di dapur (bbox dunia x 5.4–6.5, z 3.5–4.5, y < 2.3). Kitchen set tetap (built-in). */
+/** Pisahkan kulkas dari model SKP supaya ikut tombol F. Ekspor SketchUp menggabungkan banyak komponen per material,
+ *  jadi badan kulkas bisa tergabung dalam mesh besar bersama tembok/kitchen set. Semua segitiga yang ketiga titiknya
+ *  berada di volume kulkas (x 5.45–6.45, z 3.565–4.6, y < 1.85; muka tembok z 3.56 & kitchen set x ≤ 5.44 di luar)
+ *  dipindah ke mesh anak bernama "*-kulkas"; mesh yang seluruhnya di dalam volume ditandai utuh. */
 function tagGlbFurniture(root) {
   glbFurniture = [];
-  const bb = new THREE.Box3();
+  const fb = new THREE.Box3(new THREE.Vector3(5.45, -0.05, 3.565), new THREE.Vector3(6.45, 1.85, 4.6)); // z sampai 4.6: gagang pintu kulkas menonjol melewati badan (4.41)
+  const bb = new THREE.Box3(), v = new THREE.Vector3();
+  const adds = [];
   root.traverse((o) => {
     if (!o.isMesh) return;
     o.geometry.computeBoundingBox();
     bb.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld);
-    if (bb.min.x > 5.4 && bb.max.x < 6.5 && bb.min.z > 3.5 && bb.max.z < 4.5 && bb.min.y > -0.2 && bb.max.y < 2.3) { o.userData.glbFurniture = 'kulkas'; glbFurniture.push(o); }
+    if (!bb.intersectsBox(fb)) return;
+    if (fb.containsBox(bb)) { o.userData.glbFurniture = 'kulkas'; glbFurniture.push(o); return; }
+    const g = o.geometry, pos = g.attributes.position, idx = g.index;
+    const inside = new Uint8Array(pos.count);
+    let any = 0;
+    for (let i = 0; i < pos.count; i++) { v.fromBufferAttribute(pos, i).applyMatrix4(o.matrixWorld); if (fb.containsPoint(v)) { inside[i] = 1; any++; } }
+    if (!any) return;
+    const keep = [], take = [];
+    const n = idx ? idx.count : pos.count;
+    for (let t = 0; t < n; t += 3) {
+      const a = idx ? idx.getX(t) : t, b = idx ? idx.getX(t + 1) : t + 1, c = idx ? idx.getX(t + 2) : t + 2;
+      (inside[a] && inside[b] && inside[c] ? take : keep).push(a, b, c);
+    }
+    if (!take.length) return;
+    g.setIndex(keep); g.computeBoundingSphere();
+    const g2 = g.clone(); g2.setIndex(take); g2.computeBoundingBox(); g2.computeBoundingSphere();
+    const m2 = new THREE.Mesh(g2, o.material); m2.name = `${o.name || 'mesh'}-kulkas`;
+    m2.castShadow = o.castShadow; m2.receiveShadow = o.receiveShadow;
+    m2.userData.glbFurniture = 'kulkas'; glbFurniture.push(m2); adds.push([o, m2]);
   });
+  for (const [o, m2] of adds) o.add(m2); // anak dengan transformasi identitas → ikut matriks induk
   for (const m of glbFurniture) m.visible = showFurniture;
 }
 async function rebuildTexturesOnly() {
