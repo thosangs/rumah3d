@@ -40,7 +40,7 @@ function shot(v) {
   if (existsSync(file)) rmSync(file);
   const profile = `/tmp/rumah-shot-${process.pid}-${v.name}`;
   return new Promise((res) => {
-    const p = spawn(chrome, ['--headless=new', '--hide-scrollbars', `--window-size=${w},${h}`, `--screenshot=${file}`, `--virtual-time-budget=${args.budget || 20000}`,
+    const p = spawn(chrome, ['--headless=new', '--hide-scrollbars', `--window-size=${w},${h}`, `--screenshot=${file}`, `--virtual-time-budget=${args.budget || 40000}`,
       '--timeout=60000', '--no-first-run', '--disable-extensions', `--user-data-dir=${profile}`, `${base}/?${q}`], { stdio: 'ignore' });
     const t0 = Date.now();
     let stable = 0, last = -1;

@@ -42,3 +42,15 @@ Halaman model menyatakan "Free Download"; FurniMesh menyebut hasil generasinya b
 | fm_dresser_wood.glb | Contemporary Wood Dresser | https://furnimesh.com/library/storage/dresser/a-threedrawer-dresser-with-rounded-corners-and-kznzyz/ |
 | fm_olive_tree.glb | Realistic Potted Plant (faux olive tree) | https://furnimesh.com/library/decor/plant/a-faux-olive-tree-presented-in-a-kdkvhn/ |
 | fm_olive_tree2.glb | Modern Concrete Potted Plant (artificial olive tree) | https://furnimesh.com/library/decor/plant/an-artificial-olive-tree-presented-in-a-pxobbm/ |
+
+## BlenderKit (CC0)
+
+| File | Judul | Pembuat | Lisensi | Halaman |
+|---|---|---|---|---|
+| bk_simon82.glb | Set switch & socket Simon 82 (stop kontak schuko + saklar 1 tuts + port USB; dipakai bagian E_Socket & E_switch) | Agustin Paternoster | CC0 | https://www.blenderkit.com/asset-gallery-detail/d20f4d59-a52f-4d1b-b174-b786e7dd3a22 |
+
+Diunduh lewat API BlenderKit (file glTF yang disediakan pembuat), lalu dikonversi Draco → meshopt dengan gltf-transform.
+
+## Dibuat sendiri di Blender (scripts/blender/build_furniture.py)
+
+`bl_mcb_box.glb` (box MCB 4 group), `bl_kwh_meter.glb` (kWh meter prabayar), `bl_sconce.glb` (lampu dinding outdoor) — tidak ada model residensial yang layak dan berlisensi bebas di Poly Haven/BlenderKit (yang ada panel industri besar/berkarat), jadi dibuat parametrik mengikuti ukuran produk umum.

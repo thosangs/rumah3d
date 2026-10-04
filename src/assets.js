@@ -37,6 +37,12 @@ export const ASSETS = {
   ring_pendant: { file: 'bl_ring_pendant.glb', anchor: 'top' },
   molecule_pendant: { file: 'bl_molecule_pendant.glb', anchor: 'top' },
   concrete_pot: { file: 'bl_concrete_pot.glb' }, // pot beton abu 0.6 m (tinggi 0.62)
+  mcb_box: { file: 'bl_mcb_box.glb' }, // box MCB 4 group, punggung di z=0 lokal (menonjol ke +z), pusat vertikal y=0
+  kwh_meter: { file: 'bl_kwh_meter.glb' }, // kWh meter prabayar, konvensi sama
+  sconce: { file: 'bl_sconce.glb' }, // lampu dinding outdoor up-down, konvensi sama
+  // --- BlenderKit CC0 ---
+  simon_socket: { file: 'bk_simon82.glb', pick: /^E_Socket/ }, // "Set switch & socket Simon 82" (Agustin Paternoster, CC0): stop kontak schuko; pelat tergeletak, muka +y
+  simon_switch: { file: 'bk_simon82.glb', pick: /^E_switch/ }, // saklar 1 tuts dari set yang sama
   // --- Poly Haven CC0 ---
   plant_tree: { file: 'ph_pachira_aquatica_01.glb', height: 1.9, pick: /_d$/ }, // pohon pot tinggi (file berisi 4 varian berjajar; dipakai varian d saja)
   plant_tree2: { file: 'ph_pachira_aquatica_01.glb', height: 1.6, pick: /_b$/ }, // varian b, lebih kecil
@@ -79,12 +85,19 @@ const BASE = new URL('../models/furniture/', import.meta.url);
 
 function normalize(root, spec) {
   if (spec.pick) {
-    // buang mesh yang namanya tidak cocok (dan induknya, kalau jadi kosong)
+    // buang mesh yang namanya (atau nama salah satu leluhurnya) tidak cocok, lalu grup yang jadi kosong.
+    // Catatan: jangan menghapus di dalam traverse() — children berubah saat iterasi → crash.
+    const keep = (o) => { for (let p = o; p && p !== root; p = p.parent) if (spec.pick.test(p.name)) return true; return false; };
     const drop = [];
-    root.traverse((o) => { if (o.isMesh && !spec.pick.test(o.name) && !spec.pick.test(o.parent?.name || '')) drop.push(o); });
+    root.traverse((o) => { if (o.isMesh && !keep(o)) drop.push(o); });
     for (const o of drop) o.parent?.remove(o);
     let again = true;
-    while (again) { again = false; root.traverse((o) => { if (o !== root && !o.isMesh && o.children.length === 0) { o.parent?.remove(o); again = true; } }); }
+    while (again) {
+      again = false;
+      const empties = [];
+      root.traverse((o) => { if (o !== root && !o.isMesh && o.children.length === 0) empties.push(o); });
+      for (const o of empties) { o.parent?.remove(o); again = true; }
+    }
   }
   root.updateWorldMatrix(true, true);
   const bb = new THREE.Box3().setFromObject(root);

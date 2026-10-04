@@ -7,6 +7,7 @@ import { computeAll, DEFAULT_CONFIG } from './calc.js';
 import { LEVELS, STAIRS, SLAB2, SITE } from './data.js';
 import { buildAll } from './scene.js';
 import { buildFurniture } from './furniture.js';
+import { buildElektrik } from './elektrik.js';
 import { assetsPending } from './assets.js';
 import { renderHitungan, renderGalleries, bindLightbox } from './ui.js';
 
@@ -88,13 +89,14 @@ let built = null;
 let showLabels = false; // label ukuran potongan: tekan L
 let showCutColors = false; // warna keping potongan/dicoak: tekan C (default semua putih)
 let showFurniture = true; // furnitur & aksesori interior: tekan F
+let showElektrik = true; // lapisan listrik (stop kontak, saklar, MCB, kWh, titik lampu, jalur kabel): tekan E
 const SHOT = (() => {
   const q = new URLSearchParams(location.search);
   if (!q.has('shot')) return null;
   const v3 = (k, d) => { const a = (q.get(k) || '').split(',').map(Number); return a.length === 3 && a.every((n) => !isNaN(n)) ? a : d; };
-  return { cam: v3('cam', [8.3, 1.65, 8.6]), look: v3('look', [8.3, 1.4, 12]), cut: q.get('cut') || 'none', fov: +q.get('fov') || 62, nofur: q.has('nofur') };
+  return { cam: v3('cam', [8.3, 1.65, 8.6]), look: v3('look', [8.3, 1.4, 12]), cut: q.get('cut') || 'none', fov: +q.get('fov') || 62, nofur: q.has('nofur'), noelek: q.has('noelek') };
 })();
-if (SHOT) { document.body.classList.add('shot'); showFurniture = !SHOT.nofur; }
+if (SHOT) { document.body.classList.add('shot'); showFurniture = !SHOT.nofur; showElektrik = !SHOT.noelek; }
 let shotFrames = 0;
 let hideUpper = false;
 let glbRoot = null;
@@ -117,9 +119,31 @@ function rebuild() {
   fur.lt1.visible = fur.lt2.visible = showFurniture;
   built.gFloors1.add(fur.lt1); built.gFloors2.add(fur.lt2);
   built.furniture = fur;
+  attachElektrik();
   scene.add(built.root);
   applyVisibility();
   renderHitungan(results, document.getElementById('tab-hitung'), (areaId) => teleportToArea(areaId));  // no-op kalau panel tak ada
+}
+/** Tinggi plafon/dak di atas (x,z) relatif lantai lvl, dari model SKP (raycast ke atas); null kalau tidak ada (luar). */
+const _rc = new THREE.Raycaster(); const _up = new THREE.Vector3(0, 1, 0);
+function ceilingAt(x, z, lvl) {
+  if (!glbRoot) return null;
+  const base = LEVELS[lvl];
+  _rc.set(new THREE.Vector3(x, base + 1.0, z), _up); _rc.far = 8;
+  const h = _rc.intersectObject(glbRoot, true).find((i) => i.object.visible);
+  return h ? h.point.y - base : null;
+}
+/** Bangun (ulang) lapisan listrik di atas gFloors1/2 — dipanggil saat rebuild() dan setelah model SKP termuat (tinggi plafon dari raycast). */
+function attachElektrik() {
+  if (!built) return;
+  if (glbRoot) glbRoot.updateWorldMatrix(true, true); // dipanggil tepat setelah GLB termuat (belum sempat di-render) → matriks dunia harus mutakhir untuk raycast
+  if (built.elektrik) { built.gLt1.remove(built.elektrik.lt1); built.gLt2.remove(built.elektrik.lt2); }
+  const e = buildElektrik(ceilingAt);
+  // di gLt1/gLt2 (bukan gFloors yang diangkat 5 cm saat model SKP tampil) supaya titik lampu pas di plafon/dak hasil raycast
+  e.lt1.position.y = LEVELS.lt1; e.lt2.position.y = LEVELS.lt2;
+  e.lt1.visible = e.lt2.visible = showElektrik;
+  built.gLt1.add(e.lt1); built.gLt2.add(e.lt2);
+  built.elektrik = e;
 }
 function applyVisibility() {
   if (!built) return;
@@ -176,6 +200,7 @@ addEventListener('keydown', (e) => {
     case 'KeyL': setLabels(!showLabels); break;
     case 'KeyC': setCutColors(!showCutColors); break;
     case 'KeyF': setFurniture(!showFurniture); break;
+    case 'KeyE': setElektrik(!showElektrik); break;
     case 'KeyG': if (glbRoot) { glbOn = !glbOn; applyVisibility(); } break;
     case 'KeyP': togglePanel(); break;
     case 'Space': e.preventDefault(); if (mode === 'walk' && !player.air) { player.air = true; player.vy = 3.6; } break; // lompat ±0,65 m
@@ -405,6 +430,12 @@ async function rebuildTexturesOnly() {
 document.querySelectorAll('#viewbar [data-labels]').forEach((b) => b.addEventListener('click', () => setLabels(!showLabels)));
 document.querySelectorAll('#viewbar [data-cutcolors]').forEach((b) => b.addEventListener('click', () => setCutColors(!showCutColors)));
 document.querySelectorAll('#viewbar [data-furniture]').forEach((b) => b.addEventListener('click', () => setFurniture(!showFurniture)));
+function setElektrik(on) {
+  showElektrik = on;
+  if (built && built.elektrik) built.elektrik.lt1.visible = built.elektrik.lt2.visible = on;
+  document.querySelectorAll('#viewbar [data-elektrik]').forEach((b) => b.classList.toggle('active', on));
+}
+document.querySelectorAll('#viewbar [data-elektrik]').forEach((b) => b.addEventListener('click', () => setElektrik(!showElektrik)));
 document.querySelectorAll('.legend').forEach((el) => el.classList.add('dim'));
 
 // ---------------------------------------------------------------------------
@@ -513,7 +544,7 @@ gltfLoader.load(
     glbRoot.name = 'glb';
     scene.add(glbRoot);
     glbOn = true;
-    applyVisibility();
+    attachElektrik(); applyVisibility();
     if (SHOT) applyShot();
     const bb = new THREE.Box3().setFromObject(glbRoot);
     const size = bb.getSize(new THREE.Vector3());
@@ -579,6 +610,7 @@ function animate() {
   }
   requestAnimationFrame(animate);
 }
+if (SHOT) applyShot(); // kamera screenshot dipasang sejak awal (sebelum GLB termuat) supaya tangkapan dini Chrome headless tidak memakai kamera default; dipanggil lagi setelah GLB termuat
 animate();
 
 window.__dbg = { teleport, camera, player, setMode, scene, render: () => renderer.render(scene, camera), get results() { return results; }, get glb() { return glbRoot; } };

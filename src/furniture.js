@@ -3,7 +3,7 @@
 //    fm_* FurniMesh (furnimesh.com, library gratis) → daftar di src/assets.js
 //  - Penempatan per ruang: src/layout/*.js (x, z denah; y tinggi dari lantai; ry radian; depan aset = +z lokal)
 //  - Elemen parametrik yang mengikuti geometri rumah tetap dibangun di sini: railing tangga/void motif oval,
-//    lemari bawah tangga, downlight plafon.
+//    lemari bawah tangga. (Titik lampu plafon kini ikut lapisan listrik: src/elektrik.js, dari denah instalasi listrik.)
 import * as THREE from 'three';
 import { LEVELS, STAIRS } from './data.js';
 import { placeAsset } from './assets.js';
@@ -199,7 +199,6 @@ export function buildFurniture(stairHeightAt) {
   const lt1 = new THREE.Group(); lt1.name = 'furnitur-lt1';
   const lt2 = new THREE.Group(); lt2.name = 'furnitur-lt2';
   const put = (grp, obj, x, z, ry = 0, y = 0) => { obj.position.set(x, y, z); obj.rotation.y = ry; grp.add(obj); return obj; };
-  const CEIL1_FRONT = 3.1, CEIL1_BACK = 3.55, CEIL2 = 3.3;
 
   for (const it of LAYOUT.lt1) placeAsset(lt1, it.a, it);
   for (const it of LAYOUT.lt2) placeAsset(lt2, it.a, it);
@@ -209,9 +208,6 @@ export function buildFurniture(stairHeightAt) {
   put(lt1, railingOval(9.06 - 4.56, 1.0, (3.8 - 0.6) / (9.06 - 4.56)), 8.86, 4.56, -Math.PI / 2, 0.6);
   put(lt2, railingOval(9.06 - 3.575, 1.0, 0), 8.43, 3.575, -Math.PI / 2);
   put(lt2, railingOval(0.45, 1.0, 0), 8.43, 9.06, 0);
-  for (const [x, z] of [[7.2, 9.3], [9.3, 9.3], [7.2, 12.6], [9.3, 12.6], [4.0, 9.6], [5.5, 11.2]]) put(lt1, downlight(), x, z, 0, CEIL1_FRONT);
-  for (const [x, z] of [[7.3, 4.6], [4.2, 5.2], [7.2, 7.7], [5.6, 6.2]]) put(lt1, downlight(), x, z, 0, CEIL1_BACK);
-  for (const [x, z] of [[7.3, 10.0], [9.2, 10.0], [7.3, 12.6], [9.2, 12.6], [7.5, 4.6], [7.5, 7.5], [4.4, 4.6], [5.0, 6.0], [4.0, 9.7], [5.6, 11.2]]) put(lt2, downlight(), x, z, 0, CEIL2);
 
   return { lt1, lt2 };
 }

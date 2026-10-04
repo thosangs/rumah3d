@@ -339,6 +339,68 @@ def concrete_pot():
     cyl('soil', 0.27, 0.02, 0, 0, 0.61, mat('soil', srgb('#3b2f26'), 1.0), 48)
     export('concrete_pot')
 
+
+def glass(name, rgb, alpha, rough=0.08):
+    m = mat(name, rgb, rough, 0.0)
+    b = m.node_tree.nodes['Principled BSDF']; b.inputs['Alpha'].default_value = alpha
+    if hasattr(m, 'surface_render_method'): m.surface_render_method = 'BLENDED'
+    else: m.blend_method = 'BLEND'
+    return m
+
+def mcb_box():
+    """Box MCB 4 group (gaya Schneider Domae): punggung di y=0, menonjol ke -Y, pusat vertikal z=0."""
+    start()
+    white = mat('boxWhite', srgb('#f1f0eb'), 0.35)
+    dark = mat('mcbDark', srgb('#2d2f33'), 0.5)
+    lever = mat('mcbLever', srgb('#d9dbde'), 0.45)
+    rail = mat('dinRail', srgb('#9a9ea3'), 0.4, 0.8)
+    smoke = glass('smoke', srgb('#2b3139'), 0.35)
+    W, D, H, t = 0.20, 0.065, 0.13, 0.006
+    box('back', W, 0.004, H, 0, -0.002, 0, white)
+    box('sideL', t, D, H, -W / 2 + t / 2, -D / 2, 0, white, bevel=0.002)
+    box('sideR', t, D, H, W / 2 - t / 2, -D / 2, 0, white, bevel=0.002)
+    box('top', W, D, t, 0, -D / 2, H / 2 - t / 2, white, bevel=0.002)
+    box('bot', W, D, t, 0, -D / 2, -H / 2 + t / 2, white, bevel=0.002)
+    box('rail', 0.11, 0.008, 0.035, 0, -0.012, 0, rail)
+    for i in range(4):
+        x = -0.027 + i * 0.018
+        box(f'mcb{i}', 0.0175, 0.045, 0.08, x, -0.0325, 0, dark, bevel=0.001)
+        box(f'lever{i}', 0.008, 0.01, 0.018, x, -0.058, 0.014, lever, bevel=0.001)  # tuas ON (ke atas)
+    box('window', W - 2 * t - 0.002, 0.003, H - 2 * t - 0.002, 0, -(D - 0.0015), 0, smoke)
+    box('handle', 0.03, 0.006, 0.006, W / 2 - 0.03, -(D + 0.003), -H / 2 + 0.018, white, bevel=0.002)
+    export('mcb_box')
+
+def kwh_meter():
+    """kWh meter prabayar PLN (gaya Itron/Hexing): punggung di y=0, menonjol ke -Y, pusat vertikal z=0."""
+    start()
+    cream = mat('meterCream', srgb('#e9e7df'), 0.4)
+    dark = mat('meterDark', srgb('#3a3c40'), 0.5)
+    lcd = mat('lcd', srgb('#5f6b57'), 0.3, 0.0, emit=srgb('#8fa07e'), emit_str=0.35)
+    key = mat('key', srgb('#cfd1d3'), 0.5)
+    red = mat('ledRed', srgb('#c62c24'), 0.4, 0.0, emit=srgb('#ff3b2e'), emit_str=1.5)
+    W, D, H = 0.15, 0.075, 0.22
+    box('body', W, D, H, 0, -D / 2, 0.01, cream, bevel=0.006, seg=3)
+    box('lcd', 0.075, 0.004, 0.028, 0, -D - 0.001, 0.062, lcd, bevel=0.001)
+    box('lcdFrame', 0.085, 0.003, 0.038, 0, -D - 0.0005, 0.062, dark, bevel=0.001)
+    for r in range(4):
+        for c in range(3):
+            box(f'key{r}{c}', 0.013, 0.004, 0.011, -0.02 + c * 0.02, -D - 0.001, 0.025 - r * 0.018, key, bevel=0.001)
+    cyl('led', 0.003, 0.003, 0.055, -D - 0.0015, 0.095, red, 12)
+    box('terminal', W - 0.01, D - 0.01, 0.045, 0, -(D - 0.01) / 2, -H / 2 - 0.0125, dark, bevel=0.004)  # tutup terminal bawah
+    box('plate', 0.06, 0.002, 0.014, 0, -D - 0.001, 0.09, dark, bevel=0.001)  # label PLN
+    export('kwh_meter')
+
+def sconce():
+    """Lampu sorot/dinding outdoor LED hitam (up-down): punggung di y=0, menonjol ke -Y, pusat vertikal z=0."""
+    start()
+    blk = mat('sconceBlack', srgb('#1b1c1e'), 0.55, 0.2)
+    led = mat('ledWarm', srgb('#fff1d6'), 1.0, 0.0, emit=srgb('#ffd9a0'), emit_str=4.0)
+    box('body', 0.07, 0.085, 0.11, 0, -0.0425, 0, blk, bevel=0.006, seg=3)
+    box('bracket', 0.05, 0.012, 0.06, 0, -0.006, 0, blk)
+    cyl('lensUp', 0.024, 0.004, 0, -0.05, 0.0555, led, 24)
+    cyl('lensDown', 0.024, 0.004, 0, -0.05, -0.0555, led, 24)
+    export('sconce')
+
 BUILD_ONLY = set(sys.argv[sys.argv.index('--') + 2:]) if '--' in sys.argv and len(sys.argv) > sys.argv.index('--') + 2 else set()
 def want(name): return not BUILD_ONLY or name in BUILD_ONLY
 # ---------------------------------------------------------------------------
@@ -371,3 +433,6 @@ if want('round_table_s'): round_table('round_table_s', 0.25, 0.5)
 if want('ring_pendant'): ring_pendant()
 if want('molecule_pendant'): molecule_pendant()
 print('SELESAI')
+if want('mcb_box'): mcb_box()
+if want('kwh_meter'): kwh_meter()
+if want('sconce'): sconce()
