@@ -13,8 +13,9 @@ import kt1 from './layout/kt1.js';
 import lt2Keluarga from './layout/lt2-keluarga.js';
 import kt2 from './layout/kt2.js';
 import ktu from './layout/ktu.js';
+import { toiletLt1, toiletLt2 } from './layout/toilet.js';
 
-export const LAYOUT = { lt1: [...ruangKeluarga, ...ruangMakan, ...kt1], lt2: [...lt2Keluarga, ...kt2, ...ktu] };
+export const LAYOUT = { lt1: [...ruangKeluarga, ...ruangMakan, ...kt1, ...toiletLt1], lt2: [...lt2Keluarga, ...kt2, ...ktu, ...toiletLt2] };
 
 const std = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0, ...o });
 export const FM = {

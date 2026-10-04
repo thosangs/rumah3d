@@ -44,14 +44,14 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const RED = '#c8102e', INK = '#111', GREY = '#666';
 const TGL = '04-10-2026';
 const RUANG = {
-  lt1: [['DAPUR', 4.3, 4.65], ['R. MAKAN', 5.4, 6.4], ['TOILET', 3.9, 7.35], ['KAMAR TIDUR 1', 4.75, 10.85], ['R. KELUARGA', 8.25, 10.35], ['TERAS DEPAN', 4.75, 13.3], ['TERAS BLK.', 8.3, 2.3], ['R. JEMUR', 5.0, 1.0], ['CARPORT', 6.5, 17.0], ['TAMAN', 0.75, 10.0], ['SELASAR', 2.25, 5.0]],
-  lt2: [['KAMAR TIDUR 2', 4.75, 4.65], ['SELASAR', 7.6, 6.4], ['VOID', 9.2, 6.4], ['TOILET', 3.9, 7.35], ['TOILET', 5.6, 7.35], ['KT UTAMA', 4.75, 10.75], ['R. KELUARGA', 8.25, 10.35], ['BALKON DEPAN', 4.0, 13.8], ['BALKON', 2.25, 11.0], ['BALKON BLK.', 8.3, 3.2]],
+  lt1: [['DAPUR', 4.3, 4.65], ['R. MAKAN', 5.4, 6.4], ['TOILET', 4.25, 8.1], ['KAMAR TIDUR 1', 4.75, 10.85], ['R. KELUARGA', 8.25, 10.35], ['TERAS DEPAN', 4.75, 13.3], ['TERAS BLK.', 8.3, 2.3], ['R. JEMUR', 5.0, 1.0], ['CARPORT', 6.5, 17.0], ['TAMAN', 0.75, 10.0], ['SELASAR', 2.25, 5.0]],
+  lt2: [['KAMAR TIDUR 2', 4.75, 4.65], ['SELASAR', 7.6, 6.4], ['VOID', 9.2, 6.4], ['TOILET', 4.25, 8.1], ['TOILET', 5.6, 7.35], ['KT UTAMA', 4.75, 10.75], ['R. KELUARGA', 8.25, 10.35], ['BALKON DEPAN', 4.0, 13.8], ['BALKON', 2.25, 11.0], ['BALKON BLK.', 8.3, 3.2]],
 };
 const NV = { '+z': [0, 1], '+x': [1, 0], '-z': [0, -1], '-x': [-1, 0] };
 
 // ---- simbol (semua menerima pusat px dan warna) ----
 const sym = {
-  stopkontak: (cx, cy, col, ac) => `<circle cx="${cx}" cy="${cy}" r="7.5" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${cx - 3}" y1="${cy - 4.5}" x2="${cx - 3}" y2="${cy + 4.5}" stroke="${col}" stroke-width="1.6"/><line x1="${cx + 3}" y1="${cy - 4.5}" x2="${cx + 3}" y2="${cy + 4.5}" stroke="${col}" stroke-width="1.6"/>${ac ? `<text x="${cx}" y="${cy - 10}" font-size="9" font-weight="700" text-anchor="middle" fill="${col}">AC</text>` : ''}`,
+  stopkontak: (cx, cy, col, tag) => `<circle cx="${cx}" cy="${cy}" r="7.5" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${cx - 3}" y1="${cy - 4.5}" x2="${cx - 3}" y2="${cy + 4.5}" stroke="${col}" stroke-width="1.6"/><line x1="${cx + 3}" y1="${cy - 4.5}" x2="${cx + 3}" y2="${cy + 4.5}" stroke="${col}" stroke-width="1.6"/>${tag ? `<text x="${cx}" y="${cy - 10}" font-size="9" font-weight="700" text-anchor="middle" fill="${col}">${tag}</text>` : ''}`,
   saklar: (cx, cy, col, n) => { let s = `<circle cx="${cx}" cy="${cy}" r="6" fill="#fff" stroke="${col}" stroke-width="1.6"/>`; for (let i = 0; i < n; i++) { const o = (i - (n - 1) / 2) * 5; s += `<line x1="${cx + 4.2 + o}" y1="${cy - 4.2 - o}" x2="${cx + 12 + o}" y2="${cy - 12 - o}" stroke="${col}" stroke-width="1.6"/>`; } return s; },
   mcb: (cx, cy, col) => `<rect x="${cx - 13}" y="${cy - 8}" width="26" height="16" fill="${col}"/><text x="${cx}" y="${cy + 3.5}" font-size="8.5" font-weight="700" text-anchor="middle" fill="#fff">MCB</text>`,
   kwh: (cx, cy, col) => `<rect x="${cx - 10}" y="${cy - 10}" width="20" height="20" fill="#fff" stroke="${col}" stroke-width="1.6"/><path d="M${cx - 10} ${cy + 10} L${cx + 10} ${cy - 10} L${cx + 10} ${cy + 10} Z" fill="${col}"/><text x="${cx}" y="${cy - 13}" font-size="8.5" font-weight="700" text-anchor="middle" fill="${col}">kWh</text>`,
@@ -147,7 +147,7 @@ function perangkat(lvl) {
     const [nx, nz] = NV[d.n]; const col = d.baru ? RED : INK;
     const cx = X(d.x + nx * 0.2), cy = Y(d.z + nz * 0.2);
     s += `<line x1="${X(d.x)}" y1="${Y(d.z)}" x2="${cx}" y2="${cy}" stroke="${col}" stroke-width="1.4"/>`;
-    if (d.t === 'stopkontak') s += sym.stopkontak(cx, cy, col, d.ac);
+    if (d.t === 'stopkontak') s += sym.stopkontak(cx, cy, col, d.ac ? 'AC' : d.wh ? 'WH' : '');
     else if (d.t === 'saklar1') s += sym.saklar(cx, cy, col, 1);
     else if (d.t === 'saklar2') s += sym.saklar(cx, cy, col, 2);
     else if (d.t === 'mcb') s += sym.mcb(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
@@ -157,7 +157,7 @@ function perangkat(lvl) {
     const dup = labeled.some((q) => q.t === d.t && Math.abs(q.h - d.h) < 0.01 && Math.hypot(q.x - d.x, q.z - d.z) < 0.35);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) labeled.push(d);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) {
-      const atas = nx !== 0 && !d.ac;
+      const atas = nx !== 0 && !d.ac && !d.wh;
       const lx = atas ? cx : cx + (nx ? nx * 14 : 11), ly = atas ? cy - 11 : cy + (nz ? nz * 16 : 4) + (nx ? 3 : 0);
       s += `<text x="${lx}" y="${ly}" font-size="8" fill="${col}" text-anchor="${atas ? 'middle' : nx < 0 ? 'end' : nx > 0 ? 'start' : 'middle'}">+${d.h.toFixed(2)}</text>`;
     }
@@ -168,8 +168,9 @@ function legenda(lvl) {
   const P = PERANGKAT.filter((q) => q.lvl === lvl), L = LAMPU.filter((q) => q.lvl === lvl);
   const n = (f) => P.filter(f).length;
   const rows = [
-    ['stopkontak', 'Stop kontak 1 ph 10/16 A, h 40 cm (dapur 115, mesin cuci 120)', n((d) => d.t === 'stopkontak' && !d.ac && !d.baru), n((d) => d.t === 'stopkontak' && !d.ac && d.baru)],
+    ['stopkontak', 'Stop kontak 1 ph 10/16 A, h 40 cm (dapur 115, mesin cuci 120)', n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && !d.baru), n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && d.baru)],
     ['ac', 'Stop kontak AC, h 240 cm (unit indoor di atas jendela)', 0, n((d) => d.ac)],
+    ['wh', 'Stop kontak water heater IP44, h 190 cm, grup sendiri', 0, n((d) => d.wh)],
     ['saklar1', 'Saklar tunggal, h 140 cm', n((d) => d.t === 'saklar1'), 0],
     ['saklar2', 'Saklar ganda, h 140 cm', n((d) => d.t === 'saklar2'), 0],
     ['lampu5', 'Lampu LED downlight 5 W', L.filter((l) => l.w === 5).length, 0],
@@ -189,8 +190,9 @@ function legenda(lvl) {
   let y = y0 + 128;
   for (const [k, ket, ada, baru] of rows) {
     const cx = x0 + 34, cy = y - 4, col = baru && !ada ? RED : INK;
-    if (k === 'stopkontak') s += sym.stopkontak(cx, cy, col, false);
-    else if (k === 'ac') s += sym.stopkontak(cx, cy, RED, true);
+    if (k === 'stopkontak') s += sym.stopkontak(cx, cy, col, '');
+    else if (k === 'ac') s += sym.stopkontak(cx, cy, RED, 'AC');
+    else if (k === 'wh') s += sym.stopkontak(cx, cy, RED, 'WH');
     else if (k === 'saklar1') s += sym.saklar(cx, cy, col, 1);
     else if (k === 'saklar2') s += sym.saklar(cx, cy, col, 2);
     else if (k === 'lampu5') s += sym.lampu(cx, cy, col, 5);

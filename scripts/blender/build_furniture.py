@@ -413,6 +413,20 @@ def ac_indoor():
     box('display', 0.06, 0.004, 0.02, 0.3, -0.212, -0.02, dark)
     export('ac_indoor')
 
+def water_heater():
+    """Water heater listrik tangki 15 L (gaya Ariston Andris, 0.36×0.36×0.40): punggung di y=0, menonjol ke -Y, pusat vertikal z=0."""
+    start()
+    white = mat('whWhite', srgb('#f3f3f0'), 0.3)
+    dark = mat('whDark', srgb('#2b2d30'), 0.5)
+    chrome = M['chrome']
+    box('tank', 0.36, 0.35, 0.40, 0, -0.175, 0, white, bevel=0.05, seg=5, subsurf=1)
+    box('panel', 0.14, 0.004, 0.05, 0, -0.352, -0.09, dark, bevel=0.004)
+    cyl('knob', 0.018, 0.006, 0.09, -0.355, -0.09, dark, 24)
+    for x in (-0.05, 0.05):
+        c = cyl('pipe', 0.008, 0.06, x, -0.12, -0.23, chrome, 12)
+    box('bracket', 0.30, 0.012, 0.03, 0, -0.006, 0.15, dark)
+    export('water_heater')
+
 BUILD_ONLY = set(sys.argv[sys.argv.index('--') + 2:]) if '--' in sys.argv and len(sys.argv) > sys.argv.index('--') + 2 else set()
 def want(name): return not BUILD_ONLY or name in BUILD_ONLY
 # ---------------------------------------------------------------------------
@@ -450,3 +464,4 @@ if want('kwh_meter'): kwh_meter()
 if want('sconce'): sconce()
 
 if want('ac_indoor'): ac_indoor()
+if want('water_heater'): water_heater()

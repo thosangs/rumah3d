@@ -41,6 +41,7 @@ export const ASSETS = {
   kwh_meter: { file: 'bl_kwh_meter.glb' }, // kWh meter prabayar, konvensi sama
   sconce: { file: 'bl_sconce.glb' }, // lampu dinding outdoor up-down, konvensi sama
   ac_indoor: { file: 'bl_ac_indoor.glb' }, // unit AC indoor split 0.85 m, punggung di z=0 lokal, pusat vertikal y=0
+  water_heater: { file: 'bl_water_heater.glb' }, // water heater tangki 15 L 0.36×0.35×0.40, konvensi sama
   // --- BlenderKit CC0 ---
   simon_socket: { file: 'bk_simon82.glb', pick: /^E_Socket/ }, // "Set switch & socket Simon 82" (Agustin Paternoster, CC0): stop kontak schuko; pelat tergeletak, muka +y
   simon_switch: { file: 'bk_simon82.glb', pick: /^E_switch/ }, // saklar 1 tuts dari set yang sama
