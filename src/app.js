@@ -436,6 +436,7 @@ function setElektrik(on) {
   document.querySelectorAll('#viewbar [data-elektrik]').forEach((b) => b.classList.toggle('active', on));
 }
 document.querySelectorAll('#viewbar [data-elektrik]').forEach((b) => b.addEventListener('click', () => setElektrik(!showElektrik)));
+document.querySelectorAll('#viewbar [data-open]').forEach((b) => b.addEventListener('click', () => window.open(b.dataset.open, '_blank')));
 document.querySelectorAll('.legend').forEach((el) => el.classList.add('dim'));
 
 // ---------------------------------------------------------------------------

@@ -18,6 +18,8 @@ await cp(join(root, 'styles.css'), join(dist, 'styles.css'));
 await mkdir(join(dist, 'models'), { recursive: true });
 await cp(join(root, 'models', 'rumah.glb'), join(dist, 'models', 'rumah.glb'));
 await cp(join(root, 'models', 'furniture'), join(dist, 'models', 'furniture'), { recursive: true }); // aset furnitur GLB (Blender, Poly Haven, FurniMesh)
+await mkdir(join(dist, 'docs'), { recursive: true });
+for (const f of ['denah-listrik-lt1.svg', 'denah-listrik-lt2.svg']) await cp(join(root, 'docs', f), join(dist, 'docs', f)); // denah listrik 2D (scripts/denah-listrik.mjs)
 // TIDAK disalin: drawings/ (7,9 MB PDF), models/rumah-raw.glb (96 MB), *.skp (31 MB)
 
 await writeFile(join(dist, '.nojekyll'), ''); // cegah Jekyll mengabaikan folder
@@ -69,6 +71,8 @@ const html = `<!doctype html>
   <div class="grp">
     <button data-furniture class="active" title="Furnitur & interior sesuai render (tombol F)">🛋 Interior</button>
     <button data-elektrik class="active" title="Instalasi listrik: stop kontak, saklar, MCB, kWh, titik lampu & jalur kabel (tombol E)">⚡ Listrik</button>
+    <button data-open="docs/denah-listrik-lt1.svg" title="Denah instalasi listrik 2D lantai 1 (revisi) — buka di tab baru">🗺 Denah Lt1</button>
+    <button data-open="docs/denah-listrik-lt2.svg" title="Denah instalasi listrik 2D lantai 2 (revisi) — buka di tab baru">🗺 Denah Lt2</button>
     <button data-cutcolors title="Warnai keping potongan / dicoak (tombol C) — default semua putih">🎨 Potongan</button>
     <button data-labels title="Tampilkan ukuran potongan di keramik (tombol L)">📐 Ukuran</button>
   </div>

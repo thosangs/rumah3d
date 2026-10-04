@@ -14,7 +14,7 @@ cd rumah-alfi-3d && python3 serve.py 8765
 lalu buka <http://localhost:8765>.
 
 Kontrol: klik untuk mengunci mouse, `W A S D` jalan, `Shift` lari, `Spasi` lompat, `1/2/3` lompat ke teras depan / lantai 2 / depan rumah,
-`M` mode orbit (denah), `H` irisan lantai, `L` label ukuran potongan (default mati), `C` warna potongan, `F` furnitur, `E` lapisan listrik (stop kontak, saklar, MCB, kWh, titik lampu, jalur kabel — dari denah instalasi listrik hal. 69–70), `G` ganti model SKP asli ↔ model blok,
+`M` mode orbit (denah), `H` irisan lantai, `L` label ukuran potongan (default mati), `C` warna potongan, `F` furnitur, `E` lapisan listrik (stop kontak, saklar, MCB, kWh, titik lampu, jalur kabel — dari denah instalasi listrik hal. 69–70; denah 2D hasil revisi: `docs/denah-listrik-lt1.svg`/`-lt2.svg`, dibuat ulang dengan `node scripts/denah-listrik.mjs`), `G` ganti model SKP asli ↔ model blok,
 `P` panel hitungan. Naik ke lantai 2 cukup jalan ke tangga di pojok kanan belakang ruang makan.
 
 ## Hitungan tanpa browser

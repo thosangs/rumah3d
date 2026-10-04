@@ -401,6 +401,18 @@ def sconce():
     cyl('lensDown', 0.024, 0.004, 0, -0.05, -0.0555, led, 24)
     export('sconce')
 
+def ac_indoor():
+    """Unit AC indoor split 0.85×0.29×0.21 (gaya Daikin/Panasonic putih): punggung di y=0, menonjol ke -Y, pusat vertikal z=0."""
+    start()
+    white = mat('acWhite', srgb('#f4f4f1'), 0.3)
+    grey = mat('acGrey', srgb('#9c9fa3'), 0.5)
+    dark = mat('acDark', srgb('#2a2c2f'), 0.6)
+    box('body', 0.85, 0.21, 0.29, 0, -0.105, 0, white, bevel=0.03, seg=4, subsurf=1)
+    box('louver', 0.72, 0.03, 0.035, 0, -0.205, -0.10, grey, bevel=0.01)
+    box('slit', 0.74, 0.01, 0.012, 0, -0.212, -0.062, dark)
+    box('display', 0.06, 0.004, 0.02, 0.3, -0.212, -0.02, dark)
+    export('ac_indoor')
+
 BUILD_ONLY = set(sys.argv[sys.argv.index('--') + 2:]) if '--' in sys.argv and len(sys.argv) > sys.argv.index('--') + 2 else set()
 def want(name): return not BUILD_ONLY or name in BUILD_ONLY
 # ---------------------------------------------------------------------------
@@ -436,3 +448,5 @@ print('SELESAI')
 if want('mcb_box'): mcb_box()
 if want('kwh_meter'): kwh_meter()
 if want('sconce'): sconce()
+
+if want('ac_indoor'): ac_indoor()

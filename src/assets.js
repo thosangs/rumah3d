@@ -40,6 +40,7 @@ export const ASSETS = {
   mcb_box: { file: 'bl_mcb_box.glb' }, // box MCB 4 group, punggung di z=0 lokal (menonjol ke +z), pusat vertikal y=0
   kwh_meter: { file: 'bl_kwh_meter.glb' }, // kWh meter prabayar, konvensi sama
   sconce: { file: 'bl_sconce.glb' }, // lampu dinding outdoor up-down, konvensi sama
+  ac_indoor: { file: 'bl_ac_indoor.glb' }, // unit AC indoor split 0.85 m, punggung di z=0 lokal, pusat vertikal y=0
   // --- BlenderKit CC0 ---
   simon_socket: { file: 'bk_simon82.glb', pick: /^E_Socket/ }, // "Set switch & socket Simon 82" (Agustin Paternoster, CC0): stop kontak schuko; pelat tergeletak, muka +y
   simon_switch: { file: 'bk_simon82.glb', pick: /^E_switch/ }, // saklar 1 tuts dari set yang sama

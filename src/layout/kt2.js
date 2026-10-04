@@ -34,4 +34,5 @@ export default [
   // menggantung rapat tembok di x 3.12–3.26 di belakang meja (meja mulai x 3.33) → sinar pandang kamera (3.5, 4.0) yang menyerempet
   // tembok tidak lagi lolos ke kusen jendela. Tipis 14 cm, tidak mengganggu area kamera z 4–5.
   { a: 'curtain_cream', x: 3.12, z: 6.05, ry: Math.PI / 2, sx: 0.82 },
+  { a: 'ac_indoor', x: 4.62, z: 3.564, y: 2.45, ry: 0, note: 'AC indoor di tembok belakang di atas headboard, x 4.2–5.05, y 2.3–2.6 (plafon 3.3); stop kontak AC di x 5.3 h 2.2' },
 ];
