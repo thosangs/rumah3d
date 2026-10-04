@@ -69,7 +69,7 @@ const html = `<!doctype html>
     <button data-cut="none" class="active" title="Model utuh">Utuh</button>
   </div>
   <div class="grp">
-    <button data-furniture class="active" title="Furnitur & interior sesuai render (tombol F)">🛋 Interior</button>
+    <button data-furniture class="active" title="Furnitur & interior sesuai render, termasuk kulkas (tombol F)">🛋 Interior</button>
     <button data-elektrik class="active" title="Instalasi listrik: stop kontak, saklar, MCB, kWh, titik lampu & jalur kabel (tombol E)">⚡ Listrik</button>
     <button data-open="docs/denah-listrik-lt1.svg" title="Denah instalasi listrik 2D lantai 1 (revisi) — buka di tab baru">🗺 Denah Lt1</button>
     <button data-open="docs/denah-listrik-lt2.svg" title="Denah instalasi listrik 2D lantai 2 (revisi) — buka di tab baru">🗺 Denah Lt2</button>

@@ -292,8 +292,8 @@ function applyShot() {
   camera.lookAt(...SHOT.look);
   if (SHOT.cut !== 'none') setCut(SHOT.cut);
   applyVisibility();
-  window.__shotReady = true;
-  document.title = 'SHOT-READY';
+  window.__shotReady = !!glbRoot; // siap dipotret hanya setelah model SKP termuat (dipanggil lagi dari callback GLB)
+  document.title = glbRoot ? 'SHOT-READY' : 'SHOT-WAIT';
 }
 function setMode(m) {
   mode = m;
@@ -408,10 +408,24 @@ function setCutColors(on) {
   document.querySelectorAll('.legend').forEach((el) => el.classList.toggle('dim', !on));
   rebuildTexturesOnly();
 }
+let glbFurniture = []; // mesh model SKP yang tergolong furnitur lepas (kulkas) → ikut tombol F
 function setFurniture(on) {
   showFurniture = on;
   document.querySelectorAll('#viewbar [data-furniture]').forEach((b) => b.classList.toggle('active', on));
   if (built?.furniture) { built.furniture.lt1.visible = on; built.furniture.lt2.visible = on; }
+  for (const m of glbFurniture) m.visible = on;
+}
+/** Tandai mesh SKP yang merupakan furnitur lepas: kulkas di dapur (bbox dunia x 5.4–6.5, z 3.5–4.5, y < 2.3). Kitchen set tetap (built-in). */
+function tagGlbFurniture(root) {
+  glbFurniture = [];
+  const bb = new THREE.Box3();
+  root.traverse((o) => {
+    if (!o.isMesh) return;
+    o.geometry.computeBoundingBox();
+    bb.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld);
+    if (bb.min.x > 5.4 && bb.max.x < 6.5 && bb.min.z > 3.5 && bb.max.z < 4.5 && bb.min.y > -0.2 && bb.max.y < 2.3) { o.userData.glbFurniture = 'kulkas'; glbFurniture.push(o); }
+  });
+  for (const m of glbFurniture) m.visible = showFurniture;
 }
 async function rebuildTexturesOnly() {
   const { floorTexture, wallTexture } = await import('./textures.js');
@@ -543,6 +557,7 @@ gltfLoader.load(
     // Model SKP: kavling x 0–10 sama dengan denah, sumbu z = y_denah − 20 (depan rumah di z=0), muka tanah di y=0.
     glbRoot.position.set(0, LEVELS.tanah, 19.5); // model SKP: kavling mulai y=0.5 (bergeser 0,5 m dari DED)
     glbRoot.name = 'glb';
+    glbRoot.updateWorldMatrix(true, true); tagGlbFurniture(glbRoot);
     scene.add(glbRoot);
     glbOn = true;
     attachElektrik(); applyVisibility();
