@@ -1,4 +1,4 @@
-# Estimasi Biaya Instalasi Listrik — Rumah Mbak Alfi (revisi 04-10-2026)
+# Estimasi Biaya Instalasi Listrik — Rumah Mbak Alfi (revisi 05-10-2026)
 
 Dihitung otomatis oleh `scripts/rab-listrik.mjs` dari data model 3D (`src/layout/elektrik.js`). Harga satuan mengikuti **RAB V3 bagian IX** untuk item yang sama; item bertanda \* adalah perkiraan harga pasar (Okt 2026) karena tidak ada di RAB.
 

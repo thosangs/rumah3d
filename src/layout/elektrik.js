@@ -65,12 +65,13 @@ export const PERANGKAT = [
   { lvl: 'lt2', t: 'stopkontak', x: 6.563, z: 10.90, n: '+x', h: 1.05, baru: true, r: 'REVISI: R. keluarga lt2, tembok KTU di atas sideboard (top 0.80) — tambahan' },
   { lvl: 'lt2', t: 'stopkontak', x: 6.563, z: 11.12, n: '+x', h: 1.05, baru: true, r: 'REVISI: R. keluarga lt2, tembok KTU di atas sideboard — tambahan' },
   { lvl: 'lt2', t: 'stopkontak', x: 3.55, z: 7.095, n: '+z', h: 1.9, wh: true, baru: true, r: 'REVISI: stop kontak water heater toilet lt2 kiri (di dalam KTU, IP44), tembok sisi KT2, kiri unit — tambahan' },
-  // ---------------- LANTAI 2: saklar 8 (4 tunggal + 4 ganda) ----------------
+  // ---------------- LANTAI 2: saklar 8 (4 tunggal + 4 ganda) — diverifikasi ulang 5/10 dari scan 600 dpi: ganda = batang bercabang
+  // sebelum ujung (stub), tunggal = batang berakhir di tick; dicocokkan dengan jumlah kelompok lampu per saklar & legenda ----------------
   { lvl: 'lt2', t: 'saklar1', x: 7.73, z: 3.564, n: '+z', h: 1.4, r: 'selasar, kanan pintu balkon belakang → lampu balkon' },
-  { lvl: 'lt2', t: 'saklar2', x: 6.435, z: 5.88, n: '-x', h: 1.4, r: 'KT2, samping pintu → lampu KT2' },
+  { lvl: 'lt2', t: 'saklar1', x: 6.435, z: 5.88, n: '-x', h: 1.4, r: 'KT2, samping pintu → lampu KT2 (simbol DED: tunggal, 1 kelompok lampu)' },
   { lvl: 'lt2', t: 'saklar2', x: 6.563, z: 5.88, n: '+x', h: 1.4, r: 'selasar → lampu selasar & void tangga' },
   { lvl: 'lt2', t: 'saklar1', x: 6.563, z: 8.15, n: '+x', h: 1.4, r: 'selasar → lampu toilet kanan' },
-  { lvl: 'lt2', t: 'saklar1', x: 4.07, z: 8.565, n: '+z', h: 1.4, r: 'KTU, kanan pintu toilet → lampu toilet kiri' },
+  { lvl: 'lt2', t: 'saklar2', x: 4.07, z: 8.565, n: '+z', h: 1.4, r: 'KTU, kanan pintu toilet → lampu toilet kiri + lampu balkon samping kiri (simbol DED: ganda, 2 kelompok)' },
   { lvl: 'lt2', t: 'saklar1', x: 6.435, z: 9.57, n: '-x', h: 1.4, r: 'KTU, samping pintu → lampu KTU' },
   { lvl: 'lt2', t: 'saklar2', x: 6.563, z: 9.57, n: '+x', h: 1.4, r: 'R. keluarga lt2, samping pintu KTU → lampu r. keluarga' },
   { lvl: 'lt2', t: 'saklar2', x: 6.563, z: 12.02, n: '+x', h: 1.4, r: 'R. keluarga lt2, samping pintu balkon → lampu balkon depan + sorot' },

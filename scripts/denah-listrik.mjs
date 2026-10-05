@@ -42,7 +42,7 @@ const W = M + PLAN_W + 40 + LEG_W + M, H = M + PLAN_H + M + 20;
 const X = (x) => +(M + x * S).toFixed(1), Y = (z) => +(M + z * S).toFixed(1);
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const RED = '#c8102e', INK = '#111', GREY = '#666';
-const TGL = '04-10-2026';
+const TGL = '05-10-2026';
 const RUANG = {
   lt1: [['DAPUR', 4.3, 4.65], ['R. MAKAN', 5.4, 6.4], ['TOILET', 4.25, 8.1], ['KAMAR TIDUR 1', 4.75, 10.85], ['R. KELUARGA', 8.25, 10.35], ['TERAS DEPAN', 4.75, 13.3], ['TERAS BLK.', 8.3, 2.3], ['R. JEMUR', 5.0, 1.0], ['CARPORT', 6.5, 17.0], ['TAMAN', 0.75, 10.0], ['SELASAR', 2.25, 5.0]],
   lt2: [['KAMAR TIDUR 2', 4.75, 4.65], ['SELASAR', 7.6, 6.4], ['VOID', 9.2, 6.4], ['TOILET', 4.25, 8.1], ['TOILET', 5.6, 7.35], ['KT UTAMA', 4.75, 10.75], ['R. KELUARGA', 8.25, 10.35], ['BALKON DEPAN', 4.0, 13.8], ['BALKON', 2.25, 11.0], ['BALKON BLK.', 8.3, 3.2]],
@@ -50,12 +50,30 @@ const RUANG = {
 const NV = { '+z': [0, 1], '+x': [1, 0], '-z': [0, -1], '-x': [-1, 0] };
 
 // ---- simbol (semua menerima pusat px dan warna) ----
+// Simbol meniru legenda DED (lembar 26/27): dibuat dengan "tembok di atas" lalu diputar sesuai arah muka (rot).
+// rot: 0 = tembok di −y (atas kertas), 180 = tembok di +y, −90 = tembok di kiri, 90 = tembok di kanan.
+const ROT = { '+z': 0, '-z': 180, '+x': -90, '-x': 90 };
 const sym = {
-  stopkontak: (cx, cy, col, tag) => `<circle cx="${cx}" cy="${cy}" r="7.5" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${cx - 3}" y1="${cy - 4.5}" x2="${cx - 3}" y2="${cy + 4.5}" stroke="${col}" stroke-width="1.6"/><line x1="${cx + 3}" y1="${cy - 4.5}" x2="${cx + 3}" y2="${cy + 4.5}" stroke="${col}" stroke-width="1.6"/>${tag ? `<text x="${cx}" y="${cy - 10}" font-size="9" font-weight="700" text-anchor="middle" fill="${col}">${tag}</text>` : ''}`,
-  saklar: (cx, cy, col, n) => { let s = `<circle cx="${cx}" cy="${cy}" r="6" fill="#fff" stroke="${col}" stroke-width="1.6"/>`; for (let i = 0; i < n; i++) { const o = (i - (n - 1) / 2) * 5; s += `<line x1="${cx + 4.2 + o}" y1="${cy - 4.2 - o}" x2="${cx + 12 + o}" y2="${cy - 12 - o}" stroke="${col}" stroke-width="1.6"/>`; } return s; },
-  mcb: (cx, cy, col) => `<rect x="${cx - 13}" y="${cy - 8}" width="26" height="16" fill="${col}"/><text x="${cx}" y="${cy + 3.5}" font-size="8.5" font-weight="700" text-anchor="middle" fill="#fff">MCB</text>`,
-  kwh: (cx, cy, col) => `<rect x="${cx - 10}" y="${cy - 10}" width="20" height="20" fill="#fff" stroke="${col}" stroke-width="1.6"/><path d="M${cx - 10} ${cy + 10} L${cx + 10} ${cy - 10} L${cx + 10} ${cy + 10} Z" fill="${col}"/><text x="${cx}" y="${cy - 13}" font-size="8.5" font-weight="700" text-anchor="middle" fill="${col}">kWh</text>`,
-  sconce: (cx, cy, col) => `<rect x="${cx - 7}" y="${cy - 7}" width="14" height="14" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${cx - 7}" y1="${cy - 7}" x2="${cx + 7}" y2="${cy + 7}" stroke="${col}" stroke-width="1.4"/><line x1="${cx + 7}" y1="${cy - 7}" x2="${cx - 7}" y2="${cy + 7}" stroke="${col}" stroke-width="1.4"/>`,
+  // stop kontak: setengah lingkaran (cembung ke tembok, terbuka ke ruang) + batang ke tembok dengan palang (kontak arde)
+  stopkontak: (cx, cy, col, tag, rot = 0) => `<g transform="translate(${cx} ${cy}) rotate(${rot})"><path d="M-6.5 2 A6.5 6.5 0 0 1 6.5 2" fill="#fff" stroke="${col}" stroke-width="1.7"/><line x1="-6.5" y1="2" x2="-6.5" y2="4.5" stroke="${col}" stroke-width="1.7"/><line x1="6.5" y1="2" x2="6.5" y2="4.5" stroke="${col}" stroke-width="1.7"/><line x1="0" y1="-4.5" x2="0" y2="-12" stroke="${col}" stroke-width="1.7"/><line x1="-4.5" y1="-9.5" x2="4.5" y2="-9.5" stroke="${col}" stroke-width="1.7"/></g>${tag ? `<text x="${cx}" y="${cy - 15}" font-size="9" font-weight="700" text-anchor="middle" fill="${col}">${tag}</text>` : ''}`,
+  // saklar: lingkaran + batang 45° ke arah ruang; tunggal = batang berakhir di tick (bentuk Λ); ganda = batang menembus tick (stub)
+  saklar: (cx, cy, col, n, rot = 0) => {
+    // tunggal: batang 13 px dari tepi lingkaran, berakhir di tick 8 px (bentuk Λ). ganda: tick bercabang di 8 px, batang menerus sampai 15 px (bentuk λ) + tick kedua sejajar di ujung.
+    const k = 0.7071, r0 = 5.5, stem = n === 2 ? 15 : 13, at = n === 2 ? 8 : 13, tk = 8;
+    const p = (t) => [(r0 + t) * k, (r0 + t) * k];
+    const [sx, sy] = p(0), [ex, ey] = p(stem), [tx, ty] = p(at);
+    let s = `<g transform="translate(${cx} ${cy}) rotate(${rot})"><circle cx="0" cy="0" r="${r0}" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${sx.toFixed(2)}" y1="${sy.toFixed(2)}" x2="${ex.toFixed(2)}" y2="${ey.toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`;
+    s += `<line x1="${tx.toFixed(2)}" y1="${ty.toFixed(2)}" x2="${(tx + tk * k).toFixed(2)}" y2="${(ty - tk * k).toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`;
+    if (n === 2) s += `<line x1="${ex.toFixed(2)}" y1="${ey.toFixed(2)}" x2="${(ex + tk * k).toFixed(2)}" y2="${(ey - tk * k).toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`;
+    return s + '</g>';
+  },
+  // box MCB: persegi panjang dengan dua garis menembus + simbol pemutus kecil; label di luar
+  mcb: (cx, cy, col) => `<rect x="${cx - 14}" y="${cy - 8}" width="28" height="16" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${cx - 18}" y1="${cy - 3}" x2="${cx + 18}" y2="${cy - 3}" stroke="${col}" stroke-width="1.2"/><line x1="${cx - 18}" y1="${cy + 3}" x2="${cx - 3}" y2="${cy + 3}" stroke="${col}" stroke-width="1.2"/><line x1="${cx + 3}" y1="${cy + 3}" x2="${cx + 18}" y2="${cy + 3}" stroke="${col}" stroke-width="1.2"/><path d="M${cx - 3} ${cy + 3} l3 -5 l3 5" fill="none" stroke="${col}" stroke-width="1.4"/><text x="${cx}" y="${cy - 11}" font-size="8" font-weight="700" text-anchor="middle" fill="${col}">MCB</text>`,
+  // kWh meter: persegi panjang, separuh kanan-bawah hitam
+  kwh: (cx, cy, col) => `<rect x="${cx - 13}" y="${cy - 8}" width="26" height="16" fill="#fff" stroke="${col}" stroke-width="1.6"/><path d="M${cx - 13} ${cy - 8} L${cx + 13} ${cy + 8} L${cx + 13} ${cy - 8} Z" fill="${col}"/><text x="${cx}" y="${cy - 11}" font-size="8" font-weight="700" text-anchor="middle" fill="${col}">kWh</text>`,
+  // lampu outdoor: persegi dengan diagonal + lingkaran ganda di dalam
+  sconce: (cx, cy, col) => `<rect x="${cx - 8}" y="${cy - 8}" width="16" height="16" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${cx - 8}" y1="${cy - 8}" x2="${cx + 8}" y2="${cy + 8}" stroke="${col}" stroke-width="1.2"/><line x1="${cx + 8}" y1="${cy - 8}" x2="${cx - 8}" y2="${cy + 8}" stroke="${col}" stroke-width="1.2"/><circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${col}" stroke-width="1.2"/><circle cx="${cx}" cy="${cy}" r="3" fill="none" stroke="${col}" stroke-width="1"/>`,
+  // lampu: lingkaran dengan silang menembus (5 W) / lingkaran ganda (9 W)
   lampu: (cx, cy, col, w) => `<circle cx="${cx}" cy="${cy}" r="8" fill="#fff" stroke="${col}" stroke-width="1.6"/>${w === 9 ? `<circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${col}" stroke-width="1.4"/>` : ''}<line x1="${cx - 11}" y1="${cy - 11}" x2="${cx + 11}" y2="${cy + 11}" stroke="${col}" stroke-width="1.4"/><line x1="${cx + 11}" y1="${cy - 11}" x2="${cx - 11}" y2="${cy + 11}" stroke="${col}" stroke-width="1.4"/>`,
 };
 
@@ -147,9 +165,9 @@ function perangkat(lvl) {
     const [nx, nz] = NV[d.n]; const col = d.baru ? RED : INK;
     const cx = X(d.x + nx * 0.2), cy = Y(d.z + nz * 0.2);
     s += `<line x1="${X(d.x)}" y1="${Y(d.z)}" x2="${cx}" y2="${cy}" stroke="${col}" stroke-width="1.4"/>`;
-    if (d.t === 'stopkontak') s += sym.stopkontak(cx, cy, col, d.ac ? 'AC' : d.wh ? 'WH' : '');
-    else if (d.t === 'saklar1') s += sym.saklar(cx, cy, col, 1);
-    else if (d.t === 'saklar2') s += sym.saklar(cx, cy, col, 2);
+    if (d.t === 'stopkontak') s += sym.stopkontak(cx, cy, col, d.ac ? 'AC' : d.wh ? 'WH' : '', ROT[d.n]);
+    else if (d.t === 'saklar1') s += sym.saklar(cx, cy, col, 1, ROT[d.n]);
+    else if (d.t === 'saklar2') s += sym.saklar(cx, cy, col, 2, ROT[d.n]);
     else if (d.t === 'mcb') s += sym.mcb(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'kwh') s += sym.kwh(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'sconce') s += sym.sconce(cx, cy, col);
@@ -199,7 +217,7 @@ function legenda(lvl) {
     else if (k === 'lampu9') s += sym.lampu(cx, cy, col, 9);
     else if (k === 'sconce') s += sym.sconce(cx, cy, col);
     else if (k === 'mcb') s += sym.mcb(cx, cy, col);
-    else if (k === 'kwh') s += sym.kwh(cx, cy + 4, col);
+    else if (k === 'kwh') s += sym.kwh(cx, cy, col);
     else if (k === 'jalur') s += `<line x1="${cx - 14}" y1="${cy}" x2="${cx + 14}" y2="${cy}" stroke="#444" stroke-width="1.4" stroke-dasharray="6,4"/>`;
     s += `<text x="${x0 + 64}" y="${y}" font-size="10" fill="${INK}">${esc(ket)}</text>`;
     if (ada != null) s += `<text x="${x0 + LEG_W - 70}" y="${y}" font-size="10.5" font-weight="700" fill="${INK}" text-anchor="end">${ada}</text><text x="${x0 + LEG_W - 18}" y="${y}" font-size="10.5" font-weight="700" fill="${RED}" text-anchor="end">${baru ? '+' + baru : '–'}</text>`;
@@ -219,7 +237,7 @@ function legenda(lvl) {
     'Tinggi pasang (dari lantai jadi) mengikuti praktik umum/PUIL karena DED tidak mencantumkan tinggi — lihat kolom keterangan.',
     'Lampu plafon dipasang di bawah dak/plafon ruang ybs; angka +h.hh di samping simbol = tinggi yang menyimpang dari standar.',
     'Jalur kabel digambar skematis (ortogonal) mengikuti garis putus-putus DED; semua kabel NYM 2×2,5 mm² dalam pipa PVC 5/8".',
-    lvl === 'lt1' ? 'Rekomendasi: grup MCB dipisah (penerangan lt1, penerangan lt2, stop kontak lt1, stop kontak lt2, AC) → box 6 group; daya 2200 VA cukup untuk ≤ 2 AC ½ PK tanpa water heater listrik, kalau 3 AC + pompa sebaiknya 3500 VA.' : 'Rekomendasi: 2 stop kontak AC lt2 digabung ke grup AC tersendiri di box MCB lt1 (RAB mencantumkan 2 box MCB; box ke-2 bisa di selasar lt2 untuk grup lt2).',
+    lvl === 'lt1' ? 'Rekomendasi: grup MCB dipisah (penerangan lt1, penerangan lt2, stop kontak lt1, stop kontak lt2, AC lt1, AC lt2, water heater) → box 8 group, 7 MCB; daya 2200 VA cukup untuk ≤ 2 AC ½ PK + water heater tangki low-watt, kalau 3 AC + pompa sebaiknya 3500 VA.' : 'Rekomendasi: 2 stop kontak AC lt2 dan water heater KTU masing-masing ke grup tersendiri di box MCB lt1 (RAB mencantumkan 2 box MCB; box ke-2 bisa di selasar lt2 untuk grup lt2). Saklar: tunggal = 1 kelompok lampu, ganda = 2 kelompok (mis. pintu toilet KTU: lampu toilet + balkon samping).',
   ];
   for (const t of cat) { for (const line of wrap(t, 82)) { s += `<text x="${x0 + 16}" y="${y}" font-size="9.5" fill="${INK}">${esc(line)}</text>`; y += 14; } y += 3; }
   // skala batang

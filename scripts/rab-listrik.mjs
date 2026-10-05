@@ -105,7 +105,7 @@ const RABV3 = [['Instalasi 65 titik (kabel 2 m/titik, pipa, aksesori, jasa)', 52
 const rabTotal = RABV3.reduce((a, [, v]) => a + v, 0);
 
 // ---------- tulis ----------
-let md = `# Estimasi Biaya Instalasi Listrik — Rumah Mbak Alfi (revisi 04-10-2026)\n\n`;
+let md = `# Estimasi Biaya Instalasi Listrik — Rumah Mbak Alfi (revisi 05-10-2026)\n\n`;
 md += `Dihitung otomatis oleh \`scripts/rab-listrik.mjs\` dari data model 3D (\`src/layout/elektrik.js\`). Harga satuan mengikuti **RAB V3 bagian IX** untuk item yang sama; item bertanda \\* adalah perkiraan harga pasar (Okt 2026) karena tidak ada di RAB.\n\n`;
 md += `## A. Kuantitas\n\n| Item | Jumlah |\n|---|---:|\n`;
 md += `| Stop kontak biasa (DED ${Q.sk - Q.skBaru} + revisi ${Q.skBaru}) | ${Q.sk} |\n| Stop kontak AC | ${Q.skAc} |\n| Stop kontak water heater (IP44) | ${Q.skWh} |\n| Sakelar tunggal / ganda | ${Q.s1} / ${Q.s2} |\n| Downlight 9 W / 5 W | ${Q.l9} / ${Q.l5} |\n| Lampu sorot/dinding outdoor | ${Q.sconce} |\n| **Titik instalasi (lampu + stop kontak + sakelar)** | **${Q.titik}** (RAB: 65) |\n\n`;
