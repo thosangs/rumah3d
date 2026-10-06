@@ -168,7 +168,7 @@ function perangkat(lvl) {
   let s = '';
   // kerucut pandang CCTV (FOV 100°, jangkauan 5 m) di bawah semua simbol
   for (const d of PERANGKAT.filter((q) => q.lvl === lvl && q.t === 'cctv')) {
-    const [dx, dz] = aimDir(d), a = Math.atan2(dx, dz), R5 = 5 * S, half = (50 * Math.PI) / 180;
+    const [dx, dz] = aimDir(d), a = Math.atan2(dx, dz), R5 = 7 * S, half = (50 * Math.PI) / 180;
     const p1 = [X(d.x) + R5 * Math.sin(a - half), Y(d.z) + R5 * Math.cos(a - half)], p2 = [X(d.x) + R5 * Math.sin(a + half), Y(d.z) + R5 * Math.cos(a + half)];
     s += `<path d="M${X(d.x)} ${Y(d.z)} L${p1[0].toFixed(1)} ${p1[1].toFixed(1)} A${R5} ${R5} 0 0 1 ${p2[0].toFixed(1)} ${p2[1].toFixed(1)} Z" fill="${BLUE}" fill-opacity="0.10" stroke="${BLUE}" stroke-width="0.8" stroke-dasharray="2,3"/>`;
   }
@@ -215,7 +215,7 @@ function legenda(lvl) {
     ['mcb', 'Box MCB 4 group × 10 A, h 175 cm', n((d) => d.t === 'mcb'), 0],
     ['kwh', 'kWh meter PLN 2200 VA (sisi luar), h 170 cm', n((d) => d.t === 'kwh'), 0],
     ['jalur', 'Jalur kabel NYM 2×2,5 mm² dalam pipa, di bawah dak/plafon', null, null],
-    ['cctv', 'CCTV IP PoE 2 MP outdoor (kerucut = sudut pandang 100°, 5 m)', 0, n((d) => d.t === 'cctv')],
+    ['cctv', 'CCTV IP PoE 2 MP outdoor (kerucut = sudut pandang 100°, 7 m)', 0, n((d) => d.t === 'cctv')],
     ['nvr', 'NVR 4 ch PoE + HDD di lemari bawah tangga (stop kontak ganda)', 0, n((d) => d.nvr)],
     ['data', 'Kabel data CAT6 ke NVR, dalam pipa 3/4"', null, null],
   ].filter(([k]) => lvl === 'lt1' || !['cctv', 'nvr', 'data'].includes(k));

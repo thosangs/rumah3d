@@ -18,13 +18,13 @@ Dihitung otomatis oleh `scripts/rab-listrik.mjs` dari data model 3D (`src/layout
 
 | Jalur | Lantai 1 | Lantai 2 | Keterangan |
 |---|---:|---:|---|
-| Cabang lampu (polyline denah + turunan ke sakelar) | 113.5 m | 61.3 m | NYM 2×1,5 |
+| Cabang lampu (polyline denah + turunan ke sakelar) | 108.8 m | 61.3 m | NYM 2×1,5 |
 | Fase bersama lampu (box MCB → semua sakelar) | 52.8 m | 67.1 m | NYM 2×1,5, lt2 termasuk riser 3.8 m |
 | Rantai stop kontak (box MCB → tiap titik, naik–turun dak) | 144.2 m | 94.5 m | NYM 3×2,5 |
 | Home-run AC (5.8 + 12.7 + 7.8 m) | | | 26.3 m, NYM 3×2,5 |
 | Home-run water heater (9.4 + 13 m) | | | 22.4 m, NYM 3×2,5 |
-| **Kabel dibeli** (+10 % potongan, +0,5 m/titik) | | | NYM 2×1,5 **354 m** → 4 roll; NYM 3×2,5 **333 m** → 4 roll |
-| **Pipa 5/8"** (90 % jalur, +5 % potongan) | | | **550 m** → 138 batang @4 m |
+| **Kabel dibeli** (+10 % potongan, +0,5 m/titik) | | | NYM 2×1,5 **348 m** → 4 roll; NYM 3×2,5 **333 m** → 4 roll |
+| **Pipa 5/8"** (90 % jalur, +5 % potongan) | | | **546 m** → 137 batang @4 m |
 
 ## B. Rencana anggaran (revisi)
 
@@ -44,17 +44,17 @@ Dihitung otomatis oleh `scripts/rab-listrik.mjs` dari data model 3D (`src/layout
 | 12 | Pasang antena TV (titik) | 1 | bh | Rp 155.000 | Rp 155.000 |
 | 13 | Box MCB 8 group (pengganti 4 group) \* | 1 | bh | Rp 185.000 | Rp 185.000 |
 | 14 | MCB 1 fasa 10 A / 16 A (penerangan lt1, lt2; stop kontak lt1, lt2; AC lt1; AC lt2; water heater) | 7 | bh | Rp 132.500 | Rp 927.500 |
-| 15 | Kabel NYM 2×1,5 mm² — jalur lampu (354 m) | 4 | roll | Rp 375.000 | Rp 1.500.000 |
+| 15 | Kabel NYM 2×1,5 mm² — jalur lampu (348 m) | 4 | roll | Rp 375.000 | Rp 1.500.000 |
 | 16 | Kabel NYM 3×2,5 mm² — stop kontak (277 m) + AC (30 m) + water heater (26 m) \* | 4 | roll | Rp 850.000 | Rp 3.400.000 |
 | 17 | Kabel NYM 3×4 mm² — kWh meter → box MCB \* | 5 | m | Rp 15.000 | Rp 75.000 |
-| 18 | Pipa PVC listrik 5/8" (550 m) | 138 | batang | Rp 12.000 | Rp 1.656.000 |
+| 18 | Pipa PVC listrik 5/8" (546 m) | 137 | batang | Rp 12.000 | Rp 1.644.000 |
 | 19 | Aksesori (inbow/tee-dos, klem, isolasi) per titik | 93 | titik | Rp 8.750 | Rp 813.750 |
 | 20 | Jasa tukang instalasi per titik | 93 | titik | Rp 40.000 | Rp 3.720.000 |
 | 21 | Grounding: elektroda arde + kabel BC 6 mm² + klem \* | 1 | ls | Rp 450.000 | Rp 450.000 |
 | 22 | kWh meter PLN 2200 VA (pasang baru, SLO) | 1 | unit | Rp 3.250.000 | Rp 3.250.000 |
-| | **Total (harga satuan, tanpa overhead)** | | | | **Rp 23.910.250** |
-| | Overhead 5 % & profit 10 % (skema RAB) | | | | Rp 3.586.538 |
-| | **Total setara RAB** | | | | **Rp 27.496.787** |
+| | **Total (harga satuan, tanpa overhead)** | | | | **Rp 23.898.250** |
+| | Overhead 5 % & profit 10 % (skema RAB) | | | | Rp 3.584.738 |
+| | **Total setara RAB** | | | | **Rp 27.482.987** |
 
 Opsional (direkomendasikan):
 
@@ -62,7 +62,7 @@ Opsional (direkomendasikan):
 |---|---:|
 | Upgrade daya ke 3500 VA (selisih dari 2200 VA) \* | Rp 1.050.000 |
 | ELCB/RCBO 2P 30 mA untuk grup stop kontak (keamanan) \* | Rp 450.000 |
-| **Total dengan opsional** | **Rp 25.410.250** |
+| **Total dengan opsional** | **Rp 25.398.250** |
 
 ## C. CCTV (revisi 06-10-2026, semua harga perkiraan pasar)
 
@@ -71,12 +71,12 @@ Opsional (direkomendasikan):
 | 1 | Kamera CCTV bullet IP PoE 2 MP outdoor (IR, IP66) | 4 | bh | Rp 450.000 | Rp 1.800.000 |
 | 2 | NVR 4 channel PoE | 1 | unit | Rp 1.500.000 | Rp 1.500.000 |
 | 3 | HDD surveillance 1 TB | 1 | bh | Rp 850.000 | Rp 850.000 |
-| 4 | Kabel CAT6 outdoor (44 m) + 1 CAT6 ke router di dinding TV (±8 m) | 52 | m | Rp 4.500 | Rp 234.000 |
-| 5 | Pipa PVC 3/4" untuk kabel data | 14 | batang | Rp 15.000 | Rp 210.000 |
+| 4 | Kabel CAT6 outdoor (38 m) + 1 CAT6 ke router di dinding TV (±8 m) | 46 | m | Rp 4.500 | Rp 207.000 |
+| 5 | Pipa PVC 3/4" untuk kabel data | 13 | batang | Rp 15.000 | Rp 195.000 |
 | 6 | Konektor RJ45, box, aksesori | 1 | ls | Rp 150.000 | Rp 150.000 |
 | 7 | Jasa pasang & setting per kamera | 4 | titik | Rp 150.000 | Rp 600.000 |
-| | **Subtotal CCTV** | | | | **Rp 5.344.000** |
-| | **Total listrik + CCTV (harga satuan)** | | | | **Rp 29.254.250** |
+| | **Subtotal CCTV** | | | | **Rp 5.302.000** |
+| | **Total listrik + CCTV (harga satuan)** | | | | **Rp 29.200.250** |
 
 Stop kontak NVR sudah termasuk di bagian B. Kamera IP PoE: listrik & data lewat 1 kabel CAT6, tidak perlu stop kontak di tiap kamera. Pipa data ditanam sekarang sebelum plester.
 
@@ -100,8 +100,8 @@ Stop kontak NVR sudah termasuk di bagian B. Kamera IP PoE: listrik & data lewat 
 | kWh meter 2200 VA | Rp 3.250.000 |
 | **Total RAB V3 (14 baris listrik, harga satuan)** | **Rp 20.662.750** |
 | Total RAB V3 setelah overhead & profit (sub total IX) | Rp 23.762.163 |
-| **Selisih estimasi revisi − RAB V3** (basis harga satuan) | **Rp 3.247.500** (+16 %) |
-| Selisih setelah overhead & profit | Rp 3.734.625 |
+| **Selisih estimasi revisi − RAB V3** (basis harga satuan) | **Rp 3.235.500** (+16 %) |
+| Selisih setelah overhead & profit | Rp 3.720.825 |
 
 ## E. Catatan
 

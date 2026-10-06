@@ -14,8 +14,9 @@ import lt2Keluarga from './layout/lt2-keluarga.js';
 import kt2 from './layout/kt2.js';
 import ktu from './layout/ktu.js';
 import { toiletLt1, toiletLt2 } from './layout/toilet.js';
+import { terasBelakang } from './layout/teras-belakang.js';
 
-export const LAYOUT = { lt1: [...ruangKeluarga, ...ruangMakan, ...kt1, ...toiletLt1], lt2: [...lt2Keluarga, ...kt2, ...ktu, ...toiletLt2] };
+export const LAYOUT = { lt1: [...ruangKeluarga, ...ruangMakan, ...kt1, ...toiletLt1, ...terasBelakang], lt2: [...lt2Keluarga, ...kt2, ...ktu, ...toiletLt2] };
 
 const std = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.85, metalness: 0, ...o });
 export const FM = {
@@ -33,7 +34,7 @@ export const FM = {
   led: new THREE.MeshStandardMaterial({ color: 0xffe2b0, emissive: 0xffc772, emissiveIntensity: 2.2, roughness: 1 }),
   downlight: new THREE.MeshStandardMaterial({ color: 0xfff4e0, emissive: 0xfff0d0, emissiveIntensity: 4, roughness: 1 }),
   cabWhite: std(0xe9e9e6, { roughness: 0.35 }), // pintu kabinet bawah putih satin (render hal. 29–31)
-  marbleDark: std(0x2b2e32, { roughness: 0.2 }), // top & backsplash marmer hitam (render)
+  marbleDark: std(0x2b2e32, { roughness: 0.45 }), // top & backsplash marmer hitam (render); tidak terlalu mengilap supaya tidak memantulkan langit
   steel: std(0xb9bcc0, { roughness: 0.35, metalness: 0.9 }),
   glassBlack: std(0x0e0f11, { roughness: 0.15, metalness: 0.2 }),
   ledWarm: new THREE.MeshStandardMaterial({ color: 0xffe9c8, emissive: 0xffd9a0, emissiveIntensity: 2.5, roughness: 1 }),
@@ -222,50 +223,56 @@ export function buildFurniture(stairHeightAt) {
   return { lt1, lt2 };
 }
 
-/** Kitchen set lengkap di atas/depan kitchen set model SKP (top 0.757; muka base kiri x 3.66 sepanjang z 3.56–6.94,
- *  muka base belakang z 4.16 sepanjang x 3.06–5.44; jendela tembok kiri z 5.6–6.6 h 1.0–1.7; kulkas x 5.5–6.4).
- *  Gaya render hal. 29–31: kabinet bawah putih tanpa handle (alur hitam), kabinet atas walnut, top & backsplash marmer
- *  hitam, LED di bawah kabinet atas, kompor tanam + oven di tembok kiri (z 4.6–5.2), hood di atasnya, microwave di kabinet atas. */
+/** Kitchen set lengkap (menggantikan kotak kitchen set model SKP yang disembunyikan bersama lapisan furnitur, lihat app.js).
+ *  Geometri: muka tembok kiri x 3.065, tembok belakang z 3.571; jendela dapur di tembok kiri (raycast SKP): kaca z 5.65–6.60,
+ *  y 0.85–1.20 → kusen ±z 5.60–6.65, y 0.80–1.25 (jendela rendah & lebar tepat di atas meja seperti render hal. 29–30).
+ *  Gaya render: kabinet bawah putih tanpa handle (alur hitam), kabinet atas walnut, top & backsplash marmer hitam, LED di bawah
+ *  kabinet atas, kompor tanam + oven di tembok kiri (z 4.6–5.2), hood di atasnya, microwave di kabinet atas belakang. */
 export function kitchenSet() {
   const g = new THREE.Group(); g.name = 'kitchen-set';
-  const gap = 0.004, dT = 0.018; // celah & tebal pintu
-  const TOP = 0.757;
-  // --- top marmer hitam 2 cm (menimpa top SKP) + backsplash marmer sampai 1.5 (kecuali area jendela) ---
-  g.add(B(0.60, 0.02, 3.38, FM.marbleDark, 3.36, TOP + 0.011, 5.25));
-  g.add(B(1.78, 0.02, 0.60, FM.marbleDark, 4.55, TOP + 0.011, 3.86));
-  g.add(B(0.012, 0.73, 1.98, FM.marbleDark, 3.071, TOP + 0.385, 4.57)); // kiri, sebelum jendela (z 3.58–5.56)
-  g.add(B(0.012, 0.23, 1.0, FM.marbleDark, 3.071, TOP + 0.135, 6.1)); // kiri, di bawah ambang jendela (z 5.6–6.6, sampai 1.0)
-  g.add(B(0.012, 0.73, 0.30, FM.marbleDark, 3.071, TOP + 0.385, 6.77)); // kiri, setelah jendela
-  g.add(B(2.36, 0.73, 0.012, FM.marbleDark, 4.26, TOP + 0.385, 3.571)); // belakang (x 3.08–5.44)
-  // --- pintu kabinet bawah putih (2 cm di depan muka SKP), alur hitam 2 cm di atas, plin hitam ---
-  const doorsAlong = (axis, from, to, face, mat = FM.cabWhite, skip = []) => {
+  const gap = 0.004, dT = 0.018, H = 0.74, TOP = 0.76; // badan 0.10–0.74, top 0.74–0.76
+  const WIN = { z1: 5.60, z2: 6.65, y1: 0.80, y2: 1.25 };
+  // --- badan kabinet bawah + plin hitam mundur 5 cm ---
+  g.add(B(0.585, H - 0.10, 3.30, FM.cabWhite, 3.3675, 0.10 + (H - 0.10) / 2, 5.25)); // kiri x 3.075–3.66, z 3.60–6.90
+  g.add(B(1.78, H - 0.10, 0.585, FM.cabWhite, 4.55, 0.10 + (H - 0.10) / 2, 3.8675)); // belakang x 3.66–5.44, z 3.575–4.16
+  g.add(B(0.535, 0.10, 3.25, FM.blackMatte, 3.3425, 0.05, 5.25));
+  g.add(B(1.73, 0.10, 0.535, FM.blackMatte, 4.525, 0.05, 3.8425));
+  // --- top marmer hitam 2 cm, overhang 2 cm ---
+  g.add(B(0.605, 0.02, 3.34, FM.marbleDark, 3.3775, TOP - 0.01, 5.25));
+  g.add(B(1.80, 0.02, 0.605, FM.marbleDark, 4.56, TOP - 0.01, 3.8775));
+  // --- backsplash marmer 0.76–1.50, jendela dibiarkan terbuka ---
+  g.add(B(0.012, 0.74, WIN.z1 - 3.58, FM.marbleDark, 3.071, 0.76 + 0.37, (3.58 + WIN.z1) / 2)); // kiri sebelum jendela
+  g.add(B(0.012, 1.50 - WIN.y2, WIN.z2 - WIN.z1, FM.marbleDark, 3.071, (WIN.y2 + 1.50) / 2, (WIN.z1 + WIN.z2) / 2)); // di atas jendela
+  g.add(B(0.012, WIN.y1 - 0.76, WIN.z2 - WIN.z1, FM.marbleDark, 3.071, (0.76 + WIN.y1) / 2, (WIN.z1 + WIN.z2) / 2)); // strip bawah jendela 4 cm
+  g.add(B(0.012, 0.74, 6.94 - WIN.z2, FM.marbleDark, 3.071, 0.76 + 0.37, (WIN.z2 + 6.94) / 2)); // kiri setelah jendela
+  g.add(B(2.36, 0.74, 0.012, FM.marbleDark, 4.26, 0.76 + 0.37, 3.571)); // belakang x 3.08–5.44
+  // --- pintu kabinet bawah putih (menonjol 1.8 cm), alur handle hitam di atas pintu ---
+  const doorsAlong = (axis, from, to, face, skip = []) => {
     const n = Math.max(1, Math.round((to - from) / 0.6)), w = (to - from) / n;
     for (let i = 0; i < n; i++) {
       const a = from + i * w + gap / 2, b = from + (i + 1) * w - gap / 2, c = (a + b) / 2;
       if (skip.some(([s1, s2]) => c > s1 && c < s2)) continue;
-      if (axis === 'z') g.add(B(dT, 0.60, b - a, mat, face + dT / 2, 0.10 + 0.30, c));
-      else g.add(B(b - a, 0.60, dT, mat, c, 0.10 + 0.30, face + dT / 2));
+      if (axis === 'z') g.add(B(dT, H - 0.14, b - a, FM.cabWhite, face + dT / 2, 0.11 + (H - 0.14) / 2, c));
+      else g.add(B(b - a, H - 0.14, dT, FM.cabWhite, c, 0.11 + (H - 0.14) / 2, face + dT / 2));
     }
   };
-  doorsAlong('z', 3.60, 6.90, 3.66, FM.cabWhite, [[4.58, 5.22]]); // kiri; lubang oven z 4.6–5.2
+  doorsAlong('z', 3.60, 6.90, 3.66, [[4.58, 5.22]]); // kiri; lubang oven z 4.6–5.2
   doorsAlong('x', 3.70, 5.42, 4.16); // belakang
-  g.add(B(0.012, 0.03, 3.30, FM.blackMatte, 3.666, 0.715, 5.25)); // alur handle kiri
-  g.add(B(1.72, 0.03, 0.012, FM.blackMatte, 4.56, 0.715, 4.166)); // alur handle belakang
-  g.add(B(0.01, 0.10, 3.30, FM.blackMatte, 3.655, 0.05, 5.25)); // plin kiri
-  g.add(B(1.72, 0.10, 0.01, FM.blackMatte, 4.56, 0.05, 4.155));
+  g.add(B(0.012, 0.03, 3.30, FM.blackMatte, 3.672, H - 0.015, 5.25)); // alur handle kiri
+  g.add(B(1.72, 0.03, 0.012, FM.blackMatte, 4.56, H - 0.015, 4.172)); // alur handle belakang
   // --- oven tanam (hitam) + kompor tanam kaca hitam + hood stainless ---
-  g.add(B(0.03, 0.58, 0.60, FM.blackMatte, 3.675, 0.40, 4.90));
+  g.add(B(0.03, 0.58, 0.60, FM.blackMatte, 3.675, 0.42, 4.90));
   g.add(B(0.012, 0.30, 0.52, FM.glassBlack, 3.696, 0.42, 4.90)); // kaca pintu oven
   g.add(B(0.56, 0.02, 0.015, FM.steel, 3.70, 0.655, 4.90, Math.PI / 2)); // handle oven
-  g.add(B(0.52, 0.008, 0.58, FM.glassBlack, 3.36, TOP + 0.025, 4.90)); // kompor kaca
-  for (const dz of [-0.15, 0.15]) for (const dx of [-0.12, 0.12]) g.add(CYL(0.055, 0.055, 0.012, FM.black, 3.36 + dx, TOP + 0.035, 4.90 + dz, 20));
+  g.add(B(0.52, 0.008, 0.58, FM.glassBlack, 3.36, TOP + 0.004, 4.90)); // kompor kaca
+  for (const dz of [-0.15, 0.15]) for (const dx of [-0.12, 0.12]) g.add(CYL(0.055, 0.055, 0.012, FM.black, 3.36 + dx, TOP + 0.014, 4.90 + dz, 20));
   g.add(B(0.45, 0.06, 0.60, FM.steel, 3.30, 1.55, 4.90)); // hood badan tipis
-  g.add(B(0.30, 0.40, 0.30, FM.steel, 3.225, 1.78, 4.90)); // cerobong hood
-  // --- kabinet atas walnut: karkas walnut gelap + pintu walnut 1.5 cm menonjol; LED strip di bawah ---
+  g.add(B(0.30, 0.37, 0.30, FM.steel, 3.225, 1.765, 4.90)); // cerobong hood (sampai 1.95, masuk kabinet pendek)
+  // --- kabinet atas walnut y 1.50–2.25 (karkas walnut gelap + pintu walnut 1.5 cm; LED strip di bawah) ---
   const upper = (axis, from, to, yLo, yHi, face, depth = 0.345) => {
     const len = to - from, c = (from + to) / 2, h = yHi - yLo, yc = (yLo + yHi) / 2;
-    if (axis === 'z') { g.add(B(depth, h, len, FM.walnutDark, face + depth / 2, yc, c)); }
-    else { g.add(B(len, h, depth, FM.walnutDark, c, yc, face + depth / 2)); }
+    if (axis === 'z') g.add(B(depth, h, len, FM.walnutDark, face + depth / 2, yc, c));
+    else g.add(B(len, h, depth, FM.walnutDark, c, yc, face + depth / 2));
     const n = Math.max(1, Math.round(len / 0.5)), w = len / n;
     for (let i = 0; i < n; i++) {
       const a = from + i * w + gap / 2, b = from + (i + 1) * w - gap / 2, cc = (a + b) / 2;
@@ -277,17 +284,15 @@ export function kitchenSet() {
   };
   upper('z', 3.60, 4.55, 1.50, 2.25, 3.075); // kiri sebelum hood
   upper('z', 4.55, 5.25, 1.95, 2.25, 3.075); // di atas hood (pendek)
-  upper('z', 5.25, 5.56, 1.50, 2.25, 3.075);
-  upper('z', 5.56, 6.64, 1.78, 2.25, 3.075); // di atas jendela (ambang atas 1.7)
-  upper('z', 6.64, 6.90, 1.50, 2.25, 3.075);
+  upper('z', 5.25, 6.90, 1.50, 2.25, 3.075); // kiri setelah hood (termasuk di atas jendela: kusen atas 1.25 < 1.50)
   upper('x', 3.42, 4.45, 1.50, 2.25, 3.575); // belakang kiri
   upper('x', 5.10, 5.44, 1.50, 2.25, 3.575); // belakang kanan (sebelah kulkas)
-  // niche microwave di kabinet atas belakang x 4.45–5.10: karkas + microwave hitam
+  // niche microwave di kabinet atas belakang x 4.45–5.10
   g.add(B(0.65, 0.75, 0.345, FM.walnutDark, 4.775, 1.875, 3.7475));
-  g.add(B(0.60, 0.015, 0.33, FM.walnut, 4.775, 1.78, 3.74)); // rak dasar microwave
+  g.add(B(0.60, 0.015, 0.33, FM.walnutCab, 4.775, 1.78, 3.74)); // rak dasar microwave
   g.add(B(0.52, 0.30, 0.34, FM.blackMatte, 4.775, 1.94, 3.75)); // microwave
   g.add(B(0.34, 0.20, 0.01, FM.glassBlack, 4.74, 1.95, 3.925)); // kaca pintu microwave
-  g.add(B(0.65, 0.38, 0.015, FM.walnutCab, 4.775, 2.06 + 0.0, 3.9275)); // pintu atas niche (y 1.87–2.25)
+  g.add(B(0.65, 0.38, 0.015, FM.walnutCab, 4.775, 2.06, 3.9275)); // pintu atas niche (y 1.87–2.25)
   g.add(B(0.65, 0.33, 0.015, FM.walnutCab, 4.775, 1.665, 3.9275)); // pintu bawah niche (y 1.50–1.83)
   g.traverse((o) => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; } });
   return g;
@@ -315,6 +320,8 @@ export function bathFixturesLt1() {
   showerSet(g, 3.40, 7.095, y0, 0); // shower di tembok depan (sisi r. makan), pojok kiri
   floorDrain(g, 3.40, 7.55, y0);
   wallTap(g, 3.5, 8.405, y0, Math.PI); // kran tembok belakang (gayung/bak)
+  wallTap(g, 9.876, 2.95, -0.10, -Math.PI / 2); // teras belakang: kran mesin cuci di tembok kanan (lantai teras −0,10)
+  floorDrain(g, 9.2, 2.6, -0.10);
   g.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
   return g;
 }

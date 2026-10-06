@@ -493,6 +493,41 @@ def cctv_bullet():
     bpy.context.scene.cursor.location = (0, 0, 0)
     export('cctv_bullet')
 
+def washing_machine():
+    """Mesin cuci front-load 0.60×0.60×0.85 putih (gaya LG): alas z=0, pusat x/y=0, DEPAN (pintu bulat) ke -Y → glTF +Z."""
+    start()
+    white = mat('wmWhite', srgb('#f3f3f1'), 0.3)
+    dark = mat('wmDark', srgb('#2a2c30'), 0.4)
+    gl_m = glass('wmGlass', srgb('#1c2a36'), 0.55, 0.05)
+    chrome = M['chrome']
+    box('body', 0.60, 0.60, 0.85, 0, 0, 0.425, white, bevel=0.012, seg=3)
+    box('top', 0.60, 0.60, 0.02, 0, 0, 0.86, white, bevel=0.004)
+    box('panel', 0.56, 0.01, 0.10, 0, -0.305, 0.78, dark, bevel=0.003)
+    cyl('knob', 0.03, 0.012, -0.18, -0.314, 0.78, chrome, 24).rotation_euler.x = math.radians(90)
+    bpy.ops.object.transform_apply(rotation=True)
+    for i in range(4):
+        cyl('btn', 0.008, 0.004, 0.05 + i * 0.05, -0.311, 0.78, chrome, 12).rotation_euler.x = math.radians(90)
+        bpy.ops.object.transform_apply(rotation=True)
+    r = cyl('doorRing', 0.21, 0.03, 0, -0.315, 0.40, chrome, 48); r.rotation_euler.x = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
+    g = cyl('doorGlass', 0.17, 0.02, 0, -0.325, 0.40, gl_m, 48); g.rotation_euler.x = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
+    box('drawer', 0.16, 0.01, 0.05, -0.17, -0.305, 0.70, white, bevel=0.003)
+    box('plinth', 0.56, 0.56, 0.03, 0, 0.0, 0.015, dark)
+    export('washing_machine')
+
+def booster_pump():
+    """Pompa pendorong (booster) 0.22×0.30×0.25 (gaya Wasser/Grundfos): alas z=0, motor memanjang sumbu Y, pipa masuk/keluar di -X/+X."""
+    start()
+    blue = mat('pumpBlue', srgb('#1f4e9c'), 0.45)
+    dark = mat('pumpDark', srgb('#2a2c30'), 0.5)
+    chrome = M['chrome']
+    box('foot', 0.20, 0.26, 0.02, 0, 0, 0.01, dark, bevel=0.003)
+    m = cyl('motor', 0.075, 0.22, 0, 0.02, 0.11, blue, 32); m.rotation_euler.x = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
+    box('head', 0.16, 0.10, 0.16, 0, -0.14, 0.11, blue, bevel=0.01, seg=3)
+    box('ctrl', 0.08, 0.06, 0.06, 0, 0.0, 0.215, dark, bevel=0.005)
+    for sx in (-1, 1):
+        p = cyl('pipe', 0.014, 0.08, sx * 0.11, -0.14, 0.11, chrome, 16); p.rotation_euler.y = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
+    export('booster_pump')
+
 BUILD_ONLY = set(sys.argv[sys.argv.index('--') + 2:]) if '--' in sys.argv and len(sys.argv) > sys.argv.index('--') + 2 else set()
 def want(name): return not BUILD_ONLY or name in BUILD_ONLY
 # ---------------------------------------------------------------------------
@@ -535,3 +570,5 @@ if want('closet_duduk'): closet_duduk()
 if want('closet_jongkok'): closet_jongkok()
 if want('washbasin'): washbasin()
 if want('cctv_bullet'): cctv_bullet()
+if want('washing_machine'): washing_machine()
+if want('booster_pump'): booster_pump()

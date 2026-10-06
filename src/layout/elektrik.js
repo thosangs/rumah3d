@@ -16,8 +16,8 @@
 // Koordinat tembok sudah di-snap ke muka tembok model SKP (raycast): kiri 3.061, kanan 9.88, belakang 3.56, dst.
 export const PERANGKAT = [
   // ---------------- LANTAI 1: stop kontak 13 (sesuai legenda gambar) ----------------
-  { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 2.55, n: '-x', h: 1.2, r: 'teras belakang (mesin cuci)' },
-  { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 2.77, n: '-x', h: 1.2, r: 'teras belakang' },
+  { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 2.62, n: '-x', h: 1.2, r: 'teras belakang: mesin cuci (di atas mesin, h 1,2)' },
+  { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 3.27, n: '-x', h: 1.2, rev: true, r: 'teras belakang: pompa pendorong (di atas pompa, h 1,2; DED: z 2.77 → digeser 50 cm)' },
   { lvl: 'lt1', t: 'stopkontak', x: 6.10, z: 3.577, n: '+z', h: 0.4, r: 'dapur, tembok belakang (kulkas)' },
   { lvl: 'lt1', t: 'stopkontak', x: 6.30, z: 3.577, n: '+z', h: 0.4, r: 'dapur, tembok belakang (kulkas)' },
   { lvl: 'lt1', t: 'stopkontak', x: 3.068, z: 5.25, n: '+x', h: 1.15, r: 'dapur, di atas meja dapur, kanan jendela (gambar: z 5.47/5.69 menumpuk kusen jendela z 5.6–6.6 → digeser 22 cm)' },
@@ -36,10 +36,10 @@ export const PERANGKAT = [
   { lvl: 'lt1', t: 'stopkontak', x: 3.065, z: 8.75, n: '+x', h: 2.4, ac: true, baru: true, r: 'REVISI: stop kontak AC KT1, tembok kiri mepet pojok tembok belakang (17 cm), di kiri unit indoor yang di atas jendela — tambahan' },
   { lvl: 'lt1', t: 'stopkontak', x: 4.45, z: 7.095, n: '+z', h: 1.82, wh: true, baru: true, r: 'REVISI: stop kontak water heater toilet lt1 (IP44), tembok sisi r. makan, kanan unit; 1,9 m di atas lantai toilet (−0,03) — tambahan' },
   // ---------------- CCTV (revisi 06-10-2026): 4 kamera outdoor, NVR di lemari bawah tangga ----------------
-  { lvl: 'lt1', t: 'cctv', no: 1, x: 9.7, z: 13.56, n: '+z', h: 2.7, yaw: -0.49, pitch: 0.26, baru: true, r: 'CCTV-1 carport & gerbang: pojok kanan fasad di bawah tepi kanopi, menghadap gerbang (−28° ke kiri), tunduk 15°' },
+  { lvl: 'lt1', t: 'cctv', no: 1, x: 9.7, z: 13.56, n: '+z', h: 2.7, yaw: -0.70, pitch: 0.26, baru: true, r: 'CCTV-1 carport & gerbang: pojok kanan fasad di bawah tepi kanopi, menghadap gerbang (−40° ke kiri) sehingga mulut selasar kiri ikut terlihat, tunduk 15°' },
   { lvl: 'lt1', t: 'cctv', no: 2, x: 3.4, z: 13.25, n: 'dn', h: 2.7, yaw: 1.71, pitch: 0.35, baru: true, r: 'CCTV-2 teras depan & pintu utama: di plafon teras (bawah balkon) pojok kiri-depan, menghadap pintu utama (+x), tunduk 20°' },
-  { lvl: 'lt1', t: 'cctv', no: 3, x: 2.25, z: 8.7, n: 'dn', h: 3.15, yaw: 0, pitch: 0.35, baru: true, r: 'CCTV-3 selasar samping kiri: di bawah balkon samping (ujung belakang), menghadap ke depan sepanjang selasar, tunduk 20°' },
-  { lvl: 'lt1', t: 'cctv', no: 4, x: 9.876, z: 2.6, n: '-x', h: 3.1, yaw: -0.21, pitch: 0.3, baru: true, r: 'CCTV-4 belakang: tembok batas kanan di bawah balkon belakang, menghadap teras belakang, pintu belakang & area jemur (−12°), tunduk 17°' },
+  { lvl: 'lt1', t: 'cctv', no: 3, x: 2.25, z: 11.3, n: 'dn', h: 3.15, yaw: Math.PI, pitch: 0.3, baru: true, r: 'CCTV-3 selasar samping kiri: di bawah balkon samping (tengah), menghadap ke belakang: selasar z 4–11 dalam 7 m, sambung dengan CCTV-4 yang menutup ujung belakang; mulut depan selasar ditangkap CCTV-1' },
+  { lvl: 'lt1', t: 'cctv', no: 4, x: 9.876, z: 2.6, n: '-x', h: 3.1, yaw: 0.17, pitch: 0.3, baru: true, r: 'CCTV-4 belakang: tembok batas kanan di bawah balkon belakang, menghadap teras belakang, pintu belakang, area jemur & ujung belakang selasar (+10°), tunduk 17°' },
   { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 8.4, n: '-x', h: 0.4, nvr: true, baru: true, r: 'REVISI: stop kontak ganda NVR 4 ch PoE + router, di dalam lemari bawah tangga (bagian tinggi dekat r. keluarga) — tambahan' },
   // ---------------- LANTAI 1: saklar 7 (2 tunggal + 5 ganda) ----------------
   { lvl: 'lt1', t: 'saklar3', tukar: true, x: 7.75, z: 3.564, n: '+z', h: 1.4, rev: true, r: 'REVISI: saklar triple di kanan pintu belakang → lampu teras belakang + area jemur + saklar tukar (two-way) lampu tangga/void (DED: ganda)' },
@@ -144,7 +144,7 @@ export const JALUR = [
   // data CAT6 (CCTV → NVR di lemari bawah tangga), trunk di bawah dak sepanjang x 8.6 (bebas tangga)
   { lvl: 'lt1', data: true, pts: [[9.876, 8.4], [8.6, 8.4], [8.6, 13.4], [9.7, 13.4], [9.7, 13.56]] },
   { lvl: 'lt1', data: true, pts: [[8.6, 13.4], [6.6, 13.4], [6.6, 13.25], [3.4, 13.25]] },
-  { lvl: 'lt1', data: true, pts: [[8.6, 8.4], [8.6, 7.8], [3.0, 7.8], [2.25, 7.8], [2.25, 8.7]] },
+  { lvl: 'lt1', data: true, pts: [[3.4, 13.25], [2.9, 13.25], [2.25, 13.25], [2.25, 11.3]] }, // CCTV-3 lewat plafon teras depan lalu bawah balkon samping
   { lvl: 'lt1', data: true, pts: [[8.6, 8.4], [8.6, 3.56], [8.6, 2.6], [9.876, 2.6]] },
   // lantai 2
   { lvl: 'lt2', pts: [[7.73, 3.575], [7.73, 3.6], [8.30, 3.6], [8.30, 2.74]] },

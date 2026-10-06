@@ -413,7 +413,7 @@ function setFurniture(on) {
   showFurniture = on;
   document.querySelectorAll('#viewbar [data-furniture]').forEach((b) => b.classList.toggle('active', on));
   if (built?.furniture) { built.furniture.lt1.visible = on; built.furniture.lt2.visible = on; }
-  for (const m of glbFurniture) m.visible = on;
+  for (const m of glbFurniture) m.visible = m.userData.glbFurniture === 'kitchenset' ? !on : on; // kotak kitchen set SKP tampil hanya saat furnitur mati (diganti kitchenSet())
 }
 /** Pisahkan kulkas dari model SKP supaya ikut tombol F. Ekspor SketchUp menggabungkan banyak komponen per material,
  *  jadi badan kulkas bisa tergabung dalam mesh besar bersama tembok/kitchen set. Semua segitiga yang ketiga titiknya
@@ -422,12 +422,14 @@ function setFurniture(on) {
 function tagGlbFurniture(root) {
   glbFurniture = [];
   const fb = new THREE.Box3(new THREE.Vector3(5.45, -0.05, 3.565), new THREE.Vector3(6.45, 1.85, 4.6)); // z sampai 4.6: gagang pintu kulkas menonjol melewati badan (4.41)
+  const kb = new THREE.Box3(new THREE.Vector3(3.0, -0.05, 3.5), new THREE.Vector3(5.5, 1.4, 7.0)); // kotak kitchen set SKP (diganti kitchenSet() prosedural)
   const bb = new THREE.Box3(), v = new THREE.Vector3();
   const adds = [];
   root.traverse((o) => {
     if (!o.isMesh) return;
     o.geometry.computeBoundingBox();
     bb.copy(o.geometry.boundingBox).applyMatrix4(o.matrixWorld);
+    if (kb.containsBox(bb) && o.geometry.attributes.position.count < 200) { o.userData.glbFurniture = 'kitchenset'; glbFurniture.push(o); return; }
     if (!bb.intersectsBox(fb)) return;
     if (fb.containsBox(bb)) { o.userData.glbFurniture = 'kulkas'; glbFurniture.push(o); return; }
     const g = o.geometry, pos = g.attributes.position, idx = g.index;
@@ -449,7 +451,7 @@ function tagGlbFurniture(root) {
     m2.userData.glbFurniture = 'kulkas'; glbFurniture.push(m2); adds.push([o, m2]);
   });
   for (const [o, m2] of adds) o.add(m2); // anak dengan transformasi identitas → ikut matriks induk
-  for (const m of glbFurniture) m.visible = showFurniture;
+  for (const m of glbFurniture) m.visible = m.userData.glbFurniture === 'kitchenset' ? !showFurniture : showFurniture;
 }
 async function rebuildTexturesOnly() {
   const { floorTexture, wallTexture } = await import('./textures.js');
