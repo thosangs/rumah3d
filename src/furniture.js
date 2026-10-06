@@ -25,12 +25,18 @@ export const FM = {
   seam: std(0x8f8477, { roughness: 0.9 }), // celah/nat antar panel
   walnut: std(0x6b4a2f, { roughness: 0.55 }),
   walnutDark: std(0x54392a, { roughness: 0.6 }),
+  walnutCab: std(0x5c4332, { roughness: 0.5 }), // pintu kabinet atas dapur (lebih redup dari walnut furnitur)
   black: std(0x17181a, { roughness: 0.45, metalness: 0.5 }),
   blackMatte: std(0x1e1f21, { roughness: 0.8 }),
   brass: std(0xb8925a, { roughness: 0.3, metalness: 0.85 }),
   white: std(0xf5f3ee, { roughness: 0.4 }),
   led: new THREE.MeshStandardMaterial({ color: 0xffe2b0, emissive: 0xffc772, emissiveIntensity: 2.2, roughness: 1 }),
   downlight: new THREE.MeshStandardMaterial({ color: 0xfff4e0, emissive: 0xfff0d0, emissiveIntensity: 4, roughness: 1 }),
+  cabWhite: std(0xe9e9e6, { roughness: 0.35 }), // pintu kabinet bawah putih satin (render hal. 29–31)
+  marbleDark: std(0x2b2e32, { roughness: 0.2 }), // top & backsplash marmer hitam (render)
+  steel: std(0xb9bcc0, { roughness: 0.35, metalness: 0.9 }),
+  glassBlack: std(0x0e0f11, { roughness: 0.15, metalness: 0.2 }),
+  ledWarm: new THREE.MeshStandardMaterial({ color: 0xffe9c8, emissive: 0xffd9a0, emissiveIntensity: 2.5, roughness: 1 }),
 };
 
 function mesh(geo, mat, x = 0, y = 0, z = 0, ry = 0) {
@@ -205,10 +211,122 @@ export function buildFurniture(stairHeightAt) {
   for (const it of LAYOUT.lt2) placeAsset(lt2, it.a, it);
 
   put(lt1, underStairCabinet(4.86, 9.06, (z) => stairHeightAt(z) - LEVELS.lt1, 0.98, [6.55, 8.05]), 9.4, 0); // muka lemari x 8.91; bentang = run tangga
+  lt1.add(kitchenSet());
+  lt1.add(bathFixturesLt1());
+  lt2.add(bathFixturesLt2());
   put(lt1, railingOval(0.6, 1.0, 0.4 / 0.6), 8.28, 4.53, 0, 0.2);
   put(lt1, railingOval(9.06 - 4.56, 1.0, (3.8 - 0.6) / (9.06 - 4.56)), 8.86, 4.56, -Math.PI / 2, 0.6);
   put(lt2, railingOval(9.06 - 3.575, 1.0, 0), 8.43, 3.575, -Math.PI / 2);
   put(lt2, railingOval(0.45, 1.0, 0), 8.43, 9.06, 0);
 
   return { lt1, lt2 };
+}
+
+/** Kitchen set lengkap di atas/depan kitchen set model SKP (top 0.757; muka base kiri x 3.66 sepanjang z 3.56–6.94,
+ *  muka base belakang z 4.16 sepanjang x 3.06–5.44; jendela tembok kiri z 5.6–6.6 h 1.0–1.7; kulkas x 5.5–6.4).
+ *  Gaya render hal. 29–31: kabinet bawah putih tanpa handle (alur hitam), kabinet atas walnut, top & backsplash marmer
+ *  hitam, LED di bawah kabinet atas, kompor tanam + oven di tembok kiri (z 4.6–5.2), hood di atasnya, microwave di kabinet atas. */
+export function kitchenSet() {
+  const g = new THREE.Group(); g.name = 'kitchen-set';
+  const gap = 0.004, dT = 0.018; // celah & tebal pintu
+  const TOP = 0.757;
+  // --- top marmer hitam 2 cm (menimpa top SKP) + backsplash marmer sampai 1.5 (kecuali area jendela) ---
+  g.add(B(0.60, 0.02, 3.38, FM.marbleDark, 3.36, TOP + 0.011, 5.25));
+  g.add(B(1.78, 0.02, 0.60, FM.marbleDark, 4.55, TOP + 0.011, 3.86));
+  g.add(B(0.012, 0.73, 1.98, FM.marbleDark, 3.071, TOP + 0.385, 4.57)); // kiri, sebelum jendela (z 3.58–5.56)
+  g.add(B(0.012, 0.23, 1.0, FM.marbleDark, 3.071, TOP + 0.135, 6.1)); // kiri, di bawah ambang jendela (z 5.6–6.6, sampai 1.0)
+  g.add(B(0.012, 0.73, 0.30, FM.marbleDark, 3.071, TOP + 0.385, 6.77)); // kiri, setelah jendela
+  g.add(B(2.36, 0.73, 0.012, FM.marbleDark, 4.26, TOP + 0.385, 3.571)); // belakang (x 3.08–5.44)
+  // --- pintu kabinet bawah putih (2 cm di depan muka SKP), alur hitam 2 cm di atas, plin hitam ---
+  const doorsAlong = (axis, from, to, face, mat = FM.cabWhite, skip = []) => {
+    const n = Math.max(1, Math.round((to - from) / 0.6)), w = (to - from) / n;
+    for (let i = 0; i < n; i++) {
+      const a = from + i * w + gap / 2, b = from + (i + 1) * w - gap / 2, c = (a + b) / 2;
+      if (skip.some(([s1, s2]) => c > s1 && c < s2)) continue;
+      if (axis === 'z') g.add(B(dT, 0.60, b - a, mat, face + dT / 2, 0.10 + 0.30, c));
+      else g.add(B(b - a, 0.60, dT, mat, c, 0.10 + 0.30, face + dT / 2));
+    }
+  };
+  doorsAlong('z', 3.60, 6.90, 3.66, FM.cabWhite, [[4.58, 5.22]]); // kiri; lubang oven z 4.6–5.2
+  doorsAlong('x', 3.70, 5.42, 4.16); // belakang
+  g.add(B(0.012, 0.03, 3.30, FM.blackMatte, 3.666, 0.715, 5.25)); // alur handle kiri
+  g.add(B(1.72, 0.03, 0.012, FM.blackMatte, 4.56, 0.715, 4.166)); // alur handle belakang
+  g.add(B(0.01, 0.10, 3.30, FM.blackMatte, 3.655, 0.05, 5.25)); // plin kiri
+  g.add(B(1.72, 0.10, 0.01, FM.blackMatte, 4.56, 0.05, 4.155));
+  // --- oven tanam (hitam) + kompor tanam kaca hitam + hood stainless ---
+  g.add(B(0.03, 0.58, 0.60, FM.blackMatte, 3.675, 0.40, 4.90));
+  g.add(B(0.012, 0.30, 0.52, FM.glassBlack, 3.696, 0.42, 4.90)); // kaca pintu oven
+  g.add(B(0.56, 0.02, 0.015, FM.steel, 3.70, 0.655, 4.90, Math.PI / 2)); // handle oven
+  g.add(B(0.52, 0.008, 0.58, FM.glassBlack, 3.36, TOP + 0.025, 4.90)); // kompor kaca
+  for (const dz of [-0.15, 0.15]) for (const dx of [-0.12, 0.12]) g.add(CYL(0.055, 0.055, 0.012, FM.black, 3.36 + dx, TOP + 0.035, 4.90 + dz, 20));
+  g.add(B(0.45, 0.06, 0.60, FM.steel, 3.30, 1.55, 4.90)); // hood badan tipis
+  g.add(B(0.30, 0.40, 0.30, FM.steel, 3.225, 1.78, 4.90)); // cerobong hood
+  // --- kabinet atas walnut: karkas walnut gelap + pintu walnut 1.5 cm menonjol; LED strip di bawah ---
+  const upper = (axis, from, to, yLo, yHi, face, depth = 0.345) => {
+    const len = to - from, c = (from + to) / 2, h = yHi - yLo, yc = (yLo + yHi) / 2;
+    if (axis === 'z') { g.add(B(depth, h, len, FM.walnutDark, face + depth / 2, yc, c)); }
+    else { g.add(B(len, h, depth, FM.walnutDark, c, yc, face + depth / 2)); }
+    const n = Math.max(1, Math.round(len / 0.5)), w = len / n;
+    for (let i = 0; i < n; i++) {
+      const a = from + i * w + gap / 2, b = from + (i + 1) * w - gap / 2, cc = (a + b) / 2;
+      if (axis === 'z') g.add(B(0.015, h - 0.01, b - a, FM.walnutCab, face + depth + 0.0075, yc, cc));
+      else g.add(B(b - a, h - 0.01, 0.015, FM.walnutCab, cc, yc, face + depth + 0.0075));
+    }
+    if (axis === 'z') g.add(B(0.03, 0.012, len - 0.04, FM.ledWarm, face + depth - 0.03, yLo - 0.006, c));
+    else g.add(B(len - 0.04, 0.012, 0.03, FM.ledWarm, c, yLo - 0.006, face + depth - 0.03));
+  };
+  upper('z', 3.60, 4.55, 1.50, 2.25, 3.075); // kiri sebelum hood
+  upper('z', 4.55, 5.25, 1.95, 2.25, 3.075); // di atas hood (pendek)
+  upper('z', 5.25, 5.56, 1.50, 2.25, 3.075);
+  upper('z', 5.56, 6.64, 1.78, 2.25, 3.075); // di atas jendela (ambang atas 1.7)
+  upper('z', 6.64, 6.90, 1.50, 2.25, 3.075);
+  upper('x', 3.42, 4.45, 1.50, 2.25, 3.575); // belakang kiri
+  upper('x', 5.10, 5.44, 1.50, 2.25, 3.575); // belakang kanan (sebelah kulkas)
+  // niche microwave di kabinet atas belakang x 4.45–5.10: karkas + microwave hitam
+  g.add(B(0.65, 0.75, 0.345, FM.walnutDark, 4.775, 1.875, 3.7475));
+  g.add(B(0.60, 0.015, 0.33, FM.walnut, 4.775, 1.78, 3.74)); // rak dasar microwave
+  g.add(B(0.52, 0.30, 0.34, FM.blackMatte, 4.775, 1.94, 3.75)); // microwave
+  g.add(B(0.34, 0.20, 0.01, FM.glassBlack, 4.74, 1.95, 3.925)); // kaca pintu microwave
+  g.add(B(0.65, 0.38, 0.015, FM.walnutCab, 4.775, 2.06 + 0.0, 3.9275)); // pintu atas niche (y 1.87–2.25)
+  g.add(B(0.65, 0.33, 0.015, FM.walnutCab, 4.775, 1.665, 3.9275)); // pintu bawah niche (y 1.50–1.83)
+  g.traverse((o) => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; } });
+  return g;
+}
+
+/** Perlengkapan kamar mandi (lantai toilet lt1 = −0,08 relatif lt1; lt2 = −0,02 relatif lt2). Kloset & wastafel = aset Blender
+ *  (di layout/toilet.js); di sini: shower set, kran, floor drain, rak sabun. Posisi: shower di pojok depan-kiri (tembok z 7.095 × x 3.095),
+ *  water heater di tembok depan (z 7.095) kanan shower, stop kontak IP44 ≥ 0,6 m dari kepala shower. */
+function showerSet(g, x, z, y0, ry) {
+  const h = new THREE.Group(); h.position.set(x, y0, z); h.rotation.y = ry; // muka +z lokal = ke ruang
+  h.add(B(0.16, 0.06, 0.06, FM.steel, 0, 1.0, 0.03)); // mixer
+  for (const dx of [-0.055, 0.055]) h.add(CYL(0.016, 0.016, 0.05, FM.steel, dx, 1.0, 0.075, 16).rotateX(Math.PI / 2));
+  h.add(CYL(0.012, 0.012, 0.90, FM.steel, 0, 1.45, 0.03, 12)); // rel geser
+  h.add(B(0.05, 0.06, 0.05, FM.steel, 0, 1.85, 0.045)); // holder
+  const hs = CYL(0.012, 0.012, 0.22, FM.steel, 0, 1.78, 0.075, 12); hs.rotation.z = 0.25; h.add(hs); // hand shower
+  h.add(CYL(0.035, 0.03, 0.03, FM.steel, 0.04, 1.9, 0.075, 20)); // kepala hand shower
+  h.add(B(0.25, 0.015, 0.10, FM.steel, 0, 1.25, 0.05)); // rak sabun
+  g.add(h);
+}
+function floorDrain(g, x, z, y0) { g.add(B(0.10, 0.004, 0.10, FM.steel, x, y0 + 0.002, z)); g.add(B(0.07, 0.003, 0.07, FM.blackMatte, x, y0 + 0.004, z)); }
+function jetWasher(g, x, z, y0, ry) { const t = new THREE.Group(); t.position.set(x, y0, z); t.rotation.y = ry; t.add(B(0.05, 0.06, 0.03, FM.steel, 0, 0.75, 0.015)); t.add(CYL(0.01, 0.01, 0.07, FM.steel, 0, 0.72, 0.05, 12).rotateX(Math.PI / 2)); t.add(CYL(0.014, 0.014, 0.10, FM.steel, 0, 0.82, 0.03, 12)); t.add(CYL(0.02, 0.02, 0.03, FM.steel, 0, 0.78, 0.07, 12)); const hose = CYL(0.006, 0.006, 0.55, FM.blackMatte, 0, 0.45, 0.04, 8); t.add(hose); g.add(t); }
+function wallTap(g, x, z, y0, ry) { const t = new THREE.Group(); t.position.set(x, y0, z); t.rotation.y = ry; t.add(CYL(0.012, 0.012, 0.09, FM.steel, 0, 0.45, 0.045, 12).rotateX(Math.PI / 2)); t.add(CYL(0.02, 0.02, 0.03, FM.steel, 0, 0.46, 0.09, 16)); g.add(t); }
+export function bathFixturesLt1() {
+  const g = new THREE.Group(); g.name = 'bath-lt1'; const y0 = -0.08; // lantai toilet lt1
+  showerSet(g, 3.40, 7.095, y0, 0); // shower di tembok depan (sisi r. makan), pojok kiri
+  floorDrain(g, 3.40, 7.55, y0);
+  wallTap(g, 3.5, 8.405, y0, Math.PI); // kran tembok belakang (gayung/bak)
+  g.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
+  return g;
+}
+export function bathFixturesLt2() {
+  const g = new THREE.Group(); g.name = 'bath-lt2'; const y0 = -0.02;
+  showerSet(g, 3.40, 7.095, y0, 0); // toilet KTU: shower pojok depan-kiri
+  floorDrain(g, 3.45, 7.60, y0);
+  jetWasher(g, 4.655, 8.0, y0, -Math.PI / 2); // toilet KTU: jet washer di tembok kanan, samping kloset (z 7.75–8.15)
+  showerSet(g, 5.05, 7.095, y0, 0); // toilet kanan: shower pojok depan-kiri (x 4.825 tembok kiri)
+  floorDrain(g, 5.10, 7.60, y0);
+  jetWasher(g, 6.0, 8.405, y0, Math.PI); // toilet kanan: jet washer di tembok belakang, kanan kloset (x 5.45–5.85)
+  wallTap(g, 6.405, 8.1, y0, -Math.PI / 2); // kran tembok kanan (z 7.775–8.405 bebas pintu)
+  g.traverse((o) => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
+  return g;
 }

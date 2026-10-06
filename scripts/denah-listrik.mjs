@@ -42,7 +42,7 @@ const W = M + PLAN_W + 40 + LEG_W + M, H = M + PLAN_H + M + 20;
 const X = (x) => +(M + x * S).toFixed(1), Y = (z) => +(M + z * S).toFixed(1);
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const RED = '#c8102e', INK = '#111', GREY = '#666';
-const TGL = '05-10-2026';
+const TGL = '06-10-2026';
 const RUANG = {
   lt1: [['DAPUR', 4.3, 4.65], ['R. MAKAN', 5.4, 6.4], ['TOILET', 4.25, 8.1], ['KAMAR TIDUR 1', 4.75, 10.85], ['R. KELUARGA', 8.25, 10.35], ['TERAS DEPAN', 4.75, 13.3], ['TERAS BLK.', 8.3, 2.3], ['R. JEMUR', 5.0, 1.0], ['CARPORT', 6.5, 17.0], ['TAMAN', 0.75, 10.0], ['SELASAR', 2.25, 5.0]],
   lt2: [['KAMAR TIDUR 2', 4.75, 4.65], ['SELASAR', 7.6, 6.4], ['VOID', 9.2, 6.4], ['TOILET', 4.25, 8.1], ['TOILET', 5.6, 7.35], ['KT UTAMA', 4.75, 10.75], ['R. KELUARGA', 8.25, 10.35], ['BALKON DEPAN', 4.0, 13.8], ['BALKON', 2.25, 11.0], ['BALKON BLK.', 8.3, 3.2]],
@@ -57,14 +57,17 @@ const sym = {
   // stop kontak: setengah lingkaran (cembung ke tembok, terbuka ke ruang) + batang ke tembok dengan palang (kontak arde)
   stopkontak: (cx, cy, col, tag, rot = 0) => `<g transform="translate(${cx} ${cy}) rotate(${rot})"><path d="M-6.5 2 A6.5 6.5 0 0 1 6.5 2" fill="#fff" stroke="${col}" stroke-width="1.7"/><line x1="-6.5" y1="2" x2="-6.5" y2="4.5" stroke="${col}" stroke-width="1.7"/><line x1="6.5" y1="2" x2="6.5" y2="4.5" stroke="${col}" stroke-width="1.7"/><line x1="0" y1="-4.5" x2="0" y2="-12" stroke="${col}" stroke-width="1.7"/><line x1="-4.5" y1="-9.5" x2="4.5" y2="-9.5" stroke="${col}" stroke-width="1.7"/></g>${tag ? `<text x="${cx}" y="${cy - 15}" font-size="9" font-weight="700" text-anchor="middle" fill="${col}">${tag}</text>` : ''}`,
   // saklar: lingkaran + batang 45° ke arah ruang; tunggal = batang berakhir di tick (bentuk Λ); ganda = batang menembus tick (stub)
-  saklar: (cx, cy, col, n, rot = 0) => {
+  saklar: (cx, cy, col, n, rot = 0, tukar = false) => {
     // tunggal: batang 13 px dari tepi lingkaran, berakhir di tick 8 px (bentuk Λ). ganda: tick bercabang di 8 px, batang menerus sampai 15 px (bentuk λ) + tick kedua sejajar di ujung.
     const k = 0.7071, r0 = 5.5, stem = n === 2 ? 15 : 13, at = n === 2 ? 8 : 13, tk = 8;
     const p = (t) => [(r0 + t) * k, (r0 + t) * k];
     const [sx, sy] = p(0), [ex, ey] = p(stem), [tx, ty] = p(at);
     let s = `<g transform="translate(${cx} ${cy}) rotate(${rot})"><circle cx="0" cy="0" r="${r0}" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${sx.toFixed(2)}" y1="${sy.toFixed(2)}" x2="${ex.toFixed(2)}" y2="${ey.toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`;
     s += `<line x1="${tx.toFixed(2)}" y1="${ty.toFixed(2)}" x2="${(tx + tk * k).toFixed(2)}" y2="${(ty - tk * k).toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`;
-    if (n === 2) s += `<line x1="${ex.toFixed(2)}" y1="${ey.toFixed(2)}" x2="${(ex + tk * k).toFixed(2)}" y2="${(ey - tk * k).toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`;
+    if (n >= 2) s += `<line x1="${ex.toFixed(2)}" y1="${ey.toFixed(2)}" x2="${(ex + tk * k).toFixed(2)}" y2="${(ey - tk * k).toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`;
+    if (n === 3) { const [mx, my] = p(11.5); s += `<line x1="${mx.toFixed(2)}" y1="${my.toFixed(2)}" x2="${(mx + tk * k).toFixed(2)}" y2="${(my - tk * k).toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`; }
+    // saklar tukar (two-way): batang kedua berlawanan arah dengan tick (IEC 60617 S00019)
+    if (tukar) { const qx = -r0 * k, qy = -r0 * k, rx = -(r0 + 11) * k, ry2 = -(r0 + 11) * k; s += `<line x1="${qx.toFixed(2)}" y1="${qy.toFixed(2)}" x2="${rx.toFixed(2)}" y2="${ry2.toFixed(2)}" stroke="${col}" stroke-width="1.6"/><line x1="${rx.toFixed(2)}" y1="${ry2.toFixed(2)}" x2="${(rx - tk * k).toFixed(2)}" y2="${(ry2 + tk * k).toFixed(2)}" stroke="${col}" stroke-width="1.6"/>`; }
     return s + '</g>';
   },
   // box MCB: persegi panjang dengan dua garis menembus + simbol pemutus kecil; label di luar
@@ -162,12 +165,13 @@ function perangkat(lvl) {
   for (const l of LAMPU.filter((q) => q.lvl === lvl)) s += sym.lampu(X(l.x), Y(l.z), INK, l.w);
   const labeled = []; // label tinggi hanya sekali untuk perangkat sejenis yang berdampingan (< 35 cm)
   for (const d of PERANGKAT.filter((q) => q.lvl === lvl)) {
-    const [nx, nz] = NV[d.n]; const col = d.baru ? RED : INK;
+    const [nx, nz] = NV[d.n]; const col = d.baru || d.rev ? RED : INK;
     const cx = X(d.x + nx * 0.2), cy = Y(d.z + nz * 0.2);
     s += `<line x1="${X(d.x)}" y1="${Y(d.z)}" x2="${cx}" y2="${cy}" stroke="${col}" stroke-width="1.4"/>`;
     if (d.t === 'stopkontak') s += sym.stopkontak(cx, cy, col, d.ac ? 'AC' : d.wh ? 'WH' : '', ROT[d.n]);
-    else if (d.t === 'saklar1') s += sym.saklar(cx, cy, col, 1, ROT[d.n]);
-    else if (d.t === 'saklar2') s += sym.saklar(cx, cy, col, 2, ROT[d.n]);
+    else if (d.t === 'saklar1') s += sym.saklar(cx, cy, col, 1, ROT[d.n], d.tukar);
+    else if (d.t === 'saklar2') s += sym.saklar(cx, cy, col, 2, ROT[d.n], d.tukar);
+    else if (d.t === 'saklar3') s += sym.saklar(cx, cy, col, 3, ROT[d.n], d.tukar);
     else if (d.t === 'mcb') s += sym.mcb(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'kwh') s += sym.kwh(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'sconce') s += sym.sconce(cx, cy, col);
@@ -189,8 +193,10 @@ function legenda(lvl) {
     ['stopkontak', 'Stop kontak 1 ph 10/16 A, h 40 cm (dapur 115, mesin cuci 120)', n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && !d.baru), n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && d.baru)],
     ['ac', 'Stop kontak AC, h 240 cm (unit indoor di atas jendela)', 0, n((d) => d.ac)],
     ['wh', 'Stop kontak water heater IP44, h 190 cm, grup sendiri', 0, n((d) => d.wh)],
-    ['saklar1', 'Saklar tunggal, h 140 cm', n((d) => d.t === 'saklar1'), 0],
+    ['saklar1', 'Saklar tunggal, h 140 cm', n((d) => d.t === 'saklar1' && !d.tukar), 0],
     ['saklar2', 'Saklar ganda, h 140 cm', n((d) => d.t === 'saklar2'), 0],
+    ['saklar3', 'Saklar triple (2 kelompok + 1 tukar), h 140 cm', 0, n((d) => d.t === 'saklar3')],
+    ['tukar', 'Saklar tukar (two-way) lampu tangga, h 140 cm', 0, n((d) => d.t === 'saklar1' && d.tukar)],
     ['lampu5', 'Lampu LED downlight 5 W', L.filter((l) => l.w === 5).length, 0],
     ['lampu9', 'Lampu LED downlight 9 W' + (lvl === 'lt1' ? ' (termasuk 4 carport)' : ''), L.filter((l) => l.w === 9).length, 0],
     ['sconce', 'Lampu LED sorot / dinding outdoor', n((d) => d.t === 'sconce'), 0],
@@ -213,6 +219,8 @@ function legenda(lvl) {
     else if (k === 'wh') s += sym.stopkontak(cx, cy, RED, 'WH');
     else if (k === 'saklar1') s += sym.saklar(cx, cy, col, 1);
     else if (k === 'saklar2') s += sym.saklar(cx, cy, col, 2);
+    else if (k === 'saklar3') s += sym.saklar(cx, cy, RED, 3, 0, true);
+    else if (k === 'tukar') s += sym.saklar(cx, cy, RED, 1, 0, true);
     else if (k === 'lampu5') s += sym.lampu(cx, cy, col, 5);
     else if (k === 'lampu9') s += sym.lampu(cx, cy, col, 9);
     else if (k === 'sconce') s += sym.sconce(cx, cy, col);
@@ -225,8 +233,9 @@ function legenda(lvl) {
   }
   y += 6;
   s += `<line x1="${x0 + 16}" y1="${y}" x2="${x0 + LEG_W - 16}" y2="${y}" stroke="${INK}" stroke-width="0.8"/>`; y += 22;
-  s += `<text x="${x0 + 16}" y="${y}" font-size="10.5" font-weight="700" fill="${RED}">REVISI ${TGL} (merah = tambahan, tidak ada di DED)</text>`; y += 18;
-  const rev = P.filter((d) => d.baru).map((d) => `• ${d.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, '')} (h ${d.h.toFixed(2)} m)`);
+  s += `<text x="${x0 + 16}" y="${y}" font-size="10.5" font-weight="700" fill="${RED}">REVISI ${TGL} (merah = tambahan / perubahan dari DED)</text>`; y += 18;
+  const rev = P.filter((d) => d.baru || d.rev).map((d) => `• ${d.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, '')} (h ${d.h.toFixed(2)} m)`);
+  if (lvl === 'lt1') rev.push('• TV 65" diturunkan: bawah 0,80 m, tengah layar 1,22 m (mata duduk ±1,10 m)');
   if (lvl === 'lt1') rev.push('• Stop kontak dapur kiri digeser 22 cm ke kanan jendela (jendela z 5,6–6,6)');
   for (const t of rev) { for (const line of wrap(t, 78)) { s += `<text x="${x0 + 16}" y="${y}" font-size="9.5" fill="${RED}">${esc(line)}</text>`; y += 14; } y += 2; }
   y += 8;

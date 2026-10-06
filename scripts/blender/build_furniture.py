@@ -273,7 +273,7 @@ def tv_wall():
     box('panelL', w * 0.2, 0.06, h - 0.9, -w * 0.4, -0.02, 0.5 + (h - 0.9) / 2, M['fabricTaupe'], bevel=0.01, seg=2)
     box('panelR', w * 0.14, 0.06, h - 1.4, w * 0.36, -0.02, 0.9 + (h - 1.4) / 2, M['fabricTaupe'], bevel=0.01, seg=2)
     box('ledMain', w * 0.66, 0.01, h - 0.24, -w * 0.05, -0.005, 0.12 + (h - 0.24) / 2, M['led'])
-    box('shelf', w * 0.5, 0.18, 0.03, -w * 0.15, -0.16, 0.95, M['black'], bevel=0.005, seg=2)
+    box('shelf', w * 0.5, 0.18, 0.03, -w * 0.15, -0.16, 0.70, M['black'], bevel=0.005, seg=2)
     export('tv_wall')
 
 def dining_chair():
@@ -427,6 +427,45 @@ def water_heater():
     box('bracket', 0.30, 0.012, 0.03, 0, -0.006, 0.15, dark)
     export('water_heater')
 
+def closet_duduk():
+    """Kloset duduk monoblok (gaya TOTO CW421): tangki di belakang, punggung tangki di y=0 (tembok), menonjol ke -Y; alas z=0."""
+    start()
+    white = mat('sanWhite', srgb('#f4f4f2'), 0.12)
+    dark = mat('seatDark', srgb('#2a2b2d'), 0.5)
+    chrome = M['chrome']
+    box('tank', 0.40, 0.17, 0.36, 0, -0.095, 0.56, white, bevel=0.03, seg=4, subsurf=1)
+    box('tankLid', 0.42, 0.19, 0.03, 0, -0.095, 0.755, white, bevel=0.01, seg=3)
+    cyl('flush', 0.02, 0.012, 0.12, -0.085, 0.766, chrome, 24)
+    box('pedestal', 0.36, 0.44, 0.40, 0, -0.40, 0.20, white, bevel=0.06, seg=5, subsurf=2)
+    bpy.ops.mesh.primitive_cylinder_add(radius=0.19, depth=0.12, vertices=48, location=(0, -0.44, 0.38)); b = bpy.context.active_object; b.name = 'bowl'; b.scale = (1.0, 1.25, 1.0); bpy.ops.object.transform_apply(scale=True); b.data.materials.append(white); bpy.ops.object.shade_smooth()
+    bpy.ops.mesh.primitive_cylinder_add(radius=0.19, depth=0.03, vertices=48, location=(0, -0.44, 0.43)); st = bpy.context.active_object; st.name = 'seat'; st.scale = (1.0, 1.25, 1.0); bpy.ops.object.transform_apply(scale=True); st.data.materials.append(white); bpy.ops.object.shade_smooth()
+    box('lidHinge', 0.30, 0.04, 0.02, 0, -0.20, 0.445, dark, bevel=0.005)
+    export('closet_duduk')
+
+def closet_jongkok():
+    """Kloset jongkok keramik (0.50×0.60): plat dengan pijakan & lubang; pusat di origin, alas z=0, tinggi 0.06; sisi belakang (lubang) ke +Y."""
+    start()
+    white = mat('sanWhite', srgb('#f1f1ef'), 0.15)
+    dark = mat('drainDark', srgb('#45484c'), 0.4)
+    box('plate', 0.50, 0.60, 0.06, 0, 0, 0.03, white, bevel=0.015, seg=3)
+    for sx in (-1, 1):
+        box('foot', 0.16, 0.30, 0.02, sx * 0.16, -0.05, 0.07, white, bevel=0.008, seg=3)
+    box('trough', 0.14, 0.42, 0.012, 0, 0.02, 0.055, dark)
+    cyl('hole', 0.045, 0.02, 0, 0.17, 0.052, dark, 24)
+    export('closet_jongkok')
+
+def washbasin():
+    """Wastafel gantung kecil 0.45×0.38 + kran: punggung di y=0 (tembok), menonjol ke -Y; bibir atas di z=0 (pasang pada y 0.80–0.85)."""
+    start()
+    white = mat('sanWhite', srgb('#f4f4f2'), 0.12)
+    chrome = M['chrome']
+    box('basin', 0.45, 0.38, 0.14, 0, -0.19, -0.07, white, bevel=0.05, seg=5, subsurf=1)
+    box('bowl', 0.33, 0.24, 0.10, 0, -0.21, -0.045, mat('bowlIn', srgb('#e6e8e8'), 0.1), bevel=0.04, seg=4, subsurf=1)
+    cyl('tap', 0.012, 0.14, 0, -0.05, 0.07, chrome, 16)
+    c = cyl('spout', 0.009, 0.10, 0, -0.10, 0.13, chrome, 12); c.rotation_euler.x = math.radians(90)
+    cyl('trap', 0.02, 0.25, 0, -0.12, -0.26, chrome, 16)
+    export('washbasin')
+
 BUILD_ONLY = set(sys.argv[sys.argv.index('--') + 2:]) if '--' in sys.argv and len(sys.argv) > sys.argv.index('--') + 2 else set()
 def want(name): return not BUILD_ONLY or name in BUILD_ONLY
 # ---------------------------------------------------------------------------
@@ -465,3 +504,6 @@ if want('sconce'): sconce()
 
 if want('ac_indoor'): ac_indoor()
 if want('water_heater'): water_heater()
+if want('closet_duduk'): closet_duduk()
+if want('closet_jongkok'): closet_jongkok()
+if want('washbasin'): washbasin()

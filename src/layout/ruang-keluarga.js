@@ -18,8 +18,8 @@ export default [
   // --- TV wall di tembok kiri (x 6.575), pintu utama tepat di sisi depannya (render hal. 23/24) ---
   // Aset asimetris (lokal x −1.4..+1.204) × sx 1.25 → bentang nyata z 8.945–12.2 (sisa 0.16 m ke kusen pintu z 12.36).
   // Panel taupe lebar + rak hitam di sisi pintu, panel krem utama berpusat z ≈ 10.63 dengan TV.
-  { a: 'tv_wall', x: 6.605, z: 10.45, ry: Math.PI / 2, sx: 1.25, note: 'panel krem+taupe+LED, z 8.945–12.2; rak hitam y 0.95' },
-  { a: 'tv65', x: 6.73, z: 10.625, y: 1.05, ry: Math.PI / 2, note: 'di tengah panel utama (panel menonjol sampai x 6.675); bawah TV 10 cm di atas rak' },
+  { a: 'tv_wall', x: 6.605, z: 10.45, ry: Math.PI / 2, sx: 1.25, note: 'panel krem+taupe+LED, z 8.945–12.2; rak hitam y 0.70 (diturunkan bersama TV)' },
+  { a: 'tv65', x: 6.73, z: 10.625, y: 0.80, ry: Math.PI / 2, note: 'TV 65" (1.46×0.84): bawah 0.80, tengah layar 1.22 m ≈ mata duduk di sofa (1.10) + 2.6°; jarak pandang ±2.65 m. Rak hitam panel di 0.70 (6 cm di bawah TV), konsol top 0.58' },
   // Konsol walnut melayang: 2.4 → 3.12 m lewat sx (z 8.89–12.01), punggung x 6.69; tint menggelapkan walnut yang terlalu oranye di render three.js
   { a: 'tv_console', x: 6.9, z: 10.45, y: 0.3, ry: Math.PI / 2, sx: 1.3, tint: 0xc4bcb8, note: 'fm_tv_console_walnut bentuknya bulat (tidak mirip render), jadi pakai versi Blender' },
   // --- Tembok kanan berpanel (krem + strip walnut) di belakang sofa (hal. 22) ---

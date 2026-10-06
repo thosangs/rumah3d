@@ -6,6 +6,7 @@
 // saklar 140 cm; box MCB pusat 175 cm; kWh meter pusat 170 cm; lampu sorot/dinding luar: fasad 230 cm, pagar 175–220 cm;
 // lampu dinding lt2 mengikuti titik lampu yang sudah ada di fasad model SKP (x 6.1, 130 cm di atas lantai lt2).
 // n = arah muka perangkat (normal tembok ke dalam ruang). t: stopkontak | saklar1 (tunggal) | saklar2 (ganda) | mcb | kwh | sconce.
+// t: saklar3 = saklar triple; tukar: true = bagian saklar tukar (two-way) lampu tangga; rev: true = posisi/jenis diubah dari DED.
 // ac: true = stop kontak AC (h 2.4, di samping unit indoor yang dipasang tepat di atas kusen jendela/pintu geser);
 // wh: true = stop kontak water heater IP44 (h 1.9 dari lantai toilet, di luar zona cipratan shower, grup MCB sendiri);
 // Dinding toilet berkeramik: muka keramik 2 cm di depan tembok blok (z 7.095 / 8.405, x 3.095 / 4.655) → titik di toilet pakai muka keramik. baru: true = tambahan revisi 4/10/2026 (tidak ada di gambar DED): 3 AC, 2 dinding TV, 2 dapur.
@@ -18,21 +19,21 @@ export const PERANGKAT = [
   { lvl: 'lt1', t: 'stopkontak', x: 6.30, z: 3.577, n: '+z', h: 0.4, r: 'dapur, tembok belakang (kulkas)' },
   { lvl: 'lt1', t: 'stopkontak', x: 3.068, z: 5.25, n: '+x', h: 1.15, r: 'dapur, di atas meja dapur, kanan jendela (gambar: z 5.47/5.69 menumpuk kusen jendela z 5.6–6.6 → digeser 22 cm)' },
   { lvl: 'lt1', t: 'stopkontak', x: 3.068, z: 5.47, n: '+x', h: 1.15, r: 'dapur, di atas meja dapur' },
-  { lvl: 'lt1', t: 'stopkontak', x: 4.25, z: 3.564, n: '+z', h: 1.15, baru: true, r: 'REVISI: dapur, tembok belakang di atas meja (rice cooker/microwave) — tambahan' },
-  { lvl: 'lt1', t: 'stopkontak', x: 4.47, z: 3.564, n: '+z', h: 1.15, baru: true, r: 'REVISI: dapur, tembok belakang di atas meja — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 3.78, z: 3.564, n: '+z', h: 1.15, baru: true, r: 'REVISI: dapur, tembok belakang di pojok kiri atas meja (rice cooker/microwave), jauh dari sink — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 4.0, z: 3.564, n: '+z', h: 1.15, baru: true, r: 'REVISI: dapur, tembok belakang di pojok kiri atas meja — tambahan' },
   { lvl: 'lt1', t: 'stopkontak', x: 5.56, z: 6.937, n: '-z', h: 0.4, r: 'ruang makan, tembok toilet' },
   { lvl: 'lt1', t: 'stopkontak', x: 5.77, z: 6.937, n: '-z', h: 0.4, r: 'ruang makan, tembok toilet' },
   { lvl: 'lt1', t: 'stopkontak', x: 4.99, z: 8.565, n: '+z', h: 0.4, r: 'KT1, tembok belakang (kiri pintu)' },
   { lvl: 'lt1', t: 'stopkontak', x: 3.065, z: 10.22, n: '+x', h: 0.4, r: 'KT1, tembok kiri' },
-  { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 10.72, n: '-x', h: 0.4, r: 'R. keluarga, tembok kanan (di muka panel dinding)' },
-  { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 10.94, n: '-x', h: 0.4, r: 'R. keluarga, tembok kanan' },
-  { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 11.19, n: '-x', h: 0.4, r: 'R. keluarga, tembok kanan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 12.3, n: '-x', h: 0.35, rev: true, r: 'R. keluarga, tembok kanan depan, di bawah meja samping melayang (bawah meja 0.41) (DED: z 10.72 di belakang sofa → digeser supaya sofa bisa mepet)' },
+  { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 12.52, n: '-x', h: 0.35, rev: true, r: 'R. keluarga, tembok kanan depan, di balik meja samping (DED: z 10.94)' },
+  { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 9.2, n: '-x', h: 0.4, rev: true, r: 'R. keluarga, tembok kanan dekat lemari bawah tangga, di balik pohon pot (DED: z 11.19)' },
   { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.35, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, di bawah TV di atas konsol (TV/set-top box) — tambahan' },
   { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.90, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, di bawah TV (speaker/konsol game) — tambahan' },
-  { lvl: 'lt1', t: 'stopkontak', x: 3.065, z: 10.2, n: '+x', h: 2.4, ac: true, baru: true, r: 'REVISI: stop kontak AC KT1, tembok kiri di kanan unit indoor yang di atas jendela — tambahan' },
-  { lvl: 'lt1', t: 'stopkontak', x: 4.3, z: 7.095, n: '+z', h: 1.82, wh: true, baru: true, r: 'REVISI: stop kontak water heater toilet lt1 (IP44), tembok sisi r. makan, kanan unit; 1,9 m di atas lantai toilet (−0,03) — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 3.065, z: 8.75, n: '+x', h: 2.4, ac: true, baru: true, r: 'REVISI: stop kontak AC KT1, tembok kiri mepet pojok tembok belakang (17 cm), di kiri unit indoor yang di atas jendela — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 4.45, z: 7.095, n: '+z', h: 1.82, wh: true, baru: true, r: 'REVISI: stop kontak water heater toilet lt1 (IP44), tembok sisi r. makan, kanan unit; 1,9 m di atas lantai toilet (−0,03) — tambahan' },
   // ---------------- LANTAI 1: saklar 7 (2 tunggal + 5 ganda) ----------------
-  { lvl: 'lt1', t: 'saklar2', x: 7.75, z: 3.564, n: '+z', h: 1.4, r: 'dapur, kanan pintu belakang → lampu teras belakang + area jemur' },
+  { lvl: 'lt1', t: 'saklar3', tukar: true, x: 7.75, z: 3.564, n: '+z', h: 1.4, rev: true, r: 'REVISI: saklar triple di kanan pintu belakang → lampu teras belakang + area jemur + saklar tukar (two-way) lampu tangga/void (DED: ganda)' },
   { lvl: 'lt1', t: 'saklar2', x: 6.30, z: 6.937, n: '-z', h: 1.4, r: 'ruang makan, tembok toilet → lampu dapur, r. makan, lorong' },
   { lvl: 'lt1', t: 'saklar1', x: 5.42, z: 8.437, n: '-z', h: 1.4, r: 'lorong depan toilet → lampu toilet' },
   { lvl: 'lt1', t: 'saklar1', x: 5.42, z: 8.565, n: '+z', h: 1.4, r: 'KT1, kiri pintu → lampu KT1' },
@@ -64,12 +65,13 @@ export const PERANGKAT = [
   { lvl: 'lt2', t: 'stopkontak', x: 6.563, z: 9.72, n: '+x', h: 0.4, baru: true, r: 'REVISI: R. keluarga lt2, tembok KTU (seberang), strip bebas di kanan pintu KTU — tambahan' },
   { lvl: 'lt2', t: 'stopkontak', x: 6.563, z: 10.90, n: '+x', h: 1.05, baru: true, r: 'REVISI: R. keluarga lt2, tembok KTU di atas sideboard (top 0.80) — tambahan' },
   { lvl: 'lt2', t: 'stopkontak', x: 6.563, z: 11.12, n: '+x', h: 1.05, baru: true, r: 'REVISI: R. keluarga lt2, tembok KTU di atas sideboard — tambahan' },
-  { lvl: 'lt2', t: 'stopkontak', x: 3.55, z: 7.095, n: '+z', h: 1.9, wh: true, baru: true, r: 'REVISI: stop kontak water heater toilet lt2 kiri (di dalam KTU, IP44), tembok sisi KT2, kiri unit — tambahan' },
+  { lvl: 'lt2', t: 'stopkontak', x: 4.5, z: 7.095, n: '+z', h: 1.9, wh: true, baru: true, r: 'REVISI: stop kontak water heater toilet lt2 kiri (di dalam KTU, IP44), tembok sisi KT2, kanan unit, 1,1 m dari kepala shower — tambahan' },
   // ---------------- LANTAI 2: saklar 8 (4 tunggal + 4 ganda) — diverifikasi ulang 5/10 dari scan 600 dpi: ganda = batang bercabang
   // sebelum ujung (stub), tunggal = batang berakhir di tick; dicocokkan dengan jumlah kelompok lampu per saklar & legenda ----------------
   { lvl: 'lt2', t: 'saklar1', x: 7.73, z: 3.564, n: '+z', h: 1.4, r: 'selasar, kanan pintu balkon belakang → lampu balkon' },
   { lvl: 'lt2', t: 'saklar1', x: 6.435, z: 5.88, n: '-x', h: 1.4, r: 'KT2, samping pintu → lampu KT2 (simbol DED: tunggal, 1 kelompok lampu)' },
-  { lvl: 'lt2', t: 'saklar2', x: 6.563, z: 5.88, n: '+x', h: 1.4, r: 'selasar → lampu selasar & void tangga' },
+  { lvl: 'lt2', t: 'saklar1', x: 6.563, z: 5.88, n: '+x', h: 1.4, rev: true, r: 'REVISI: selasar → lampu selasar saja (DED: ganda; lampu void/tangga dipindah ke saklar tukar di tembok luar)' },
+  { lvl: 'lt2', t: 'saklar1', tukar: true, x: 9.876, z: 9.45, n: '-x', h: 1.4, baru: true, r: 'REVISI: saklar tukar (two-way) lampu tangga/void di tembok luar, tepat setelah anak tangga teratas — pasangan saklar triple lt1 di pintu belakang' },
   { lvl: 'lt2', t: 'saklar1', x: 6.563, z: 8.15, n: '+x', h: 1.4, r: 'selasar → lampu toilet kanan' },
   { lvl: 'lt2', t: 'saklar2', x: 4.07, z: 8.565, n: '+z', h: 1.4, r: 'KTU, kanan pintu toilet → lampu toilet kiri + lampu balkon samping kiri (simbol DED: ganda, 2 kelompok)' },
   { lvl: 'lt2', t: 'saklar1', x: 6.435, z: 9.57, n: '-x', h: 1.4, r: 'KTU, samping pintu → lampu KTU' },
@@ -112,7 +114,8 @@ export const LAMPU = [
 // Ujung yang berimpit dengan perangkat dinding otomatis diturunkan vertikal ke perangkat itu.
 export const JALUR = [
   // lantai 1
-  { lvl: 'lt1', pts: [[7.75, 3.575], [7.75, 3.6], [8.30, 3.6], [8.30, 2.74]] },
+  { lvl: 'lt1', pts: [[7.75, 3.564], [7.75, 3.6], [8.30, 3.6], [8.30, 2.74]] },
+  { lvl: 'lt1', pts: [[7.75, 3.7], [9.6, 3.7]] }, // traveller two-way ke saklar tukar lt2 (naik di pojok belakang kanan)
   { lvl: 'lt1', pts: [[7.95, 3.6], [7.95, 0.24], [3.84, 0.24], [3.84, 0.125]] },
   { lvl: 'lt1', pts: [[6.30, 6.925], [6.30, 5.24], [4.76, 5.24]] },
   { lvl: 'lt1', pts: [[6.30, 6.925], [7.09, 6.925], [7.09, 5.24]] },
@@ -132,13 +135,16 @@ export const JALUR = [
   // lantai 2
   { lvl: 'lt2', pts: [[7.73, 3.575], [7.73, 3.6], [8.30, 3.6], [8.30, 2.74]] },
   { lvl: 'lt2', pts: [[6.425, 5.88], [4.76, 5.88], [4.76, 5.24]] },
-  { lvl: 'lt2', pts: [[6.575, 5.88], [7.09, 5.88], [7.09, 4.99], [9.42, 4.99]] },
-  { lvl: 'lt2', pts: [[7.09, 5.88], [7.09, 6.98], [9.42, 6.98]] },
+  { lvl: 'lt2', pts: [[6.563, 5.88], [7.09, 5.88], [7.09, 4.99]] },
+  { lvl: 'lt2', pts: [[7.09, 5.88], [7.09, 6.98]] },
+  { lvl: 'lt2', pts: [[9.876, 9.45], [9.42, 9.45], [9.42, 8.98], [9.42, 4.99]] }, // lampu void/tangga dari saklar tukar lt2
+  { lvl: 'lt2', pts: [[9.6, 3.7], [9.42, 3.7], [9.42, 4.99]] }, // traveller two-way dari saklar triple lt1 (riser di pojok belakang kanan)
   { lvl: 'lt2', pts: [[5.66, 7.74], [6.3, 7.74], [6.3, 8.15], [6.575, 8.15]] },
   { lvl: 'lt2', pts: [[3.87, 7.74], [3.87, 8.6], [4.07, 8.6], [4.07, 8.575]] },
   { lvl: 'lt2', pts: [[2.24, 9.48], [2.24, 8.72], [4.07, 8.72], [4.07, 8.6]] },
   { lvl: 'lt2', pts: [[6.425, 9.57], [6.4, 9.75], [4.76, 9.75], [4.76, 10.22]] },
-  { lvl: 'lt2', pts: [[6.575, 9.57], [7.09, 9.57], [7.09, 8.98], [9.42, 8.98], [9.44, 12.94], [7.09, 12.94], [7.09, 9.57]] },
+  { lvl: 'lt2', pts: [[6.563, 9.57], [7.09, 9.57], [7.09, 8.98]] },
+  { lvl: 'lt2', pts: [[7.09, 9.57], [7.09, 12.94], [9.44, 12.94], [9.44, 10.94]] },
   { lvl: 'lt2', pts: [[7.09, 10.94], [9.44, 10.94]] },
   { lvl: 'lt2', pts: [[6.575, 12.02], [6.9, 12.02], [6.9, 12.73], [4.74, 12.73], [2.24, 12.73]] },
   { lvl: 'lt2', pts: [[6.9, 12.73], [6.9, 13.7], [6.1, 13.7], [6.1, 13.95]] },

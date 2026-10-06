@@ -35,17 +35,18 @@ function tegakkanPelat(obj) {
   return tilt;
 }
 /** Saklar ganda: tuts lebar Simon (mesh WhitePlastic) dibelah jadi dua tuts setengah lebar. */
-function belahTuts(obj) {
+function belahTuts(obj, n = 2) {
   let rocker = null;
   obj.traverse((o) => { if (!rocker && o.isMesh && o.material?.name === 'WhitePlastic') rocker = o; });
   if (!rocker) return;
   rocker.visible = false;
   const g0 = rocker.geometry; g0.computeBoundingBox();
   const c = g0.boundingBox.getCenter(new THREE.Vector3());
-  for (const sgn of [-1, 1]) {
+  const offs = n === 3 ? [-1, 0, 1] : [-0.5, 0.5];
+  for (const o of offs) {
     const g = g0.clone(); g.translate(-c.x, -c.y, -c.z);
-    const m = new THREE.Mesh(g, rocker.material); m.scale.set(0.47, 1, 1);
-    m.position.copy(c).x += sgn * 0.0145;
+    const m = new THREE.Mesh(g, rocker.material); m.scale.set(n === 3 ? 0.3 : 0.47, 1, 1);
+    m.position.copy(c).x += o * (n === 3 ? 0.0185 : 0.029);
     m.castShadow = m.receiveShadow = true;
     rocker.parent.add(m);
   }
@@ -82,12 +83,13 @@ export function buildElektrik(ceilingAt) {
     const g = grp[d.lvl];
     const holder = new THREE.Group(); holder.position.set(d.x, d.h, d.z); holder.rotation.y = RY[d.n];
     holder.name = `elek-${d.t}`; holder.userData.elek = d; g.add(holder);
-    if (d.t === 'stopkontak' || d.t === 'saklar1' || d.t === 'saklar2') {
+    if (d.t === 'stopkontak' || d.t === 'saklar1' || d.t === 'saklar2' || d.t === 'saklar3') {
       const name = d.t === 'stopkontak' ? 'simon_socket' : 'simon_switch';
       placeAsset(holder, name, { onLoad: (h) => {
         const obj = h.children[0]; if (!obj) return;
         h.remove(obj);
-        if (d.t === 'saklar2') belahTuts(obj);
+        if (d.t === 'saklar2') belahTuts(obj, 2);
+        if (d.t === 'saklar3') belahTuts(obj, 3);
         h.add(tegakkanPelat(obj));
       } });
     } else if (d.t === 'mcb') placeAsset(holder, 'mcb_box', {});
