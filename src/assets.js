@@ -42,6 +42,7 @@ export const ASSETS = {
   sconce: { file: 'bl_sconce.glb' }, // lampu dinding outdoor up-down, konvensi sama
   ac_indoor: { file: 'bl_ac_indoor.glb' }, // unit AC indoor split 0.85 m, punggung di z=0 lokal, pusat vertikal y=0
   water_heater: { file: 'bl_water_heater.glb' }, // water heater tangki 15 L 0.36×0.35×0.40, konvensi sama
+  cctv_bullet: { file: 'bl_cctv_bullet.glb' }, // kamera CCTV bullet + bracket; pelat di z=0 lokal, kepala (node 'head', sendi z 0.095) menghadap +z
   closet_duduk: { file: 'bl_closet_duduk.glb' }, // kloset duduk monoblok, punggung tangki di z=0 lokal (tembok), menonjol +z, alas y=0
   closet_jongkok: { file: 'bl_closet_jongkok.glb' }, // kloset jongkok 0.5×0.6, pusat di origin, lubang di −z lokal
   washbasin: { file: 'bl_washbasin.glb' }, // wastafel gantung 0.45, punggung di z=0, bibir atas y=0

@@ -19,6 +19,7 @@ const r1 = (n) => Math.round(n * 10) / 10;
 const P = PERANGKAT, L = LAMPU;
 const n = (f) => P.filter(f).length;
 const Q = {
+  cctv: n((d) => d.t === 'cctv'),
   sk: n((d) => d.t === 'stopkontak' && !d.ac && !d.wh), skBaru: n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && d.baru), skAc: n((d) => d.ac), skWh: n((d) => d.wh),
   s1: n((d) => d.t === 'saklar1' && !d.tukar), s2: n((d) => d.t === 'saklar2'), s3: n((d) => d.t === 'saklar3'), tukar: n((d) => d.tukar), sconce: n((d) => d.t === 'sconce'),
   l9: L.filter((l) => l.w === 9).length, l5: L.filter((l) => l.w === 5).length,
@@ -27,7 +28,7 @@ Q.titik = Q.sk + Q.skAc + Q.skWh + Q.s1 + Q.s2 + Q.s3 + (Q.tukar - Q.s3) + Q.sco
 
 // ---------- panjang kabel ----------
 const man = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.z - b.z);
-const devAt = (lvl, x, z) => P.find((d) => d.lvl === lvl && Math.hypot(d.x - x, d.z - z) < 0.06);
+const devAt = (lvl, x, z, data = false) => P.filter((d) => d.lvl === lvl && (data ? d.t === 'cctv' || d.nvr : d.t !== 'cctv' && !d.nvr) && Math.hypot(d.x - x, d.z - z) < 0.06).sort((a, b) => Math.hypot(a.x - x, a.z - z) - Math.hypot(b.x - x, b.z - z))[0];
 // (1) cabang lampu: polyline JALUR (di bawah dak) + turunan vertikal di ujung yang menyentuh saklar/lampu dinding
 let lampCabang = { lt1: 0, lt2: 0 };
 for (const j of JALUR) {
@@ -99,6 +100,24 @@ const rows = [
   ['kWh meter PLN 2200 VA (pasang baru, SLO)', 1, 'unit', 'kwh2200'],
 ];
 const total = rows.reduce((a, [, q, , k]) => a + q * H[k], 0);
+// ---------- CCTV (data CAT6 dari JALUR data:true + turunan ke kamera/NVR) ----------
+let mData = 0;
+for (const j of JALUR.filter((q) => q.data)) {
+  for (let i = 0; i < j.pts.length - 1; i++) mData += Math.abs(j.pts[i + 1][0] - j.pts[i][0]) + Math.abs(j.pts[i + 1][1] - j.pts[i][1]);
+  for (const k of [0, j.pts.length - 1]) { const d = devAt(j.lvl, ...j.pts[k], true); if (d && d.n !== 'dn') mData += CEIL[j.lvl] - d.h; }
+}
+mData = mData * sisa + Q.cctv * 2;
+const HC = { cam: 450000, nvr: 1500000, hdd: 850000, cat6: 4500, pipa34: 15000, aks: 150000, jasa: 150000 };
+const cctvRows = [
+  ['Kamera CCTV bullet IP PoE 2 MP outdoor (IR, IP66)', Q.cctv, 'bh', 'cam'],
+  ['NVR 4 channel PoE', 1, 'unit', 'nvr'],
+  ['HDD surveillance 1 TB', 1, 'bh', 'hdd'],
+  ['Kabel CAT6 outdoor (' + Math.round(mData) + ' m) + 1 CAT6 ke router di dinding TV (±8 m)', Math.round(mData) + 8, 'm', 'cat6'],
+  ['Pipa PVC 3/4" untuk kabel data', Math.ceil(((mData + 8) * 1.05) / 4), 'batang', 'pipa34'],
+  ['Konektor RJ45, box, aksesori', 1, 'ls', 'aks'],
+  ['Jasa pasang & setting per kamera', Q.cctv, 'titik', 'jasa'],
+];
+const cctvTotal = cctvRows.reduce((a, [, q, , k]) => a + q * HC[k], 0);
 const OP = 0.15, RAB_IX_OP = 23762162.5; // RAB: overhead 5 % + profit 10 % di atas harga satuan
 const opsi = [
   ['Upgrade daya ke 3500 VA (selisih dari 2200 VA)', H.kwh3500 - H.kwh2200],
@@ -126,10 +145,13 @@ md += `| | **Total (harga satuan, tanpa overhead)** | | | | **${RP(total)}** |\n
 md += `Opsional (direkomendasikan):\n\n| Uraian | Jumlah |\n|---|---:|\n`;
 for (const [u, v] of opsi) md += `| ${u} \\* | ${RP(v)} |\n`;
 md += `| **Total dengan opsional** | **${RP(total + opsi.reduce((a, [, v]) => a + v, 0))}** |\n\n`;
-md += `## C. Pembanding: RAB V3 bagian IX (listrik saja)\n\n| Uraian | Jumlah |\n|---|---:|\n`;
+md += `## C. CCTV (revisi 06-10-2026, semua harga perkiraan pasar)\n\n| No | Uraian | Vol | Sat | Harga satuan | Jumlah |\n|---:|---|---:|---|---:|---:|\n`;
+cctvRows.forEach(([u, q, sat, k], i) => { md += `| ${i + 1} | ${u} | ${q} | ${sat} | ${RP(HC[k])} | ${RP(q * HC[k])} |\n`; });
+md += `| | **Subtotal CCTV** | | | | **${RP(cctvTotal)}** |\n| | **Total listrik + CCTV (harga satuan)** | | | | **${RP(total + cctvTotal)}** |\n\nStop kontak NVR sudah termasuk di bagian B. Kamera IP PoE: listrik & data lewat 1 kabel CAT6, tidak perlu stop kontak di tiap kamera. Pipa data ditanam sekarang sebelum plester.\n\n`;
+md += `## D. Pembanding: RAB V3 bagian IX (listrik saja)\n\n| Uraian | Jumlah |\n|---|---:|\n`;
 for (const [u, v] of RABV3) md += `| ${u} | ${RP(v)} |\n`;
 md += `| **Total RAB V3 (14 baris listrik, harga satuan)** | **${RP(rabTotal)}** |\n| Total RAB V3 setelah overhead & profit (sub total IX) | ${RP(RAB_IX_OP)} |\n| **Selisih estimasi revisi − RAB V3** (basis harga satuan) | **${RP(total - rabTotal)}** (+${Math.round(((total - rabTotal) / rabTotal) * 100)} %) |\n| Selisih setelah overhead & profit | ${RP(total * (1 + OP) - RAB_IX_OP)} |\n\n`;
-md += `## D. Catatan\n\n`;
+md += `## E. Catatan\n\n`;
 md += `- RAB memakai kabel 2 inti (NYM 2×2,5 / 2×1,5) tanpa grounding; estimasi ini memakai **NYM 3×2,5 untuk stop kontak & AC plus elektroda arde** sesuai PUIL — itu penyumbang selisih terbesar. Titik ${Q.titik} vs 65 di RAB: ${Q.titik - 12 - 65} titik sudah ada di gambar DED tapi tidak terhitung di RAB (lampu carport, lampu pagar, selisih hitung), 12 titik tambahan revisi.\n`;
 md += `- RAB mengalokasikan 12 roll kabel (1.200 m) tapi hanya 32,5 batang pipa (130 m); perhitungan geometri memberi ±600 m kabel dan ±480 m pipa — RAB kelebihan kabel, kekurangan pipa.\n`;
 md += `- Panjang kabel dihitung dari rute ortogonal di bawah dak/plat (tinggi ${CEIL.lt1} m lt1, ${CEIL.lt2} m lt2) dengan turunan vertikal ke tiap perangkat; rantai stop kontak memakai urutan tetangga terdekat dari box MCB — realisasi tukang bisa ±15 %.\n`;

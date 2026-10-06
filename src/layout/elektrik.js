@@ -6,6 +6,9 @@
 // saklar 140 cm; box MCB pusat 175 cm; kWh meter pusat 170 cm; lampu sorot/dinding luar: fasad 230 cm, pagar 175–220 cm;
 // lampu dinding lt2 mengikuti titik lampu yang sudah ada di fasad model SKP (x 6.1, 130 cm di atas lantai lt2).
 // n = arah muka perangkat (normal tembok ke dalam ruang). t: stopkontak | saklar1 (tunggal) | saklar2 (ganda) | mcb | kwh | sconce.
+// t: cctv = kamera CCTV bullet IP PoE (outdoor): n = bidang pasang ('+z' dst = tembok, 'dn' = plafon/bawah dak); yaw = sudut pandang
+//   relatif normal tembok (rad, + ke kanan dilihat dari belakang kamera) atau, untuk 'dn', sudut dunia dari +z ke +x; pitch = tunduk (rad).
+//   nvr: true = stop kontak ganda untuk NVR + switch PoE. Kabel data CAT6 = JALUR dengan data: true.
 // t: saklar3 = saklar triple; tukar: true = bagian saklar tukar (two-way) lampu tangga; rev: true = posisi/jenis diubah dari DED.
 // ac: true = stop kontak AC (h 2.4, di samping unit indoor yang dipasang tepat di atas kusen jendela/pintu geser);
 // wh: true = stop kontak water heater IP44 (h 1.9 dari lantai toilet, di luar zona cipratan shower, grup MCB sendiri);
@@ -32,6 +35,12 @@ export const PERANGKAT = [
   { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.90, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, di bawah TV (speaker/konsol game) — tambahan' },
   { lvl: 'lt1', t: 'stopkontak', x: 3.065, z: 8.75, n: '+x', h: 2.4, ac: true, baru: true, r: 'REVISI: stop kontak AC KT1, tembok kiri mepet pojok tembok belakang (17 cm), di kiri unit indoor yang di atas jendela — tambahan' },
   { lvl: 'lt1', t: 'stopkontak', x: 4.45, z: 7.095, n: '+z', h: 1.82, wh: true, baru: true, r: 'REVISI: stop kontak water heater toilet lt1 (IP44), tembok sisi r. makan, kanan unit; 1,9 m di atas lantai toilet (−0,03) — tambahan' },
+  // ---------------- CCTV (revisi 06-10-2026): 4 kamera outdoor, NVR di lemari bawah tangga ----------------
+  { lvl: 'lt1', t: 'cctv', no: 1, x: 9.7, z: 13.56, n: '+z', h: 2.7, yaw: -0.49, pitch: 0.26, baru: true, r: 'CCTV-1 carport & gerbang: pojok kanan fasad di bawah tepi kanopi, menghadap gerbang (−28° ke kiri), tunduk 15°' },
+  { lvl: 'lt1', t: 'cctv', no: 2, x: 3.4, z: 13.25, n: 'dn', h: 2.7, yaw: 1.71, pitch: 0.35, baru: true, r: 'CCTV-2 teras depan & pintu utama: di plafon teras (bawah balkon) pojok kiri-depan, menghadap pintu utama (+x), tunduk 20°' },
+  { lvl: 'lt1', t: 'cctv', no: 3, x: 2.25, z: 8.7, n: 'dn', h: 3.15, yaw: 0, pitch: 0.35, baru: true, r: 'CCTV-3 selasar samping kiri: di bawah balkon samping (ujung belakang), menghadap ke depan sepanjang selasar, tunduk 20°' },
+  { lvl: 'lt1', t: 'cctv', no: 4, x: 9.876, z: 2.6, n: '-x', h: 3.1, yaw: -0.21, pitch: 0.3, baru: true, r: 'CCTV-4 belakang: tembok batas kanan di bawah balkon belakang, menghadap teras belakang, pintu belakang & area jemur (−12°), tunduk 17°' },
+  { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 8.4, n: '-x', h: 0.4, nvr: true, baru: true, r: 'REVISI: stop kontak ganda NVR 4 ch PoE + router, di dalam lemari bawah tangga (bagian tinggi dekat r. keluarga) — tambahan' },
   // ---------------- LANTAI 1: saklar 7 (2 tunggal + 5 ganda) ----------------
   { lvl: 'lt1', t: 'saklar3', tukar: true, x: 7.75, z: 3.564, n: '+z', h: 1.4, rev: true, r: 'REVISI: saklar triple di kanan pintu belakang → lampu teras belakang + area jemur + saklar tukar (two-way) lampu tangga/void (DED: ganda)' },
   { lvl: 'lt1', t: 'saklar2', x: 6.30, z: 6.937, n: '-z', h: 1.4, r: 'ruang makan, tembok toilet → lampu dapur, r. makan, lorong' },
@@ -132,6 +141,11 @@ export const JALUR = [
   { lvl: 'lt1', pts: [[4.77, 18.0], [8.30, 18.0]] },
   { lvl: 'lt1', pts: [[4.77, 18.0], [3.47, 18.0], [3.47, 18.99]] }, // feed lampu pagar depan dari lampu carport
   { lvl: 'lt1', pts: [[2.925, 10.22], [2.7, 10.22], [2.7, 10.97], [1.55, 10.97]] },
+  // data CAT6 (CCTV → NVR di lemari bawah tangga), trunk di bawah dak sepanjang x 8.6 (bebas tangga)
+  { lvl: 'lt1', data: true, pts: [[9.876, 8.4], [8.6, 8.4], [8.6, 13.4], [9.7, 13.4], [9.7, 13.56]] },
+  { lvl: 'lt1', data: true, pts: [[8.6, 13.4], [6.6, 13.4], [6.6, 13.25], [3.4, 13.25]] },
+  { lvl: 'lt1', data: true, pts: [[8.6, 8.4], [8.6, 7.8], [3.0, 7.8], [2.25, 7.8], [2.25, 8.7]] },
+  { lvl: 'lt1', data: true, pts: [[8.6, 8.4], [8.6, 3.56], [8.6, 2.6], [9.876, 2.6]] },
   // lantai 2
   { lvl: 'lt2', pts: [[7.73, 3.575], [7.73, 3.6], [8.30, 3.6], [8.30, 2.74]] },
   { lvl: 'lt2', pts: [[6.425, 5.88], [4.76, 5.88], [4.76, 5.24]] },

@@ -41,7 +41,10 @@ const PLAN_W = 10 * S, PLAN_H = 20 * S;
 const W = M + PLAN_W + 40 + LEG_W + M, H = M + PLAN_H + M + 20;
 const X = (x) => +(M + x * S).toFixed(1), Y = (z) => +(M + z * S).toFixed(1);
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-const RED = '#c8102e', INK = '#111', GREY = '#666';
+const RED = '#c8102e', INK = '#111', GREY = '#666', BLUE = '#1e6fd9';
+const RYA = { '+z': 0, '+x': Math.PI / 2, '-z': Math.PI, '-x': -Math.PI / 2 };
+/** arah pandang kamera di denah (dx, dz): yaw relatif normal tembok, atau sudut dunia untuk pasang plafon ('dn') */
+function aimDir(d) { const sx = Math.sin(d.yaw), cz = Math.cos(d.yaw); if (d.n === 'dn') return [sx, cz]; const t = RYA[d.n]; return [sx * Math.cos(t) + cz * Math.sin(t), -sx * Math.sin(t) + cz * Math.cos(t)]; }
 const TGL = '06-10-2026';
 const RUANG = {
   lt1: [['DAPUR', 4.3, 4.65], ['R. MAKAN', 5.4, 6.4], ['TOILET', 4.25, 8.1], ['KAMAR TIDUR 1', 4.75, 10.85], ['R. KELUARGA', 8.25, 10.35], ['TERAS DEPAN', 4.75, 13.3], ['TERAS BLK.', 8.3, 2.3], ['R. JEMUR', 5.0, 1.0], ['CARPORT', 6.5, 17.0], ['TAMAN', 0.75, 10.0], ['SELASAR', 2.25, 5.0]],
@@ -76,6 +79,8 @@ const sym = {
   kwh: (cx, cy, col) => `<rect x="${cx - 13}" y="${cy - 8}" width="26" height="16" fill="#fff" stroke="${col}" stroke-width="1.6"/><path d="M${cx - 13} ${cy - 8} L${cx + 13} ${cy + 8} L${cx + 13} ${cy - 8} Z" fill="${col}"/><text x="${cx}" y="${cy - 11}" font-size="8" font-weight="700" text-anchor="middle" fill="${col}">kWh</text>`,
   // lampu outdoor: persegi dengan diagonal + lingkaran ganda di dalam
   sconce: (cx, cy, col) => `<rect x="${cx - 8}" y="${cy - 8}" width="16" height="16" fill="#fff" stroke="${col}" stroke-width="1.6"/><line x1="${cx - 8}" y1="${cy - 8}" x2="${cx + 8}" y2="${cy + 8}" stroke="${col}" stroke-width="1.2"/><line x1="${cx + 8}" y1="${cy - 8}" x2="${cx - 8}" y2="${cy + 8}" stroke="${col}" stroke-width="1.2"/><circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${col}" stroke-width="1.2"/><circle cx="${cx}" cy="${cy}" r="3" fill="none" stroke="${col}" stroke-width="1"/>`,
+  // kamera CCTV: badan + lensa trapesium, diputar ke arah pandang (ang = derajat svg); kerucut pandang digambar terpisah
+  cctv: (cx, cy, col, ang, no) => `<g transform="translate(${cx} ${cy}) rotate(${ang})"><path d="M-6 -5 L6 -5 L6 5 L-6 5 Z" fill="${col}"/><path d="M6 -4 L12 -7 L12 7 L6 4 Z" fill="${col}"/></g>${no ? `<text x="${cx}" y="${cy - 11}" font-size="8.5" font-weight="700" text-anchor="middle" fill="${col}">CCTV-${no}</text>` : ''}`,
   // lampu: lingkaran dengan silang menembus (5 W) / lingkaran ganda (9 W)
   lampu: (cx, cy, col, w) => `<circle cx="${cx}" cy="${cy}" r="8" fill="#fff" stroke="${col}" stroke-width="1.6"/>${w === 9 ? `<circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${col}" stroke-width="1.4"/>` : ''}<line x1="${cx - 11}" y1="${cy - 11}" x2="${cx + 11}" y2="${cy + 11}" stroke="${col}" stroke-width="1.4"/><line x1="${cx + 11}" y1="${cy - 11}" x2="${cx - 11}" y2="${cy + 11}" stroke="${col}" stroke-width="1.4"/>`,
 };
@@ -161,21 +166,28 @@ function grid() {
 }
 function perangkat(lvl) {
   let s = '';
-  for (const j of JALUR.filter((q) => q.lvl === lvl)) s += `<polyline points="${j.pts.map(([x, z]) => `${X(x)},${Y(z)}`).join(' ')}" fill="none" stroke="#444" stroke-width="1.4" stroke-dasharray="6,4"/>`;
+  // kerucut pandang CCTV (FOV 100°, jangkauan 5 m) di bawah semua simbol
+  for (const d of PERANGKAT.filter((q) => q.lvl === lvl && q.t === 'cctv')) {
+    const [dx, dz] = aimDir(d), a = Math.atan2(dx, dz), R5 = 5 * S, half = (50 * Math.PI) / 180;
+    const p1 = [X(d.x) + R5 * Math.sin(a - half), Y(d.z) + R5 * Math.cos(a - half)], p2 = [X(d.x) + R5 * Math.sin(a + half), Y(d.z) + R5 * Math.cos(a + half)];
+    s += `<path d="M${X(d.x)} ${Y(d.z)} L${p1[0].toFixed(1)} ${p1[1].toFixed(1)} A${R5} ${R5} 0 0 1 ${p2[0].toFixed(1)} ${p2[1].toFixed(1)} Z" fill="${BLUE}" fill-opacity="0.10" stroke="${BLUE}" stroke-width="0.8" stroke-dasharray="2,3"/>`;
+  }
+  for (const j of JALUR.filter((q) => q.lvl === lvl)) s += `<polyline points="${j.pts.map(([x, z]) => `${X(x)},${Y(z)}`).join(' ')}" fill="none" stroke="${j.data ? BLUE : '#444'}" stroke-width="1.4" stroke-dasharray="${j.data ? '8,3,2,3' : '6,4'}"/>`;
   for (const l of LAMPU.filter((q) => q.lvl === lvl)) s += sym.lampu(X(l.x), Y(l.z), INK, l.w);
   const labeled = []; // label tinggi hanya sekali untuk perangkat sejenis yang berdampingan (< 35 cm)
   for (const d of PERANGKAT.filter((q) => q.lvl === lvl)) {
+    if (d.t === 'cctv') { const [dx, dz] = aimDir(d); const ang = (Math.atan2(dz, dx) * 180) / Math.PI; s += sym.cctv(X(d.x), Y(d.z), BLUE, ang, d.no); s += `<text x="${X(d.x) + 14}" y="${Y(d.z) + 4}" font-size="8" fill="${BLUE}">+${d.h.toFixed(2)}</text>`; continue; }
     const [nx, nz] = NV[d.n]; const col = d.baru || d.rev ? RED : INK;
     const cx = X(d.x + nx * 0.2), cy = Y(d.z + nz * 0.2);
     s += `<line x1="${X(d.x)}" y1="${Y(d.z)}" x2="${cx}" y2="${cy}" stroke="${col}" stroke-width="1.4"/>`;
-    if (d.t === 'stopkontak') s += sym.stopkontak(cx, cy, col, d.ac ? 'AC' : d.wh ? 'WH' : '', ROT[d.n]);
+    if (d.t === 'stopkontak') s += sym.stopkontak(cx, cy, col, d.ac ? 'AC' : d.wh ? 'WH' : d.nvr ? 'NVR' : '', ROT[d.n]);
     else if (d.t === 'saklar1') s += sym.saklar(cx, cy, col, 1, ROT[d.n], d.tukar);
     else if (d.t === 'saklar2') s += sym.saklar(cx, cy, col, 2, ROT[d.n], d.tukar);
     else if (d.t === 'saklar3') s += sym.saklar(cx, cy, col, 3, ROT[d.n], d.tukar);
     else if (d.t === 'mcb') s += sym.mcb(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'kwh') s += sym.kwh(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'sconce') s += sym.sconce(cx, cy, col);
-    const std = d.t === 'stopkontak' ? 0.4 : d.t.startsWith('saklar') ? 1.4 : null;
+    const std = d.t === 'stopkontak' ? (d.nvr ? null : 0.4) : d.t.startsWith('saklar') ? 1.4 : null; // (saklar3 ikut 1.4; NVR tanpa label tinggi)
     const dup = labeled.some((q) => q.t === d.t && Math.abs(q.h - d.h) < 0.01 && Math.hypot(q.x - d.x, q.z - d.z) < 0.35);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) labeled.push(d);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) {
@@ -203,7 +215,10 @@ function legenda(lvl) {
     ['mcb', 'Box MCB 4 group × 10 A, h 175 cm', n((d) => d.t === 'mcb'), 0],
     ['kwh', 'kWh meter PLN 2200 VA (sisi luar), h 170 cm', n((d) => d.t === 'kwh'), 0],
     ['jalur', 'Jalur kabel NYM 2×2,5 mm² dalam pipa, di bawah dak/plafon', null, null],
-  ];
+    ['cctv', 'CCTV IP PoE 2 MP outdoor (kerucut = sudut pandang 100°, 5 m)', 0, n((d) => d.t === 'cctv')],
+    ['nvr', 'NVR 4 ch PoE + HDD di lemari bawah tangga (stop kontak ganda)', 0, n((d) => d.nvr)],
+    ['data', 'Kabel data CAT6 ke NVR, dalam pipa 3/4"', null, null],
+  ].filter(([k]) => lvl === 'lt1' || !['cctv', 'nvr', 'data'].includes(k));
   const x0 = M + PLAN_W + 40, y0 = M;
   let s = `<rect x="${x0}" y="${y0}" width="${LEG_W}" height="${PLAN_H}" fill="#fff" stroke="${INK}" stroke-width="1.2"/>`;
   s += `<text x="${x0 + 16}" y="${y0 + 30}" font-size="16" font-weight="700" fill="${INK}">DENAH INSTALASI LISTRIK</text>`;
@@ -227,6 +242,9 @@ function legenda(lvl) {
     else if (k === 'mcb') s += sym.mcb(cx, cy, col);
     else if (k === 'kwh') s += sym.kwh(cx, cy, col);
     else if (k === 'jalur') s += `<line x1="${cx - 14}" y1="${cy}" x2="${cx + 14}" y2="${cy}" stroke="#444" stroke-width="1.4" stroke-dasharray="6,4"/>`;
+    else if (k === 'cctv') s += sym.cctv(cx, cy, BLUE, 0, 0);
+    else if (k === 'nvr') s += sym.stopkontak(cx, cy, RED, 'NVR');
+    else if (k === 'data') s += `<line x1="${cx - 14}" y1="${cy}" x2="${cx + 14}" y2="${cy}" stroke="${BLUE}" stroke-width="1.4" stroke-dasharray="8,3,2,3"/>`;
     s += `<text x="${x0 + 64}" y="${y}" font-size="10" fill="${INK}">${esc(ket)}</text>`;
     if (ada != null) s += `<text x="${x0 + LEG_W - 70}" y="${y}" font-size="10.5" font-weight="700" fill="${INK}" text-anchor="end">${ada}</text><text x="${x0 + LEG_W - 18}" y="${y}" font-size="10.5" font-weight="700" fill="${RED}" text-anchor="end">${baru ? '+' + baru : '–'}</text>`;
     y += 30;

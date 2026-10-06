@@ -11,6 +11,7 @@ const RY = { '+z': 0, '+x': Math.PI / 2, '-z': Math.PI, '-x': -Math.PI / 2 };
 const NV = { '+z': [0, 1], '+x': [1, 0], '-z': [0, -1], '-x': [-1, 0] };
 const MAT = {
   kabel: new THREE.MeshBasicMaterial({ color: 0xff6a00 }),
+  data: new THREE.MeshBasicMaterial({ color: 0x1e6fd9 }), // CAT6 CCTV
   trimHitam: new THREE.MeshStandardMaterial({ color: 0x1b1c1e, roughness: 0.6 }),
 };
 
@@ -51,10 +52,10 @@ function belahTuts(obj, n = 2) {
     rocker.parent.add(m);
   }
 }
-function tube(a, b, r = 0.006) {
+function tube(a, b, r = 0.006, mat = MAT.kabel) {
   const d = new THREE.Vector3().subVectors(b, a); const len = d.length();
   if (len < 1e-4) return null;
-  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 6), MAT.kabel);
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 6), mat);
   m.position.copy(a).addScaledVector(d, 0.5);
   m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.normalize());
   return m;
@@ -81,7 +82,7 @@ export function buildElektrik(ceilingAt) {
   // --- perangkat dinding ---
   for (const d of PERANGKAT) {
     const g = grp[d.lvl];
-    const holder = new THREE.Group(); holder.position.set(d.x, d.h, d.z); holder.rotation.y = RY[d.n];
+    const holder = new THREE.Group(); holder.position.set(d.x, d.h, d.z); holder.rotation.y = RY[d.n] ?? 0;
     holder.name = `elek-${d.t}`; holder.userData.elek = d; g.add(holder);
     if (d.t === 'stopkontak' || d.t === 'saklar1' || d.t === 'saklar2' || d.t === 'saklar3') {
       const name = d.t === 'stopkontak' ? 'simon_socket' : 'simon_switch';
@@ -91,6 +92,16 @@ export function buildElektrik(ceilingAt) {
         if (d.t === 'saklar2') belahTuts(obj, 2);
         if (d.t === 'saklar3') belahTuts(obj, 3);
         h.add(tegakkanPelat(obj));
+      } });
+    } else if (d.t === 'cctv') {
+      // kamera: pelat bracket di bidang pasang; kepala ('head') diputar. Tembok: yaw relatif normal + pitch. Plafon ('dn'):
+      // holder diputar Y(yaw dunia) lalu X(+90°) supaya lengan menggantung; kepala ditegakkan −(90°−pitch).
+      if (d.n === 'dn') { holder.position.y = plafon(d.x, d.z, d.lvl); holder.rotation.order = 'YXZ'; holder.rotation.y = d.yaw; holder.rotation.x = Math.PI / 2; }
+      placeAsset(holder, 'cctv_bullet', { onLoad: (h) => {
+        const head = h.getObjectByName('head'); if (!head) return;
+        head.rotation.order = 'YXZ';
+        if (d.n === 'dn') head.rotation.x = -(Math.PI / 2 - d.pitch);
+        else { head.rotation.y = d.yaw; head.rotation.x = d.pitch; }
       } });
     } else if (d.t === 'mcb') placeAsset(holder, 'mcb_box', {});
     else if (d.t === 'kwh') placeAsset(holder, 'kwh_meter', {});
@@ -104,18 +115,20 @@ export function buildElektrik(ceilingAt) {
     grp[l.lvl].add(o);
   }
   // --- jalur kabel ---
-  const dev = (lvl, x, z) => PERANGKAT.find((d) => d.lvl === lvl && Math.hypot(d.x - x, d.z - z) < 0.06);
+  // perangkat terdekat (< 6 cm) di ujung jalur; jalur data hanya mencocokkan kamera/NVR, jalur listrik mengabaikan keduanya
+  const dev = (lvl, x, z, data) => PERANGKAT.filter((d) => d.lvl === lvl && (data ? d.t === 'cctv' || d.nvr : d.t !== 'cctv' && !d.nvr) && Math.hypot(d.x - x, d.z - z) < 0.06).sort((a, b) => Math.hypot(a.x - x, a.z - z) - Math.hypot(b.x - x, b.z - z))[0];
   for (const j of JALUR) {
     const g = grp[j.lvl];
     const pts = j.pts.map(([x, z]) => new THREE.Vector3(x, plafon(x, z, j.lvl) - 0.03, z));
-    for (let i = 0; i < pts.length - 1; i++) { const t = tube(pts[i], pts[i + 1]); if (t) g.add(t); }
+    const mat = j.data ? MAT.data : MAT.kabel;
+    for (let i = 0; i < pts.length - 1; i++) { const t = tube(pts[i], pts[i + 1], 0.006, mat); if (t) g.add(t); }
     for (const k of [0, pts.length - 1]) {
-      const [x, z] = j.pts[k]; const d = dev(j.lvl, x, z);
-      if (!d) continue;
+      const [x, z] = j.pts[k]; const d = dev(j.lvl, x, z, !!j.data);
+      if (!d || d.n === 'dn') continue; // perangkat di plafon: kabel berakhir di plafon
       const [nx, nz] = NV[d.n];
       const top = pts[k].clone(); const bot = new THREE.Vector3(d.x + nx * 0.012, d.h + 0.06, d.z + nz * 0.012);
       top.x = bot.x; top.z = bot.z;
-      const t = tube(bot, top); if (t) g.add(t);
+      const t = tube(bot, top, 0.006, mat); if (t) g.add(t);
     }
   }
   return grp;

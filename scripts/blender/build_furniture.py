@@ -466,6 +466,33 @@ def washbasin():
     cyl('trap', 0.02, 0.25, 0, -0.12, -0.26, chrome, 16)
     export('washbasin')
 
+def cctv_bullet():
+    """Kamera CCTV bullet outdoor + bracket. Pelat bracket di y=0 (bidang pasang: tembok/plafon), lengan ke -Y,
+    kepala = objek 'head' dengan origin di sendi (0,-0.095,0) supaya bisa diputar (yaw/pitch) di three.js; arah pandang default -Y (glTF +Z)."""
+    start()
+    white = mat('camWhite', srgb('#f2f2f0'), 0.35)
+    dark = mat('camDark', srgb('#1d1f22'), 0.4)
+    lens = mat('camLens', srgb('#0a0c10'), 0.1, 0.3)
+    for name, r, h, y, m in (('base', 0.038, 0.01, -0.005, white), ('arm', 0.011, 0.085, -0.0525, white)):
+        c = cyl(name, r, h, 0, y, 0, m, 24); c.rotation_euler.x = math.radians(90)
+        bpy.ops.object.transform_apply(rotation=True)
+    parts = []
+    b = cyl('head', 0.032, 0.17, 0, -0.18, 0, white, 32); b.rotation_euler.x = math.radians(90); parts.append(b)
+    hd = cyl('hood', 0.037, 0.08, 0, -0.23, 0.009, white, 32); hd.rotation_euler.x = math.radians(90); parts.append(hd)
+    ln = cyl('lensRing', 0.029, 0.008, 0, -0.268, 0, dark, 32); ln.rotation_euler.x = math.radians(90); parts.append(ln)
+    gl = cyl('lens', 0.022, 0.004, 0, -0.273, 0, lens, 32); gl.rotation_euler.x = math.radians(90); parts.append(gl)
+    jt = bpy.ops.mesh.primitive_uv_sphere_add(radius=0.02, location=(0, -0.095, 0)); jo = bpy.context.active_object; jo.name = 'joint'; jo.data.materials.append(white); bpy.ops.object.shade_smooth(); parts.append(jo)
+    bpy.ops.object.select_all(action='DESELECT')
+    for pobj in parts: pobj.select_set(True)
+    bpy.context.view_layer.objects.active = b
+    bpy.ops.object.transform_apply(rotation=True)
+    bpy.ops.object.join()
+    b.name = 'head'
+    bpy.context.scene.cursor.location = (0, -0.095, 0)
+    bpy.ops.object.origin_set(type='ORIGIN_CURSOR')
+    bpy.context.scene.cursor.location = (0, 0, 0)
+    export('cctv_bullet')
+
 BUILD_ONLY = set(sys.argv[sys.argv.index('--') + 2:]) if '--' in sys.argv and len(sys.argv) > sys.argv.index('--') + 2 else set()
 def want(name): return not BUILD_ONLY or name in BUILD_ONLY
 # ---------------------------------------------------------------------------
@@ -507,3 +534,4 @@ if want('water_heater'): water_heater()
 if want('closet_duduk'): closet_duduk()
 if want('closet_jongkok'): closet_jongkok()
 if want('washbasin'): washbasin()
+if want('cctv_bullet'): cctv_bullet()
