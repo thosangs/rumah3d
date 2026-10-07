@@ -8,6 +8,7 @@ import { LEVELS, STAIRS, SLAB2, SITE } from './data.js';
 import { buildAll } from './scene.js';
 import { buildFurniture } from './furniture.js';
 import { buildElektrik } from './elektrik.js';
+import { buildPlafonIndex } from './plafon.js';
 import { assetsPending } from './assets.js';
 import { renderHitungan, renderGalleries, bindLightbox } from './ui.js';
 
@@ -124,19 +125,22 @@ function rebuild() {
   applyVisibility();
   renderHitungan(results, document.getElementById('tab-hitung'), (areaId) => teleportToArea(areaId));  // no-op kalau panel tak ada
 }
-/** Tinggi plafon/dak di atas (x,z) relatif lantai lvl, dari model SKP (raycast ke atas); null kalau tidak ada (luar). */
-const _rc = new THREE.Raycaster(); const _up = new THREE.Vector3(0, 1, 0);
+/** Tinggi plafon/dak di atas (x,z) relatif lantai lvl, dari indeks bidang mendatar model SKP; null kalau tidak ada
+ *  (luar, di dalam tembok, atau di atas tangga/void). Hanya bidang 2,2–3,7 m (lt1) / 2,2–3,45 m (lt2) di atas lantai yang
+ *  dihitung: menolak sisi bawah anak tangga/bordes (<2,2) dan plafon lantai di atasnya (titik di dalam tembok tembus
+ *  sampai plafon lt2 → dulu kabel digambar diagonal menembus lantai 2). */
+let plafonIdx = null;
+const PLAFON_RANGE = { lt1: [2.2, 3.7], lt2: [2.2, 3.45] };
 function ceilingAt(x, z, lvl) {
-  if (!glbRoot) return null;
-  const base = LEVELS[lvl];
-  _rc.set(new THREE.Vector3(x, base + 1.0, z), _up); _rc.far = 8;
-  const h = _rc.intersectObject(glbRoot, true).find((i) => i.object.visible);
-  return h ? h.point.y - base : null;
+  if (!plafonIdx) return null;
+  const base = LEVELS[lvl]; const [lo, hi] = PLAFON_RANGE[lvl];
+  const y = plafonIdx.at(x, z, base + lo, base + hi);
+  return y == null ? null : y - base;
 }
 /** Bangun (ulang) lapisan listrik di atas gFloors1/2 — dipanggil saat rebuild() dan setelah model SKP termuat (tinggi plafon dari raycast). */
 function attachElektrik() {
   if (!built) return;
-  if (glbRoot) glbRoot.updateWorldMatrix(true, true); // dipanggil tepat setelah GLB termuat (belum sempat di-render) → matriks dunia harus mutakhir untuk raycast
+  if (glbRoot && !plafonIdx) plafonIdx = buildPlafonIndex(glbRoot); // sekali, setelah GLB termuat
   if (built.elektrik) { built.gLt1.remove(built.elektrik.lt1); built.gLt2.remove(built.elektrik.lt2); }
   const e = buildElektrik(ceilingAt);
   // di gLt1/gLt2 (bukan gFloors yang diangkat 5 cm saat model SKP tampil) supaya titik lampu pas di plafon/dak hasil raycast
@@ -655,7 +659,7 @@ function animate() {
 if (SHOT) applyShot(); // kamera screenshot dipasang sejak awal (sebelum GLB termuat) supaya tangkapan dini Chrome headless tidak memakai kamera default; dipanggil lagi setelah GLB termuat
 animate();
 
-window.__dbg = { teleport, camera, player, setMode, scene, render: () => renderer.render(scene, camera), get results() { return results; }, get glb() { return glbRoot; } };
+window.__dbg = { teleport, camera, player, setMode, scene, render: () => renderer.render(scene, camera), get results() { return results; }, get glb() { return glbRoot; }, ceilingAt, get plafonIdx() { return plafonIdx; } };
 
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;

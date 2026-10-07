@@ -121,11 +121,14 @@ export const LAMPU = [
 
 // Jalur kabel (garis putus-putus di gambar), disederhanakan menjadi polyline ortogonal di bawah plafon/dak.
 // Ujung yang berimpit dengan perangkat dinding otomatis diturunkan vertikal ke perangkat itu.
+// JALUR: polyline [x, z] di plafon (tinggi diambil dari model SKP saat digambar; mengikuti balok/kanopi sebagai anak tangga).
+// Elemen ke-3 opsional = tinggi tetap (m dari lantai) untuk ruas di luar yang tidak punya plafon (mis. menyusur puncak pagar).
 export const JALUR = [
   // lantai 1
   { lvl: 'lt1', pts: [[7.75, 3.564], [7.75, 3.6], [8.30, 3.6], [8.30, 2.74]] },
   { lvl: 'lt1', pts: [[7.75, 3.7], [9.6, 3.7]] }, // traveller two-way ke saklar tukar lt2 (naik di pojok belakang kanan)
-  { lvl: 'lt1', pts: [[7.95, 3.6], [7.95, 0.24], [3.84, 0.24], [3.84, 0.125]] },
+  // lampu pagar belakang: di bawah kanopi belakang (x ≥ 6.5, ±2,95 m) lalu turun ke puncak pagar (1,95 m) dan menyusur muka pagar
+  { lvl: 'lt1', pts: [[7.95, 3.6], [7.95, 0.2], [7.95, 0.2, 1.93], [3.84, 0.2, 1.93], [3.84, 0.125, 1.93]] },
   { lvl: 'lt1', pts: [[6.30, 6.925], [6.30, 5.24], [4.76, 5.24]] },
   { lvl: 'lt1', pts: [[6.30, 6.925], [7.09, 6.925], [7.09, 5.24]] },
   { lvl: 'lt1', pts: [[7.09, 6.925], [7.09, 7.74]] },

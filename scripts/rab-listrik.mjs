@@ -34,7 +34,7 @@ let lampCabang = { lt1: 0, lt2: 0 };
 for (const j of JALUR) {
   let len = 0;
   for (let i = 0; i < j.pts.length - 1; i++) len += Math.abs(j.pts[i + 1][0] - j.pts[i][0]) + Math.abs(j.pts[i + 1][1] - j.pts[i][1]);
-  for (const k of [0, j.pts.length - 1]) { const d = devAt(j.lvl, ...j.pts[k]); if (d) len += CEIL[j.lvl] - d.h; }
+  for (const k of [0, j.pts.length - 1]) { const d = devAt(j.lvl, j.pts[k][0], j.pts[k][1]); if (d) len += CEIL[j.lvl] - d.h; }
   lampCabang[j.lvl] += len;
 }
 // (2) fase bersama lampu: rantai terdekat dari box MCB lewat semua saklar (naik ke dak, mendatar, turun ke saklar)
@@ -104,7 +104,7 @@ const total = rows.reduce((a, [, q, , k]) => a + q * H[k], 0);
 let mData = 0;
 for (const j of JALUR.filter((q) => q.data)) {
   for (let i = 0; i < j.pts.length - 1; i++) mData += Math.abs(j.pts[i + 1][0] - j.pts[i][0]) + Math.abs(j.pts[i + 1][1] - j.pts[i][1]);
-  for (const k of [0, j.pts.length - 1]) { const d = devAt(j.lvl, ...j.pts[k], true); if (d && d.n !== 'dn') mData += CEIL[j.lvl] - d.h; }
+  for (const k of [0, j.pts.length - 1]) { const d = devAt(j.lvl, j.pts[k][0], j.pts[k][1], true); if (d && d.n !== 'dn') mData += CEIL[j.lvl] - d.h; }
 }
 mData = mData * sisa + Q.cctv * 2;
 const HC = { cam: 450000, nvr: 1500000, hdd: 850000, cat6: 4500, pipa34: 15000, aks: 150000, jasa: 150000 };

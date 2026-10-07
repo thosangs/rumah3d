@@ -117,16 +117,50 @@ export function buildElektrik(ceilingAt) {
   // --- jalur kabel ---
   // perangkat terdekat (< 6 cm) di ujung jalur; jalur data hanya mencocokkan kamera/NVR, jalur listrik mengabaikan keduanya
   const dev = (lvl, x, z, data) => PERANGKAT.filter((d) => d.lvl === lvl && (data ? d.t === 'cctv' || d.nvr : d.t !== 'cctv' && !d.nvr) && Math.hypot(d.x - x, d.z - z) < 0.06).sort((a, b) => Math.hypot(a.x - x, a.z - z) - Math.hypot(b.x - x, b.z - z))[0];
+  // Jalur disusuri per 10 cm mengikuti profil plafon hasil indeks SKP: di titik tanpa plafon (dalam tembok, di atas
+  // tangga/void) tinggi terakhir dipertahankan, dan perubahan tinggi (balok, kanopi balkon, bordes) digambar sebagai
+  // tangga — datar lalu turun/naik tegak di tempat plafon berubah — bukan garis diagonal menembus ruang.
+  // JUMP 8 cm: riak atap spandek/usuk kanopi (3–7 cm) diabaikan; balok/kanopi/bordes (≥ 20 cm) tetap jadi anak tangga.
+  // Tinggi sampel difilter median-3 supaya satu sampel nyasar (tepi balok, lis) tidak jadi tonjolan 10 cm.
+  const STEP = 0.1, JUMP = 0.08;
   for (const j of JALUR) {
     const g = grp[j.lvl];
-    const pts = j.pts.map(([x, z]) => new THREE.Vector3(x, plafon(x, z, j.lvl) - 0.03, z));
     const mat = j.data ? MAT.data : MAT.kabel;
-    for (let i = 0; i < pts.length - 1; i++) { const t = tube(pts[i], pts[i + 1], 0.006, mat); if (t) g.add(t); }
-    for (const k of [0, pts.length - 1]) {
+    const ceil = (x, z) => { const c = ceilingAt ? ceilingAt(x, z, j.lvl) : null; return c == null ? null : c - 0.03; };
+    // tinggi awal: plafon di titik pertama, kalau tidak ada → titik valid pertama di sepanjang jalur, kalau tidak ada → nilai fallback
+    let y = ceil(j.pts[0][0], j.pts[0][1]);
+    if (y == null) {
+      for (let i = 0; i < j.pts.length - 1 && y == null; i++) {
+        const [x0, z0] = j.pts[i], [x1, z1] = j.pts[i + 1]; const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, z1 - z0) / STEP));
+        for (let k = 1; k <= n && y == null; k++) y = ceil(x0 + (x1 - x0) * k / n, z0 + (z1 - z0) * k / n);
+      }
+      if (y == null) y = plafon(j.pts[0][0], j.pts[0][1], j.lvl) - 0.03;
+    }
+    if (j.pts[0][2] != null) y = j.pts[0][2];
+    const poly = [new THREE.Vector3(j.pts[0][0], y, j.pts[0][1])];
+    for (let i = 0; i < j.pts.length - 1; i++) {
+      const [x0, z0] = j.pts[i], [x1, z1, h1] = j.pts[i + 1];
+      if (h1 != null) { // tinggi tetap: naik/turun tegak di awal ruas, lalu datar
+        if (Math.abs(h1 - y) > 1e-3) { y = h1; poly.push(new THREE.Vector3(x0, y, z0)); }
+        poly.push(new THREE.Vector3(x1, y, z1)); continue;
+      }
+      const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, z1 - z0) / STEP));
+      const sm = []; // sampel 1..n, null → tinggi terakhir yang diketahui
+      let last = y;
+      for (let k = 1; k <= n; k++) { const c = ceil(x0 + (x1 - x0) * k / n, z0 + (z1 - z0) * k / n); if (c != null) last = c; sm.push(last); }
+      for (let k = 1; k <= n; k++) {
+        const w = [sm[Math.max(0, k - 2)], sm[k - 1], sm[Math.min(n - 1, k)]].sort((p, q) => p - q); const c = w[1]; // median-3
+        if (Math.abs(c - y) > JUMP) { const x = x0 + (x1 - x0) * k / n, z = z0 + (z1 - z0) * k / n; poly.push(new THREE.Vector3(x, y, z)); y = c; poly.push(new THREE.Vector3(x, y, z)); }
+      }
+      poly.push(new THREE.Vector3(x1, y, z1));
+    }
+    for (let i = 0; i < poly.length - 1; i++) { const t = tube(poly[i], poly[i + 1], 0.006, mat); if (t) g.add(t); }
+    const ends = [[0, poly[0]], [j.pts.length - 1, poly[poly.length - 1]]];
+    for (const [k, p] of ends) {
       const [x, z] = j.pts[k]; const d = dev(j.lvl, x, z, !!j.data);
       if (!d || d.n === 'dn') continue; // perangkat di plafon: kabel berakhir di plafon
       const [nx, nz] = NV[d.n];
-      const top = pts[k].clone(); const bot = new THREE.Vector3(d.x + nx * 0.012, d.h + 0.06, d.z + nz * 0.012);
+      const top = p.clone(); const bot = new THREE.Vector3(d.x + nx * 0.012, d.h + 0.06, d.z + nz * 0.012);
       top.x = bot.x; top.z = bot.z;
       const t = tube(bot, top, 0.006, mat); if (t) g.add(t);
     }
