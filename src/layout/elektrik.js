@@ -12,7 +12,7 @@
 // t: saklar3 = saklar triple; tukar: true = bagian saklar tukar (two-way) lampu tangga; rev: true = posisi/jenis diubah dari DED.
 // ac: true = stop kontak AC (h 2.4, di samping unit indoor yang dipasang tepat di atas kusen jendela/pintu geser);
 // wh: true = stop kontak water heater IP44 (h 1.9 dari lantai toilet, di luar zona cipratan shower, grup MCB sendiri);
-// Dinding toilet berkeramik: muka keramik 2 cm di depan tembok blok (z 7.095 / 8.405, x 3.095 / 4.655) → titik di toilet pakai muka keramik. baru: true = tambahan revisi 4/10/2026 (tidak ada di gambar DED): 3 AC, 2 dinding TV, 2 dapur.
+// Dinding toilet berkeramik: muka keramik 2 cm di depan tembok blok (z 7.095 / 8.405, x 3.095 / 4.655) → titik di toilet pakai muka keramik. baru: true = tambahan revisi 4/10/2026 (tidak ada di gambar DED): 3 AC, 4 dinding TV, 2 dapur.
 // Koordinat tembok sudah di-snap ke muka tembok model SKP (raycast): kiri 3.061, kanan 9.88, belakang 3.56, dst.
 // Produk (revisi 08-10-2026): stop kontak & saklar Panasonic seri baru, hanya model inbow KOTAK (pelat persegi ±90×90 mm,
 // inbow doos 86 mm). Satu kotak = 1 stop kontak ATAU 1 saklar ATAU 2 saklar. Maka setiap entri stopkontak/saklar1/saklar2
@@ -35,8 +35,10 @@ export const PERANGKAT = [
   { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 12.3, n: '-x', h: 0.35, rev: true, r: 'R. keluarga, tembok kanan depan, di bawah meja samping melayang (bawah meja 0.41) (DED: z 10.72 di belakang sofa → digeser supaya sofa bisa mepet)' },
   { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 12.52, n: '-x', h: 0.35, rev: true, r: 'R. keluarga, tembok kanan depan, di balik meja samping (DED: z 10.94)' },
   { lvl: 'lt1', t: 'stopkontak', x: 9.865, z: 9.2, n: '-x', h: 0.4, rev: true, r: 'R. keluarga, tembok kanan dekat lemari bawah tangga, di balik pohon pot (DED: z 11.19)' },
-  { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.35, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, di bawah TV di atas konsol (TV/set-top box) — tambahan' },
-  { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.90, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, di bawah TV (speaker/konsol game) — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.30, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, di bawah TV di atas konsol, kotak 1 dari 4 (TV) — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.52, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, kotak 2 dari 4 (set-top box / Android TV box) — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.74, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, kotak 3 dari 4 (soundbar) — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 6.679, z: 10.96, n: '+x', h: 0.78, baru: true, r: 'REVISI: dinding TV, kotak 4 dari 4 (konsol game / router) — tambahan' },
   { lvl: 'lt1', t: 'stopkontak', x: 3.065, z: 8.75, n: '+x', h: 2.4, ac: true, baru: true, r: 'REVISI: stop kontak AC KT1, tembok kiri mepet pojok tembok belakang (17 cm), di kiri unit indoor yang di atas jendela — tambahan' },
   { lvl: 'lt1', t: 'stopkontak', x: 4.45, z: 7.095, n: '+z', h: 1.82, wh: true, baru: true, r: 'REVISI: stop kontak water heater toilet lt1 (IP44), tembok sisi r. makan, kanan unit; 1,9 m di atas lantai toilet (−0,03) — tambahan' },
   // ---------------- CCTV (revisi 06-10-2026): 4 kamera outdoor, NVR di lemari bawah tangga ----------------

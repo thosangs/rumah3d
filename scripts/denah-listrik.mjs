@@ -314,6 +314,43 @@ const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
   md += `## Rekap belanja kotak\n\n| Isi kotak | Jumlah |\n|---|---|\n| Kotak 1 stop kontak (termasuk ${KOTAK.filter((k) => k.t === 'stopkontak' && /AC/.test(k.isi)).length} AC, ${KOTAK.filter((k) => k.t === 'stopkontak' && /water/.test(k.isi)).length} water heater IP44, ${KOTAK.filter((k) => /NVR/.test(k.isi)).length} NVR) | ${all('stopkontak')} |\n| Kotak 1 saklar (termasuk ${KOTAK.filter((k) => /tukar/.test(k.isi)).length} saklar tukar) | ${all('saklar1')} |\n| Kotak 2 saklar | ${all('saklar2')} |\n| **Total kotak / inbow doos** | **${KOTAK.length}** |\n\n`;
   md += `Catatan: stop kontak water heater (${KOTAK.filter((k) => /water/.test(k.isi)).map((k) => k.id).join(', ')}) perlu varian dengan tutup (IP44) — pastikan seri kotak ini punya varian itu, kalau tidak pakai stop kontak IP44 merek lain di titik tersebut. Ukuran pelat 90 mm adalah asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk saat evaluasi.\n`;
   writeFileSync(join(OUT, 'daftar-kotak.md'), md); console.log('tulis daftar-kotak.md', KOTAK.length, 'kotak');
+  // versi cetak: HTML A4 → PDF lewat Chrome headless
+  const TEMBOK2 = { '+z': 'belakang', '-z': 'depan', '+x': 'kiri', '-x': 'kanan' };
+  let html = `<!doctype html><html lang="id"><head><meta charset="utf-8"><title>Daftar kotak inbow — Rumah Mbak Alfi</title>
+<style>
+@page { size: A4; margin: 14mm 12mm; }
+body { font: 10.5px/1.35 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: #111; margin: 0; }
+h1 { font-size: 17px; margin: 0 0 2px; } h2 { font-size: 13px; margin: 14px 0 6px; page-break-after: avoid; }
+p.sub { color: #555; margin: 0 0 8px; font-size: 9.5px; }
+table { border-collapse: collapse; width: 100%; page-break-inside: auto; }
+tr { page-break-inside: avoid; } th, td { border: 1px solid #999; padding: 3px 5px; vertical-align: top; text-align: left; }
+th { background: #eee; font-size: 9.5px; } td.id { font-weight: 700; white-space: nowrap; } td.n { text-align: right; white-space: nowrap; }
+tr.rev td.id, tr.rev td.ket { color: #c8102e; } .kecil { font-size: 9px; color: #555; }
+.rekap td { font-weight: 600; } .rekap td.n { font-weight: 700; }
+</style></head><body>
+<h1>Daftar kotak inbow — stop kontak &amp; saklar Panasonic</h1>
+<p class="sub">Rumah Mbak Alfi · revisi ${TGL} · 1 kotak = 1 stop kontak / 1 saklar / 2 saklar · ID sama dengan label di model 3D (tekan E) dan angka di denah listrik 2D. Posisi x dari batas kavling kiri, z dari batas belakang (rumah x 3–10, z 3,5–13,5); h = tinggi as kotak dari lantai. Merah = tambahan / perubahan dari DED.</p>`;
+  for (const lvl of ['lt1', 'lt2']) {
+    const K = KOTAK.filter((k) => k.lvl === lvl); const c = (t) => K.filter((k) => k.t === t).length;
+    html += `<h2>${lvl === 'lt1' ? 'Lantai 1' : 'Lantai 2'} — ${K.length} kotak (${c('stopkontak')} stop kontak, ${c('saklar1')} × 1 saklar, ${c('saklar2')} × 2 saklar)</h2>
+<table><thead><tr><th>ID</th><th>Ruang</th><th>Isi kotak</th><th>h (m)</th><th>x, z (m)</th><th>Tembok</th><th>Keterangan</th></tr></thead><tbody>`;
+    for (const k of K) html += `<tr class="${k.baru || k.rev ? 'rev' : ''}"><td class="id">${k.id}</td><td>${esc(k.ruang)}</td><td>${esc(k.isi)}</td><td class="n">${k.h.toFixed(2)}</td><td class="n">${k.x.toFixed(2)}, ${k.z.toFixed(2)}</td><td>${TEMBOK2[k.n]}</td><td class="ket">${esc((k.baru ? 'BARU: ' : k.rev ? 'REVISI: ' : '') + k.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, ''))}</td></tr>`;
+    html += `</tbody></table>`;
+  }
+  const allT = (t) => KOTAK.filter((k) => k.t === t).length;
+  html += `<h2>Rekap belanja kotak</h2><table class="rekap"><tbody>
+<tr><td>Kotak 1 stop kontak (termasuk ${KOTAK.filter((k) => /AC/.test(k.isi)).length} AC, ${KOTAK.filter((k) => /water/.test(k.isi)).length} water heater IP44, ${KOTAK.filter((k) => /NVR/.test(k.isi)).length} NVR)</td><td class="n">${allT('stopkontak')}</td></tr>
+<tr><td>Kotak 1 saklar (termasuk ${KOTAK.filter((k) => /tukar/.test(k.isi)).length} saklar tukar)</td><td class="n">${allT('saklar1')}</td></tr>
+<tr><td>Kotak 2 saklar</td><td class="n">${allT('saklar2')}</td></tr>
+<tr><td>Total kotak / inbow doos</td><td class="n">${KOTAK.length}</td></tr></tbody></table>
+<p class="kecil">Stop kontak water heater (${KOTAK.filter((k) => /water/.test(k.isi)).map((k) => k.id).join(', ')}) perlu varian bertutup (IP44). Ukuran pelat 90 mm = asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk. Dibuat otomatis dari data model 3D (scripts/denah-listrik.mjs).</p>
+</body></html>`;
+  const htmlPath = join(OUT, 'daftar-kotak.html'); writeFileSync(htmlPath, html);
+  if (existsSync(chrome)) {
+    const pdf = join(OUT, 'daftar-kotak.pdf');
+    spawnSync(chrome, ['--headless=new', '--no-pdf-header-footer', `--print-to-pdf=${pdf}`, `--user-data-dir=/tmp/rumah-denah-pdf-${process.pid}`, `file://${htmlPath}`], { stdio: 'ignore', timeout: 60000 });
+    console.log(existsSync(pdf) ? 'pdf ok' : 'pdf gagal', pdf);
+  }
 }
 for (const lvl of ['lt1', 'lt2']) {
   const svg = join(OUT, `denah-listrik-${lvl}.svg`); writeFileSync(svg, denah(lvl));

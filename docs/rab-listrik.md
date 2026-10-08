@@ -6,13 +6,13 @@ Dihitung otomatis oleh `scripts/rab-listrik.mjs` dari data model 3D (`src/layout
 
 | Item | Jumlah |
 |---|---:|
-| Stop kontak biasa (DED 21 + revisi 9) | 30 |
+| Stop kontak biasa (DED 21 + revisi 11) | 32 |
 | Stop kontak AC | 3 |
 | Stop kontak water heater (IP44) | 2 |
 | Sakelar tunggal / ganda / triple / tukar | 5 / 9 / 0 / 2 |
 | Downlight 9 W / 5 W | 19 / 19 |
 | Lampu sorot/dinding outdoor | 5 |
-| **Titik instalasi (lampu + stop kontak + sakelar)** | **94** (RAB: 65) |
+| **Titik instalasi (lampu + stop kontak + sakelar)** | **96** (RAB: 65) |
 
 ### Panjang jalur (dari geometri model)
 
@@ -20,17 +20,17 @@ Dihitung otomatis oleh `scripts/rab-listrik.mjs` dari data model 3D (`src/layout
 |---|---:|---:|---|
 | Cabang lampu (polyline denah + turunan ke sakelar) | 111.4 m | 63.2 m | NYM 2×1,5 |
 | Fase bersama lampu (box MCB → semua sakelar) | 57.3 m | 63.1 m | NYM 2×1,5, lt2 termasuk riser 3.8 m |
-| Rantai stop kontak (box MCB → tiap titik, naik–turun dak) | 150.6 m | 94.5 m | NYM 3×2,5 |
+| Rantai stop kontak (box MCB → tiap titik, naik–turun dak) | 161.8 m | 94.5 m | NYM 3×2,5 |
 | Home-run AC (5.8 + 12.7 + 7.8 m) | | | 26.3 m, NYM 3×2,5 |
 | Home-run water heater (9.4 + 13 m) | | | 22.4 m, NYM 3×2,5 |
-| **Kabel dibeli** (+10 % potongan, +0,5 m/titik) | | | NYM 2×1,5 **354 m** → 4 roll; NYM 3×2,5 **341 m** → 4 roll |
-| **Pipa 5/8"** (90 % jalur, +5 % potongan) | | | **556 m** → 140 batang @4 m |
+| **Kabel dibeli** (+10 % potongan, +0,5 m/titik) | | | NYM 2×1,5 **354 m** → 4 roll; NYM 3×2,5 **354 m** → 4 roll |
+| **Pipa 5/8"** (90 % jalur, +5 % potongan) | | | **567 m** → 142 batang @4 m |
 
 ## B. Rencana anggaran (revisi)
 
 | No | Uraian | Vol | Sat | Harga satuan | Jumlah |
 |---:|---|---:|---|---:|---:|
-| 1 | Pasang stop kontak 1 ph 16 A (termasuk 9 tambahan revisi) | 30 | bh | Rp 75.000 | Rp 2.250.000 |
+| 1 | Pasang stop kontak 1 ph 16 A (termasuk 11 tambahan revisi) | 32 | bh | Rp 75.000 | Rp 2.400.000 |
 | 2 | Pasang stop kontak AC 16 A \* | 3 | bh | Rp 95.000 | Rp 285.000 |
 | 3 | Pasang stop kontak water heater 16 A IP44 (tutup) \* | 2 | bh | Rp 110.000 | Rp 220.000 |
 | 4 | Pasang sakelar tunggal | 5 | bh | Rp 35.000 | Rp 175.000 |
@@ -44,16 +44,16 @@ Dihitung otomatis oleh `scripts/rab-listrik.mjs` dari data model 3D (`src/layout
 | 12 | Box MCB 8 group (pengganti 4 group) \* | 1 | bh | Rp 185.000 | Rp 185.000 |
 | 13 | MCB 1 fasa 10 A / 16 A (penerangan lt1, lt2; stop kontak lt1, lt2; AC lt1; AC lt2; water heater) | 7 | bh | Rp 132.500 | Rp 927.500 |
 | 14 | Kabel NYM 2×1,5 mm² — jalur lampu (354 m) | 4 | roll | Rp 375.000 | Rp 1.500.000 |
-| 15 | Kabel NYM 3×2,5 mm² — stop kontak (285 m) + AC (30 m) + water heater (26 m) \* | 4 | roll | Rp 850.000 | Rp 3.400.000 |
+| 15 | Kabel NYM 3×2,5 mm² — stop kontak (298 m) + AC (30 m) + water heater (26 m) \* | 4 | roll | Rp 850.000 | Rp 3.400.000 |
 | 16 | Kabel NYM 3×4 mm² — kWh meter → box MCB \* | 5 | m | Rp 15.000 | Rp 75.000 |
-| 17 | Pipa PVC listrik 5/8" (556 m) | 140 | batang | Rp 12.000 | Rp 1.680.000 |
-| 18 | Aksesori (inbow/tee-dos, klem, isolasi) per titik | 94 | titik | Rp 8.750 | Rp 822.500 |
-| 19 | Jasa tukang instalasi per titik | 94 | titik | Rp 40.000 | Rp 3.760.000 |
+| 17 | Pipa PVC listrik 5/8" (567 m) | 142 | batang | Rp 12.000 | Rp 1.704.000 |
+| 18 | Aksesori (inbow/tee-dos, klem, isolasi) per titik | 96 | titik | Rp 8.750 | Rp 840.000 |
+| 19 | Jasa tukang instalasi per titik | 96 | titik | Rp 40.000 | Rp 3.840.000 |
 | 20 | Grounding: elektroda arde + kabel BC 6 mm² + klem \* | 1 | ls | Rp 450.000 | Rp 450.000 |
 | 21 | kWh meter PLN 2200 VA (pasang baru, SLO) | 1 | unit | Rp 3.250.000 | Rp 3.250.000 |
-| | **Total (harga satuan, tanpa overhead)** | | | | **Rp 24.048.000** |
-| | Overhead 5 % & profit 10 % (skema RAB) | | | | Rp 3.607.200 |
-| | **Total setara RAB** | | | | **Rp 27.655.200** |
+| | **Total (harga satuan, tanpa overhead)** | | | | **Rp 24.319.500** |
+| | Overhead 5 % & profit 10 % (skema RAB) | | | | Rp 3.647.925 |
+| | **Total setara RAB** | | | | **Rp 27.967.425** |
 
 Opsional (direkomendasikan):
 
@@ -61,7 +61,7 @@ Opsional (direkomendasikan):
 |---|---:|
 | Upgrade daya ke 3500 VA (selisih dari 2200 VA) \* | Rp 1.050.000 |
 | ELCB/RCBO 2P 30 mA untuk grup stop kontak (keamanan) \* | Rp 450.000 |
-| **Total dengan opsional** | **Rp 25.548.000** |
+| **Total dengan opsional** | **Rp 25.819.500** |
 
 ## C. CCTV (revisi 06-10-2026, semua harga perkiraan pasar)
 
@@ -75,7 +75,7 @@ Opsional (direkomendasikan):
 | 6 | Konektor RJ45, box, aksesori | 1 | ls | Rp 150.000 | Rp 150.000 |
 | 7 | Jasa pasang & setting per kamera | 4 | titik | Rp 150.000 | Rp 600.000 |
 | | **Subtotal CCTV** | | | | **Rp 5.315.500** |
-| | **Total listrik + CCTV (harga satuan)** | | | | **Rp 29.363.500** |
+| | **Total listrik + CCTV (harga satuan)** | | | | **Rp 29.635.000** |
 
 Stop kontak NVR sudah termasuk di bagian B. Kamera IP PoE: listrik & data lewat 1 kabel CAT6, tidak perlu stop kontak di tiap kamera. Pipa data ditanam sekarang sebelum plester.
 
@@ -99,12 +99,12 @@ Stop kontak NVR sudah termasuk di bagian B. Kamera IP PoE: listrik & data lewat 
 | kWh meter 2200 VA | Rp 3.250.000 |
 | **Total RAB V3 (14 baris listrik, harga satuan)** | **Rp 20.662.750** |
 | Total RAB V3 setelah overhead & profit (sub total IX) | Rp 23.762.163 |
-| **Selisih estimasi revisi − RAB V3** (basis harga satuan) | **Rp 3.385.250** (+16 %) |
-| Selisih setelah overhead & profit | Rp 3.893.037 |
+| **Selisih estimasi revisi − RAB V3** (basis harga satuan) | **Rp 3.656.750** (+18 %) |
+| Selisih setelah overhead & profit | Rp 4.205.262 |
 
 ## E. Catatan
 
-- RAB memakai kabel 2 inti (NYM 2×2,5 / 2×1,5) tanpa grounding; estimasi ini memakai **NYM 3×2,5 untuk stop kontak & AC plus elektroda arde** sesuai PUIL — itu penyumbang selisih terbesar. Titik 94 vs 65 di RAB: 17 titik sudah ada di gambar DED tapi tidak terhitung di RAB (lampu carport, lampu pagar, selisih hitung), 12 titik tambahan revisi.
+- RAB memakai kabel 2 inti (NYM 2×2,5 / 2×1,5) tanpa grounding; estimasi ini memakai **NYM 3×2,5 untuk stop kontak & AC plus elektroda arde** sesuai PUIL — itu penyumbang selisih terbesar. Titik 96 vs 65 di RAB: 19 titik sudah ada di gambar DED tapi tidak terhitung di RAB (lampu carport, lampu pagar, selisih hitung), 12 titik tambahan revisi.
 - RAB mengalokasikan 12 roll kabel (1.200 m) tapi hanya 32,5 batang pipa (130 m); perhitungan geometri memberi ±600 m kabel dan ±480 m pipa — RAB kelebihan kabel, kekurangan pipa.
 - Panjang kabel dihitung dari rute ortogonal di bawah dak/plat (tinggi 3.6 m lt1, 3.4 m lt2) dengan turunan vertikal ke tiap perangkat; rantai stop kontak memakai urutan tetangga terdekat dari box MCB — realisasi tukang bisa ±15 %.
 - Harga RAB "Pasang …" dianggap sudah termasuk material + pemasangan; aksesori dan jasa per titik (Rp 8.750 + Rp 40.000) mengikuti angka RAB.
