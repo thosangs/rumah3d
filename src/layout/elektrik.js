@@ -14,6 +14,10 @@
 // wh: true = stop kontak water heater IP44 (h 1.9 dari lantai toilet, di luar zona cipratan shower, grup MCB sendiri);
 // Dinding toilet berkeramik: muka keramik 2 cm di depan tembok blok (z 7.095 / 8.405, x 3.095 / 4.655) → titik di toilet pakai muka keramik. baru: true = tambahan revisi 4/10/2026 (tidak ada di gambar DED): 3 AC, 2 dinding TV, 2 dapur.
 // Koordinat tembok sudah di-snap ke muka tembok model SKP (raycast): kiri 3.061, kanan 9.88, belakang 3.56, dst.
+// Produk (revisi 08-10-2026): stop kontak & saklar Panasonic seri baru, hanya model inbow KOTAK (pelat persegi ±90×90 mm,
+// inbow doos 86 mm). Satu kotak = 1 stop kontak ATAU 1 saklar ATAU 2 saklar. Maka setiap entri stopkontak/saklar1/saklar2
+// di bawah = satu kotak; saklar triple dipecah jadi 2 kotak (2 + 1), stop kontak ganda NVR jadi 2 kotak. Tiap kotak diberi
+// ID otomatis (KOTAK di bawah) yang tampil di model 3D dan di denah 2D supaya bisa dicocokkan saat evaluasi.
 export const PERANGKAT = [
   // ---------------- LANTAI 1: stop kontak 13 (sesuai legenda gambar) ----------------
   { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 2.62, n: '-x', h: 1.2, r: 'teras belakang: mesin cuci (di atas mesin, h 1,2)' },
@@ -40,9 +44,11 @@ export const PERANGKAT = [
   { lvl: 'lt1', t: 'cctv', no: 2, x: 3.4, z: 13.25, n: 'dn', h: 2.7, yaw: 1.71, pitch: 0.35, baru: true, r: 'CCTV-2 teras depan & pintu utama: di plafon teras (bawah balkon) pojok kiri-depan, menghadap pintu utama (+x), tunduk 20°' },
   { lvl: 'lt1', t: 'cctv', no: 3, x: 2.25, z: 11.3, n: 'dn', h: 3.15, yaw: Math.PI, pitch: 0.3, baru: true, r: 'CCTV-3 selasar samping kiri: di bawah balkon samping (tengah), menghadap ke belakang: selasar z 4–11 dalam 7 m, sambung dengan CCTV-4 yang menutup ujung belakang; mulut depan selasar ditangkap CCTV-1' },
   { lvl: 'lt1', t: 'cctv', no: 4, x: 9.876, z: 2.6, n: '-x', h: 3.1, yaw: 0.17, pitch: 0.3, baru: true, r: 'CCTV-4 belakang: tembok batas kanan di bawah balkon belakang, menghadap teras belakang, pintu belakang, area jemur & ujung belakang selasar (+10°), tunduk 17°' },
-  { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 8.4, n: '-x', h: 0.4, nvr: true, baru: true, r: 'REVISI: stop kontak ganda NVR 4 ch PoE + router, di dalam lemari bawah tangga (bagian tinggi dekat r. keluarga) — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 8.35, n: '-x', h: 0.4, nvr: true, baru: true, r: 'REVISI: stop kontak NVR 4 ch PoE, di dalam lemari bawah tangga (bagian tinggi dekat r. keluarga) — tambahan' },
+  { lvl: 'lt1', t: 'stopkontak', x: 9.876, z: 8.45, n: '-x', h: 0.4, nvr: true, baru: true, r: 'REVISI: stop kontak router/switch, kotak kedua di samping stop kontak NVR — tambahan' },
   // ---------------- LANTAI 1: saklar 7 (2 tunggal + 5 ganda) ----------------
-  { lvl: 'lt1', t: 'saklar3', tukar: true, x: 7.75, z: 3.564, n: '+z', h: 1.4, rev: true, r: 'REVISI: saklar triple di kanan pintu belakang → lampu teras belakang + area jemur + saklar tukar (two-way) lampu tangga/void (DED: ganda)' },
+  { lvl: 'lt1', t: 'saklar2', x: 7.70, z: 3.564, n: '+z', h: 1.4, rev: true, r: 'REVISI: saklar ganda di kanan pintu belakang → lampu teras belakang + area jemur (DED: ganda; kotak Panasonic 2 saklar)' },
+  { lvl: 'lt1', t: 'saklar1', tukar: true, x: 7.80, z: 3.564, n: '+z', h: 1.4, baru: true, r: 'REVISI: saklar tukar (two-way) lampu tangga/void, kotak kedua di kanan saklar ganda pintu belakang — tambahan' },
   { lvl: 'lt1', t: 'saklar2', x: 6.30, z: 6.937, n: '-z', h: 1.4, r: 'ruang makan, tembok toilet → lampu dapur, r. makan, lorong' },
   { lvl: 'lt1', t: 'saklar1', x: 5.42, z: 8.437, n: '-z', h: 1.4, r: 'lorong depan toilet → lampu toilet' },
   { lvl: 'lt1', t: 'saklar1', x: 5.42, z: 8.565, n: '+z', h: 1.4, r: 'KT1, kiri pintu → lampu KT1' },
@@ -144,11 +150,11 @@ export const JALUR = [
   { lvl: 'lt1', pts: [[4.77, 18.0], [8.30, 18.0]] },
   { lvl: 'lt1', pts: [[4.77, 18.0], [3.47, 18.0], [3.47, 18.99]] }, // feed lampu pagar depan dari lampu carport
   { lvl: 'lt1', pts: [[2.925, 10.22], [2.7, 10.22], [2.7, 10.97], [1.55, 10.97]] },
-  // data CAT6 (CCTV → NVR di lemari bawah tangga), trunk di bawah dak sepanjang x 8.6 (bebas tangga)
-  { lvl: 'lt1', data: true, pts: [[9.876, 8.4], [8.6, 8.4], [8.6, 13.4], [9.7, 13.4], [9.7, 13.56]] },
-  { lvl: 'lt1', data: true, pts: [[8.6, 13.4], [6.6, 13.4], [6.6, 13.25], [3.4, 13.25]] },
+  // data CAT6 (CCTV → NVR di lemari bawah tangga), trunk di bawah dak sepanjang x 7.85 (di bawah lantai selasar lt2; void model SKP mulai x ±8,0 sampai tembok kanan, lebih lebar dari tangga)
+  { lvl: 'lt1', data: true, pts: [[9.876, 8.4], [9.876, 9.5], [7.85, 9.5], [7.85, 13.4], [9.7, 13.4], [9.7, 13.56]] }, // dari NVR menyusur tembok kanan di bawah bordes, naik ke plafon setelah tepi lantai lt2 (z ±9,3); trunk x 7.85 = di bawah lantai selasar (void SKP x ≥ 8,0)
+  { lvl: 'lt1', data: true, pts: [[7.85, 13.4], [6.6, 13.4], [6.6, 13.25], [3.4, 13.25]] },
   { lvl: 'lt1', data: true, pts: [[3.4, 13.25], [2.9, 13.25], [2.25, 13.25], [2.25, 11.3]] }, // CCTV-3 lewat plafon teras depan lalu bawah balkon samping
-  { lvl: 'lt1', data: true, pts: [[8.6, 8.4], [8.6, 3.56], [8.6, 2.6], [9.876, 2.6]] },
+  { lvl: 'lt1', data: true, pts: [[7.85, 9.5], [7.85, 3.56], [7.85, 2.6], [9.876, 2.6]] },
   // lantai 2
   { lvl: 'lt2', pts: [[7.73, 3.575], [7.73, 3.6], [8.30, 3.6], [8.30, 2.74]] },
   { lvl: 'lt2', pts: [[6.425, 5.88], [4.76, 5.88], [4.76, 5.24]] },
@@ -166,3 +172,30 @@ export const JALUR = [
   { lvl: 'lt2', pts: [[6.575, 12.02], [6.9, 12.02], [6.9, 12.73], [4.74, 12.73], [2.24, 12.73]] },
   { lvl: 'lt2', pts: [[6.9, 12.73], [6.9, 13.7], [6.1, 13.7], [6.1, 13.95]] },
 ];
+
+// ---------------------------------------------------------------------------
+// KOTAK INBOW: tiap stop kontak / saklar = satu kotak Panasonic. ID = <lantai>-<nomor>, urut per ruangan lalu posisi.
+const RUANG_LT1 = (x, z) => z > 13.5 ? 'Carport' : x < 3 ? 'Selasar samping (luar)' : z < 3.5 ? (x > 6.5 ? 'Teras belakang' : 'R. jemur')
+  : z < 4.2 && x >= 6.5 ? 'Pintu belakang (r. makan)' : z < 7 ? (x >= 6.5 ? 'R. makan (sisi tangga)' : z < 5.5 ? 'Dapur' : 'R. makan')
+  : z < 8.5 ? (x > 8.8 ? 'Lemari bawah tangga' : x >= 6.5 ? 'R. makan (sisi tangga)' : x < 4.6 ? 'Toilet' : 'Lorong')
+  : x >= 6.5 ? 'R. keluarga' : z < 12 ? 'KT1' : 'Teras depan';
+const RUANG_LT2 = (x, z) => z < 3.5 ? 'Balkon belakang' : x < 3 ? 'Balkon samping' : z < 7 ? (x >= 6.5 ? 'Selasar' : 'KT2')
+  : z < 8.5 ? (x >= 6.5 ? 'Selasar' : x < 4.6 ? 'Toilet kiri (KTU)' : 'Toilet kanan') : x >= 6.5 ? (z > 13.5 ? 'Balkon depan' : 'R. keluarga lt2') : z < 12 ? 'KT utama' : 'Balkon depan';
+const URUT = ['Teras belakang', 'R. jemur', 'Dapur', 'R. makan', 'Pintu belakang (r. makan)', 'R. makan (sisi tangga)', 'Lemari bawah tangga', 'Toilet', 'Lorong', 'KT1', 'R. keluarga', 'Teras depan', 'Selasar samping (luar)', 'Carport',
+  'Balkon belakang', 'KT2', 'Selasar', 'Toilet kiri (KTU)', 'Toilet kanan', 'KT utama', 'R. keluarga lt2', 'Balkon depan', 'Balkon samping'];
+const ISI = { stopkontak: '1 stop kontak', saklar1: '1 saklar', saklar2: '2 saklar' };
+/** Nama ruangan untuk perangkat dinding (titik 6 cm di depan muka tembok). */
+export function ruangDi(lvl, x, z) { return lvl === 'lt1' ? RUANG_LT1(x, z) : RUANG_LT2(x, z); }
+export const KOTAK = [];
+for (const lvl of ['lt1', 'lt2']) {
+  const list = PERANGKAT.filter((d) => d.lvl === lvl && ISI[d.t]).map((d) => {
+    const nx = d.n === '+x' ? 1 : d.n === '-x' ? -1 : 0, nz = d.n === '+z' ? 1 : d.n === '-z' ? -1 : 0;
+    return { d, ruang: ruangDi(lvl, d.x + nx * 0.06, d.z + nz * 0.06) };
+  });
+  list.sort((a, b) => (URUT.indexOf(a.ruang) - URUT.indexOf(b.ruang)) || (a.d.z - b.d.z) || (a.d.x - b.d.x));
+  list.forEach((k, i) => {
+    const id = `${lvl === 'lt1' ? 1 : 2}-${String(i + 1).padStart(2, '0')}`;
+    k.d.id = id;
+    KOTAK.push({ id, lvl, ruang: k.ruang, t: k.d.t, isi: ISI[k.d.t] + (k.d.tukar ? ' tukar' : k.d.ac ? ' AC' : k.d.wh ? ' water heater (IP44)' : k.d.nvr ? ' (NVR/router)' : ''), x: k.d.x, z: k.d.z, n: k.d.n, h: k.d.h, baru: !!k.d.baru, rev: !!k.d.rev, r: k.d.r });
+  });
+}

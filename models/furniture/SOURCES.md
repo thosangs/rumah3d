@@ -47,10 +47,10 @@ Halaman model menyatakan "Free Download"; FurniMesh menyebut hasil generasinya b
 
 | File | Judul | Pembuat | Lisensi | Halaman |
 |---|---|---|---|---|
-| bk_simon82.glb | Set switch & socket Simon 82 (stop kontak schuko + saklar 1 tuts + port USB; dipakai bagian E_Socket & E_switch) | Agustin Paternoster | CC0 | https://www.blenderkit.com/asset-gallery-detail/d20f4d59-a52f-4d1b-b174-b786e7dd3a22 |
 
 Diunduh lewat API BlenderKit (file glTF yang disediakan pembuat), lalu dikonversi Draco → meshopt dengan gltf-transform.
 
 ## Dibuat sendiri di Blender (scripts/blender/build_furniture.py)
 
 `bl_mcb_box.glb` (box MCB 4 group), `bl_kwh_meter.glb` (kWh meter prabayar), `bl_sconce.glb` (lampu dinding outdoor), `bl_ac_indoor.glb` (unit AC indoor), `bl_water_heater.glb` (water heater tangki 15 L), `bl_closet_duduk.glb` (kloset duduk monoblok), `bl_closet_jongkok.glb` (kloset jongkok), `bl_washbasin.glb` (wastafel gantung, belum dipakai), `bl_cctv_bullet.glb` (kamera CCTV bullet + bracket, kepala bisa diputar), `bl_washing_machine.glb` (mesin cuci front-load), `bl_booster_pump.glb` (pompa pendorong) — tidak ada model residensial yang layak dan berlisensi bebas di Poly Haven/BlenderKit (yang ada panel industri besar/berkarat), jadi dibuat parametrik mengikuti ukuran produk umum.
+| bl_pn_socket.glb, bl_pn_sw1.glb, bl_pn_sw2.glb | Kotak inbow Panasonic seri baru (pelat persegi 90 mm): 1 stop kontak / 1 saklar / 2 saklar | dibuat sendiri (scripts/blender/build_furniture.py) | – | – |

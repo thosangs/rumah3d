@@ -316,9 +316,9 @@ document.querySelectorAll('#viewbar [data-cut]').forEach((b) => b.addEventListen
 // klik 2× di lantai (mode orbit) → berdiri di sana
 renderer.domElement.addEventListener('dblclick', (e) => {
   if (mode !== 'orbit') return;
-  const rc = new THREE.Raycaster();
+  const rc = new THREE.Raycaster(); rc.camera = camera; // Sprite (label ID kotak listrik) butuh kamera saat raycast
   rc.setFromCamera(new THREE.Vector2((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1), camera);
-  const hits = rc.intersectObjects(scene.children, true).filter((h) => h.object.visible && h.point.y <= clipPlane.constant);
+  const hits = rc.intersectObjects(scene.children, true).filter((h) => h.object.visible && !h.object.isSprite && h.point.y <= clipPlane.constant);
   if (!hits.length) return;
   const p = hits[0].point;
   const level = p.y > 2.0 ? 'lt2' : 'lt1';

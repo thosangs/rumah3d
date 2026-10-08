@@ -99,6 +99,7 @@ const rows = [
   ['Grounding: elektroda arde + kabel BC 6 mm² + klem', 1, 'ls', 'grounding'],
   ['kWh meter PLN 2200 VA (pasang baru, SLO)', 1, 'unit', 'kwh2200'],
 ];
+rows.splice(0, rows.length, ...rows.filter(([, q]) => q > 0)); // baris berjumlah 0 (mis. sakelar triple yang kini dipecah jadi 2 kotak) tidak ditulis
 const total = rows.reduce((a, [, q, , k]) => a + q * H[k], 0);
 // ---------- CCTV (data CAT6 dari JALUR data:true + turunan ke kamera/NVR) ----------
 let mData = 0;
@@ -157,6 +158,7 @@ md += `- RAB mengalokasikan 12 roll kabel (1.200 m) tapi hanya 32,5 batang pipa 
 md += `- Panjang kabel dihitung dari rute ortogonal di bawah dak/plat (tinggi ${CEIL.lt1} m lt1, ${CEIL.lt2} m lt2) dengan turunan vertikal ke tiap perangkat; rantai stop kontak memakai urutan tetangga terdekat dari box MCB — realisasi tukang bisa ±15 %.\n`;
 md += `- Harga RAB "Pasang …" dianggap sudah termasuk material + pemasangan; aksesori dan jasa per titik (Rp ${H.aks.toLocaleString('id-ID')} + Rp ${H.jasa.toLocaleString('id-ID')}) mengikuti angka RAB.\n`;
 md += `- Water heater: daya 2200 VA hanya cukup untuk pemanas tangki low-watt (≤ 500 W, mis. 15 L); pemanas instan 2–3,5 kW butuh 3500 VA ke atas. Unit pemanasnya sendiri (±Rp 1,6–2 jt/bh) masuk pekerjaan sanitasi, tidak dihitung di sini.\n`;
+md += `- Stop kontak & sakelar: Panasonic seri baru model inbow kotak (1 kotak = 1 stop kontak / 1 sakelar / 2 sakelar; daftar & ID per kotak di \`daftar-kotak.md\`). Harga satuan "Pasang stop kontak / sakelar" masih memakai angka RAB V3; sesuaikan kalau harga kotak Panasonic berbeda.\n`;
 md += `- Belum termasuk: titik pompa air (belum ditentukan), lampu taman/pagar tambahan (RAB lama: 8 sorot + 4 downlight carport, ±Rp 3,5 jt), biaya PLN di luar pasang baru (UJL).\n`;
 writeFileSync(join(root, 'docs', 'rab-listrik.md'), md);
 console.log(md);

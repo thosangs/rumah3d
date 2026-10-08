@@ -1,7 +1,8 @@
 // Lapisan listrik (tekan E): stop kontak, saklar, box MCB, kWh meter, titik lampu, dan jalur kabel —
 // posisinya dari gambar denah instalasi listrik (lihat src/layout/elektrik.js).
-// Aset: stop kontak & saklar = "Set switch & socket Simon 82" (BlenderKit, CC0, Agustin Paternoster; pelat tergeletak, muka +y);
-//       box MCB, kWh meter, lampu dinding = dibuat di Blender (scripts/blender/build_furniture.py).
+// Aset: stop kontak & saklar = kotak inbow Panasonic seri baru (1 stop kontak / 1 saklar / 2 saklar per kotak), box MCB, kWh meter,
+//       lampu dinding, kamera CCTV = dibuat di Blender (scripts/blender/build_furniture.py). Tiap kotak diberi label ID (sprite)
+//       yang sama dengan ID di denah 2D (docs/denah-listrik-*.svg) dan daftar kotak (docs/daftar-kotak.md).
 import * as THREE from 'three';
 import { loadAsset, placeAsset } from './assets.js';
 import { downlight } from './furniture.js';
@@ -15,42 +16,22 @@ const MAT = {
   trimHitam: new THREE.MeshStandardMaterial({ color: 0x1b1c1e, roughness: 0.6 }),
 };
 
-/** Pelat Simon 82 tergeletak dengan muka ke +y → ditegakkan (muka ke +z lokal = normal tembok), punggung bingkai tepat di bidang tembok. */
-function tegakkanPelat(obj) {
-  const drop = [];
-  obj.traverse((o) => { if (o.isMesh && /boolean/i.test(o.name)) drop.push(o); }); // mesh bantu boolean di file asli
-  for (const o of drop) o.parent.remove(o);
-  // tekstur webp aset asli tidak ikut termuat (material jadi hitam) → ganti material polos: bingkai & tuts putih Simon 82, kontak krom
-  const WARNA = { SemiglossMetal: [0xe6e6e3, 0.35, 0.0], WhitePlasticTr: [0xf2f2ef, 0.45, 0.0], WhitePlastic: [0xf6f6f3, 0.4, 0.0], Chorme: [0xc9ccd0, 0.3, 0.9], chromeMater: [0xc9ccd0, 0.3, 0.9], blackplastic: [0x1c1d1f, 0.6, 0.0] };
-  obj.traverse((o) => {
-    if (!o.isMesh) return;
-    const w = WARNA[o.material?.name];
-    if (!w) return;
-    const m = new THREE.MeshStandardMaterial({ color: w[0], roughness: w[1], metalness: w[2] }); m.name = o.material.name; o.material = m;
-  });
-  obj.updateWorldMatrix(true, true);
-  let back = Infinity;
-  obj.traverse((o) => { if (o.isMesh && o.material?.name === 'SemiglossMetal') back = Math.min(back, new THREE.Box3().setFromObject(o).min.y); });
-  if (Number.isFinite(back)) obj.position.y -= back;
-  const tilt = new THREE.Group(); tilt.rotation.x = Math.PI / 2; tilt.add(obj);
-  return tilt;
-}
-/** Saklar ganda: tuts lebar Simon (mesh WhitePlastic) dibelah jadi dua tuts setengah lebar. */
-function belahTuts(obj, n = 2) {
-  let rocker = null;
-  obj.traverse((o) => { if (!rocker && o.isMesh && o.material?.name === 'WhitePlastic') rocker = o; });
-  if (!rocker) return;
-  rocker.visible = false;
-  const g0 = rocker.geometry; g0.computeBoundingBox();
-  const c = g0.boundingBox.getCenter(new THREE.Vector3());
-  const offs = n === 3 ? [-1, 0, 1] : [-0.5, 0.5];
-  for (const o of offs) {
-    const g = g0.clone(); g.translate(-c.x, -c.y, -c.z);
-    const m = new THREE.Mesh(g, rocker.material); m.scale.set(n === 3 ? 0.3 : 0.47, 1, 1);
-    m.position.copy(c).x += o * (n === 3 ? 0.0185 : 0.029);
-    m.castShadow = m.receiveShadow = true;
-    rocker.parent.add(m);
+/** Label ID kotak (sprite kanvas) — putih dengan bingkai; merah = tambahan/perubahan dari DED. */
+const _lbl = new Map();
+function labelSprite(id, merah) {
+  const key = id + (merah ? 'r' : '');
+  let tex = _lbl.get(key);
+  if (!tex) {
+    const c = document.createElement('canvas'); c.width = 160; c.height = 72; const g = c.getContext('2d');
+    g.fillStyle = 'rgba(255,255,255,0.92)'; g.strokeStyle = merah ? '#c8102e' : '#222'; g.lineWidth = 6;
+    g.beginPath(); g.roundRect(4, 4, 152, 64, 12); g.fill(); g.stroke();
+    g.fillStyle = merah ? '#c8102e' : '#111'; g.font = 'bold 40px system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText(id, 80, 38);
+    tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; _lbl.set(key, tex);
   }
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: true }));
+  sp.scale.set(0.12, 0.054, 1); sp.name = 'label-' + id;
+  return sp;
 }
 function tube(a, b, r = 0.006, mat = MAT.kabel) {
   const d = new THREE.Vector3().subVectors(b, a); const len = d.length();
@@ -84,15 +65,9 @@ export function buildElektrik(ceilingAt) {
     const g = grp[d.lvl];
     const holder = new THREE.Group(); holder.position.set(d.x, d.h, d.z); holder.rotation.y = RY[d.n] ?? 0;
     holder.name = `elek-${d.t}`; holder.userData.elek = d; g.add(holder);
-    if (d.t === 'stopkontak' || d.t === 'saklar1' || d.t === 'saklar2' || d.t === 'saklar3') {
-      const name = d.t === 'stopkontak' ? 'simon_socket' : 'simon_switch';
-      placeAsset(holder, name, { onLoad: (h) => {
-        const obj = h.children[0]; if (!obj) return;
-        h.remove(obj);
-        if (d.t === 'saklar2') belahTuts(obj, 2);
-        if (d.t === 'saklar3') belahTuts(obj, 3);
-        h.add(tegakkanPelat(obj));
-      } });
+    if (d.t === 'stopkontak' || d.t === 'saklar1' || d.t === 'saklar2') {
+      placeAsset(holder, d.t === 'stopkontak' ? 'pn_socket' : d.t === 'saklar1' ? 'pn_sw1' : 'pn_sw2', {});
+      if (d.id) { const sp = labelSprite(d.id, !!(d.baru || d.rev)); sp.position.set(0, 0.085, 0.03); holder.add(sp); }
     } else if (d.t === 'cctv') {
       // kamera: pelat bracket di bidang pasang; kepala ('head') diputar. Tembok: yaw relatif normal + pitch. Plafon ('dn'):
       // holder diputar Y(yaw dunia) lalu X(+90°) supaya lengan menggantung; kepala ditegakkan −(90°−pitch).

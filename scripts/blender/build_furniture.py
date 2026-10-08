@@ -401,6 +401,31 @@ def sconce():
     cyl('lensDown', 0.024, 0.004, 0, -0.05, -0.0555, led, 24)
     export('sconce')
 
+def pn_kotak(kind):
+    """Kotak inbow Panasonic (seri baru, pelat persegi ±90×90 mm, inbow doos 86 mm): punggung pelat di y=0, menonjol ke -Y,
+    pusat vertikal z=0. kind: 'socket' (1 stop kontak schuko), 'sw1' (1 saklar), 'sw2' (2 saklar berdampingan)."""
+    start()
+    white = mat('pnWhite', srgb('#f3f3f0'), 0.38)
+    white2 = mat('pnWhite2', srgb('#fafaf7'), 0.32)
+    grey = mat('pnGrey', srgb('#c9cbcd'), 0.45)
+    dark = mat('pnDark', srgb('#2a2b2d'), 0.6)
+    chrome = mat('pnChrome', srgb('#c9ccd0'), 0.3, 0.9)
+    P, T = 0.090, 0.009
+    box('plate', P, T, P, 0, -T / 2, 0, white, bevel=0.004, seg=3)
+    if kind == 'socket':
+        r = cyl('recess', 0.0195, 0.006, 0, -T, 0, grey, 40); r.rotation_euler.x = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
+        for sx in (-1, 1):
+            h = cyl(f'pin{sx}', 0.0026, 0.004, sx * 0.0095, -T + 0.002, 0, dark, 16); h.rotation_euler.x = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
+            box(f'earth{sx}', 0.010, 0.003, 0.004, 0, -T + 0.0025, sx * 0.0165, chrome)
+    elif kind == 'sw1':
+        box('rocker', 0.062, 0.005, 0.062, 0, -T - 0.002, 0, white2, bevel=0.003, seg=3)
+        box('seam', 0.050, 0.001, 0.0015, 0, -T - 0.0048, 0.004, grey)
+    else:
+        for i, sx in enumerate((-1, 1)):
+            box(f'rocker{i}', 0.029, 0.005, 0.062, sx * 0.0165, -T - 0.002, 0, white2, bevel=0.003, seg=3)
+            box(f'seam{i}', 0.020, 0.001, 0.0015, sx * 0.0165, -T - 0.0048, 0.004, grey)
+    export('pn_' + kind)
+
 def ac_indoor():
     """Unit AC indoor split 0.85×0.29×0.21 (gaya Daikin/Panasonic putih): punggung di y=0, menonjol ke -Y, pusat vertikal z=0."""
     start()
@@ -565,6 +590,9 @@ if want('kwh_meter'): kwh_meter()
 if want('sconce'): sconce()
 
 if want('ac_indoor'): ac_indoor()
+if want('pn_socket'): pn_kotak('socket')
+if want('pn_sw1'): pn_kotak('sw1')
+if want('pn_sw2'): pn_kotak('sw2')
 if want('water_heater'): water_heater()
 if want('closet_duduk'): closet_duduk()
 if want('closet_jongkok'): closet_jongkok()

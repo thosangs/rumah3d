@@ -32,7 +32,7 @@ const WALLS = [
   { x1: 6.5, y1: 12, x2: 6.5, y2: 13.5, level: 'lt1', openings: [door(0.36, 0.9)] },
   { x1: 6.5, y1: 12, x2: 6.5, y2: 13.5, level: 'lt2', openings: [door(0.36, 0.9)] },
 ];
-import { PERANGKAT, LAMPU, JALUR } from '../src/layout/elektrik.js';
+import { PERANGKAT, LAMPU, JALUR, KOTAK } from '../src/layout/elektrik.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(root, 'docs'); mkdirSync(OUT, { recursive: true });
@@ -45,7 +45,7 @@ const RED = '#c8102e', INK = '#111', GREY = '#666', BLUE = '#1e6fd9';
 const RYA = { '+z': 0, '+x': Math.PI / 2, '-z': Math.PI, '-x': -Math.PI / 2 };
 /** arah pandang kamera di denah (dx, dz): yaw relatif normal tembok, atau sudut dunia untuk pasang plafon ('dn') */
 function aimDir(d) { const sx = Math.sin(d.yaw), cz = Math.cos(d.yaw); if (d.n === 'dn') return [sx, cz]; const t = RYA[d.n]; return [sx * Math.cos(t) + cz * Math.sin(t), -sx * Math.sin(t) + cz * Math.cos(t)]; }
-const TGL = '06-10-2026';
+const TGL = '08-10-2026';
 const RUANG = {
   lt1: [['DAPUR', 4.3, 4.65], ['R. MAKAN', 5.4, 6.4], ['TOILET', 4.25, 8.1], ['KAMAR TIDUR 1', 4.75, 10.85], ['R. KELUARGA', 8.25, 10.35], ['TERAS DEPAN', 4.75, 13.3], ['TERAS BLK.', 8.3, 2.3], ['R. JEMUR', 5.0, 1.0], ['CARPORT', 6.5, 17.0], ['TAMAN', 0.75, 10.0], ['SELASAR', 2.25, 5.0]],
   lt2: [['KAMAR TIDUR 2', 4.75, 4.65], ['SELASAR', 7.6, 6.4], ['VOID', 9.2, 6.4], ['TOILET', 4.25, 8.1], ['TOILET', 5.6, 7.35], ['KT UTAMA', 4.75, 10.75], ['R. KELUARGA', 8.25, 10.35], ['BALKON DEPAN', 4.0, 13.8], ['BALKON', 2.25, 11.0], ['BALKON BLK.', 8.3, 3.2]],
@@ -175,6 +175,7 @@ function perangkat(lvl) {
   for (const j of JALUR.filter((q) => q.lvl === lvl)) s += `<polyline points="${j.pts.map(([x, z]) => `${X(x)},${Y(z)}`).join(' ')}" fill="none" stroke="${j.data ? BLUE : '#444'}" stroke-width="1.4" stroke-dasharray="${j.data ? '8,3,2,3' : '6,4'}"/>`;
   for (const l of LAMPU.filter((q) => q.lvl === lvl)) s += sym.lampu(X(l.x), Y(l.z), INK, l.w);
   const labeled = []; // label tinggi hanya sekali untuk perangkat sejenis yang berdampingan (< 35 cm)
+  const idLabels = [];
   for (const d of PERANGKAT.filter((q) => q.lvl === lvl)) {
     if (d.t === 'cctv') { const [dx, dz] = aimDir(d); const ang = (Math.atan2(dz, dx) * 180) / Math.PI; s += sym.cctv(X(d.x), Y(d.z), BLUE, ang, d.no); s += `<text x="${X(d.x) + 14}" y="${Y(d.z) + 4}" font-size="8" fill="${BLUE}">+${d.h.toFixed(2)}</text>`; continue; }
     const [nx, nz] = NV[d.n]; const col = d.baru || d.rev ? RED : INK;
@@ -187,7 +188,15 @@ function perangkat(lvl) {
     else if (d.t === 'mcb') s += sym.mcb(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'kwh') s += sym.kwh(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'sconce') s += sym.sconce(cx, cy, col);
-    const std = d.t === 'stopkontak' ? (d.nvr ? null : 0.4) : d.t.startsWith('saklar') ? 1.4 : null; // (saklar3 ikut 1.4; NVR tanpa label tinggi)
+    if (d.id) { // ID kotak: di sisi ruang, dijauhkan kalau bertumpuk dengan label kotak tetangga
+      let off = 0.48; const lw = 20, lh = 9;
+      const pos = () => [X(d.x + nx * off) + (nz ? 0 : nx * 2), Y(d.z + nz * off) + 3];
+      let [lx, ly] = pos();
+      for (let k = 0; k < 4 && idLabels.some(([qx, qy]) => Math.abs(qx - lx) < lw && Math.abs(qy - ly) < lh); k++) { off += 0.17; [lx, ly] = pos(); }
+      idLabels.push([lx, ly]);
+      s += `<text x="${lx}" y="${ly}" font-size="7" font-weight="700" text-anchor="middle" fill="${col}">${d.id}</text>`;
+    }
+    const std = d.t === 'stopkontak' ? (d.nvr ? null : 0.4) : d.t.startsWith('saklar') ? 1.4 : null; // (NVR tanpa label tinggi)
     const dup = labeled.some((q) => q.t === d.t && Math.abs(q.h - d.h) < 0.01 && Math.hypot(q.x - d.x, q.z - d.z) < 0.35);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) labeled.push(d);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) {
@@ -207,8 +216,8 @@ function legenda(lvl) {
     ['wh', 'Stop kontak water heater IP44, h 190 cm, grup sendiri', 0, n((d) => d.wh)],
     ['saklar1', 'Saklar tunggal, h 140 cm', n((d) => d.t === 'saklar1' && !d.tukar), 0],
     ['saklar2', 'Saklar ganda, h 140 cm', n((d) => d.t === 'saklar2'), 0],
-    ['saklar3', 'Saklar triple (2 kelompok + 1 tukar), h 140 cm', 0, n((d) => d.t === 'saklar3')],
     ['tukar', 'Saklar tukar (two-way) lampu tangga, h 140 cm', 0, n((d) => d.t === 'saklar1' && d.tukar)],
+    ['kotak', `Kotak inbow Panasonic (1 kotak = 1 stop kontak / 1 saklar / 2 saklar); angka = ID kotak (${KOTAK.filter((k) => k.lvl === lvl).length} kotak, lihat daftar-kotak.md)`, null, null],
     ['lampu5', 'Lampu LED downlight 5 W', L.filter((l) => l.w === 5).length, 0],
     ['lampu9', 'Lampu LED downlight 9 W' + (lvl === 'lt1' ? ' (termasuk 4 carport)' : ''), L.filter((l) => l.w === 9).length, 0],
     ['sconce', 'Lampu LED sorot / dinding outdoor', n((d) => d.t === 'sconce'), 0],
@@ -234,8 +243,8 @@ function legenda(lvl) {
     else if (k === 'wh') s += sym.stopkontak(cx, cy, RED, 'WH');
     else if (k === 'saklar1') s += sym.saklar(cx, cy, col, 1);
     else if (k === 'saklar2') s += sym.saklar(cx, cy, col, 2);
-    else if (k === 'saklar3') s += sym.saklar(cx, cy, RED, 3, 0, true);
     else if (k === 'tukar') s += sym.saklar(cx, cy, RED, 1, 0, true);
+    else if (k === 'kotak') s += `<rect x="${cx - 7}" y="${cy - 7}" width="14" height="14" fill="#fff" stroke="${INK}" stroke-width="1.2"/><text x="${cx}" y="${cy + 3}" font-size="7" font-weight="700" text-anchor="middle" fill="${INK}">1-07</text>`;
     else if (k === 'lampu5') s += sym.lampu(cx, cy, col, 5);
     else if (k === 'lampu9') s += sym.lampu(cx, cy, col, 9);
     else if (k === 'sconce') s += sym.sconce(cx, cy, col);
@@ -245,7 +254,7 @@ function legenda(lvl) {
     else if (k === 'cctv') s += sym.cctv(cx, cy, BLUE, 0, 0);
     else if (k === 'nvr') s += sym.stopkontak(cx, cy, RED, 'NVR');
     else if (k === 'data') s += `<line x1="${cx - 14}" y1="${cy}" x2="${cx + 14}" y2="${cy}" stroke="${BLUE}" stroke-width="1.4" stroke-dasharray="8,3,2,3"/>`;
-    s += `<text x="${x0 + 64}" y="${y}" font-size="10" fill="${INK}">${esc(ket)}</text>`;
+    { const ls = wrap(ket, 62); ls.forEach((t, i) => { s += `<text x="${x0 + 64}" y="${y + i * 12}" font-size="10" fill="${INK}">${esc(t)}</text>`; }); if (ls.length > 1) y += (ls.length - 1) * 12; }
     if (ada != null) s += `<text x="${x0 + LEG_W - 70}" y="${y}" font-size="10.5" font-weight="700" fill="${INK}" text-anchor="end">${ada}</text><text x="${x0 + LEG_W - 18}" y="${y}" font-size="10.5" font-weight="700" fill="${RED}" text-anchor="end">${baru ? '+' + baru : '–'}</text>`;
     y += 30;
   }
@@ -290,6 +299,22 @@ ${tapak(lvl)}${grid()}${tangga(lvl)}${tembok(lvl)}${ruang(lvl)}${perangkat(lvl)}
 }
 
 const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+// ---- daftar kotak (mapping ID → lokasi), sumber yang sama dengan label di 3D dan denah ----
+{
+  const TEMBOK = { '+z': 'tembok belakang ruang (muka ke +z / ke depan)', '-z': 'tembok depan ruang (muka ke −z / ke belakang)', '+x': 'tembok kiri (muka ke kanan)', '-x': 'tembok kanan (muka ke kiri)' };
+  let md = `# Daftar kotak inbow — stop kontak & saklar Panasonic\n\nRevisi ${TGL}. Produk: Panasonic seri baru, hanya model **inbow kotak** (pelat persegi ±90 × 90 mm, inbow doos 86 mm). Satu kotak berisi **1 stop kontak**, **1 saklar**, atau **2 saklar**. Saklar triple di pintu belakang dipecah jadi 2 kotak (2 saklar + 1 saklar tukar), stop kontak ganda NVR jadi 2 kotak.\n\nID kotak yang sama dipakai di tiga tempat supaya bisa dicocokkan saat evaluasi: label di model 3D (tekan **E**), angka kecil di denah 2D (\`denah-listrik-lt1.png\` / \`-lt2.png\`), dan tabel ini. Posisi x diukur dari batas kavling kiri, z dari batas kavling belakang (rumah x 3–10, z 3,5–13,5); h = tinggi as kotak dari lantai lantai tersebut. Merah di denah/3D = tambahan atau perubahan dari gambar DED.\n\n`;
+  for (const lvl of ['lt1', 'lt2']) {
+    const K = KOTAK.filter((k) => k.lvl === lvl);
+    const c = (t) => K.filter((k) => k.t === t).length;
+    md += `## ${lvl === 'lt1' ? 'Lantai 1' : 'Lantai 2'} — ${K.length} kotak (${c('stopkontak')} stop kontak, ${c('saklar1')} × 1 saklar, ${c('saklar2')} × 2 saklar)\n\n| ID | Ruang | Isi kotak | h (m) | Posisi (x, z) | Tembok | Keterangan |\n|---|---|---|---|---|---|---|\n`;
+    for (const k of K) md += `| **${k.id}** | ${k.ruang} | ${k.isi} | ${k.h.toFixed(2)} | ${k.x.toFixed(2)}, ${k.z.toFixed(2)} | ${TEMBOK[k.n]} | ${(k.baru ? '🔴 BARU: ' : k.rev ? '🔴 REVISI: ' : '') + k.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, '')} |\n`;
+    md += `\n`;
+  }
+  const all = (t) => KOTAK.filter((k) => k.t === t).length;
+  md += `## Rekap belanja kotak\n\n| Isi kotak | Jumlah |\n|---|---|\n| Kotak 1 stop kontak (termasuk ${KOTAK.filter((k) => k.t === 'stopkontak' && /AC/.test(k.isi)).length} AC, ${KOTAK.filter((k) => k.t === 'stopkontak' && /water/.test(k.isi)).length} water heater IP44, ${KOTAK.filter((k) => /NVR/.test(k.isi)).length} NVR) | ${all('stopkontak')} |\n| Kotak 1 saklar (termasuk ${KOTAK.filter((k) => /tukar/.test(k.isi)).length} saklar tukar) | ${all('saklar1')} |\n| Kotak 2 saklar | ${all('saklar2')} |\n| **Total kotak / inbow doos** | **${KOTAK.length}** |\n\n`;
+  md += `Catatan: stop kontak water heater (${KOTAK.filter((k) => /water/.test(k.isi)).map((k) => k.id).join(', ')}) perlu varian dengan tutup (IP44) — pastikan seri kotak ini punya varian itu, kalau tidak pakai stop kontak IP44 merek lain di titik tersebut. Ukuran pelat 90 mm adalah asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk saat evaluasi.\n`;
+  writeFileSync(join(OUT, 'daftar-kotak.md'), md); console.log('tulis daftar-kotak.md', KOTAK.length, 'kotak');
+}
 for (const lvl of ['lt1', 'lt2']) {
   const svg = join(OUT, `denah-listrik-${lvl}.svg`); writeFileSync(svg, denah(lvl));
   console.log('tulis', svg);

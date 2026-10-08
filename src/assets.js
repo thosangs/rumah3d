@@ -49,8 +49,9 @@ export const ASSETS = {
   closet_jongkok: { file: 'bl_closet_jongkok.glb' }, // kloset jongkok 0.5×0.6, pusat di origin, lubang di −z lokal
   washbasin: { file: 'bl_washbasin.glb' }, // wastafel gantung 0.45, punggung di z=0, bibir atas y=0
   // --- BlenderKit CC0 ---
-  simon_socket: { file: 'bk_simon82.glb', pick: /^E_Socket/ }, // "Set switch & socket Simon 82" (Agustin Paternoster, CC0): stop kontak schuko; pelat tergeletak, muka +y
-  simon_switch: { file: 'bk_simon82.glb', pick: /^E_switch/ }, // saklar 1 tuts dari set yang sama
+  pn_socket: { file: 'bl_pn_socket.glb' }, // kotak inbow Panasonic (pelat persegi 90 mm): 1 stop kontak schuko — punggung di z=0 lokal, muka +z
+  pn_sw1: { file: 'bl_pn_sw1.glb' }, // kotak inbow: 1 saklar (tuts lebar)
+  pn_sw2: { file: 'bl_pn_sw2.glb' }, // kotak inbow: 2 saklar berdampingan
   // --- Poly Haven CC0 ---
   plant_tree: { file: 'ph_pachira_aquatica_01.glb', height: 1.9, pick: /_d$/ }, // pohon pot tinggi (file berisi 4 varian berjajar; dipakai varian d saja)
   plant_tree2: { file: 'ph_pachira_aquatica_01.glb', height: 1.6, pick: /_b$/ }, // varian b, lebih kecil
