@@ -36,7 +36,7 @@ import { PERANGKAT, LAMPU, JALUR, KOTAK } from '../src/layout/elektrik.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(root, 'docs'); mkdirSync(OUT, { recursive: true });
-const S = 60, M = 70, LEG_W = 450; // px per meter, margin, lebar panel legenda
+const S = 60, M = 70, LEG_W = 540; // px per meter, margin, lebar panel legenda
 const PLAN_W = 10 * S, PLAN_H = 20 * S;
 const W = M + PLAN_W + 40 + LEG_W + M, H = M + PLAN_H + M + 20;
 const X = (x) => +(M + x * S).toFixed(1), Y = (z) => +(M + z * S).toFixed(1);
@@ -260,7 +260,7 @@ function legenda(lvl) {
     else if (k === 'cctv') s += sym.cctv(cx, cy, BLUE, 0, 0);
     else if (k === 'nvr') s += sym.stopkontak(cx, cy, RED, 'NVR');
     else if (k === 'data') s += `<line x1="${cx - 14}" y1="${cy}" x2="${cx + 14}" y2="${cy}" stroke="${BLUE}" stroke-width="1.4" stroke-dasharray="8,3,2,3"/>`;
-    { const ls = wrap(ket, 62); ls.forEach((t, i) => { s += `<text x="${x0 + 64}" y="${y + i * 12}" font-size="10" fill="${INK}">${esc(t)}</text>`; }); if (ls.length > 1) y += (ls.length - 1) * 12; }
+    { const ls = wrap(ket, 78); ls.forEach((t, i) => { s += `<text x="${x0 + 64}" y="${y + i * 12}" font-size="10" fill="${INK}">${esc(t)}</text>`; }); if (ls.length > 1) y += (ls.length - 1) * 12; }
     if (ada != null) s += `<text x="${x0 + LEG_W - 70}" y="${y}" font-size="10.5" font-weight="700" fill="${INK}" text-anchor="end">${ada}</text><text x="${x0 + LEG_W - 18}" y="${y}" font-size="10.5" font-weight="700" fill="${RED}" text-anchor="end">${baru ? '+' + baru : '–'}</text>`;
     y += 30;
   }
@@ -268,30 +268,28 @@ function legenda(lvl) {
   s += `<line x1="${x0 + 16}" y1="${y}" x2="${x0 + LEG_W - 16}" y2="${y}" stroke="${INK}" stroke-width="0.8"/>`; y += 22;
   s += `<text x="${x0 + 16}" y="${y}" font-size="10.5" font-weight="700" fill="${RED}">REVISI ${TGL} (merah = tambahan / perubahan dari DED)</text>`; y += 18;
   const cat = [
-    'Posisi simbol = posisi di gambar DED (skala 1:100) yang dikalibrasi ke tembok model 3D; titik dinding digambar di muka tembok.',
-    'Tinggi pasang (dari lantai jadi) mengikuti praktik umum/PUIL karena DED tidak mencantumkan tinggi — lihat kolom keterangan.',
-    'Lampu plafon dipasang di bawah dak/plafon ruang ybs; angka +h.hh di samping simbol = tinggi yang menyimpang dari standar.',
-    'Jalur kabel digambar skematis (ortogonal) mengikuti garis putus-putus DED; semua kabel NYM 2×2,5 mm² dalam pipa PVC 5/8".',
-    lvl === 'lt1' ? 'Rekomendasi: grup MCB dipisah (penerangan lt1, penerangan lt2, stop kontak lt1, stop kontak lt2, AC lt1, AC lt2, water heater) → box 8 group, 7 MCB; daya 2200 VA cukup untuk ≤ 2 AC ½ PK + water heater tangki low-watt, kalau 3 AC + pompa sebaiknya 3500 VA.' : 'Rekomendasi: 2 stop kontak AC lt2 dan water heater KTU masing-masing ke grup tersendiri di box MCB lt1 (RAB mencantumkan 2 box MCB; box ke-2 bisa di selasar lt2 untuk grup lt2). Saklar: tunggal = 1 kelompok lampu, ganda = 2 kelompok (mis. pintu toilet KTU: lampu toilet + balkon samping).',
+    'Posisi simbol dari gambar DED 1:100 yang dikalibrasi ke tembok model 3D; titik dinding digambar di muka tembok. Tinggi pasang (dari lantai jadi) mengikuti praktik umum/PUIL karena DED tidak mencantumkan tinggi.',
+    'Angka +h.hh di samping simbol = tinggi yang menyimpang dari standar. Jalur kabel digambar skematis (ortogonal) mengikuti DED; kabel NYM dalam pipa PVC 5/8".',
+    lvl === 'lt1' ? 'Rekomendasi: grup MCB dipisah (penerangan lt1/lt2, stop kontak lt1/lt2, AC lt1, AC lt2, water heater) → box 8 group, 7 MCB; 2200 VA cukup untuk ≤ 2 AC ½ PK + water heater tangki low-watt, kalau 3 AC + pompa sebaiknya 3500 VA.' : 'Rekomendasi: 2 stop kontak AC lt2 dan water heater KTU masing-masing ke grup MCB tersendiri (box ke-2 bisa di selasar lt2). Saklar tunggal = 1 kelompok lampu, ganda = 2 kelompok.',
   ];
   // 4 stop kontak dinding TV digabung jadi satu butir supaya daftar tidak terlalu panjang
-  const revSrc = P.filter((d) => d.baru || d.rev).filter((d, i, arr) => !/dinding TV, kotak [2-4]/.test(d.r));
-  const rev = revSrc.map((d) => `• ${/dinding TV, kotak 1/.test(d.r) ? 'dinding TV: 4 stop kontak di bawah TV di atas konsol (TV, set-top box, soundbar, konsol/router)' : d.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, '')} (h ${d.h.toFixed(2)} m)`);
+  const revSrc = P.filter((d) => d.baru || d.rev).filter((d) => !/kotak [2-4] dari 4/.test(d.r));
+  const rev = revSrc.map((d) => `• ${/kotak 1 dari 4/.test(d.r) ? 'dinding TV: 4 stop kontak di bawah TV di atas konsol (TV, set-top box, soundbar, konsol/router)' : d.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, '')} (h ${d.h.toFixed(2)} m)`);
   if (lvl === 'lt1') rev.push('• TV 65" diturunkan: bawah 0,80 m, tengah layar 1,22 m (mata duduk ±1,10 m)');
   if (lvl === 'lt1') rev.push('• Stop kontak dapur kiri digeser 22 cm ke kanan jendela (jendela z 5,6–6,6)');
   // ukuran huruf menyesuaikan: daftar revisi + catatan harus muat di atas skala batang (y0 + PLAN_H − 70)
   const catLines = (n) => cat.flatMap((t) => [...wrap(t, n), '']);
   const revLines = (n) => rev.flatMap((t) => [...wrap(t, n), '']);
-  let fs = 9.5, lh = 14, wn = 78;
-  const butuh = () => (revLines(wn).length + catLines(wn + 4).length) * lh + 60;
-  while (butuh() > y0 + PLAN_H - 70 - y && fs > 7) { fs -= 0.5; lh -= 0.7; wn += 5; }
+  let fs = 9.5, lh = 14, wn = 96; // ±96 karakter per baris pada lebar legenda 540 px
+  const butuh = () => (revLines(wn).length + catLines(wn + 4).length) * lh + 100;
+  while (butuh() > y0 + PLAN_H - 24 - y && fs > 7.5) { fs -= 0.5; lh -= 0.7; wn += 5; }
   for (const line of revLines(wn)) { if (line) s += `<text x="${x0 + 16}" y="${y}" font-size="${fs}" fill="${RED}">${esc(line)}</text>`; y += line ? lh : 2; }
   y += 8;
   s += `<line x1="${x0 + 16}" y1="${y}" x2="${x0 + LEG_W - 16}" y2="${y}" stroke="${INK}" stroke-width="0.8"/>`; y += 22;
   s += `<text x="${x0 + 16}" y="${y}" font-size="10.5" font-weight="700" fill="${INK}">CATATAN</text>`; y += 18;
   for (const line of catLines(wn + 4)) { if (line) s += `<text x="${x0 + 16}" y="${y}" font-size="${fs}" fill="${INK}">${esc(line)}</text>`; y += line ? lh : 3; }
   // skala batang
-  const sy = y0 + PLAN_H - 40, sx = x0 + 16;
+  const sy = Y(19.25), sx = X(0.3); // di strip jalan kiri-bawah gambar
   for (let i = 0; i < 5; i++) s += `<rect x="${sx + i * S}" y="${sy}" width="${S}" height="8" fill="${i % 2 ? '#fff' : INK}" stroke="${INK}" stroke-width="0.8"/>`;
   for (let i = 0; i <= 5; i++) s += `<text x="${sx + i * S}" y="${sy + 22}" font-size="9" text-anchor="middle" fill="${INK}">${i} m</text>`;
   return s;
