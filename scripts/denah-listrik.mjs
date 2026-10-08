@@ -267,13 +267,6 @@ function legenda(lvl) {
   y += 6;
   s += `<line x1="${x0 + 16}" y1="${y}" x2="${x0 + LEG_W - 16}" y2="${y}" stroke="${INK}" stroke-width="0.8"/>`; y += 22;
   s += `<text x="${x0 + 16}" y="${y}" font-size="10.5" font-weight="700" fill="${RED}">REVISI ${TGL} (merah = tambahan / perubahan dari DED)</text>`; y += 18;
-  const rev = P.filter((d) => d.baru || d.rev).map((d) => `• ${d.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, '')} (h ${d.h.toFixed(2)} m)`);
-  if (lvl === 'lt1') rev.push('• TV 65" diturunkan: bawah 0,80 m, tengah layar 1,22 m (mata duduk ±1,10 m)');
-  if (lvl === 'lt1') rev.push('• Stop kontak dapur kiri digeser 22 cm ke kanan jendela (jendela z 5,6–6,6)');
-  for (const t of rev) { for (const line of wrap(t, 78)) { s += `<text x="${x0 + 16}" y="${y}" font-size="9.5" fill="${RED}">${esc(line)}</text>`; y += 14; } y += 2; }
-  y += 8;
-  s += `<line x1="${x0 + 16}" y1="${y}" x2="${x0 + LEG_W - 16}" y2="${y}" stroke="${INK}" stroke-width="0.8"/>`; y += 22;
-  s += `<text x="${x0 + 16}" y="${y}" font-size="10.5" font-weight="700" fill="${INK}">CATATAN</text>`; y += 18;
   const cat = [
     'Posisi simbol = posisi di gambar DED (skala 1:100) yang dikalibrasi ke tembok model 3D; titik dinding digambar di muka tembok.',
     'Tinggi pasang (dari lantai jadi) mengikuti praktik umum/PUIL karena DED tidak mencantumkan tinggi — lihat kolom keterangan.',
@@ -281,7 +274,22 @@ function legenda(lvl) {
     'Jalur kabel digambar skematis (ortogonal) mengikuti garis putus-putus DED; semua kabel NYM 2×2,5 mm² dalam pipa PVC 5/8".',
     lvl === 'lt1' ? 'Rekomendasi: grup MCB dipisah (penerangan lt1, penerangan lt2, stop kontak lt1, stop kontak lt2, AC lt1, AC lt2, water heater) → box 8 group, 7 MCB; daya 2200 VA cukup untuk ≤ 2 AC ½ PK + water heater tangki low-watt, kalau 3 AC + pompa sebaiknya 3500 VA.' : 'Rekomendasi: 2 stop kontak AC lt2 dan water heater KTU masing-masing ke grup tersendiri di box MCB lt1 (RAB mencantumkan 2 box MCB; box ke-2 bisa di selasar lt2 untuk grup lt2). Saklar: tunggal = 1 kelompok lampu, ganda = 2 kelompok (mis. pintu toilet KTU: lampu toilet + balkon samping).',
   ];
-  for (const t of cat) { for (const line of wrap(t, 82)) { s += `<text x="${x0 + 16}" y="${y}" font-size="9.5" fill="${INK}">${esc(line)}</text>`; y += 14; } y += 3; }
+  // 4 stop kontak dinding TV digabung jadi satu butir supaya daftar tidak terlalu panjang
+  const revSrc = P.filter((d) => d.baru || d.rev).filter((d, i, arr) => !/dinding TV, kotak [2-4]/.test(d.r));
+  const rev = revSrc.map((d) => `• ${/dinding TV, kotak 1/.test(d.r) ? 'dinding TV: 4 stop kontak di bawah TV di atas konsol (TV, set-top box, soundbar, konsol/router)' : d.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, '')} (h ${d.h.toFixed(2)} m)`);
+  if (lvl === 'lt1') rev.push('• TV 65" diturunkan: bawah 0,80 m, tengah layar 1,22 m (mata duduk ±1,10 m)');
+  if (lvl === 'lt1') rev.push('• Stop kontak dapur kiri digeser 22 cm ke kanan jendela (jendela z 5,6–6,6)');
+  // ukuran huruf menyesuaikan: daftar revisi + catatan harus muat di atas skala batang (y0 + PLAN_H − 70)
+  const catLines = (n) => cat.flatMap((t) => [...wrap(t, n), '']);
+  const revLines = (n) => rev.flatMap((t) => [...wrap(t, n), '']);
+  let fs = 9.5, lh = 14, wn = 78;
+  const butuh = () => (revLines(wn).length + catLines(wn + 4).length) * lh + 60;
+  while (butuh() > y0 + PLAN_H - 70 - y && fs > 7) { fs -= 0.5; lh -= 0.7; wn += 5; }
+  for (const line of revLines(wn)) { if (line) s += `<text x="${x0 + 16}" y="${y}" font-size="${fs}" fill="${RED}">${esc(line)}</text>`; y += line ? lh : 2; }
+  y += 8;
+  s += `<line x1="${x0 + 16}" y1="${y}" x2="${x0 + LEG_W - 16}" y2="${y}" stroke="${INK}" stroke-width="0.8"/>`; y += 22;
+  s += `<text x="${x0 + 16}" y="${y}" font-size="10.5" font-weight="700" fill="${INK}">CATATAN</text>`; y += 18;
+  for (const line of catLines(wn + 4)) { if (line) s += `<text x="${x0 + 16}" y="${y}" font-size="${fs}" fill="${INK}">${esc(line)}</text>`; y += line ? lh : 3; }
   // skala batang
   const sy = y0 + PLAN_H - 40, sx = x0 + 16;
   for (let i = 0; i < 5; i++) s += `<rect x="${sx + i * S}" y="${sy}" width="${S}" height="8" fill="${i % 2 ? '#fff' : INK}" stroke="${INK}" stroke-width="0.8"/>`;
@@ -305,6 +313,7 @@ ${tapak(lvl)}${grid()}${tangga(lvl)}${tembok(lvl)}${ruang(lvl)}${perangkat(lvl)}
 }
 
 const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+let daftarHtml = '';
 // ---- daftar kotak (mapping ID → lokasi), sumber yang sama dengan label di 3D dan denah ----
 {
   const TEMBOK = { '+z': 'tembok belakang ruang (muka ke +z / ke depan)', '-z': 'tembok depan ruang (muka ke −z / ke belakang)', '+x': 'tembok kiri (muka ke kanan)', '-x': 'tembok kanan (muka ke kiri)' };
@@ -352,12 +361,7 @@ tr.rev td.id, tr.rev td.ket { color: #c8102e; } .kecil { font-size: 9px; color: 
 <tr><td>Total kotak / inbow doos</td><td class="n">${KOTAK.length}</td></tr></tbody></table>
 <p class="kecil">Stop kontak water heater (${KOTAK.filter((k) => /water/.test(k.isi)).map((k) => k.id).join(', ')}) perlu varian bertutup (IP44). Ukuran pelat 90 mm = asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk. Dibuat otomatis dari data model 3D (scripts/denah-listrik.mjs).</p>
 </body></html>`;
-  const htmlPath = join(OUT, 'daftar-kotak.html'); writeFileSync(htmlPath, html);
-  if (existsSync(chrome)) {
-    const pdf = join(OUT, 'daftar-kotak.pdf');
-    spawnSync(chrome, ['--headless=new', '--no-pdf-header-footer', `--print-to-pdf=${pdf}`, `--user-data-dir=/tmp/rumah-denah-pdf-${process.pid}`, `file://${htmlPath}`], { stdio: 'ignore', timeout: 60000 });
-    console.log(existsSync(pdf) ? 'pdf ok' : 'pdf gagal', pdf);
-  }
+  daftarHtml = html; // dicetak setelah SVG denah jadi (lihat bawah): daftar (A4) + denah lt1 & lt2 (A3)
 }
 for (const lvl of ['lt1', 'lt2']) {
   const svg = join(OUT, `denah-listrik-${lvl}.svg`); writeFileSync(svg, denah(lvl));
@@ -366,5 +370,19 @@ for (const lvl of ['lt1', 'lt2']) {
     const png = join(OUT, `denah-listrik-${lvl}.png`);
     spawnSync(chrome, ['--headless=new', '--hide-scrollbars', `--window-size=${W},${H}`, '--force-device-scale-factor=1.5', `--screenshot=${png}`, `--user-data-dir=/tmp/rumah-denah-${process.pid}`, `file://${svg}`], { stdio: 'ignore', timeout: 60000 });
     console.log(existsSync(png) ? 'png ok' : 'png gagal', png);
+  }
+}
+// ---- PDF cetak gabungan: daftar kotak (A4 tegak) + denah listrik lt1 & lt2 (A3 tegak, halaman bernama CSS) ----
+{
+  const svgB64 = (lvl) => Buffer.from(denah(lvl)).toString('base64');
+  const halamanDenah = (lvl) => `<section class="denah"><img alt="Denah instalasi listrik ${lvl}" src="data:image/svg+xml;base64,${svgB64(lvl)}"></section>`;
+  const cetak = daftarHtml.replace('</style>', `@page denah { size: A3 portrait; margin: 8mm; }
+section.denah { page: denah; page-break-before: always; } section.denah img { width: 100%; height: auto; display: block; }
+</style>`).replace('</body>', `${halamanDenah('lt1')}${halamanDenah('lt2')}</body>`);
+  const htmlPath = join(OUT, 'daftar-kotak.html'); writeFileSync(htmlPath, cetak);
+  if (existsSync(chrome)) {
+    const pdf = join(OUT, 'daftar-kotak.pdf');
+    spawnSync(chrome, ['--headless=new', '--no-pdf-header-footer', `--print-to-pdf=${pdf}`, `--user-data-dir=/tmp/rumah-denah-pdf-${process.pid}`, `file://${htmlPath}`], { stdio: 'ignore', timeout: 90000 });
+    console.log(existsSync(pdf) ? 'pdf ok (daftar + denah lt1/lt2)' : 'pdf gagal', pdf);
   }
 }
