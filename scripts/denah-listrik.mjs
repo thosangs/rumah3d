@@ -42,6 +42,7 @@ const W = M + PLAN_W + 40 + LEG_W + M, H = M + PLAN_H + M + 20;
 const X = (x) => +(M + x * S).toFixed(1), Y = (z) => +(M + z * S).toFixed(1);
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 const RED = '#c8102e', INK = '#111', GREY = '#666', BLUE = '#1e6fd9';
+const UNGU = '#8e3fb8';
 const RYA = { '+z': 0, '+x': Math.PI / 2, '-z': Math.PI, '-x': -Math.PI / 2 };
 /** arah pandang kamera di denah (dx, dz): yaw relatif normal tembok, atau sudut dunia untuk pasang plafon ('dn') */
 function aimDir(d) { const sx = Math.sin(d.yaw), cz = Math.cos(d.yaw); if (d.n === 'dn') return [sx, cz]; const t = RYA[d.n]; return [sx * Math.cos(t) + cz * Math.sin(t), -sx * Math.sin(t) + cz * Math.cos(t)]; }
@@ -172,7 +173,7 @@ function perangkat(lvl) {
     const p1 = [X(d.x) + R5 * Math.sin(a - half), Y(d.z) + R5 * Math.cos(a - half)], p2 = [X(d.x) + R5 * Math.sin(a + half), Y(d.z) + R5 * Math.cos(a + half)];
     s += `<path d="M${X(d.x)} ${Y(d.z)} L${p1[0].toFixed(1)} ${p1[1].toFixed(1)} A${R5} ${R5} 0 0 1 ${p2[0].toFixed(1)} ${p2[1].toFixed(1)} Z" fill="${BLUE}" fill-opacity="0.10" stroke="${BLUE}" stroke-width="0.8" stroke-dasharray="2,3"/>`;
   }
-  for (const j of JALUR.filter((q) => q.lvl === lvl)) s += `<polyline points="${j.pts.map(([x, z]) => `${X(x)},${Y(z)}`).join(' ')}" fill="none" stroke="${j.data ? BLUE : '#444'}" stroke-width="1.4" stroke-dasharray="${j.data ? '8,3,2,3' : '6,4'}"/>`;
+  for (const j of JALUR.filter((q) => q.lvl === lvl)) s += `<polyline points="${j.pts.map(([x, z]) => `${X(x)},${Y(z)}`).join(' ')}" fill="none" stroke="${j.data ? BLUE : j.coax ? UNGU : '#444'}" stroke-width="1.4" stroke-dasharray="${j.data ? '8,3,2,3' : j.coax ? '2,3' : '6,4'}"/>`;
   for (const l of LAMPU.filter((q) => q.lvl === lvl)) s += sym.lampu(X(l.x), Y(l.z), INK, l.w);
   const labeled = []; // label tinggi hanya sekali untuk perangkat sejenis yang berdampingan (< 35 cm)
   const idLabels = [];
@@ -182,6 +183,7 @@ function perangkat(lvl) {
     const cx = X(d.x + nx * 0.2), cy = Y(d.z + nz * 0.2);
     s += `<line x1="${X(d.x)}" y1="${Y(d.z)}" x2="${cx}" y2="${cy}" stroke="${col}" stroke-width="1.4"/>`;
     if (d.t === 'stopkontak') s += sym.stopkontak(cx, cy, col, d.ac ? 'AC' : d.wh ? 'WH' : d.nvr ? 'NVR' : '', ROT[d.n]);
+    else if (d.t === 'antena') s += sym.stopkontak(cx, cy, UNGU, 'TV', ROT[d.n]);
     else if (d.t === 'saklar1') s += sym.saklar(cx, cy, col, 1, ROT[d.n], d.tukar);
     else if (d.t === 'saklar2') s += sym.saklar(cx, cy, col, 2, ROT[d.n], d.tukar);
     else if (d.t === 'saklar3') s += sym.saklar(cx, cy, col, 3, ROT[d.n], d.tukar);
@@ -196,7 +198,7 @@ function perangkat(lvl) {
       idLabels.push([lx, ly]);
       s += `<text x="${lx}" y="${ly}" font-size="7" font-weight="700" text-anchor="middle" fill="${col}">${d.id}</text>`;
     }
-    const std = d.t === 'stopkontak' ? (d.nvr ? null : 0.4) : d.t.startsWith('saklar') ? 1.4 : null; // (NVR tanpa label tinggi)
+    const std = d.t === 'stopkontak' ? (d.nvr ? null : 0.4) : d.t === 'antena' ? 0.4 : d.t.startsWith('saklar') ? 1.4 : null; // (NVR tanpa label tinggi)
     const dup = labeled.some((q) => q.t === d.t && Math.abs(q.h - d.h) < 0.01 && Math.hypot(q.x - d.x, q.z - d.z) < 0.35);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) labeled.push(d);
     if (std != null && Math.abs(d.h - std) > 0.01 && !dup) {
@@ -214,6 +216,7 @@ function legenda(lvl) {
     ['stopkontak', 'Stop kontak 1 ph 10/16 A, h 40 cm (dapur 115, mesin cuci 120)', n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && !d.baru), n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && d.baru)],
     ['ac', 'Stop kontak AC, h 240 cm (unit indoor di atas jendela)', 0, n((d) => d.ac)],
     ['wh', 'Stop kontak water heater IP44, h 190 cm, grup sendiri', 0, n((d) => d.wh)],
+    ['antena', 'Stop kontak antena TV (coax IEC), 1 antena di atap + splitter 2 way', 0, n((d) => d.t === 'antena')],
     ['saklar1', 'Saklar tunggal, h 140 cm', n((d) => d.t === 'saklar1' && !d.tukar), 0],
     ['saklar2', 'Saklar ganda, h 140 cm', n((d) => d.t === 'saklar2'), 0],
     ['tukar', 'Saklar tukar (two-way) lampu tangga, h 140 cm', 0, n((d) => d.t === 'saklar1' && d.tukar)],
@@ -227,6 +230,7 @@ function legenda(lvl) {
     ['cctv', 'CCTV IP PoE 2 MP outdoor (kerucut = sudut pandang 100°, 7 m)', 0, n((d) => d.t === 'cctv')],
     ['nvr', 'NVR 4 ch PoE + HDD di lemari bawah tangga (stop kontak ganda)', 0, n((d) => d.nvr)],
     ['data', 'Kabel data CAT6 ke NVR, dalam pipa 3/4"', null, null],
+    ['coax', 'Kabel coax RG6 antena (splitter di plafon r. keluarga lt2)', null, null],
   ].filter(([k]) => lvl === 'lt1' || !['cctv', 'nvr', 'data'].includes(k));
   const x0 = M + PLAN_W + 40, y0 = M;
   let s = `<rect x="${x0}" y="${y0}" width="${LEG_W}" height="${PLAN_H}" fill="#fff" stroke="${INK}" stroke-width="1.2"/>`;
@@ -241,6 +245,8 @@ function legenda(lvl) {
     if (k === 'stopkontak') s += sym.stopkontak(cx, cy, col, '');
     else if (k === 'ac') s += sym.stopkontak(cx, cy, RED, 'AC');
     else if (k === 'wh') s += sym.stopkontak(cx, cy, RED, 'WH');
+    else if (k === 'antena') s += sym.stopkontak(cx, cy, UNGU, 'TV');
+    else if (k === 'coax') s += `<line x1="${cx - 14}" y1="${cy}" x2="${cx + 14}" y2="${cy}" stroke="${UNGU}" stroke-width="1.4" stroke-dasharray="2,3"/>`;
     else if (k === 'saklar1') s += sym.saklar(cx, cy, col, 1);
     else if (k === 'saklar2') s += sym.saklar(cx, cy, col, 2);
     else if (k === 'tukar') s += sym.saklar(cx, cy, RED, 1, 0, true);
@@ -311,7 +317,7 @@ const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
     md += `\n`;
   }
   const all = (t) => KOTAK.filter((k) => k.t === t).length;
-  md += `## Rekap belanja kotak\n\n| Isi kotak | Jumlah |\n|---|---|\n| Kotak 1 stop kontak (termasuk ${KOTAK.filter((k) => k.t === 'stopkontak' && /AC/.test(k.isi)).length} AC, ${KOTAK.filter((k) => k.t === 'stopkontak' && /water/.test(k.isi)).length} water heater IP44, ${KOTAK.filter((k) => /NVR/.test(k.isi)).length} NVR) | ${all('stopkontak')} |\n| Kotak 1 saklar (termasuk ${KOTAK.filter((k) => /tukar/.test(k.isi)).length} saklar tukar) | ${all('saklar1')} |\n| Kotak 2 saklar | ${all('saklar2')} |\n| **Total kotak / inbow doos** | **${KOTAK.length}** |\n\n`;
+  md += `## Rekap belanja kotak\n\n| Isi kotak | Jumlah |\n|---|---|\n| Kotak 1 stop kontak (termasuk ${KOTAK.filter((k) => k.t === 'stopkontak' && /AC/.test(k.isi)).length} AC, ${KOTAK.filter((k) => k.t === 'stopkontak' && /water/.test(k.isi)).length} water heater IP44, ${KOTAK.filter((k) => /NVR/.test(k.isi)).length} NVR) | ${all('stopkontak')} |\n| Kotak 1 saklar (termasuk ${KOTAK.filter((k) => /tukar/.test(k.isi)).length} saklar tukar) | ${all('saklar1')} |\n| Kotak 2 saklar | ${all('saklar2')} |\n| Kotak stop kontak antena TV (coax) | ${all('antena')} |\n| **Total kotak / inbow doos** | **${KOTAK.length}** |\n\n`;
   md += `Catatan: stop kontak water heater (${KOTAK.filter((k) => /water/.test(k.isi)).map((k) => k.id).join(', ')}) perlu varian dengan tutup (IP44) — pastikan seri kotak ini punya varian itu, kalau tidak pakai stop kontak IP44 merek lain di titik tersebut. Ukuran pelat 90 mm adalah asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk saat evaluasi.\n`;
   writeFileSync(join(OUT, 'daftar-kotak.md'), md); console.log('tulis daftar-kotak.md', KOTAK.length, 'kotak');
   // versi cetak: HTML A4 → PDF lewat Chrome headless
@@ -342,6 +348,7 @@ tr.rev td.id, tr.rev td.ket { color: #c8102e; } .kecil { font-size: 9px; color: 
 <tr><td>Kotak 1 stop kontak (termasuk ${KOTAK.filter((k) => /AC/.test(k.isi)).length} AC, ${KOTAK.filter((k) => /water/.test(k.isi)).length} water heater IP44, ${KOTAK.filter((k) => /NVR/.test(k.isi)).length} NVR)</td><td class="n">${allT('stopkontak')}</td></tr>
 <tr><td>Kotak 1 saklar (termasuk ${KOTAK.filter((k) => /tukar/.test(k.isi)).length} saklar tukar)</td><td class="n">${allT('saklar1')}</td></tr>
 <tr><td>Kotak 2 saklar</td><td class="n">${allT('saklar2')}</td></tr>
+<tr><td>Kotak stop kontak antena TV (coax; 1 antena di atap + splitter 2 way)</td><td class="n">${allT('antena')}</td></tr>
 <tr><td>Total kotak / inbow doos</td><td class="n">${KOTAK.length}</td></tr></tbody></table>
 <p class="kecil">Stop kontak water heater (${KOTAK.filter((k) => /water/.test(k.isi)).map((k) => k.id).join(', ')}) perlu varian bertutup (IP44). Ukuran pelat 90 mm = asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk. Dibuat otomatis dari data model 3D (scripts/denah-listrik.mjs).</p>
 </body></html>`;

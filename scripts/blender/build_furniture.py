@@ -417,6 +417,11 @@ def pn_kotak(kind):
         for sx in (-1, 1):
             h = cyl(f'pin{sx}', 0.0026, 0.004, sx * 0.0095, -T + 0.002, 0, dark, 16); h.rotation_euler.x = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
             box(f'earth{sx}', 0.010, 0.003, 0.004, 0, -T + 0.0025, sx * 0.0165, chrome)
+    elif kind == 'tv':
+        # stop kontak antena TV: konektor IEC female (cincin krom + lubang) di tengah pelat
+        r = cyl('ring', 0.0095, 0.006, 0, -T - 0.001, 0, chrome, 32); r.rotation_euler.x = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
+        h = cyl('hole', 0.0045, 0.008, 0, -T - 0.001, 0, dark, 24); h.rotation_euler.x = math.radians(90); bpy.ops.object.transform_apply(rotation=True)
+        box('lbl', 0.016, 0.001, 0.006, 0, -T - 0.0005, -0.022, grey)
     elif kind == 'sw1':
         box('rocker', 0.062, 0.005, 0.062, 0, -T - 0.002, 0, white2, bevel=0.003, seg=3)
         box('seam', 0.050, 0.001, 0.0015, 0, -T - 0.0048, 0.004, grey)
@@ -593,6 +598,7 @@ if want('ac_indoor'): ac_indoor()
 if want('pn_socket'): pn_kotak('socket')
 if want('pn_sw1'): pn_kotak('sw1')
 if want('pn_sw2'): pn_kotak('sw2')
+if want('pn_tv'): pn_kotak('tv')
 if want('water_heater'): water_heater()
 if want('closet_duduk'): closet_duduk()
 if want('closet_jongkok'): closet_jongkok()

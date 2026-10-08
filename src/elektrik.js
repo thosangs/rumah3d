@@ -13,6 +13,7 @@ const NV = { '+z': [0, 1], '+x': [1, 0], '-z': [0, -1], '-x': [-1, 0] };
 const MAT = {
   kabel: new THREE.MeshBasicMaterial({ color: 0xff6a00 }),
   data: new THREE.MeshBasicMaterial({ color: 0x1e6fd9 }), // CAT6 CCTV
+  coax: new THREE.MeshBasicMaterial({ color: 0x8e3fb8 }), // coax antena TV (ungu)
   trimHitam: new THREE.MeshStandardMaterial({ color: 0x1b1c1e, roughness: 0.6 }),
 };
 
@@ -65,8 +66,8 @@ export function buildElektrik(ceilingAt) {
     const g = grp[d.lvl];
     const holder = new THREE.Group(); holder.position.set(d.x, d.h, d.z); holder.rotation.y = RY[d.n] ?? 0;
     holder.name = `elek-${d.t}`; holder.userData.elek = d; g.add(holder);
-    if (d.t === 'stopkontak' || d.t === 'saklar1' || d.t === 'saklar2') {
-      placeAsset(holder, d.t === 'stopkontak' ? 'pn_socket' : d.t === 'saklar1' ? 'pn_sw1' : 'pn_sw2', {});
+    if (d.t === 'stopkontak' || d.t === 'saklar1' || d.t === 'saklar2' || d.t === 'antena') {
+      placeAsset(holder, d.t === 'stopkontak' ? 'pn_socket' : d.t === 'saklar1' ? 'pn_sw1' : d.t === 'saklar2' ? 'pn_sw2' : 'pn_tv', {});
       if (d.id) { // label; kotak berdampingan (< 15 cm) → label kotak kedua dinaikkan supaya tidak saling tutup
         const tetangga = PERANGKAT.filter((q) => q.lvl === d.lvl && q.id && q !== d && Math.hypot(q.x - d.x, q.z - d.z) < 0.15);
         const naik = tetangga.some((q) => q.id < d.id);
@@ -95,7 +96,9 @@ export function buildElektrik(ceilingAt) {
   }
   // --- jalur kabel ---
   // perangkat terdekat (< 6 cm) di ujung jalur; jalur data hanya mencocokkan kamera/NVR, jalur listrik mengabaikan keduanya
-  const dev = (lvl, x, z, data) => PERANGKAT.filter((d) => d.lvl === lvl && (data ? d.t === 'cctv' || d.nvr : d.t !== 'cctv' && !d.nvr) && Math.hypot(d.x - x, d.z - z) < 0.06).sort((a, b) => Math.hypot(a.x - x, a.z - z) - Math.hypot(b.x - x, b.z - z))[0];
+  // jenis jalur: 'data' hanya kamera/NVR, 'coax' hanya stop kontak antena, 'listrik' sisanya
+  const cocok = { data: (d) => d.t === 'cctv' || d.nvr, coax: (d) => d.t === 'antena', listrik: (d) => d.t !== 'cctv' && !d.nvr && d.t !== 'antena' };
+  const dev = (lvl, x, z, jenis) => PERANGKAT.filter((d) => d.lvl === lvl && cocok[jenis](d) && Math.hypot(d.x - x, d.z - z) < 0.06).sort((a, b) => Math.hypot(a.x - x, a.z - z) - Math.hypot(b.x - x, b.z - z))[0];
   // Jalur disusuri per 10 cm mengikuti profil plafon hasil indeks SKP: di titik tanpa plafon (dalam tembok, di atas
   // tangga/void) tinggi terakhir dipertahankan, dan perubahan tinggi (balok, kanopi balkon, bordes) digambar sebagai
   // tangga — datar lalu turun/naik tegak di tempat plafon berubah — bukan garis diagonal menembus ruang.
@@ -104,7 +107,8 @@ export function buildElektrik(ceilingAt) {
   const STEP = 0.1, JUMP = 0.08;
   for (const j of JALUR) {
     const g = grp[j.lvl];
-    const mat = j.data ? MAT.data : MAT.kabel;
+    const jenis = j.data ? 'data' : j.coax ? 'coax' : 'listrik';
+    const mat = MAT[jenis === 'listrik' ? 'kabel' : jenis];
     const ceil = (x, z) => { const c = ceilingAt ? ceilingAt(x, z, j.lvl) : null; return c == null ? null : c - 0.03; };
     // tinggi awal: plafon di titik pertama, kalau tidak ada → titik valid pertama di sepanjang jalur, kalau tidak ada → nilai fallback
     let y = ceil(j.pts[0][0], j.pts[0][1]);
@@ -136,7 +140,7 @@ export function buildElektrik(ceilingAt) {
     for (let i = 0; i < poly.length - 1; i++) { const t = tube(poly[i], poly[i + 1], 0.006, mat); if (t) g.add(t); }
     const ends = [[0, poly[0]], [j.pts.length - 1, poly[poly.length - 1]]];
     for (const [k, p] of ends) {
-      const [x, z] = j.pts[k]; const d = dev(j.lvl, x, z, !!j.data);
+      const [x, z] = j.pts[k]; const d = dev(j.lvl, x, z, jenis);
       if (!d || d.n === 'dn') continue; // perangkat di plafon: kabel berakhir di plafon
       const [nx, nz] = NV[d.n];
       const top = p.clone(); const bot = new THREE.Vector3(d.x + nx * 0.012, d.h + 0.06, d.z + nz * 0.012);

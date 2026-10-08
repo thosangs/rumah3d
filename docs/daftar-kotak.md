@@ -4,7 +4,7 @@ Revisi 08-10-2026. Produk: Panasonic seri baru, hanya model **inbow kotak** (pel
 
 ID kotak yang sama dipakai di tiga tempat supaya bisa dicocokkan saat evaluasi: label di model 3D (tekan **E**), angka kecil di denah 2D (`denah-listrik-lt1.png` / `-lt2.png`), dan tabel ini. Posisi x diukur dari batas kavling kiri, z dari batas kavling belakang (rumah x 3–10, z 3,5–13,5); h = tinggi as kotak dari lantai lantai tersebut. Merah di denah/3D = tambahan atau perubahan dari gambar DED.
 
-## Lantai 1 — 31 kotak (23 stop kontak, 3 × 1 saklar, 5 × 2 saklar)
+## Lantai 1 — 32 kotak (23 stop kontak, 3 × 1 saklar, 5 × 2 saklar)
 
 | ID | Ruang | Isi kotak | h (m) | Posisi (x, z) | Tembok | Keterangan |
 |---|---|---|---|---|---|---|
@@ -34,13 +34,14 @@ ID kotak yang sama dipakai di tiga tempat supaya bisa dicocokkan saat evaluasi: 
 | **1-24** | R. keluarga | 1 stop kontak | 0.78 | 6.68, 10.52 | tembok kiri (muka ke kanan) | 🔴 BARU: dinding TV, kotak 2 dari 4 (set-top box / Android TV box) |
 | **1-25** | R. keluarga | 1 stop kontak | 0.78 | 6.68, 10.74 | tembok kiri (muka ke kanan) | 🔴 BARU: dinding TV, kotak 3 dari 4 (soundbar) |
 | **1-26** | R. keluarga | 1 stop kontak | 0.78 | 6.68, 10.96 | tembok kiri (muka ke kanan) | 🔴 BARU: dinding TV, kotak 4 dari 4 (konsol game / router) |
-| **1-27** | R. keluarga | 2 saklar | 1.40 | 6.68, 11.69 | tembok kiri (muka ke kanan) | R. keluarga, di muka panel TV → lampu r. keluarga |
-| **1-28** | R. keluarga | 2 saklar | 1.40 | 6.66, 12.02 | tembok kiri (muka ke kanan) | R. keluarga, samping pintu utama → lampu teras & carport |
-| **1-29** | R. keluarga | 1 stop kontak | 0.35 | 9.87, 12.30 | tembok kanan (muka ke kiri) | 🔴 REVISI: R. keluarga, tembok kanan depan, di bawah meja samping melayang (bawah meja 0.41) (DED: z 10.72 di belakang sofa → digeser supaya sofa bisa mepet) |
-| **1-30** | R. keluarga | 1 stop kontak | 0.35 | 9.87, 12.52 | tembok kanan (muka ke kiri) | 🔴 REVISI: R. keluarga, tembok kanan depan, di balik meja samping (DED: z 10.94) |
-| **1-31** | Selasar samping (luar) | 2 saklar | 1.40 | 2.94, 10.22 | tembok kanan (muka ke kiri) | teras samping (luar) → lampu taman/pagar |
+| **1-27** | R. keluarga | 1 stop kontak antena TV | 0.78 | 6.68, 11.18 | tembok kiri (muka ke kanan) | 🔴 BARU: stop kontak antena TV (coax) di bawah TV, kotak ke-5 di kanan 4 stop kontak |
+| **1-28** | R. keluarga | 2 saklar | 1.40 | 6.68, 11.69 | tembok kiri (muka ke kanan) | R. keluarga, di muka panel TV → lampu r. keluarga |
+| **1-29** | R. keluarga | 2 saklar | 1.40 | 6.66, 12.02 | tembok kiri (muka ke kanan) | R. keluarga, samping pintu utama → lampu teras & carport |
+| **1-30** | R. keluarga | 1 stop kontak | 0.35 | 9.87, 12.30 | tembok kanan (muka ke kiri) | 🔴 REVISI: R. keluarga, tembok kanan depan, di bawah meja samping melayang (bawah meja 0.41) (DED: z 10.72 di belakang sofa → digeser supaya sofa bisa mepet) |
+| **1-31** | R. keluarga | 1 stop kontak | 0.35 | 9.87, 12.52 | tembok kanan (muka ke kiri) | 🔴 REVISI: R. keluarga, tembok kanan depan, di balik meja samping (DED: z 10.94) |
+| **1-32** | Selasar samping (luar) | 2 saklar | 1.40 | 2.94, 10.22 | tembok kanan (muka ke kiri) | teras samping (luar) → lampu taman/pagar |
 
-## Lantai 2 — 22 kotak (14 stop kontak, 4 × 1 saklar, 4 × 2 saklar)
+## Lantai 2 — 23 kotak (14 stop kontak, 4 × 1 saklar, 4 × 2 saklar)
 
 | ID | Ruang | Isi kotak | h (m) | Posisi (x, z) | Tembok | Keterangan |
 |---|---|---|---|---|---|---|
@@ -63,9 +64,10 @@ ID kotak yang sama dipakai di tiga tempat supaya bisa dicocokkan saat evaluasi: 
 | **2-17** | R. keluarga lt2 | 1 stop kontak | 1.05 | 6.56, 10.90 | tembok kiri (muka ke kanan) | 🔴 BARU: R. keluarga lt2, tembok KTU di atas sideboard (top 0.80) |
 | **2-18** | R. keluarga lt2 | 1 stop kontak | 1.05 | 6.56, 11.12 | tembok kiri (muka ke kanan) | 🔴 BARU: R. keluarga lt2, tembok KTU di atas sideboard |
 | **2-19** | R. keluarga lt2 | 2 saklar | 1.40 | 6.56, 12.02 | tembok kiri (muka ke kanan) | R. keluarga lt2, samping pintu balkon → lampu balkon depan + sorot |
-| **2-20** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.41 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
-| **2-21** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.63 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
-| **2-22** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.85 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
+| **2-20** | R. keluarga lt2 | 1 stop kontak antena TV | 0.40 | 9.88, 12.19 | tembok kanan (muka ke kiri) | 🔴 BARU: stop kontak antena TV (coax) di bawah meja kerja, kiri 3 stop kontak meja |
+| **2-21** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.41 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
+| **2-22** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.63 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
+| **2-23** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.85 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
 
 ## Rekap belanja kotak
 
@@ -74,6 +76,7 @@ ID kotak yang sama dipakai di tiga tempat supaya bisa dicocokkan saat evaluasi: 
 | Kotak 1 stop kontak (termasuk 3 AC, 2 water heater IP44, 2 NVR) | 37 |
 | Kotak 1 saklar (termasuk 2 saklar tukar) | 7 |
 | Kotak 2 saklar | 9 |
-| **Total kotak / inbow doos** | **53** |
+| Kotak stop kontak antena TV (coax) | 2 |
+| **Total kotak / inbow doos** | **55** |
 
 Catatan: stop kontak water heater (1-16, 2-08) perlu varian dengan tutup (IP44) — pastikan seri kotak ini punya varian itu, kalau tidak pakai stop kontak IP44 merek lain di titik tersebut. Ukuran pelat 90 mm adalah asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk saat evaluasi.

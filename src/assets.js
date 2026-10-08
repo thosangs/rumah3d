@@ -52,6 +52,7 @@ export const ASSETS = {
   pn_socket: { file: 'bl_pn_socket.glb' }, // kotak inbow Panasonic (pelat persegi 90 mm): 1 stop kontak schuko — punggung di z=0 lokal, muka +z
   pn_sw1: { file: 'bl_pn_sw1.glb' }, // kotak inbow: 1 saklar (tuts lebar)
   pn_sw2: { file: 'bl_pn_sw2.glb' }, // kotak inbow: 2 saklar berdampingan
+  pn_tv: { file: 'bl_pn_tv.glb' }, // kotak inbow: stop kontak antena TV (konektor IEC)
   // --- Poly Haven CC0 ---
   plant_tree: { file: 'ph_pachira_aquatica_01.glb', height: 1.9, pick: /_d$/ }, // pohon pot tinggi (file berisi 4 varian berjajar; dipakai varian d saja)
   plant_tree2: { file: 'ph_pachira_aquatica_01.glb', height: 1.6, pick: /_b$/ }, // varian b, lebih kecil

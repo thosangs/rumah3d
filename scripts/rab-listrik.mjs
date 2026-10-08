@@ -21,7 +21,7 @@ const n = (f) => P.filter(f).length;
 const Q = {
   cctv: n((d) => d.t === 'cctv'),
   sk: n((d) => d.t === 'stopkontak' && !d.ac && !d.wh), skBaru: n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && d.baru), skAc: n((d) => d.ac), skWh: n((d) => d.wh),
-  s1: n((d) => d.t === 'saklar1' && !d.tukar), s2: n((d) => d.t === 'saklar2'), s3: n((d) => d.t === 'saklar3'), tukar: n((d) => d.tukar), sconce: n((d) => d.t === 'sconce'),
+  s1: n((d) => d.t === 'saklar1' && !d.tukar), s2: n((d) => d.t === 'saklar2'), s3: n((d) => d.t === 'saklar3'), tukar: n((d) => d.tukar), sconce: n((d) => d.t === 'sconce'), antena: n((d) => d.t === 'antena'),
   l9: L.filter((l) => l.w === 9).length, l5: L.filter((l) => l.w === 5).length,
 };
 Q.titik = Q.sk + Q.skAc + Q.skWh + Q.s1 + Q.s2 + Q.s3 + (Q.tukar - Q.s3) + Q.sconce + Q.l9 + Q.l5; // "titik" ala RAB: tiap lampu, stop kontak, saklar
@@ -69,12 +69,14 @@ const batang = Math.ceil(mPipa / 4);
 
 // ---------- harga satuan ----------
 const H = {
-  sk: 75000, skAc: 95000, skWh: 110000, box8: 185000, s1: 35000, s2: 55000, s3: 95000, tukar: 45000, nym315m: 7000, l9: 105000, l5: 90000, sconce: 105000, antena: 155000,
+  sk: 75000, skAc: 95000, skWh: 110000, box8: 185000, s1: 35000, s2: 55000, s3: 95000, tukar: 45000, nym315m: 7000, l9: 105000, l5: 90000, sconce: 105000, antena: 155000, coax: 220000,
   box6: 150000, mcb: 132500, kwh2200: 3250000, kwh3500: 4300000,
   nym215: 375000, nym325: 850000, nym34m: 15000, pipa: 12000, aks: 8750, jasa: 40000,
   grounding: 450000, elcb: 450000,
 };
-const bintang = new Set(['tukar', 'nym315m', 'skAc', 'skWh', 'box8', 'box6', 'kwh3500', 'nym325', 'nym34m', 'grounding', 'elcb']); // perkiraan pasar
+const bintang = new Set(['coax', 'tukar', 'nym315m', 'skAc', 'skWh', 'box8', 'box6', 'kwh3500', 'nym325', 'nym34m', 'grounding', 'elcb']); // perkiraan pasar
+// coax: panjang JALUR coax + 8 m dari antena di atap ke splitter + turunan ke 2 titik
+const mCoax = 8 + JALUR.filter((j) => j.coax).reduce((m, j) => { for (let i = 0; i < j.pts.length - 1; i++) m += Math.abs(j.pts[i + 1][0] - j.pts[i][0]) + Math.abs(j.pts[i + 1][1] - j.pts[i][1]); return m; }, 0) + 3.4 + (CEIL.lt1 - 0.78) + (CEIL.lt2 - 0.4);
 const rows = [
   ['Pasang stop kontak 1 ph 16 A (termasuk ' + Q.skBaru + ' tambahan revisi)', Q.sk, 'bh', 'sk'],
   ['Pasang stop kontak AC 16 A', Q.skAc, 'bh', 'skAc'],
@@ -87,7 +89,8 @@ const rows = [
   ['Pasang lampu LED downlight 9 W', Q.l9, 'bh', 'l9'],
   ['Pasang lampu LED downlight 5 W', Q.l5, 'bh', 'l5'],
   ['Pasang lampu LED sorot/dinding outdoor', Q.sconce, 'bh', 'sconce'],
-  ['Pasang antena TV (titik)', 1, 'bh', 'antena'],
+  ['Pasang stop kontak antena TV (titik coax: bawah TV lt1, bawah meja kerja lt2)', Q.antena, 'bh', 'antena'],
+  ['Splitter antena 2 way + kabel coax RG6 (1 antena di atap → splitter plafon lt2 → 2 titik, ±' + Math.round(mCoax) + ' m) \u2014 antena & tiang di luar (±Rp 250–400 rb)', 1, 'ls', 'coax'],
   ['Box MCB 8 group (pengganti 4 group)', 1, 'bh', 'box8'],
   ['MCB 1 fasa 10 A / 16 A (penerangan lt1, lt2; stop kontak lt1, lt2; AC lt1; AC lt2; water heater)', 7, 'bh', 'mcb'],
   ['Kabel NYM 2×1,5 mm² — jalur lampu (' + Math.round(mLampu) + ' m)', roll(mLampu), 'roll', 'nym215'],
