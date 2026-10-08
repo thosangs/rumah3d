@@ -38,7 +38,7 @@ ID kotak yang sama dipakai di tiga tempat supaya bisa dicocokkan saat evaluasi: 
 | **1-28** | R. keluarga | 1 stop kontak | 0.35 | 9.87, 12.52 | tembok kanan (muka ke kiri) | 🔴 REVISI: R. keluarga, tembok kanan depan, di balik meja samping (DED: z 10.94) |
 | **1-29** | Selasar samping (luar) | 2 saklar | 1.40 | 2.94, 10.22 | tembok kanan (muka ke kiri) | teras samping (luar) → lampu taman/pagar |
 
-## Lantai 2 — 23 kotak (14 stop kontak, 6 × 1 saklar, 3 × 2 saklar)
+## Lantai 2 — 22 kotak (14 stop kontak, 4 × 1 saklar, 4 × 2 saklar)
 
 | ID | Ruang | Isi kotak | h (m) | Posisi (x, z) | Tembok | Keterangan |
 |---|---|---|---|---|---|---|
@@ -48,31 +48,30 @@ ID kotak yang sama dipakai di tiga tempat supaya bisa dicocokkan saat evaluasi: 
 | **2-04** | KT2 | 1 saklar | 1.40 | 6.43, 5.88 | tembok kanan (muka ke kiri) | KT2, samping pintu → lampu KT2 (simbol DED: tunggal, 1 kelompok lampu) |
 | **2-05** | Selasar | 1 saklar | 1.40 | 7.73, 3.56 | tembok belakang ruang (muka ke +z / ke depan) | selasar, kanan pintu balkon belakang → lampu balkon |
 | **2-06** | Selasar | 1 stop kontak | 0.40 | 6.56, 5.45 | tembok kiri (muka ke kanan) | selasar, tembok KT2 |
-| **2-07** | Selasar | 1 saklar | 1.40 | 6.56, 5.88 | tembok kiri (muka ke kanan) | 🔴 REVISI: selasar → lampu selasar saja (DED: ganda; lampu void/tangga dipindah ke saklar tukar di tembok luar) |
-| **2-08** | Selasar | 1 saklar | 1.40 | 6.56, 8.15 | tembok kiri (muka ke kanan) | selasar → lampu toilet kanan |
-| **2-09** | Toilet kiri (KTU) | 1 stop kontak water heater (IP44) | 1.90 | 4.50, 7.09 | tembok belakang ruang (muka ke +z / ke depan) | 🔴 BARU: stop kontak water heater toilet lt2 kiri (di dalam KTU, IP44), tembok sisi KT2, kanan unit, 1,1 m dari kepala shower |
-| **2-10** | KT utama | 2 saklar | 1.40 | 4.07, 8.56 | tembok belakang ruang (muka ke +z / ke depan) | KTU, kanan pintu toilet → lampu toilet kiri + lampu balkon samping kiri (simbol DED: ganda, 2 kelompok) |
-| **2-11** | KT utama | 1 saklar | 1.40 | 6.43, 9.57 | tembok kanan (muka ke kiri) | KTU, samping pintu → lampu KTU |
-| **2-12** | KT utama | 1 stop kontak | 0.40 | 6.43, 10.01 | tembok kanan (muka ke kiri) | KTU, tembok kanan (meja rias) |
-| **2-13** | KT utama | 1 stop kontak AC | 2.40 | 3.06, 10.30 | tembok kiri (muka ke kanan) | 🔴 BARU: stop kontak AC KTU, tembok kiri di kanan unit indoor yang di atas pintu geser balkon |
-| **2-14** | KT utama | 1 stop kontak | 0.40 | 3.06, 10.75 | tembok kiri (muka ke kanan) | KTU, tembok kiri |
-| **2-15** | R. keluarga lt2 | 1 saklar tukar | 1.40 | 9.88, 9.45 | tembok kanan (muka ke kiri) | 🔴 BARU: saklar tukar (two-way) lampu tangga/void di tembok luar, tepat setelah anak tangga teratas — pasangan saklar triple lt1 di pintu belakang |
-| **2-16** | R. keluarga lt2 | 2 saklar | 1.40 | 6.56, 9.57 | tembok kiri (muka ke kanan) | R. keluarga lt2, samping pintu KTU → lampu r. keluarga |
-| **2-17** | R. keluarga lt2 | 1 stop kontak | 0.40 | 6.56, 9.72 | tembok kiri (muka ke kanan) | 🔴 BARU: R. keluarga lt2, tembok KTU (seberang), strip bebas di kanan pintu KTU |
-| **2-18** | R. keluarga lt2 | 1 stop kontak | 1.05 | 6.56, 10.90 | tembok kiri (muka ke kanan) | 🔴 BARU: R. keluarga lt2, tembok KTU di atas sideboard (top 0.80) |
-| **2-19** | R. keluarga lt2 | 1 stop kontak | 1.05 | 6.56, 11.12 | tembok kiri (muka ke kanan) | 🔴 BARU: R. keluarga lt2, tembok KTU di atas sideboard |
-| **2-20** | R. keluarga lt2 | 2 saklar | 1.40 | 6.56, 12.02 | tembok kiri (muka ke kanan) | R. keluarga lt2, samping pintu balkon → lampu balkon depan + sorot |
-| **2-21** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.41 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
-| **2-22** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.63 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
-| **2-23** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.85 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
+| **2-07** | Selasar | 2 saklar | 1.40 | 6.56, 8.15 | tembok kiri (muka ke kanan) | 🔴 REVISI: selasar, samping pintu toilet kanan → 1 tuts lampu toilet kanan + 1 tuts 3 lampu selasar (2 selasar + 1 depan pintu KTU); menggantikan saklar selasar DED di z 5,88 |
+| **2-08** | Toilet kiri (KTU) | 1 stop kontak water heater (IP44) | 1.90 | 4.50, 7.09 | tembok belakang ruang (muka ke +z / ke depan) | 🔴 BARU: stop kontak water heater toilet lt2 kiri (di dalam KTU, IP44), tembok sisi KT2, kanan unit, 1,1 m dari kepala shower |
+| **2-09** | KT utama | 2 saklar | 1.40 | 4.07, 8.56 | tembok belakang ruang (muka ke +z / ke depan) | KTU, kanan pintu toilet → lampu toilet kiri + lampu balkon samping kiri (simbol DED: ganda, 2 kelompok) |
+| **2-10** | KT utama | 1 saklar | 1.40 | 6.43, 9.57 | tembok kanan (muka ke kiri) | KTU, samping pintu → lampu KTU |
+| **2-11** | KT utama | 1 stop kontak | 0.40 | 6.43, 10.01 | tembok kanan (muka ke kiri) | KTU, tembok kanan (meja rias) |
+| **2-12** | KT utama | 1 stop kontak AC | 2.40 | 3.06, 10.30 | tembok kiri (muka ke kanan) | 🔴 BARU: stop kontak AC KTU, tembok kiri di kanan unit indoor yang di atas pintu geser balkon |
+| **2-13** | KT utama | 1 stop kontak | 0.40 | 3.06, 10.75 | tembok kiri (muka ke kanan) | KTU, tembok kiri |
+| **2-14** | R. keluarga lt2 | 1 saklar tukar | 1.40 | 9.88, 9.45 | tembok kanan (muka ke kiri) | 🔴 BARU: saklar tukar (two-way) lampu tangga/void di tembok luar, tepat setelah anak tangga teratas — pasangan saklar triple lt1 di pintu belakang |
+| **2-15** | R. keluarga lt2 | 2 saklar | 1.40 | 9.88, 9.55 | tembok kanan (muka ke kiri) | 🔴 REVISI: R. keluarga lt2, tembok luar setelah tangga, kotak di samping saklar tukar → lampu r. keluarga lt2 (DED: di tembok KTU samping pintu) |
+| **2-16** | R. keluarga lt2 | 1 stop kontak | 0.40 | 6.56, 9.72 | tembok kiri (muka ke kanan) | 🔴 BARU: R. keluarga lt2, tembok KTU (seberang), strip bebas di kanan pintu KTU |
+| **2-17** | R. keluarga lt2 | 1 stop kontak | 1.05 | 6.56, 10.90 | tembok kiri (muka ke kanan) | 🔴 BARU: R. keluarga lt2, tembok KTU di atas sideboard (top 0.80) |
+| **2-18** | R. keluarga lt2 | 1 stop kontak | 1.05 | 6.56, 11.12 | tembok kiri (muka ke kanan) | 🔴 BARU: R. keluarga lt2, tembok KTU di atas sideboard |
+| **2-19** | R. keluarga lt2 | 2 saklar | 1.40 | 6.56, 12.02 | tembok kiri (muka ke kanan) | R. keluarga lt2, samping pintu balkon → lampu balkon depan + sorot |
+| **2-20** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.41 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
+| **2-21** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.63 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
+| **2-22** | R. keluarga lt2 | 1 stop kontak | 0.40 | 9.88, 12.85 | tembok kanan (muka ke kiri) | R. keluarga lt2, tembok kanan depan |
 
 ## Rekap belanja kotak
 
 | Isi kotak | Jumlah |
 |---|---|
 | Kotak 1 stop kontak (termasuk 3 AC, 2 water heater IP44, 2 NVR) | 35 |
-| Kotak 1 saklar (termasuk 2 saklar tukar) | 9 |
-| Kotak 2 saklar | 8 |
-| **Total kotak / inbow doos** | **52** |
+| Kotak 1 saklar (termasuk 2 saklar tukar) | 7 |
+| Kotak 2 saklar | 9 |
+| **Total kotak / inbow doos** | **51** |
 
-Catatan: stop kontak water heater (1-16, 2-09) perlu varian dengan tutup (IP44) — pastikan seri kotak ini punya varian itu, kalau tidak pakai stop kontak IP44 merek lain di titik tersebut. Ukuran pelat 90 mm adalah asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk saat evaluasi.
+Catatan: stop kontak water heater (1-16, 2-08) perlu varian dengan tutup (IP44) — pastikan seri kotak ini punya varian itu, kalau tidak pakai stop kontak IP44 merek lain di titik tersebut. Ukuran pelat 90 mm adalah asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk saat evaluasi.

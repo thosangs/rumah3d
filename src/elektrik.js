@@ -67,7 +67,11 @@ export function buildElektrik(ceilingAt) {
     holder.name = `elek-${d.t}`; holder.userData.elek = d; g.add(holder);
     if (d.t === 'stopkontak' || d.t === 'saklar1' || d.t === 'saklar2') {
       placeAsset(holder, d.t === 'stopkontak' ? 'pn_socket' : d.t === 'saklar1' ? 'pn_sw1' : 'pn_sw2', {});
-      if (d.id) { const sp = labelSprite(d.id, !!(d.baru || d.rev)); sp.position.set(0, 0.085, 0.03); holder.add(sp); }
+      if (d.id) { // label; kotak berdampingan (< 15 cm) → label kotak kedua dinaikkan supaya tidak saling tutup
+        const tetangga = PERANGKAT.filter((q) => q.lvl === d.lvl && q.id && q !== d && Math.hypot(q.x - d.x, q.z - d.z) < 0.15);
+        const naik = tetangga.some((q) => q.id < d.id);
+        const sp = labelSprite(d.id, !!(d.baru || d.rev)); sp.position.set(0, naik ? 0.145 : 0.085, 0.03); holder.add(sp);
+      }
     } else if (d.t === 'cctv') {
       // kamera: pelat bracket di bidang pasang; kepala ('head') diputar. Tembok: yaw relatif normal + pitch. Plafon ('dn'):
       // holder diputar Y(yaw dunia) lalu X(+90°) supaya lengan menggantung; kepala ditegakkan −(90°−pitch).

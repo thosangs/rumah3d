@@ -85,12 +85,11 @@ export const PERANGKAT = [
   // sebelum ujung (stub), tunggal = batang berakhir di tick; dicocokkan dengan jumlah kelompok lampu per saklar & legenda ----------------
   { lvl: 'lt2', t: 'saklar1', x: 7.73, z: 3.564, n: '+z', h: 1.4, r: 'selasar, kanan pintu balkon belakang → lampu balkon' },
   { lvl: 'lt2', t: 'saklar1', x: 6.435, z: 5.88, n: '-x', h: 1.4, r: 'KT2, samping pintu → lampu KT2 (simbol DED: tunggal, 1 kelompok lampu)' },
-  { lvl: 'lt2', t: 'saklar1', x: 6.563, z: 5.88, n: '+x', h: 1.4, rev: true, r: 'REVISI: selasar → lampu selasar saja (DED: ganda; lampu void/tangga dipindah ke saklar tukar di tembok luar)' },
   { lvl: 'lt2', t: 'saklar1', tukar: true, x: 9.876, z: 9.45, n: '-x', h: 1.4, baru: true, r: 'REVISI: saklar tukar (two-way) lampu tangga/void di tembok luar, tepat setelah anak tangga teratas — pasangan saklar triple lt1 di pintu belakang' },
-  { lvl: 'lt2', t: 'saklar1', x: 6.563, z: 8.15, n: '+x', h: 1.4, r: 'selasar → lampu toilet kanan' },
+  { lvl: 'lt2', t: 'saklar2', x: 6.563, z: 8.15, n: '+x', h: 1.4, rev: true, r: 'REVISI: selasar, samping pintu toilet kanan → 1 tuts lampu toilet kanan + 1 tuts 3 lampu selasar (2 selasar + 1 depan pintu KTU); menggantikan saklar selasar DED di z 5,88' },
   { lvl: 'lt2', t: 'saklar2', x: 4.07, z: 8.565, n: '+z', h: 1.4, r: 'KTU, kanan pintu toilet → lampu toilet kiri + lampu balkon samping kiri (simbol DED: ganda, 2 kelompok)' },
   { lvl: 'lt2', t: 'saklar1', x: 6.435, z: 9.57, n: '-x', h: 1.4, r: 'KTU, samping pintu → lampu KTU' },
-  { lvl: 'lt2', t: 'saklar2', x: 6.563, z: 9.57, n: '+x', h: 1.4, r: 'R. keluarga lt2, samping pintu KTU → lampu r. keluarga' },
+  { lvl: 'lt2', t: 'saklar2', x: 9.876, z: 9.55, n: '-x', h: 1.4, rev: true, r: 'REVISI: R. keluarga lt2, tembok luar setelah tangga, kotak di samping saklar tukar → lampu r. keluarga lt2 (DED: di tembok KTU samping pintu)' },
   { lvl: 'lt2', t: 'saklar2', x: 6.563, z: 12.02, n: '+x', h: 1.4, r: 'R. keluarga lt2, samping pintu balkon → lampu balkon depan + sorot' },
 ];
 
@@ -158,16 +157,17 @@ export const JALUR = [
   // lantai 2
   { lvl: 'lt2', pts: [[7.73, 3.575], [7.73, 3.6], [8.30, 3.6], [8.30, 2.74]] },
   { lvl: 'lt2', pts: [[6.425, 5.88], [4.76, 5.88], [4.76, 5.24]] },
-  { lvl: 'lt2', pts: [[6.563, 5.88], [7.09, 5.88], [7.09, 4.99]] },
-  { lvl: 'lt2', pts: [[7.09, 5.88], [7.09, 6.98]] },
+  { lvl: 'lt2', pts: [[6.575, 8.15], [7.09, 8.15], [7.09, 8.98]] }, // saklar ganda selasar → lampu depan pintu KTU
+  { lvl: 'lt2', pts: [[7.09, 8.15], [7.09, 6.98], [7.09, 4.99]] }, // … dan 2 lampu selasar
   { lvl: 'lt2', pts: [[9.876, 9.45], [9.42, 9.45], [9.42, 8.98], [9.42, 4.99]] }, // lampu void/tangga dari saklar tukar lt2
   { lvl: 'lt2', pts: [[9.6, 3.7], [9.42, 3.7], [9.42, 4.99]] }, // traveller two-way dari saklar triple lt1 (riser di pojok belakang kanan)
   { lvl: 'lt2', pts: [[5.66, 7.74], [6.3, 7.74], [6.3, 8.15], [6.575, 8.15]] },
   { lvl: 'lt2', pts: [[3.87, 7.74], [3.87, 8.6], [4.07, 8.6], [4.07, 8.575]] },
   { lvl: 'lt2', pts: [[2.24, 9.48], [2.24, 8.72], [4.07, 8.72], [4.07, 8.6]] },
   { lvl: 'lt2', pts: [[6.425, 9.57], [6.4, 9.75], [4.76, 9.75], [4.76, 10.22]] },
-  { lvl: 'lt2', pts: [[6.563, 9.57], [7.09, 9.57], [7.09, 8.98]] },
-  { lvl: 'lt2', pts: [[7.09, 9.57], [7.09, 12.94], [9.44, 12.94], [9.44, 10.94]] },
+  { lvl: 'lt2', pts: [[9.876, 9.55], [9.44, 9.55], [9.44, 10.94]] }, // saklar ganda r. keluarga lt2 (tembok luar) → lampu r. keluarga
+  { lvl: 'lt2', pts: [[9.44, 9.55], [9.42, 9.55], [9.42, 8.98]] },
+  { lvl: 'lt2', pts: [[7.09, 10.94], [7.09, 12.94], [9.44, 12.94], [9.44, 10.94]] },
   { lvl: 'lt2', pts: [[7.09, 10.94], [9.44, 10.94]] },
   { lvl: 'lt2', pts: [[6.575, 12.02], [6.9, 12.02], [6.9, 12.73], [4.74, 12.73], [2.24, 12.73]] },
   { lvl: 'lt2', pts: [[6.9, 12.73], [6.9, 13.7], [6.1, 13.7], [6.1, 13.95]] },
