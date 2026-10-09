@@ -2,7 +2,7 @@
 
 Revisi lampu 09-10-2026. Sumber: DED lembar 26–27 (denah listrik) & 11–12 (denah plafon), dicocokkan dengan armatur lampu di model SKP. Aturan: **DED menentukan jumlah & titik** (dasar RAB); kalau model SKP punya armatur ≤ 0,5 m dari titik DED, posisi SKP yang dipakai; lampu yang hanya ada di SKP dipakai bila fungsional, sisanya tidak dipakai (disembunyikan di 3D). h = tinggi pasang dari lantai lantai ybs (lampu plafon: tinggi plafon). Merah = berubah dari DED.
 
-## Lantai 1 — 32 titik
+## Lantai 1 — 34 titik
 
 | ID | Ruang | Jenis | Daya | h (m) | x, z (m) | Sumber | Keterangan / evaluasi |
 |---|---|---|---|---|---|---|---|
@@ -36,8 +36,10 @@ Revisi lampu 09-10-2026. Sumber: DED lembar 26–27 (denah listrik) & 11–12 (d
 | **L1-28** | Carport | Downlight tempel (outbow) | 9 W | 2.85 (atap, bawah lampu 2.71) | 8.30, 15.00 | DED, diubah | carport (DED), downlight tempel |
 | **L1-29** | Carport | Downlight tempel (outbow) | 9 W | 2.82 (atap, bawah lampu 2.68) | 4.77, 18.00 | DED, diubah | carport sisi pagar (DED), downlight tempel |
 | **L1-30** | Carport | Downlight tempel (outbow) | 9 W | 2.85 (atap, bawah lampu 2.71) | 8.30, 18.00 | DED, diubah | carport sisi pagar (DED), downlight tempel |
-| **L1-31** | Luar pagar (sisi jalan) | Lampu dinding outdoor (up-down) | 5 W | 0,13 di atas tanah tanaman (dinding, hadap jalan) | 3.60, 19.17 | DED, posisi SKP | sisi jalan pagar depan, lampu sorot aksen di atas bak tanaman (posisi SKP, ±0,13 m di atas tanaman; DED z 19,64 = sisi jalan). Dulu digambar di muka dalam pagar 2,2 m |
+| **L1-31** | Luar pagar (sisi jalan) | Lampu sorot taman (spike, sorot ke atas) | 5 W | kepala lampu di bak tanaman (sorot ke atas) | 3.60, 19.17 | DED, posisi SKP | sisi jalan, lampu sorot taman (spike) di bak tanaman di antara dua semak, menyorot dinding bertekstur ke atas (render hal. 4 & 6; armatur SKP). Sebelumnya salah kucatat sebagai lampu dinding. IP65 |
 | **L1-32** | Luar pagar (sisi jalan) | Downlight tanam | 5 W | 2,00 dari trotoar (plafon kanopi pintu pagar) | 2.22, 19.23 | SKP (tidak ada di DED) | sisi jalan, di plafon kanopi pintu pagar pejalan kaki (hanya di SKP; dipertahankan: menerangi pintu pagar, bel & nomor rumah). 2,0 m dari trotoar |
+| **L1-33** | R. jemur | Lampu sorot taman (spike, sorot ke atas) | 5 W | kepala lampu 0,17 di atas kerikil (sorot ke atas) | 6.45, 1.50 | SKP (tidak ada di DED) | lampu sorot taman bertiang pendek (spike) di bak kerikil kaki dinding roster, menyorot roster ke atas (hanya di SKP; sempat salah kuanggap penutup floor drain). Dipertahankan sebagai aksen roster. Pakai tipe IP65, kabel outdoor dari grup lampu jemur lewat kolom roster lalu di bawah kerikil |
+| **L1-34** | Carport | Lampu sorot tanam lantai (sorot ke atas) | 5 W | rata paving, 15 cm dari tembok (sorot ke atas) | 9.72, 18.70 | baru | carport sisi gerbang, lampu sorot tanam lantai di kaki tembok batas kanan 0,75 m dari gerbang, menyorot tembok ke atas: pasangan lampu sorot dinding tekstur di sisi pintu pagar (tidak ada di DED/SKP; tambahan 09-10-2026). Wajib tipe tanam IP67 tahan dilindas mobil (drive-over). Grup lampu carport |
 
 ## Lantai 2 — 20 titik
 
@@ -71,12 +73,14 @@ Revisi lampu 09-10-2026. Sumber: DED lembar 26–27 (denah listrik) & 11–12 (d
 | Downlight tanam 9 W | 15 |
 | Downlight tanam 5 W | 20 |
 | Downlight tempel (outbow) 9 W — carport | 4 |
-| Lampu dinding outdoor 5 W | 11 |
+| Lampu dinding outdoor 5 W | 10 |
+| Lampu sorot taman (spike) 5 W, sorot ke atas | 2 |
+| Lampu sorot tanam lantai 5 W IP67, sorot ke atas | 1 |
 | Titik lampu gantung (armatur furnitur) | 2 |
-| Total titik lampu | 52 |
-| — di antaranya armatur sudah ada di model SKP | 13 |
+| Total titik lampu | 54 |
+| — di antaranya armatur sudah ada di model SKP | 14 |
 | — diubah dari DED (posisi / jenis / tinggi) | 18 |
-| — baru (tidak ada di DED) | 7 |
+| — baru (tidak ada di DED) | 9 |
 
 ## Lampu di model SKP yang tidak dipakai (disembunyikan di 3D)
 
@@ -87,7 +91,6 @@ Revisi lampu 09-10-2026. Sumber: DED lembar 26–27 (denah listrik) & 11–12 (d
 | 8.66, 2.70, 15.86 | carport, baris tengah |
 | 7.71, 2.70, 13.68 | carport, depan kaca r. keluarga |
 | 8.67, 2.70, 13.68 | carport, depan kaca r. keluarga |
-| 6.45, -0.05, 1.50 | BUKAN lampu: penutup floor drain kuningan di r. jemur yang ikut "menyala" karena warnanya mirip lampu SKP → dikembalikan jadi kuningan biasa |
 | 2.69, 6.04, 6.16 | luifel jendela KT2 sisi luar, 6 m di atas selasar samping (dekoratif) |
 | 2.14, 6.24, 11.21 | balkon samping, titik tambahan di antara 2 titik DED (jarak DED 3,25 m sudah cukup) |
 | 3.57, 6.24, 12.83 | balkon depan, titik tambahan |

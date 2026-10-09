@@ -83,6 +83,8 @@ const sym = {
   // kamera CCTV: badan + lensa trapesium, diputar ke arah pandang (ang = derajat svg); kerucut pandang digambar terpisah
   cctv: (cx, cy, col, ang, no) => `<g transform="translate(${cx} ${cy}) rotate(${ang})"><path d="M-6 -5 L6 -5 L6 5 L-6 5 Z" fill="${col}"/><path d="M6 -4 L12 -7 L12 7 L6 4 Z" fill="${col}"/></g>${no ? `<text x="${cx}" y="${cy - 11}" font-size="8.5" font-weight="700" text-anchor="middle" fill="${col}">CCTV-${no}</text>` : ''}`,
   // lampu: lingkaran dengan silang menembus (5 W) / lingkaran ganda (9 W)
+  // lampu sorot taman ke atas: lingkaran kecil + panah ke atas (arah sorot)
+  uplight: (cx, cy, col) => `<circle cx="${cx}" cy="${cy}" r="6" fill="#fff" stroke="${col}" stroke-width="1.6"/><circle cx="${cx}" cy="${cy}" r="2" fill="${col}"/><path d="M${cx - 9} ${cy - 4} l-3 -6 M${cx + 9} ${cy - 4} l3 -6 M${cx} ${cy - 8} l0 -6" stroke="${col}" stroke-width="1.3" fill="none"/>`,
   // lampu gantung: lingkaran dengan titik isi di tengah + tiga garis gantung pendek
   gantung: (cx, cy, col) => `<circle cx="${cx}" cy="${cy}" r="8" fill="#fff" stroke="${col}" stroke-width="1.6"/><circle cx="${cx}" cy="${cy}" r="3.2" fill="${col}"/><line x1="${cx}" y1="${cy - 8}" x2="${cx}" y2="${cy - 13}" stroke="${col}" stroke-width="1.4"/><line x1="${cx - 4}" y1="${cy - 13}" x2="${cx + 4}" y2="${cy - 13}" stroke="${col}" stroke-width="1.4"/>`,
   lampu: (cx, cy, col, w) => `<circle cx="${cx}" cy="${cy}" r="8" fill="#fff" stroke="${col}" stroke-width="1.6"/>${w === 9 ? `<circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${col}" stroke-width="1.4"/>` : ''}<line x1="${cx - 11}" y1="${cy - 11}" x2="${cx + 11}" y2="${cy + 11}" stroke="${col}" stroke-width="1.4"/><line x1="${cx + 11}" y1="${cy - 11}" x2="${cx - 11}" y2="${cy + 11}" stroke="${col}" stroke-width="1.4"/>`,
@@ -178,7 +180,7 @@ function perangkat(lvl) {
   for (const j of JALUR.filter((q) => q.lvl === lvl)) s += `<polyline points="${j.pts.map(([x, z]) => `${X(x)},${Y(z)}`).join(' ')}" fill="none" stroke="${j.data ? BLUE : j.coax ? UNGU : '#444'}" stroke-width="1.4" stroke-dasharray="${j.data ? '8,3,2,3' : j.coax ? '2,3' : '6,4'}"/>`;
   for (const l of LAMPU.filter((q) => q.lvl === lvl)) {
     const col = l.baru || l.rev ? RED : INK;
-    s += l.j === 'gantung' ? sym.gantung(X(l.x), Y(l.z), col) : sym.lampu(X(l.x), Y(l.z), col, l.w);
+    s += l.j === 'gantung' ? sym.gantung(X(l.x), Y(l.z), col) : l.j === 'uplight' || l.j === 'tanam' ? sym.uplight(X(l.x), Y(l.z), col) : sym.lampu(X(l.x), Y(l.z), col, l.w);
     if (l.lid) s += `<text x="${X(l.x) + 11}" y="${Y(l.z) + 15}" font-size="7" font-weight="700" fill="${col === RED ? RED : '#8a5a00'}">${l.lid}</text>`;
   }
   const labeled = []; // label tinggi hanya sekali untuk perangkat sejenis yang berdampingan (< 35 cm)
@@ -195,7 +197,7 @@ function perangkat(lvl) {
     else if (d.t === 'saklar3') s += sym.saklar(cx, cy, col, 3, ROT[d.n], d.tukar);
     else if (d.t === 'mcb') s += sym.mcb(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
     else if (d.t === 'kwh') s += sym.kwh(X(d.x + nx * 0.3), Y(d.z + nz * 0.3), col);
-    else if (d.t === 'sconce') s += sym.sconce(cx, cy, col);
+    else if (d.t === 'sconce') { s += sym.sconce(cx, cy, col); if (d.lid) s += `<text x="${cx + (nx ? nx * 10 : 11)}" y="${cy + (nz ? nz * 18 : 15)}" font-size="7" font-weight="700" text-anchor="${nx < 0 ? 'end' : 'start'}" fill="${col === RED ? RED : '#8a5a00'}">${d.lid}</text>`; }
     if (d.id) { // ID kotak: di sisi ruang, dijauhkan kalau bertumpuk dengan label kotak tetangga
       let off = 0.48; const lw = 20, lh = 9;
       const pos = () => [X(d.x + nx * off) + (nz ? 0 : nx * 2), Y(d.z + nz * off) + 3];
@@ -227,8 +229,9 @@ function legenda(lvl) {
     ['saklar2', 'Saklar ganda, h 140 cm', n((d) => d.t === 'saklar2'), 0],
     ['tukar', 'Saklar tukar (two-way) lampu tangga, h 140 cm', 0, n((d) => d.t === 'saklar1' && d.tukar)],
     ['kotak', `Kotak inbow Panasonic (1 kotak = 1 stop kontak / 1 saklar / 2 saklar); angka = ID kotak (${KOTAK.filter((k) => k.lvl === lvl).length} kotak, lihat daftar-kotak.md)`, null, null],
-    ['lampu5', 'Lampu LED downlight 5 W', L.filter((l) => l.w === 5 && !l.baru).length, L.filter((l) => l.w === 5 && l.baru).length],
+    ['lampu5', 'Lampu LED downlight 5 W', L.filter((l) => l.w === 5 && !l.j && !l.baru).length, L.filter((l) => l.w === 5 && !l.j && l.baru).length],
     ['lampu9', 'Lampu LED downlight 9 W' + (lvl === 'lt1' ? ' (carport: model tempel/outbow)' : ''), L.filter((l) => l.w === 9 && !l.baru).length, L.filter((l) => l.w === 9 && l.baru).length],
+    ...(lvl === 'lt1' ? [['uplight', 'Lampu sorot ke atas 5 W: taman/spike IP65 (roster jemur, dinding tekstur pagar) & tanam lantai IP67 (carport)', L.filter((l) => (l.j === 'uplight' || l.j === 'tanam') && !l.baru).length, L.filter((l) => (l.j === 'uplight' || l.j === 'tanam') && l.baru).length]] : []),
     ['gantung', 'Titik lampu gantung (armatur dari furnitur)', L.filter((l) => l.j === 'gantung' && !l.baru).length, L.filter((l) => l.j === 'gantung' && l.baru).length],
     ['sconce', 'Lampu LED dinding outdoor 5 W (taman: h 140 cm)', n((d) => d.t === 'sconce' && !d.baru), n((d) => d.t === 'sconce' && d.baru)],
     ['idlampu', `Angka L${lvl === 'lt1' ? 1 : 2}-xx = ID titik lampu (${TITIK_LAMPU.filter((t) => t.lvl === lvl).length} titik, lihat Daftar Titik Lampu)`, null, null],
@@ -263,6 +266,7 @@ function legenda(lvl) {
     else if (k === 'lampu9') s += sym.lampu(cx, cy, col, 9);
     else if (k === 'sconce') s += sym.sconce(cx, cy, col);
     else if (k === 'gantung') s += sym.gantung(cx, cy, col);
+    else if (k === 'uplight') s += sym.uplight(cx, cy, col);
     else if (k === 'idlampu') s += `<text x="${cx}" y="${cy + 3}" font-size="8" font-weight="700" text-anchor="middle" fill="#8a5a00">L1-07</text>`;
     else if (k === 'mcb') s += sym.mcb(cx, cy, col);
     else if (k === 'kwh') s += sym.kwh(cx, cy, col);
@@ -391,7 +395,7 @@ tr.rev td.id, tr.rev td.ket { color: #c8102e; } .kecil { font-size: 9px; color: 
   const rekapL = [
     ['Downlight tanam 9 W', cT((t) => t.j === 'dl' && t.w === 9)], ['Downlight tanam 5 W', cT((t) => t.j === 'dl' && t.w === 5)],
     ['Downlight tempel (outbow) 9 W — carport', cT((t) => t.j === 'tempel')], ['Lampu dinding outdoor 5 W', cT((t) => t.j === 'sconce')],
-    ['Titik lampu gantung (armatur furnitur)', cT((t) => t.j === 'gantung')], ['Total titik lampu', TITIK_LAMPU.length],
+    ['Lampu sorot taman (spike) 5 W, sorot ke atas', cT((t) => t.j === 'uplight')], ['Lampu sorot tanam lantai 5 W IP67, sorot ke atas', cT((t) => t.j === 'tanam')], ['Titik lampu gantung (armatur furnitur)', cT((t) => t.j === 'gantung')], ['Total titik lampu', TITIK_LAMPU.length],
     ['— di antaranya armatur sudah ada di model SKP', cT((t) => t.skp)], ['— diubah dari DED (posisi / jenis / tinggi)', cT((t) => t.rev)], ['— baru (tidak ada di DED)', cT((t) => t.baru)],
   ];
   mdL += `## Rekap\n\n| Jenis | Jumlah |\n|---|---|\n` + rekapL.map(([a, b]) => `| ${a} | ${b} |`).join('\n') + `\n\n`;

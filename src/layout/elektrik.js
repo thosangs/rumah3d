@@ -75,7 +75,6 @@ export const PERANGKAT = [
   { lvl: 'lt1', t: 'sconce', x: 0.24, z: 12.03, n: '+x', h: 1.4, skp: true, rev: true, r: 'taman samping, panel dinding dek (posisi SKP; DED z 13,43 di ujung panel)' },
   { lvl: 'lt1', t: 'sconce', x: 0.12, z: 15.00, n: '+x', h: 1.4, baru: true, r: 'samping carport, tembok batas kiri (DED; belum ada di model 3D sebelumnya)' },
   { lvl: 'lt1', t: 'sconce', x: 3.84, z: 0.125, n: '+z', h: 1.4, rev: true, r: 'r. jemur, muka dalam pagar belakang (DED). Tinggi 1,75 → 1,40 m, sejajar lampu taman' },
-  { lvl: 'lt1', t: 'sconce', x: 3.60, z: 19.17, n: '+z', h: -0.27, hKet: '0,13 di atas tanah tanaman (dinding, hadap jalan)', skp: true, rev: true, r: 'sisi jalan pagar depan, lampu sorot aksen di atas bak tanaman (posisi SKP, ±0,13 m di atas tanaman; DED z 19,64 = sisi jalan). Dulu digambar di muka dalam pagar 2,2 m' },
   { lvl: 'lt2', t: 'sconce', x: 6.07, z: 13.95, n: '+z', h: 1.15, skp: true, ruang: 'Fasad lt2', r: 'fasad lt2 di panel kisi kayu (posisi SKP; simbol DED di x 6,99), 1,15 m di atas lantai lt2: lampu aksen fasad' },
   // ---------------- LANTAI 2: stop kontak 8 ----------------
   { lvl: 'lt2', t: 'stopkontak', x: 3.065, z: 5.33, n: '+x', h: 0.4, r: 'KT2, tembok kiri' },
@@ -134,7 +133,10 @@ export const LAMPU = [
   { lvl: 'lt1', x: 8.30, z: 15.0, w: 9, j: 'tempel', h: 2.85, rev: true, r: 'carport (DED), downlight tempel' },
   { lvl: 'lt1', x: 4.77, z: 18.0, w: 9, j: 'tempel', h: 2.82, rev: true, r: 'carport sisi pagar (DED), downlight tempel' },
   { lvl: 'lt1', x: 8.30, z: 18.0, w: 9, j: 'tempel', h: 2.85, rev: true, r: 'carport sisi pagar (DED), downlight tempel' },
+  { lvl: 'lt1', x: 3.60, z: 19.17, w: 5, j: 'uplight', h: -0.22, hKet: 'kepala lampu di bak tanaman (sorot ke atas)', skp: true, rev: true, ruang: 'Luar pagar (sisi jalan)', r: 'sisi jalan, lampu sorot taman (spike) di bak tanaman di antara dua semak, menyorot dinding bertekstur ke atas (render hal. 4 & 6; armatur SKP). Sebelumnya salah kucatat sebagai lampu dinding. IP65' },
+  { lvl: 'lt1', x: 9.72, z: 18.70, w: 5, j: 'tanam', h: -0.45, hKet: 'rata paving, 15 cm dari tembok (sorot ke atas)', baru: true, akhir: true, ruang: 'Carport', r: 'carport sisi gerbang, lampu sorot tanam lantai di kaki tembok batas kanan 0,75 m dari gerbang, menyorot tembok ke atas: pasangan lampu sorot dinding tekstur di sisi pintu pagar (tidak ada di DED/SKP; tambahan 09-10-2026). Wajib tipe tanam IP67 tahan dilindas mobil (drive-over). Grup lampu carport' },
   { lvl: 'lt1', x: 2.22, z: 19.23, w: 5, h: 1.64, hKet: '2,00 dari trotoar (plafon kanopi pintu pagar)', skp: true, baru: true, r: 'sisi jalan, di plafon kanopi pintu pagar pejalan kaki (hanya di SKP; dipertahankan: menerangi pintu pagar, bel & nomor rumah). 2,0 m dari trotoar' },
+  { lvl: 'lt1', x: 6.45, z: 1.50, w: 5, j: 'uplight', h: -0.10, hKet: 'kepala lampu 0,17 di atas kerikil (sorot ke atas)', skp: true, baru: true, akhir: true, ruang: 'R. jemur', r: 'lampu sorot taman bertiang pendek (spike) di bak kerikil kaki dinding roster, menyorot roster ke atas (hanya di SKP; sempat salah kuanggap penutup floor drain). Dipertahankan sebagai aksen roster. Pakai tipe IP65, kabel outdoor dari grup lampu jemur lewat kolom roster lalu di bawah kerikil' },
   // ---------------- lantai 2, dalam rumah (DED lembar 27; plafon 3,40 m, sisi kanan x ≥ 8,6 turun 3,05 m) ----------------
   { lvl: 'lt2', x: 4.76, z: 5.24, w: 9, h: 3.40, r: 'KT2' },
   { lvl: 'lt2', x: 7.09, z: 4.99, w: 5, h: 3.40, r: 'selasar' }, { lvl: 'lt2', x: 9.42, z: 4.99, w: 9, h: 3.05, ruang: 'Void tangga', r: 'void tangga' },
@@ -155,7 +157,6 @@ export const LAMPU_SKP_DIBUANG = [
   { x: 3.86, y: 2.70, z: 15.86, r: 'carport, baris tengah (SKP 5 lampu, tanpa lampu di sisi pagar) → diganti grid 2×2 DED' },
   { x: 6.26, y: 2.70, z: 15.86, r: 'carport, baris tengah' }, { x: 8.66, y: 2.70, z: 15.86, r: 'carport, baris tengah' },
   { x: 7.71, y: 2.70, z: 13.68, r: 'carport, depan kaca r. keluarga' }, { x: 8.67, y: 2.70, z: 13.68, r: 'carport, depan kaca r. keluarga' },
-  { x: 6.45, y: -0.05, z: 1.50, kuningan: true, r: 'BUKAN lampu: penutup floor drain kuningan di r. jemur yang ikut "menyala" karena warnanya mirip lampu SKP → dikembalikan jadi kuningan biasa' },
   { x: 2.69, y: 6.04, z: 6.16, r: 'luifel jendela KT2 sisi luar, 6 m di atas selasar samping (dekoratif)' },
   { x: 2.14, y: 6.24, z: 11.21, r: 'balkon samping, titik tambahan di antara 2 titik DED (jarak DED 3,25 m sudah cukup)' },
   { x: 3.57, y: 6.24, z: 12.83, r: 'balkon depan, titik tambahan' },
@@ -173,7 +174,8 @@ export const JALUR = [
   { lvl: 'lt1', pts: [[7.80, 3.564], [7.80, 3.7], [9.6, 3.7]] }, // traveller two-way ke saklar tukar lt2 (naik di pojok belakang kanan)
   // lampu pagar belakang: di bawah kanopi belakang (x ≥ 6.5, ±2,95 m) lalu turun ke puncak pagar (1,95 m) dan menyusur muka pagar
   { lvl: 'lt1', pts: [[7.95, 3.6], [7.95, 0.2], [7.95, 0.2, 1.5], [3.84, 0.2, 1.5], [3.84, 0.125, 1.5]] },
-  { lvl: 'lt1', pts: [[3.84, 0.2, 1.5], [0.15, 0.2, 1.5], [0.15, 0.30, 1.5]] }, // lampu taman pojok belakang ikut grup lampu jemur (seperti garis DED)
+  { lvl: 'lt1', pts: [[3.84, 0.2, 1.5], [0.15, 0.2, 1.5], [0.15, 0.30, 1.5]] },
+  { lvl: 'lt1', pts: [[7.95, 1.50], [6.70, 1.50], [6.70, 1.50, -0.12], [6.45, 1.50, -0.12]] }, // uplight roster: turun di kolom roster, lalu di bawah lantai // lampu taman pojok belakang ikut grup lampu jemur (seperti garis DED)
   { lvl: 'lt1', pts: [[6.30, 6.925], [6.30, 5.24], [4.76, 5.24]] },
   { lvl: 'lt1', pts: [[6.30, 6.925], [7.09, 6.925], [7.09, 5.24]] },
   { lvl: 'lt1', pts: [[6.30, 6.54], [5.08, 6.54]] }, // lampu gantung meja makan (cabang dari jalur saklar r. makan)
@@ -189,6 +191,7 @@ export const JALUR = [
   { lvl: 'lt1', pts: [[6.9, 13.4], [6.9, 18.0]] },
   { lvl: 'lt1', pts: [[4.77, 15.0], [8.30, 15.0]] },
   { lvl: 'lt1', pts: [[4.77, 18.0], [8.30, 18.0]] },
+  { lvl: 'lt1', pts: [[8.30, 18.0], [9.80, 18.0], [9.80, 18.70], [9.86, 18.70], [9.86, 18.70, -0.5], [9.72, 18.70, -0.5]] }, // sorot tanam carport sisi gerbang (L1-34): turun di tembok, lalu di bawah paving
   // pagar depan (sisi jalan): dari lampu carport menembus pagar → lampu aksen bak tanaman & downlight kanopi pintu pagar
   { lvl: 'lt1', pts: [[4.77, 18.0], [3.6, 18.0], [3.6, 18.95], [3.6, 18.95, -0.1], [3.6, 19.17, -0.1]] },
   { lvl: 'lt1', pts: [[3.6, 18.95], [2.22, 18.95], [2.22, 18.95, 1.6], [2.22, 19.23, 1.6]] },
@@ -256,7 +259,7 @@ for (const lvl of ['lt1', 'lt2']) {
 // ---------------------------------------------------------------------------
 // TITIK LAMPU: semua lampu (plafon LAMPU + dinding outdoor PERANGKAT 'sconce') dengan ID L<lantai>-<nomor>, urut per ruang.
 // ID tampil di 3D (tekan E), di denah 2D, dan di tabel daftar lampu (docs/daftar-kotak.pdf).
-const JENIS = { dl: 'Downlight tanam', tempel: 'Downlight tempel (outbow)', gantung: 'Titik lampu gantung', sconce: 'Lampu dinding outdoor (up-down)' };
+const JENIS = { dl: 'Downlight tanam', tempel: 'Downlight tempel (outbow)', gantung: 'Titik lampu gantung', sconce: 'Lampu dinding outdoor (up-down)', uplight: 'Lampu sorot taman (spike, sorot ke atas)', tanam: 'Lampu sorot tanam lantai (sorot ke atas)' };
 export const TITIK_LAMPU = [];
 for (const lvl of ['lt1', 'lt2']) {
   const list = [
@@ -266,7 +269,8 @@ for (const lvl of ['lt1', 'lt2']) {
       return { o: d, jenis: 'sconce', ruang: d.ruang || ruangDi(lvl, d.x + nx * 0.06, d.z + nz * 0.06) };
     }),
   ];
-  list.sort((a, b) => (URUT.indexOf(a.ruang) - URUT.indexOf(b.ruang)) || (a.o.z - b.o.z) || (a.o.x - b.o.x));
+  // akhir: true = titik yang ditambahkan setelah daftar dibagikan → diberi nomor paling akhir supaya ID lama tidak bergeser
+  list.sort((a, b) => (!!a.o.akhir - !!b.o.akhir) || (URUT.indexOf(a.ruang) - URUT.indexOf(b.ruang)) || (a.o.z - b.o.z) || (a.o.x - b.o.x));
   list.forEach((k, i) => {
     const id = `L${lvl === 'lt1' ? 1 : 2}-${String(i + 1).padStart(2, '0')}`;
     k.o.lid = id;

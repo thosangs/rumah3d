@@ -57,6 +57,22 @@ function silinder() {
   const d = downlight(0.04); d.position.y = -0.14; g.add(d);
   return g;
 }
+/** Lampu sorot tanam lantai: cincin stainless ⌀11 cm rata lantai + lensa menyala menghadap ke atas. */
+function sorotTanam() {
+  const g = new THREE.Group();
+  const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.012, 32), new THREE.MeshStandardMaterial({ color: 0xb9bcc0, roughness: 0.3, metalness: 0.9 }));
+  ring.position.y = 0.006; g.add(ring);
+  const lens = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.004, 32), new THREE.MeshStandardMaterial({ color: 0xfff4e0, emissive: 0xfff0d0, emissiveIntensity: 4, roughness: 1 }));
+  lens.position.y = 0.013; g.add(lens);
+  return g;
+}
+/** Berkas cahaya hangat transparan berbentuk kerucut terbalik (1,6 m) di atas lampu sorot ke atas. */
+const _berkas = new THREE.MeshBasicMaterial({ color: 0xffd9a0, transparent: true, opacity: 0.14, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending });
+function berkasKeAtas() {
+  const H = 1.6, m = new THREE.Mesh(new THREE.ConeGeometry(0.32, H, 24, 1, true), _berkas);
+  m.rotation.x = Math.PI; m.position.y = H / 2 + 0.02; m.name = 'berkas-sorot'; m.raycast = () => {};
+  return m;
+}
 /** Titik lampu gantung: roset fitting putih di plafon (armatur lampu gantungnya ada di furnitur, ikut tombol F). */
 function roset() {
   const g = new THREE.Group();
@@ -107,11 +123,13 @@ export function buildElektrik(ceilingAt) {
   // --- titik lampu ---
   for (const l of LAMPU) {
     const c = ceilingAt ? ceilingAt(l.x, l.z, l.lvl) : null;
-    const y = c ?? l.h ?? plafon(l.x, l.z, l.lvl);
+    const keAtas = l.j === 'uplight' || l.j === 'tanam';
+    const y = keAtas ? l.h : c ?? l.h ?? plafon(l.x, l.z, l.lvl); // sorot ke atas: di lantai/tanah, bukan plafon
     // skp: armatur sudah ada di model SKP → tidak digambar dobel (hanya label ID)
-    const o = l.skp ? new THREE.Group() : l.j === 'tempel' ? silinder() : l.j === 'gantung' ? roset() : l.w === 'out' ? spotOutdoor() : downlight(l.w === 9 ? 0.06 : 0.045);
+    const o = l.skp ? new THREE.Group() : l.j === 'tempel' ? silinder() : l.j === 'gantung' ? roset() : l.j === 'tanam' ? sorotTanam() : l.w === 'out' ? spotOutdoor() : downlight(l.w === 9 ? 0.06 : 0.045);
     o.position.set(l.x, y, l.z); o.name = `lampu-${l.lid || l.w}`; o.userData.lampu = l;
-    if (l.lid) { const sp = labelSprite(l.lid, !!(l.baru || l.rev), true); sp.position.set(0, l.j === 'tempel' ? -0.22 : -0.1, 0); o.add(sp); }
+    if (l.lid) { const sp = labelSprite(l.lid, !!(l.baru || l.rev), true); sp.position.set(0, l.j === 'tempel' ? -0.22 : keAtas ? 0.18 : -0.1, 0); o.add(sp); }
+    if (keAtas) o.add(berkasKeAtas()); // berkas cahaya tipis ke atas: arah sorot terlihat di 3D
     grp[l.lvl].add(o);
   }
   // --- jalur kabel ---
