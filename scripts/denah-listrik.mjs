@@ -32,7 +32,7 @@ const WALLS = [
   { x1: 6.5, y1: 12, x2: 6.5, y2: 13.5, level: 'lt1', openings: [door(0.36, 0.9)] },
   { x1: 6.5, y1: 12, x2: 6.5, y2: 13.5, level: 'lt2', openings: [door(0.36, 0.9)] },
 ];
-import { PERANGKAT, LAMPU, JALUR, KOTAK } from '../src/layout/elektrik.js';
+import { PERANGKAT, LAMPU, JALUR, KOTAK, TITIK_LAMPU, LAMPU_SKP_DIBUANG } from '../src/layout/elektrik.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(root, 'docs'); mkdirSync(OUT, { recursive: true });
@@ -46,7 +46,7 @@ const UNGU = '#8e3fb8';
 const RYA = { '+z': 0, '+x': Math.PI / 2, '-z': Math.PI, '-x': -Math.PI / 2 };
 /** arah pandang kamera di denah (dx, dz): yaw relatif normal tembok, atau sudut dunia untuk pasang plafon ('dn') */
 function aimDir(d) { const sx = Math.sin(d.yaw), cz = Math.cos(d.yaw); if (d.n === 'dn') return [sx, cz]; const t = RYA[d.n]; return [sx * Math.cos(t) + cz * Math.sin(t), -sx * Math.sin(t) + cz * Math.cos(t)]; }
-const TGL = '08-10-2026';
+const TGL = '09-10-2026';
 const RUANG = {
   lt1: [['DAPUR', 4.3, 4.65], ['R. MAKAN', 5.4, 6.4], ['TOILET', 4.25, 8.1], ['KAMAR TIDUR 1', 4.75, 10.85], ['R. KELUARGA', 8.25, 10.35], ['TERAS DEPAN', 4.75, 13.3], ['TERAS BLK.', 8.3, 2.3], ['R. JEMUR', 5.0, 1.0], ['CARPORT', 6.5, 17.0], ['TAMAN', 0.75, 10.0], ['SELASAR', 2.25, 5.0]],
   lt2: [['KAMAR TIDUR 2', 4.75, 4.65], ['SELASAR', 7.6, 6.4], ['VOID', 9.2, 6.4], ['TOILET', 4.25, 8.1], ['TOILET', 5.6, 7.35], ['KT UTAMA', 4.75, 10.75], ['R. KELUARGA', 8.25, 10.35], ['BALKON DEPAN', 4.0, 13.8], ['BALKON', 2.25, 11.0], ['BALKON BLK.', 8.3, 3.2]],
@@ -83,6 +83,8 @@ const sym = {
   // kamera CCTV: badan + lensa trapesium, diputar ke arah pandang (ang = derajat svg); kerucut pandang digambar terpisah
   cctv: (cx, cy, col, ang, no) => `<g transform="translate(${cx} ${cy}) rotate(${ang})"><path d="M-6 -5 L6 -5 L6 5 L-6 5 Z" fill="${col}"/><path d="M6 -4 L12 -7 L12 7 L6 4 Z" fill="${col}"/></g>${no ? `<text x="${cx}" y="${cy - 11}" font-size="8.5" font-weight="700" text-anchor="middle" fill="${col}">CCTV-${no}</text>` : ''}`,
   // lampu: lingkaran dengan silang menembus (5 W) / lingkaran ganda (9 W)
+  // lampu gantung: lingkaran dengan titik isi di tengah + tiga garis gantung pendek
+  gantung: (cx, cy, col) => `<circle cx="${cx}" cy="${cy}" r="8" fill="#fff" stroke="${col}" stroke-width="1.6"/><circle cx="${cx}" cy="${cy}" r="3.2" fill="${col}"/><line x1="${cx}" y1="${cy - 8}" x2="${cx}" y2="${cy - 13}" stroke="${col}" stroke-width="1.4"/><line x1="${cx - 4}" y1="${cy - 13}" x2="${cx + 4}" y2="${cy - 13}" stroke="${col}" stroke-width="1.4"/>`,
   lampu: (cx, cy, col, w) => `<circle cx="${cx}" cy="${cy}" r="8" fill="#fff" stroke="${col}" stroke-width="1.6"/>${w === 9 ? `<circle cx="${cx}" cy="${cy}" r="5" fill="none" stroke="${col}" stroke-width="1.4"/>` : ''}<line x1="${cx - 11}" y1="${cy - 11}" x2="${cx + 11}" y2="${cy + 11}" stroke="${col}" stroke-width="1.4"/><line x1="${cx + 11}" y1="${cy - 11}" x2="${cx - 11}" y2="${cy + 11}" stroke="${col}" stroke-width="1.4"/>`,
 };
 
@@ -174,7 +176,11 @@ function perangkat(lvl) {
     s += `<path d="M${X(d.x)} ${Y(d.z)} L${p1[0].toFixed(1)} ${p1[1].toFixed(1)} A${R5} ${R5} 0 0 1 ${p2[0].toFixed(1)} ${p2[1].toFixed(1)} Z" fill="${BLUE}" fill-opacity="0.10" stroke="${BLUE}" stroke-width="0.8" stroke-dasharray="2,3"/>`;
   }
   for (const j of JALUR.filter((q) => q.lvl === lvl)) s += `<polyline points="${j.pts.map(([x, z]) => `${X(x)},${Y(z)}`).join(' ')}" fill="none" stroke="${j.data ? BLUE : j.coax ? UNGU : '#444'}" stroke-width="1.4" stroke-dasharray="${j.data ? '8,3,2,3' : j.coax ? '2,3' : '6,4'}"/>`;
-  for (const l of LAMPU.filter((q) => q.lvl === lvl)) s += sym.lampu(X(l.x), Y(l.z), INK, l.w);
+  for (const l of LAMPU.filter((q) => q.lvl === lvl)) {
+    const col = l.baru || l.rev ? RED : INK;
+    s += l.j === 'gantung' ? sym.gantung(X(l.x), Y(l.z), col) : sym.lampu(X(l.x), Y(l.z), col, l.w);
+    if (l.lid) s += `<text x="${X(l.x) + 11}" y="${Y(l.z) + 15}" font-size="7" font-weight="700" fill="${col === RED ? RED : '#8a5a00'}">${l.lid}</text>`;
+  }
   const labeled = []; // label tinggi hanya sekali untuk perangkat sejenis yang berdampingan (< 35 cm)
   const idLabels = [];
   for (const d of PERANGKAT.filter((q) => q.lvl === lvl)) {
@@ -221,9 +227,11 @@ function legenda(lvl) {
     ['saklar2', 'Saklar ganda, h 140 cm', n((d) => d.t === 'saklar2'), 0],
     ['tukar', 'Saklar tukar (two-way) lampu tangga, h 140 cm', 0, n((d) => d.t === 'saklar1' && d.tukar)],
     ['kotak', `Kotak inbow Panasonic (1 kotak = 1 stop kontak / 1 saklar / 2 saklar); angka = ID kotak (${KOTAK.filter((k) => k.lvl === lvl).length} kotak, lihat daftar-kotak.md)`, null, null],
-    ['lampu5', 'Lampu LED downlight 5 W', L.filter((l) => l.w === 5).length, 0],
-    ['lampu9', 'Lampu LED downlight 9 W' + (lvl === 'lt1' ? ' (termasuk 4 carport)' : ''), L.filter((l) => l.w === 9).length, 0],
-    ['sconce', 'Lampu LED sorot / dinding outdoor', n((d) => d.t === 'sconce'), 0],
+    ['lampu5', 'Lampu LED downlight 5 W', L.filter((l) => l.w === 5 && !l.baru).length, L.filter((l) => l.w === 5 && l.baru).length],
+    ['lampu9', 'Lampu LED downlight 9 W' + (lvl === 'lt1' ? ' (carport: model tempel/outbow)' : ''), L.filter((l) => l.w === 9 && !l.baru).length, L.filter((l) => l.w === 9 && l.baru).length],
+    ['gantung', 'Titik lampu gantung (armatur dari furnitur)', L.filter((l) => l.j === 'gantung' && !l.baru).length, L.filter((l) => l.j === 'gantung' && l.baru).length],
+    ['sconce', 'Lampu LED dinding outdoor 5 W (taman: h 140 cm)', n((d) => d.t === 'sconce' && !d.baru), n((d) => d.t === 'sconce' && d.baru)],
+    ['idlampu', `Angka L${lvl === 'lt1' ? 1 : 2}-xx = ID titik lampu (${TITIK_LAMPU.filter((t) => t.lvl === lvl).length} titik, lihat Daftar Titik Lampu)`, null, null],
     ['mcb', 'Box MCB 4 group × 10 A, h 175 cm', n((d) => d.t === 'mcb'), 0],
     ['kwh', 'kWh meter PLN 2200 VA (sisi luar), h 170 cm', n((d) => d.t === 'kwh'), 0],
     ['jalur', 'Jalur kabel NYM 2×2,5 mm² dalam pipa, di bawah dak/plafon', null, null],
@@ -254,6 +262,8 @@ function legenda(lvl) {
     else if (k === 'lampu5') s += sym.lampu(cx, cy, col, 5);
     else if (k === 'lampu9') s += sym.lampu(cx, cy, col, 9);
     else if (k === 'sconce') s += sym.sconce(cx, cy, col);
+    else if (k === 'gantung') s += sym.gantung(cx, cy, col);
+    else if (k === 'idlampu') s += `<text x="${cx}" y="${cy + 3}" font-size="8" font-weight="700" text-anchor="middle" fill="#8a5a00">L1-07</text>`;
     else if (k === 'mcb') s += sym.mcb(cx, cy, col);
     else if (k === 'kwh') s += sym.kwh(cx, cy, col);
     else if (k === 'jalur') s += `<line x1="${cx - 14}" y1="${cy}" x2="${cx + 14}" y2="${cy}" stroke="#444" stroke-width="1.4" stroke-dasharray="6,4"/>`;
@@ -273,8 +283,9 @@ function legenda(lvl) {
     lvl === 'lt1' ? 'Rekomendasi: grup MCB dipisah (penerangan lt1/lt2, stop kontak lt1/lt2, AC lt1, AC lt2, water heater) → box 8 group, 7 MCB; 2200 VA cukup untuk ≤ 2 AC ½ PK + water heater tangki low-watt, kalau 3 AC + pompa sebaiknya 3500 VA.' : 'Rekomendasi: 2 stop kontak AC lt2 dan water heater KTU masing-masing ke grup MCB tersendiri (box ke-2 bisa di selasar lt2). Saklar tunggal = 1 kelompok lampu, ganda = 2 kelompok.',
   ];
   // 4 stop kontak dinding TV digabung jadi satu butir supaya daftar tidak terlalu panjang
-  const revSrc = P.filter((d) => d.baru || d.rev).filter((d) => !/kotak [2-4] dari 4/.test(d.r));
+  const revSrc = P.filter((d) => d.baru || d.rev).filter((d) => !/kotak [2-4] dari 4/.test(d.r) && d.t !== 'sconce'); // lampu → satu butir ringkasan
   const rev = revSrc.map((d) => `• ${/kotak 1 dari 4/.test(d.r) ? 'dinding TV: 4 stop kontak di bawah TV di atas konsol (TV, set-top box, soundbar, konsol/router)' : d.r.replace(/^REVISI: /, '').replace(/ — tambahan$/, '')} (h ${d.h.toFixed(2)} m)`);
+  { const T = TITIK_LAMPU.filter((t) => t.lvl === lvl); rev.unshift(`• Lampu (revisi 09-10-2026): ${T.length} titik, ${T.filter((t) => t.rev).length} posisi/jenis/tinggi diubah, ${T.filter((t) => t.baru).length} baru — rincian & tinggi pasang di Daftar Titik Lampu (merah = berubah dari DED)`); }
   if (lvl === 'lt1') rev.push('• TV 65" diturunkan: bawah 0,80 m, tengah layar 1,22 m (mata duduk ±1,10 m)');
   if (lvl === 'lt1') rev.push('• Stop kontak dapur kiri digeser 22 cm ke kanan jendela (jendela z 5,6–6,6)');
   // ukuran huruf menyesuaikan: daftar revisi + catatan harus muat di atas skala batang (y0 + PLAN_H − 70)
@@ -341,7 +352,7 @@ th { background: #eee; font-size: 9.5px; } td.id { font-weight: 700; white-space
 tr.rev td.id, tr.rev td.ket { color: #c8102e; } .kecil { font-size: 9px; color: #555; }
 .rekap td { font-weight: 600; } .rekap td.n { font-weight: 700; }
 </style></head><body>
-<h1>Daftar kotak inbow — stop kontak &amp; saklar Panasonic</h1>
+<h1>Daftar kotak inbow (stop kontak &amp; saklar Panasonic) dan titik lampu</h1>
 <p class="sub">Rumah Mbak Alfi · revisi ${TGL} · 1 kotak = 1 stop kontak / 1 saklar / 2 saklar · ID sama dengan label di model 3D (tekan E) dan angka di denah listrik 2D. Posisi x dari batas kavling kiri, z dari batas belakang (rumah x 3–10, z 3,5–13,5); h = tinggi as kotak dari lantai. Merah = tambahan / perubahan dari DED.</p>`;
   for (const lvl of ['lt1', 'lt2']) {
     const K = KOTAK.filter((k) => k.lvl === lvl); const c = (t) => K.filter((k) => k.t === t).length;
@@ -359,6 +370,39 @@ tr.rev td.id, tr.rev td.ket { color: #c8102e; } .kecil { font-size: 9px; color: 
 <tr><td>Total kotak / inbow doos</td><td class="n">${KOTAK.length}</td></tr></tbody></table>
 <p class="kecil">Stop kontak water heater (${KOTAK.filter((k) => /water/.test(k.isi)).map((k) => k.id).join(', ')}) perlu varian bertutup (IP44). Ukuran pelat 90 mm = asumsi dari inbow doos 86 mm; cocokkan dengan kemasan produk. Dibuat otomatis dari data model 3D (scripts/denah-listrik.mjs).</p>
 </body></html>`;
+  // ---- daftar titik lampu ----
+  const HADAP = { '+z': 'hadap depan', '-z': 'hadap belakang', '+x': 'hadap kanan', '-x': 'hadap kiri' };
+  const daya = (t) => (t.w === 'gantung' ? '—' : `${t.w} W`);
+  const tinggi = (t) => t.hKet ? `${t.hKet}` : t.j === 'sconce' ? `${t.h.toFixed(2)} (dinding, ${HADAP[t.n]})` : t.j === 'gantung' ? `${t.h.toFixed(2)} (plafon)` : t.j === 'tempel' ? `${t.h.toFixed(2)} (atap, bawah lampu ${(t.h - 0.14).toFixed(2)})` : `${t.h.toFixed(2)} (plafon)`;
+  let mdL = `# Daftar titik lampu\n\nRevisi lampu 09-10-2026. Sumber: DED lembar 26–27 (denah listrik) & 11–12 (denah plafon), dicocokkan dengan armatur lampu di model SKP. Aturan: **DED menentukan jumlah & titik** (dasar RAB); kalau model SKP punya armatur ≤ 0,5 m dari titik DED, posisi SKP yang dipakai; lampu yang hanya ada di SKP dipakai bila fungsional, sisanya tidak dipakai (disembunyikan di 3D). h = tinggi pasang dari lantai lantai ybs (lampu plafon: tinggi plafon). Merah = berubah dari DED.\n\n`;
+  let htmlL = `<h2 style="page-break-before:always">Daftar titik lampu — revisi 09-10-2026</h2><p class="sub">DED menentukan jumlah &amp; titik (dasar RAB); armatur SKP ≤ 0,5 m dari titik DED → posisi SKP dipakai; lampu yang hanya di SKP dipakai bila fungsional. h = tinggi pasang dari lantai ybs (lampu plafon = tinggi plafon). ID sama dengan label kuning di 3D (tekan E) dan di denah.</p>`;
+  for (const lvl of ['lt1', 'lt2']) {
+    const Tl = TITIK_LAMPU.filter((t) => t.lvl === lvl);
+    const head = `${lvl === 'lt1' ? 'Lantai 1' : 'Lantai 2'} — ${Tl.length} titik`;
+    mdL += `## ${head}\n\n| ID | Ruang | Jenis | Daya | h (m) | x, z (m) | Sumber | Keterangan / evaluasi |\n|---|---|---|---|---|---|---|---|\n`;
+    htmlL += `<h2>${head}</h2><table><thead><tr><th>ID</th><th>Ruang</th><th>Jenis</th><th>Daya</th><th>h (m)</th><th>x, z (m)</th><th>Sumber</th><th>Keterangan / evaluasi</th></tr></thead><tbody>`;
+    for (const t of Tl) {
+      mdL += `| **${t.id}** | ${t.ruang} | ${t.jenis} | ${daya(t)} | ${tinggi(t)} | ${t.x.toFixed(2)}, ${t.z.toFixed(2)} | ${t.sumber} | ${t.r} |\n`;
+      htmlL += `<tr class="${t.baru || t.rev ? 'rev' : ''}"><td class="id">${t.id}</td><td>${esc(t.ruang)}</td><td>${esc(t.jenis)}</td><td class="n">${daya(t)}</td><td>${esc(tinggi(t))}</td><td class="n">${t.x.toFixed(2)}, ${t.z.toFixed(2)}</td><td>${esc(t.sumber)}</td><td class="ket">${esc(t.r)}</td></tr>`;
+    }
+    mdL += `\n`; htmlL += `</tbody></table>`;
+  }
+  const cT = (f) => TITIK_LAMPU.filter(f).length;
+  const rekapL = [
+    ['Downlight tanam 9 W', cT((t) => t.j === 'dl' && t.w === 9)], ['Downlight tanam 5 W', cT((t) => t.j === 'dl' && t.w === 5)],
+    ['Downlight tempel (outbow) 9 W — carport', cT((t) => t.j === 'tempel')], ['Lampu dinding outdoor 5 W', cT((t) => t.j === 'sconce')],
+    ['Titik lampu gantung (armatur furnitur)', cT((t) => t.j === 'gantung')], ['Total titik lampu', TITIK_LAMPU.length],
+    ['— di antaranya armatur sudah ada di model SKP', cT((t) => t.skp)], ['— diubah dari DED (posisi / jenis / tinggi)', cT((t) => t.rev)], ['— baru (tidak ada di DED)', cT((t) => t.baru)],
+  ];
+  mdL += `## Rekap\n\n| Jenis | Jumlah |\n|---|---|\n` + rekapL.map(([a, b]) => `| ${a} | ${b} |`).join('\n') + `\n\n`;
+  htmlL += `<h2>Rekap titik lampu</h2><table class="rekap"><tbody>` + rekapL.map(([a, b]) => `<tr><td>${esc(a)}</td><td class="n">${b}</td></tr>`).join('') + `</tbody></table>`;
+  mdL += `## Lampu di model SKP yang tidak dipakai (disembunyikan di 3D)\n\n| Posisi x, y, z (m, dunia) | Alasan |\n|---|---|\n` + LAMPU_SKP_DIBUANG.map((l) => `| ${l.x.toFixed(2)}, ${l.y.toFixed(2)}, ${l.z.toFixed(2)} | ${l.r} |`).join('\n') + `\n\n`;
+  htmlL += `<h2>Lampu di model SKP yang tidak dipakai (disembunyikan di 3D)</h2><table><thead><tr><th>x, y, z (m)</th><th>Alasan</th></tr></thead><tbody>` + LAMPU_SKP_DIBUANG.map((l) => `<tr><td class="n">${l.x.toFixed(2)}, ${l.y.toFixed(2)}, ${l.z.toFixed(2)}</td><td>${esc(l.r)}</td></tr>`).join('') + `</tbody></table>`;
+  const catL = 'Catatan tinggi: plafon dalam rumah tinggi (3,60 m lt1, 3,40 m lt2) — downlight 5 W (±450 lm) di plafon setinggi itu terasa redup untuk ruang keluarga/makan; pertimbangkan 7–9 W untuk titik 5 W di ruang keluarga. Lampu taman dinding 1,40 m dari lantai teras = 1,45–1,80 m dari tanah/dek (standar 1,5–1,8 m). Lampu dinding fasad 2,00 m (standar 1,8–2,1 m). Lampu gantung: cincin r. keluarga terbawah 2,20 m (≥ 2,1 m area lalu-lalang); lampu meja makan 0,80 m di atas meja (standar 0,75–0,90 m).';
+  mdL += catL + '\n';
+  htmlL += `<p class="kecil">${esc(catL)}</p>`;
+  html = html.replace('</body>', htmlL + '</body>'); // sebelum penutup → urutan: kotak, lampu, lalu denah
+  writeFileSync(join(OUT, 'daftar-lampu.md'), mdL); console.log('tulis daftar-lampu.md', TITIK_LAMPU.length, 'titik');
   daftarHtml = html; // dicetak setelah SVG denah jadi (lihat bawah): daftar (A4) + denah lt1 & lt2 (A3)
 }
 for (const lvl of ['lt1', 'lt2']) {

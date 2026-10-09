@@ -19,19 +19,19 @@ const MAT = {
 
 /** Label ID kotak (sprite kanvas) — putih dengan bingkai; merah = tambahan/perubahan dari DED. */
 const _lbl = new Map();
-function labelSprite(id, merah) {
-  const key = id + (merah ? 'r' : '');
+function labelSprite(id, merah, lampu = false) {
+  const key = id + (merah ? 'r' : '') + (lampu ? 'L' : '');
   let tex = _lbl.get(key);
   if (!tex) {
     const c = document.createElement('canvas'); c.width = 160; c.height = 72; const g = c.getContext('2d');
-    g.fillStyle = 'rgba(255,255,255,0.92)'; g.strokeStyle = merah ? '#c8102e' : '#222'; g.lineWidth = 6;
+    g.fillStyle = lampu ? 'rgba(255,246,214,0.95)' : 'rgba(255,255,255,0.92)'; g.strokeStyle = merah ? '#c8102e' : lampu ? '#b07800' : '#222'; g.lineWidth = 6;
     g.beginPath(); g.roundRect(4, 4, 152, 64, 12); g.fill(); g.stroke();
     g.fillStyle = merah ? '#c8102e' : '#111'; g.font = 'bold 40px system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
     g.fillText(id, 80, 38);
     tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; _lbl.set(key, tex);
   }
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: true }));
-  sp.scale.set(0.12, 0.054, 1); sp.name = 'label-' + id;
+  sp.scale.set(lampu ? 0.15 : 0.12, lampu ? 0.0675 : 0.054, 1); sp.name = 'label-' + id;
   return sp;
 }
 function tube(a, b, r = 0.006, mat = MAT.kabel) {
@@ -50,6 +50,20 @@ function spotOutdoor() {
   return g;
 }
 
+/** Downlight tempel (outbow) silinder hitam ⌀10 × 14 cm — untuk kanopi beratap spandek yang tidak bisa ditanami downlight. */
+function silinder() {
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.14, 24), MAT.trimHitam); body.position.y = -0.07; g.add(body);
+  const d = downlight(0.04); d.position.y = -0.14; g.add(d);
+  return g;
+}
+/** Titik lampu gantung: roset fitting putih di plafon (armatur lampu gantungnya ada di furnitur, ikut tombol F). */
+function roset() {
+  const g = new THREE.Group();
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.02, 24), new THREE.MeshStandardMaterial({ color: 0xf3f2ee, roughness: 0.5 }));
+  m.position.y = -0.01; g.add(m);
+  return g;
+}
 /** ceilingAt(x, z, lvl) → tinggi plafon/dak di atas titik itu relatif lantai lvl, atau null kalau tidak ada (luar). */
 export function buildElektrik(ceilingAt) {
   const grp = { lt1: new THREE.Group(), lt2: new THREE.Group() };
@@ -85,13 +99,19 @@ export function buildElektrik(ceilingAt) {
       } });
     } else if (d.t === 'mcb') placeAsset(holder, 'mcb_box', {});
     else if (d.t === 'kwh') placeAsset(holder, 'kwh_meter', {});
-    else if (d.t === 'sconce') placeAsset(holder, 'sconce', {});
+    else if (d.t === 'sconce') {
+      if (!d.skp) placeAsset(holder, 'sconce', {}); // skp: armatur sudah ada di model SKP
+      if (d.lid) { const sp = labelSprite(d.lid, !!(d.baru || d.rev), true); sp.position.set(0, 0.14, 0.06); holder.add(sp); }
+    }
   }
   // --- titik lampu ---
   for (const l of LAMPU) {
-    const y = plafon(l.x, l.z, l.lvl);
-    const o = l.w === 'out' ? spotOutdoor() : downlight(l.w === 9 ? 0.06 : 0.045);
-    o.position.set(l.x, y, l.z); o.name = `lampu-${l.w}`; o.userData.lampu = l;
+    const c = ceilingAt ? ceilingAt(l.x, l.z, l.lvl) : null;
+    const y = c ?? l.h ?? plafon(l.x, l.z, l.lvl);
+    // skp: armatur sudah ada di model SKP → tidak digambar dobel (hanya label ID)
+    const o = l.skp ? new THREE.Group() : l.j === 'tempel' ? silinder() : l.j === 'gantung' ? roset() : l.w === 'out' ? spotOutdoor() : downlight(l.w === 9 ? 0.06 : 0.045);
+    o.position.set(l.x, y, l.z); o.name = `lampu-${l.lid || l.w}`; o.userData.lampu = l;
+    if (l.lid) { const sp = labelSprite(l.lid, !!(l.baru || l.rev), true); sp.position.set(0, l.j === 'tempel' ? -0.22 : -0.1, 0); o.add(sp); }
     grp[l.lvl].add(o);
   }
   // --- jalur kabel ---

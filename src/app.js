@@ -9,6 +9,7 @@ import { buildAll } from './scene.js';
 import { buildFurniture } from './furniture.js';
 import { buildElektrik } from './elektrik.js';
 import { buildPlafonIndex } from './plafon.js';
+import { LAMPU_SKP_DIBUANG } from './layout/elektrik.js';
 import { assetsPending } from './assets.js';
 import { renderHitungan, renderGalleries, bindLightbox } from './ui.js';
 
@@ -423,6 +424,42 @@ function setFurniture(on) {
  *  jadi badan kulkas bisa tergabung dalam mesh besar bersama tembok/kitchen set. Semua segitiga yang ketiga titiknya
  *  berada di volume kulkas (x 5.45–6.45, z 3.565–4.6, y < 1.85; muka tembok z 3.56 & kitchen set x ≤ 5.44 di luar)
  *  dipindah ke mesh anak bernama "*-kulkas"; mesh yang seluruhnya di dalam volume ditandai utuh. */
+/** Lampu SKP yang tidak dipakai (LAMPU_SKP_DIBUANG) dibuang dari indeks geometri supaya di 3D tidak tumpang tindih dengan titik
+ *  lampu final: piringan lampu (empty_223) & rumah lampu (empty_346) dalam kotak ±16 cm, dan trim/tutup kecil yang tergabung di
+ *  mesh tembok (empty_2: hanya segitiga < 30 cm² dalam radius 10 cm). Entri kuningan: bukan lampu (penutup floor drain) →
+ *  segitiganya dipindah ke mesh baru berbahan kuningan. */
+function sembunyikanLampuSkp(root) {
+  const v = new THREE.Vector3(), a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+  const kuningan = [];
+  root.traverse((o) => {
+    if (!o.isMesh || !['empty_223', 'empty_346', 'empty_2'].includes(o.name)) return;
+    const g = o.geometry, pos = g.attributes.position, idx = g.index;
+    const n = idx ? idx.count : pos.count, keep = [];
+    for (let t = 0; t < n; t += 3) {
+      const ii = [0, 1, 2].map((k) => (idx ? idx.getX(t + k) : t + k));
+      a.fromBufferAttribute(pos, ii[0]).applyMatrix4(o.matrixWorld); b.fromBufferAttribute(pos, ii[1]).applyMatrix4(o.matrixWorld); c.fromBufferAttribute(pos, ii[2]).applyMatrix4(o.matrixWorld);
+      v.copy(a).add(b).add(c).multiplyScalar(1 / 3);
+      const hit = LAMPU_SKP_DIBUANG.find((l) => {
+        if (Math.abs(v.y - l.y) > 0.25) return false;
+        if (o.name === 'empty_2') {
+          if (l.kuningan) return false;
+          const area = b.clone().sub(a).cross(c.clone().sub(a)).length() / 2;
+          return area < 0.003 && Math.hypot(v.x - l.x, v.z - l.z) < 0.10;
+        }
+        return Math.abs(v.x - l.x) < 0.16 && Math.abs(v.z - l.z) < 0.16;
+      });
+      if (!hit) { keep.push(...ii); continue; }
+      if (hit.kuningan) kuningan.push(a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z);
+    }
+    if (keep.length < n) { g.setIndex(keep); g.computeBoundingSphere(); g.computeBoundingBox(); }
+  });
+  if (kuningan.length) {
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(kuningan, 3)); g.computeVertexNormals();
+    const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ color: 0xb8925a, roughness: 0.35, metalness: 0.85, side: THREE.DoubleSide }));
+    m.name = 'floor-drain-kuningan'; m.receiveShadow = true;
+    root.updateWorldMatrix(true, false); m.applyMatrix4(root.matrixWorld.clone().invert()); root.add(m); // posisi dunia → lokal root
+  }
+}
 function tagGlbFurniture(root) {
   glbFurniture = [];
   const fb = new THREE.Box3(new THREE.Vector3(5.45, -0.05, 3.565), new THREE.Vector3(6.45, 1.85, 4.6)); // z sampai 4.6: gagang pintu kulkas menonjol melewati badan (4.41)
@@ -566,7 +603,8 @@ gltfLoader.load(
           // lampu (oranye SketchUp) → menyala; kusen/railing hitam sedikit metalik
           if (Math.abs(c.r - 0.84) < 0.03 && Math.abs(c.g - 0.81) < 0.03 && Math.abs(c.b - 0.76) < 0.03) { c.set(0xe9dfcd); m.roughness = 0.92; }
           else if (Math.abs(c.r - 0.27) < 0.02 && Math.abs(c.g - 0.27) < 0.02 && Math.abs(c.b - 0.27) < 0.02) { c.set(0x33373d); m.roughness = 0.7; }
-          else if (c.r > 0.9 && c.g > 0.55 && c.g < 0.85 && c.b < 0.3) { c.set(0xfff0d0); m.emissive = new THREE.Color(0xffd9a0); m.emissiveIntensity = 2.5; }
+          // (toren air di atap, empty_1038, juga berwarna oranye → bukan lampu, warna asli dipertahankan)
+          else if (c.r > 0.9 && c.g > 0.55 && c.g < 0.85 && c.b < 0.3 && o.name !== 'empty_1038') { c.set(0xfff0d0); m.emissive = new THREE.Color(0xffd9a0); m.emissiveIntensity = 2.5; }
           else if (c.r < 0.2 && c.g < 0.2 && c.b < 0.22) { m.metalness = 0.45; m.roughness = 0.5; }
         }
         if (m.name === 'Solarflat') {
@@ -587,7 +625,7 @@ gltfLoader.load(
     // Model SKP: kavling x 0–10 sama dengan denah, sumbu z = y_denah − 20 (depan rumah di z=0), muka tanah di y=0.
     glbRoot.position.set(0, LEVELS.tanah, 19.5); // model SKP: kavling mulai y=0.5 (bergeser 0,5 m dari DED)
     glbRoot.name = 'glb';
-    glbRoot.updateWorldMatrix(true, true); tagGlbFurniture(glbRoot);
+    glbRoot.updateWorldMatrix(true, true); tagGlbFurniture(glbRoot); sembunyikanLampuSkp(glbRoot);
     scene.add(glbRoot);
     glbOn = true;
     attachElektrik(); applyVisibility();

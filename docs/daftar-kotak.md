@@ -1,6 +1,6 @@
 # Daftar kotak inbow — stop kontak & saklar Panasonic
 
-Revisi 08-10-2026. Produk: Panasonic seri baru, hanya model **inbow kotak** (pelat persegi ±90 × 90 mm, inbow doos 86 mm). Satu kotak berisi **1 stop kontak**, **1 saklar**, atau **2 saklar**. Saklar triple di pintu belakang dipecah jadi 2 kotak (2 saklar + 1 saklar tukar), stop kontak ganda NVR jadi 2 kotak.
+Revisi 09-10-2026. Produk: Panasonic seri baru, hanya model **inbow kotak** (pelat persegi ±90 × 90 mm, inbow doos 86 mm). Satu kotak berisi **1 stop kontak**, **1 saklar**, atau **2 saklar**. Saklar triple di pintu belakang dipecah jadi 2 kotak (2 saklar + 1 saklar tukar), stop kontak ganda NVR jadi 2 kotak.
 
 ID kotak yang sama dipakai di tiga tempat supaya bisa dicocokkan saat evaluasi: label di model 3D (tekan **E**), angka kecil di denah 2D (`denah-listrik-lt1.png` / `-lt2.png`), dan tabel ini. Posisi x diukur dari batas kavling kiri, z dari batas kavling belakang (rumah x 3–10, z 3,5–13,5); h = tinggi as kotak dari lantai lantai tersebut. Merah di denah/3D = tambahan atau perubahan dari gambar DED.
 

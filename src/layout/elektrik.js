@@ -62,12 +62,21 @@ export const PERANGKAT = [
   // ---------------- LANTAI 1: box MCB (4 × 10 A) & kWh meter, saling membelakangi di tembok kiri KT1 ----------------
   { lvl: 'lt1', t: 'mcb', x: 3.065, z: 11.47, n: '+x', h: 1.75, r: 'box MCB 4 group di dalam KT1, tembok kiri dekat tembok depan' },
   { lvl: 'lt1', t: 'kwh', x: 2.937, z: 11.5, n: '-x', h: 1.7, r: 'kWh meter PLN di sisi luar tembok kiri (teras samping)' },
-  // ---------------- Lampu LED outdoor (RAB: 'LED Sorot Outdoor 5 W' 3 bh = 2 lt1 + 1 lt2) + lampu pagar ----------------
-  { lvl: 'lt1', t: 'sconce', x: 3.10, z: 13.591, n: '+z', h: 2.3, r: 'sorot fasad lt1 kiri (simbol di gambar z 13.69, muka tembok 13.59)' },
-  { lvl: 'lt1', t: 'sconce', x: 6.99, z: 13.56, n: '+z', h: 2.3, r: 'sorot fasad lt1 samping pintu utama (muka tembok 13.56)' },
-  { lvl: 'lt2', t: 'sconce', x: 6.10, z: 13.95, n: '+z', h: 1.14, r: 'sorot fasad lt2 di dinding kisi kayu (simbol gambar di x 6.99; model SKP menaruh lampunya di x 6.1 → ikut SKP)' },
-  { lvl: 'lt1', t: 'sconce', x: 3.84, z: 0.125, n: '+z', h: 1.75, r: 'area jemur, muka dalam pagar belakang (pagar ±2 m, muka z 0.12)' },
-  { lvl: 'lt1', t: 'sconce', x: 3.47, z: 18.99, n: '-z', h: 2.2, r: 'pagar depan dekat kotak sampah (di gambar z 19.63; dipasang di muka dalam pagar z 19.0 menghadap carport)' },
+  // ---------------- Lampu dinding outdoor (revisi lampu 09-10-2026) ----------------
+  // DED lembar 26 menggambar 10 simbol "Lampu LED Outdoor" di lt1 (legendanya hanya menulis 2): 2 di fasad, 6 di tembok batas
+  // kiri (taman samping), 1 di pagar belakang (r. jemur), 1 di pagar depan. Tinggi lampu taman = 1,45 m dunia (sejajar
+  // sepanjang tembok; 1,45–1,80 m dari tanah/dek). skp: true = armaturnya sudah ada di model SKP → tidak digambar dobel.
+  { lvl: 'lt1', t: 'sconce', x: 3.10, z: 13.591, n: '+z', h: 2.0, rev: true, ruang: 'Fasad depan', r: 'fasad lt1 kiri, kolom putih (DED). Tinggi 2,30 → 2,00 m: sejajar atas kusen pintu, standar lampu dinding fasad 1,8–2,1 m' },
+  { lvl: 'lt1', t: 'sconce', x: 6.99, z: 13.56, n: '+z', h: 2.0, rev: true, ruang: 'Fasad depan', r: 'fasad lt1 di samping pintu utama (DED). Tinggi 2,30 → 2,00 m' },
+  { lvl: 'lt1', t: 'sconce', x: 0.12, z: 0.30, n: '+x', h: 1.4, baru: true, r: 'taman samping, tembok batas kiri pojok belakang, di belakang pintu samping (DED; belum ada di model 3D sebelumnya). Kabel & saklar ikut lampu r. jemur (garis DED menyambung lewat pagar belakang)' },
+  { lvl: 'lt1', t: 'sconce', x: 0.12, z: 3.70, n: '+x', h: 1.4, baru: true, r: 'taman samping, tembok batas kiri (DED; belum ada di model 3D sebelumnya)' },
+  { lvl: 'lt1', t: 'sconce', x: 0.12, z: 6.00, n: '+x', h: 1.4, baru: true, r: 'taman samping, tembok batas kiri (DED; belum ada di model 3D sebelumnya)' },
+  { lvl: 'lt1', t: 'sconce', x: 0.24, z: 9.98, n: '+x', h: 1.4, skp: true, rev: true, r: 'taman samping, panel dinding dek (posisi SKP; DED z 8,57 di ujung panel)' },
+  { lvl: 'lt1', t: 'sconce', x: 0.24, z: 12.03, n: '+x', h: 1.4, skp: true, rev: true, r: 'taman samping, panel dinding dek (posisi SKP; DED z 13,43 di ujung panel)' },
+  { lvl: 'lt1', t: 'sconce', x: 0.12, z: 15.00, n: '+x', h: 1.4, baru: true, r: 'samping carport, tembok batas kiri (DED; belum ada di model 3D sebelumnya)' },
+  { lvl: 'lt1', t: 'sconce', x: 3.84, z: 0.125, n: '+z', h: 1.4, rev: true, r: 'r. jemur, muka dalam pagar belakang (DED). Tinggi 1,75 → 1,40 m, sejajar lampu taman' },
+  { lvl: 'lt1', t: 'sconce', x: 3.60, z: 19.17, n: '+z', h: -0.27, hKet: '0,13 di atas tanah tanaman (dinding, hadap jalan)', skp: true, rev: true, r: 'sisi jalan pagar depan, lampu sorot aksen di atas bak tanaman (posisi SKP, ±0,13 m di atas tanaman; DED z 19,64 = sisi jalan). Dulu digambar di muka dalam pagar 2,2 m' },
+  { lvl: 'lt2', t: 'sconce', x: 6.07, z: 13.95, n: '+z', h: 1.15, skp: true, ruang: 'Fasad lt2', r: 'fasad lt2 di panel kisi kayu (posisi SKP; simbol DED di x 6,99), 1,15 m di atas lantai lt2: lampu aksen fasad' },
   // ---------------- LANTAI 2: stop kontak 8 ----------------
   { lvl: 'lt2', t: 'stopkontak', x: 3.065, z: 5.33, n: '+x', h: 0.4, r: 'KT2, tembok kiri' },
   { lvl: 'lt2', t: 'stopkontak', x: 6.435, z: 5.45, n: '-x', h: 0.4, r: 'KT2, tembok kanan' },
@@ -98,36 +107,61 @@ export const PERANGKAT = [
   { lvl: 'lt2', t: 'saklar2', x: 6.563, z: 12.02, n: '+x', h: 1.4, r: 'R. keluarga lt2, samping pintu balkon → lampu balkon depan + sorot' },
 ];
 
-// Titik lampu plafon: w = 5 | 9 (watt downlight); lampu outdoor dinding ada di PERANGKAT (t: 'sconce').
-// Tinggi diambil dari plafon/dak di atas titik itu (raycast model SKP) saat dibangun.
+// Titik lampu plafon (revisi lampu 09-10-2026). w = 5 | 9 (watt) | 'gantung' (titik lampu gantung furnitur).
+// j = jenis armatur: 'dl' downlight tanam (default) | 'tempel' downlight tempel/outbow silinder (kanopi spandek carport) |
+//     'gantung' titik fitting lampu gantung. h = tinggi plafon/bidang pasang dari lantai ybs (diukur dari model SKP).
+// skp: true = armaturnya sudah ada di model SKP di titik itu (3D tidak menggambar dobel). rev = posisi/jenis diubah dari DED,
+// baru = tidak ada di DED. Lampu dinding outdoor ada di PERANGKAT (t: 'sconce').
 export const LAMPU = [
-  // lantai 1 (legenda: 9 × 5 W, 6 × 9 W; 2 outdoor → PERANGKAT) + 4 lampu kanopi carport (lembar carport)
-  { lvl: 'lt1', x: 8.30, z: 2.74, w: 9, r: 'teras belakang' },
-  { lvl: 'lt1', x: 4.76, z: 5.24, w: 9, r: 'dapur' },
-  { lvl: 'lt1', x: 7.09, z: 5.24, w: 5, r: 'ruang makan' },
-  { lvl: 'lt1', x: 3.87, z: 7.74, w: 5, r: 'toilet' },
-  { lvl: 'lt1', x: 7.09, z: 7.74, w: 5, r: 'lorong' },
-  { lvl: 'lt1', x: 7.09, z: 8.98, w: 5, r: 'r. keluarga' }, { lvl: 'lt1', x: 9.42, z: 8.98, w: 5, r: 'r. keluarga' },
-  { lvl: 'lt1', x: 4.76, z: 10.22, w: 9, r: 'KT1' },
-  { lvl: 'lt1', x: 7.09, z: 10.94, w: 5, r: 'r. keluarga' }, { lvl: 'lt1', x: 8.26, z: 10.94, w: 9, r: 'r. keluarga tengah' }, { lvl: 'lt1', x: 9.44, z: 10.94, w: 5, r: 'r. keluarga' },
-  { lvl: 'lt1', x: 7.09, z: 12.94, w: 5, r: 'r. keluarga' }, { lvl: 'lt1', x: 9.44, z: 12.94, w: 5, r: 'r. keluarga' },
-  { lvl: 'lt1', x: 4.75, z: 12.72, w: 9, r: 'teras depan (bawah dak lt2)' },
-  { lvl: 'lt1', x: 1.55, z: 10.97, w: 9, r: 'carport sisi kiri rumah (bawah balkon lt2), disaklar dari saklar luar di tembok kiri' },
-  { lvl: 'lt1', x: 4.77, z: 15.0, w: 9, r: 'carport' }, { lvl: 'lt1', x: 8.30, z: 15.0, w: 9, r: 'carport' },
-  { lvl: 'lt1', x: 4.77, z: 18.0, w: 9, r: 'carport' }, { lvl: 'lt1', x: 8.30, z: 18.0, w: 9, r: 'carport' },
-  // lantai 2 (legenda: 10 × 5 W, 9 × 9 W; 1 outdoor → PERANGKAT)
-  { lvl: 'lt2', x: 8.30, z: 2.74, w: 9, r: 'balkon belakang' },
-  { lvl: 'lt2', x: 4.76, z: 5.24, w: 9, r: 'KT2' },
-  { lvl: 'lt2', x: 7.09, z: 4.99, w: 5, r: 'selasar' }, { lvl: 'lt2', x: 9.42, z: 4.99, w: 9, r: 'void tangga' },
-  { lvl: 'lt2', x: 7.09, z: 6.98, w: 5, r: 'selasar' }, { lvl: 'lt2', x: 9.42, z: 6.98, w: 9, r: 'void tangga' },
-  { lvl: 'lt2', x: 3.87, z: 7.74, w: 5, r: 'toilet kiri' }, { lvl: 'lt2', x: 5.66, z: 7.74, w: 5, r: 'toilet kanan' },
-  { lvl: 'lt2', x: 7.09, z: 8.98, w: 5, r: 'r. keluarga lt2' }, { lvl: 'lt2', x: 9.42, z: 8.98, w: 5, r: 'r. keluarga lt2' },
-  { lvl: 'lt2', x: 4.76, z: 10.22, w: 9, r: 'KTU' },
-  { lvl: 'lt2', x: 7.09, z: 10.94, w: 5, r: 'r. keluarga lt2' }, { lvl: 'lt2', x: 8.26, z: 10.94, w: 9, r: 'r. keluarga lt2 tengah' }, { lvl: 'lt2', x: 9.44, z: 10.94, w: 5, r: 'r. keluarga lt2' },
-  { lvl: 'lt2', x: 7.09, z: 12.94, w: 5, r: 'r. keluarga lt2' }, { lvl: 'lt2', x: 9.44, z: 12.94, w: 5, r: 'r. keluarga lt2' },
-  { lvl: 'lt2', x: 2.24, z: 12.73, w: 9, r: 'balkon depan' }, { lvl: 'lt2', x: 4.74, z: 12.73, w: 9, r: 'balkon depan' },
-  { lvl: 'lt2', x: 2.24, z: 9.48, w: 9, r: 'balkon samping kiri (di atas carport)' },
+  // ---------------- lantai 1, dalam rumah (DED lembar 26; plafon gypsum 3,60 m) ----------------
+  { lvl: 'lt1', x: 4.76, z: 5.24, w: 9, h: 3.60, r: 'dapur' },
+  { lvl: 'lt1', x: 7.09, z: 5.24, w: 5, h: 3.60, r: 'r. makan sisi tangga' },
+  { lvl: 'lt1', x: 5.08, z: 6.54, w: 'gantung', j: 'gantung', h: 3.60, baru: true, r: 'lampu gantung di atas meja makan (furnitur; tidak ada di DED → titik baru). Bawah bola lampu 1,56 m dari lantai = 0,80 m di atas meja (dulu 1,42 m di atas meja — terlalu tinggi; standar 0,75–0,90 m)' },
+  { lvl: 'lt1', x: 3.87, z: 7.74, w: 5, h: 3.60, r: 'toilet' },
+  { lvl: 'lt1', x: 7.09, z: 7.74, w: 5, h: 3.60, ruang: 'Lorong', r: 'lorong' },
+  { lvl: 'lt1', x: 7.09, z: 8.98, w: 5, h: 3.60, r: 'r. keluarga' }, { lvl: 'lt1', x: 9.42, z: 8.98, w: 5, h: 3.35, r: 'r. keluarga, plafon turun dekat tangga' },
+  { lvl: 'lt1', x: 4.76, z: 10.22, w: 9, h: 3.60, r: 'KT1' },
+  { lvl: 'lt1', x: 7.09, z: 10.94, w: 5, h: 3.60, r: 'r. keluarga' },
+  { lvl: 'lt1', x: 8.20, z: 11.20, w: 'gantung', j: 'gantung', h: 3.60, rev: true, r: 'r. keluarga: lampu gantung cincin di atas meja kopi, menggantikan titik 9 W DED (8,26 / 10,94; berimpit 27 cm). Cincin terbawah 2,20 m dari lantai (dulu kanopinya melayang 45 cm di bawah plafon)' },
+  { lvl: 'lt1', x: 9.44, z: 10.94, w: 5, h: 3.60, r: 'r. keluarga' },
+  { lvl: 'lt1', x: 7.09, z: 12.94, w: 5, h: 3.60, r: 'r. keluarga' }, { lvl: 'lt1', x: 9.44, z: 12.94, w: 5, h: 3.60, r: 'r. keluarga' },
+  // ---------------- lantai 1, luar ----------------
+  { lvl: 'lt1', x: 8.19, z: 2.72, w: 9, h: 3.45, skp: true, rev: true, r: 'teras belakang (DED 8,30 / 2,74; armatur SKP 11 cm dari titik DED → dipakai posisi SKP)' },
+  { lvl: 'lt1', x: 4.69, z: 12.83, w: 9, h: 3.15, skp: true, rev: true, r: 'teras depan, plafon bawah dak lt2 (DED 4,75 / 12,72; posisi SKP)' },
+  { lvl: 'lt1', x: 2.18, z: 10.21, w: 9, h: 3.15, skp: true, rev: true, r: 'bawah balkon samping (dek taman), plafon kayu (posisi SKP). DED hanya 1 titik di 1,55 / 10,97 = di tepi luar balkon → diganti 2 titik SKP di tengah plafon' },
+  { lvl: 'lt1', x: 2.18, z: 11.83, w: 9, h: 3.15, skp: true, baru: true, r: 'bawah balkon samping (dek taman), titik kedua (posisi SKP; +1 dari DED)' },
+  { lvl: 'lt1', x: 4.77, z: 15.0, w: 9, j: 'tempel', h: 2.82, rev: true, r: 'carport (DED), downlight tempel di bawah atap spandek (tidak bisa ditanam); bawah armatur ±2,68 m dari lantai' },
+  { lvl: 'lt1', x: 8.30, z: 15.0, w: 9, j: 'tempel', h: 2.85, rev: true, r: 'carport (DED), downlight tempel' },
+  { lvl: 'lt1', x: 4.77, z: 18.0, w: 9, j: 'tempel', h: 2.82, rev: true, r: 'carport sisi pagar (DED), downlight tempel' },
+  { lvl: 'lt1', x: 8.30, z: 18.0, w: 9, j: 'tempel', h: 2.85, rev: true, r: 'carport sisi pagar (DED), downlight tempel' },
+  { lvl: 'lt1', x: 2.22, z: 19.23, w: 5, h: 1.64, hKet: '2,00 dari trotoar (plafon kanopi pintu pagar)', skp: true, baru: true, r: 'sisi jalan, di plafon kanopi pintu pagar pejalan kaki (hanya di SKP; dipertahankan: menerangi pintu pagar, bel & nomor rumah). 2,0 m dari trotoar' },
+  // ---------------- lantai 2, dalam rumah (DED lembar 27; plafon 3,40 m, sisi kanan x ≥ 8,6 turun 3,05 m) ----------------
+  { lvl: 'lt2', x: 4.76, z: 5.24, w: 9, h: 3.40, r: 'KT2' },
+  { lvl: 'lt2', x: 7.09, z: 4.99, w: 5, h: 3.40, r: 'selasar' }, { lvl: 'lt2', x: 9.42, z: 4.99, w: 9, h: 3.05, ruang: 'Void tangga', r: 'void tangga' },
+  { lvl: 'lt2', x: 7.09, z: 6.98, w: 5, h: 3.40, r: 'selasar' }, { lvl: 'lt2', x: 9.42, z: 6.98, w: 9, h: 3.05, ruang: 'Void tangga', r: 'void tangga' },
+  { lvl: 'lt2', x: 3.87, z: 7.74, w: 5, h: 3.40, r: 'toilet kiri (KTU)' }, { lvl: 'lt2', x: 5.66, z: 7.74, w: 5, h: 3.40, r: 'toilet kanan' },
+  { lvl: 'lt2', x: 7.09, z: 8.98, w: 5, h: 3.40, r: 'r. keluarga lt2 (depan pintu KTU)' }, { lvl: 'lt2', x: 9.42, z: 8.98, w: 5, h: 3.05, r: 'r. keluarga lt2' },
+  { lvl: 'lt2', x: 4.76, z: 10.22, w: 9, h: 3.40, r: 'KT utama' },
+  { lvl: 'lt2', x: 7.09, z: 10.94, w: 5, h: 3.40, r: 'r. keluarga lt2' }, { lvl: 'lt2', x: 8.26, z: 10.94, w: 9, h: 3.40, r: 'r. keluarga lt2 tengah' }, { lvl: 'lt2', x: 9.44, z: 10.94, w: 5, h: 3.05, r: 'r. keluarga lt2' },
+  { lvl: 'lt2', x: 7.09, z: 12.94, w: 5, h: 3.40, r: 'r. keluarga lt2' }, { lvl: 'lt2', x: 9.44, z: 12.94, w: 5, h: 3.05, r: 'r. keluarga lt2' },
+  // ---------------- lantai 2, balkon (plafon bawah atap 2,40 m) ----------------
+  { lvl: 'lt2', x: 8.19, z: 2.72, w: 9, h: 2.40, skp: true, rev: true, r: 'balkon belakang (DED 8,30 / 2,74; posisi SKP)' },
+  { lvl: 'lt2', x: 2.14, z: 9.58, w: 9, h: 2.40, skp: true, rev: true, r: 'balkon samping (DED 2,24 / 9,48; posisi SKP)' },
+  { lvl: 'lt2', x: 2.14, z: 12.83, w: 9, h: 2.40, skp: true, rev: true, r: 'balkon depan, pojok kiri (DED 2,24 / 12,73; posisi SKP)' },
+  { lvl: 'lt2', x: 5.01, z: 12.83, w: 9, h: 2.40, skp: true, rev: true, r: 'balkon depan (DED 4,74 / 12,73; posisi SKP 27 cm dari DED)' },
 ];
+// Lampu yang ADA di model SKP tetapi TIDAK dipakai (tidak ada di DED / tidak fungsional) → disembunyikan di 3D. Koordinat dunia.
+export const LAMPU_SKP_DIBUANG = [
+  { x: 3.86, y: 2.70, z: 15.86, r: 'carport, baris tengah (SKP 5 lampu, tanpa lampu di sisi pagar) → diganti grid 2×2 DED' },
+  { x: 6.26, y: 2.70, z: 15.86, r: 'carport, baris tengah' }, { x: 8.66, y: 2.70, z: 15.86, r: 'carport, baris tengah' },
+  { x: 7.71, y: 2.70, z: 13.68, r: 'carport, depan kaca r. keluarga' }, { x: 8.67, y: 2.70, z: 13.68, r: 'carport, depan kaca r. keluarga' },
+  { x: 6.45, y: -0.05, z: 1.50, kuningan: true, r: 'BUKAN lampu: penutup floor drain kuningan di r. jemur yang ikut "menyala" karena warnanya mirip lampu SKP → dikembalikan jadi kuningan biasa' },
+  { x: 2.69, y: 6.04, z: 6.16, r: 'luifel jendela KT2 sisi luar, 6 m di atas selasar samping (dekoratif)' },
+  { x: 2.14, y: 6.24, z: 11.21, r: 'balkon samping, titik tambahan di antara 2 titik DED (jarak DED 3,25 m sudah cukup)' },
+  { x: 3.57, y: 6.24, z: 12.83, r: 'balkon depan, titik tambahan' },
+  { x: 8.22, y: 6.24, z: 13.80, r: 'atas bak tanaman di depan kaca r. keluarga lt2 (dekoratif)' },
+];
+
 
 // Jalur kabel (garis putus-putus di gambar), disederhanakan menjadi polyline ortogonal di bawah plafon/dak.
 // Ujung yang berimpit dengan perangkat dinding otomatis diturunkan vertikal ke perangkat itu.
@@ -135,25 +169,34 @@ export const LAMPU = [
 // Elemen ke-3 opsional = tinggi tetap (m dari lantai) untuk ruas di luar yang tidak punya plafon (mis. menyusur puncak pagar).
 export const JALUR = [
   // lantai 1
-  { lvl: 'lt1', pts: [[7.75, 3.564], [7.75, 3.6], [8.30, 3.6], [8.30, 2.74]] },
-  { lvl: 'lt1', pts: [[7.75, 3.7], [9.6, 3.7]] }, // traveller two-way ke saklar tukar lt2 (naik di pojok belakang kanan)
+  { lvl: 'lt1', pts: [[7.70, 3.564], [7.70, 3.6], [8.19, 3.6], [8.19, 2.72]] },
+  { lvl: 'lt1', pts: [[7.80, 3.564], [7.80, 3.7], [9.6, 3.7]] }, // traveller two-way ke saklar tukar lt2 (naik di pojok belakang kanan)
   // lampu pagar belakang: di bawah kanopi belakang (x ≥ 6.5, ±2,95 m) lalu turun ke puncak pagar (1,95 m) dan menyusur muka pagar
-  { lvl: 'lt1', pts: [[7.95, 3.6], [7.95, 0.2], [7.95, 0.2, 1.93], [3.84, 0.2, 1.93], [3.84, 0.125, 1.93]] },
+  { lvl: 'lt1', pts: [[7.95, 3.6], [7.95, 0.2], [7.95, 0.2, 1.5], [3.84, 0.2, 1.5], [3.84, 0.125, 1.5]] },
+  { lvl: 'lt1', pts: [[3.84, 0.2, 1.5], [0.15, 0.2, 1.5], [0.15, 0.30, 1.5]] }, // lampu taman pojok belakang ikut grup lampu jemur (seperti garis DED)
   { lvl: 'lt1', pts: [[6.30, 6.925], [6.30, 5.24], [4.76, 5.24]] },
   { lvl: 'lt1', pts: [[6.30, 6.925], [7.09, 6.925], [7.09, 5.24]] },
+  { lvl: 'lt1', pts: [[6.30, 6.54], [5.08, 6.54]] }, // lampu gantung meja makan (cabang dari jalur saklar r. makan)
   { lvl: 'lt1', pts: [[7.09, 6.925], [7.09, 7.74]] },
   { lvl: 'lt1', pts: [[3.87, 7.74], [3.87, 8.25], [5.42, 8.25], [5.42, 8.425]] },
   { lvl: 'lt1', pts: [[5.42, 8.575], [5.42, 10.22], [4.76, 10.22]] },
   { lvl: 'lt1', pts: [[6.68, 11.69], [7.09, 11.69], [7.09, 8.98], [9.42, 8.98], [9.42, 12.94], [7.09, 12.94], [7.09, 11.69]] },
   { lvl: 'lt1', pts: [[7.09, 10.94], [9.44, 10.94]] },
+  { lvl: 'lt1', pts: [[8.20, 10.94], [8.20, 11.20]] }, // lampu gantung r. keluarga
   { lvl: 'lt1', pts: [[6.68, 12.02], [6.9, 12.02], [6.9, 13.4], [3.10, 13.4], [3.10, 13.591]] },
   { lvl: 'lt1', pts: [[6.9, 13.4], [6.99, 13.4], [6.99, 13.56]] },
-  { lvl: 'lt1', pts: [[4.75, 13.4], [4.75, 12.72]] },
+  { lvl: 'lt1', pts: [[4.69, 13.4], [4.69, 12.83]] },
   { lvl: 'lt1', pts: [[6.9, 13.4], [6.9, 18.0]] },
   { lvl: 'lt1', pts: [[4.77, 15.0], [8.30, 15.0]] },
   { lvl: 'lt1', pts: [[4.77, 18.0], [8.30, 18.0]] },
-  { lvl: 'lt1', pts: [[4.77, 18.0], [3.47, 18.0], [3.47, 18.99]] }, // feed lampu pagar depan dari lampu carport
-  { lvl: 'lt1', pts: [[2.925, 10.22], [2.7, 10.22], [2.7, 10.97], [1.55, 10.97]] },
+  // pagar depan (sisi jalan): dari lampu carport menembus pagar → lampu aksen bak tanaman & downlight kanopi pintu pagar
+  { lvl: 'lt1', pts: [[4.77, 18.0], [3.6, 18.0], [3.6, 18.95], [3.6, 18.95, -0.1], [3.6, 19.17, -0.1]] },
+  { lvl: 'lt1', pts: [[3.6, 18.95], [2.22, 18.95], [2.22, 18.95, 1.6], [2.22, 19.23, 1.6]] },
+  // saklar ganda teras samping (1-31): tuts 1 = 2 lampu bawah balkon samping, tuts 2 = 6 lampu taman di tembok batas kiri
+  { lvl: 'lt1', pts: [[2.925, 10.22], [2.18, 10.22], [2.18, 11.83]] },
+  // menyusur muka tembok batas kiri (x 0,12–0,14) pada 1,5 m; berhenti di L1-02 sebelum pintu samping (z 2,1–3,4)
+  { lvl: 'lt1', pts: [[2.18, 10.22], [0.15, 10.22], [0.15, 10.22, 1.5], [0.15, 3.70, 1.5]] },
+  { lvl: 'lt1', pts: [[0.15, 10.22, 1.5], [0.15, 15.0, 1.5]] },
   // data CAT6 (CCTV → NVR di lemari bawah tangga), trunk di bawah dak sepanjang x 7.85 (di bawah lantai selasar lt2; void model SKP mulai x ±8,0 sampai tembok kanan, lebih lebar dari tangga)
   { lvl: 'lt1', data: true, pts: [[9.876, 8.4], [9.876, 9.5], [7.85, 9.5], [7.85, 13.4], [9.7, 13.4], [9.7, 13.56]] }, // dari NVR menyusur tembok kanan di bawah bordes, naik ke plafon setelah tepi lantai lt2 (z ±9,3); trunk x 7.85 = di bawah lantai selasar (void SKP x ≥ 8,0)
   { lvl: 'lt1', data: true, pts: [[7.85, 13.4], [6.6, 13.4], [6.6, 13.25], [3.4, 13.25]] },
@@ -165,7 +208,7 @@ export const JALUR = [
   { lvl: 'lt2', coax: true, pts: [[9.44, 12.19], [6.6, 12.19]] },
   { lvl: 'lt1', coax: true, pts: [[6.6, 12.19], [6.6, 11.18], [6.679, 11.18]] },
   // lantai 2
-  { lvl: 'lt2', pts: [[7.73, 3.575], [7.73, 3.6], [8.30, 3.6], [8.30, 2.74]] },
+  { lvl: 'lt2', pts: [[7.73, 3.575], [7.73, 3.6], [8.19, 3.6], [8.19, 2.72]] },
   { lvl: 'lt2', pts: [[6.425, 5.88], [4.76, 5.88], [4.76, 5.24]] },
   { lvl: 'lt2', pts: [[6.575, 8.15], [7.09, 8.15], [7.09, 8.98]] }, // saklar ganda selasar → lampu depan pintu KTU
   { lvl: 'lt2', pts: [[7.09, 8.15], [7.09, 6.98], [7.09, 4.99]] }, // … dan 2 lampu selasar
@@ -173,26 +216,26 @@ export const JALUR = [
   { lvl: 'lt2', pts: [[9.6, 3.7], [9.42, 3.7], [9.42, 4.99]] }, // traveller two-way dari saklar triple lt1 (riser di pojok belakang kanan)
   { lvl: 'lt2', pts: [[5.66, 7.74], [6.3, 7.74], [6.3, 8.15], [6.575, 8.15]] },
   { lvl: 'lt2', pts: [[3.87, 7.74], [3.87, 8.6], [4.07, 8.6], [4.07, 8.575]] },
-  { lvl: 'lt2', pts: [[2.24, 9.48], [2.24, 8.72], [4.07, 8.72], [4.07, 8.6]] },
+  { lvl: 'lt2', pts: [[2.14, 9.58], [2.14, 8.72], [4.07, 8.72], [4.07, 8.6]] },
   { lvl: 'lt2', pts: [[6.425, 9.57], [6.4, 9.75], [4.76, 9.75], [4.76, 10.22]] },
   { lvl: 'lt2', pts: [[9.876, 9.55], [9.44, 9.55], [9.44, 10.94]] }, // saklar ganda r. keluarga lt2 (tembok luar) → lampu r. keluarga
   { lvl: 'lt2', pts: [[9.44, 9.55], [9.42, 9.55], [9.42, 8.98]] },
   { lvl: 'lt2', pts: [[7.09, 10.94], [7.09, 12.94], [9.44, 12.94], [9.44, 10.94]] },
   { lvl: 'lt2', pts: [[7.09, 10.94], [9.44, 10.94]] },
-  { lvl: 'lt2', pts: [[6.575, 12.02], [6.9, 12.02], [6.9, 12.73], [4.74, 12.73], [2.24, 12.73]] },
-  { lvl: 'lt2', pts: [[6.9, 12.73], [6.9, 13.7], [6.1, 13.7], [6.1, 13.95]] },
+  { lvl: 'lt2', pts: [[6.575, 12.02], [6.9, 12.02], [6.9, 12.83], [5.01, 12.83], [2.14, 12.83]] },
+  { lvl: 'lt2', pts: [[6.9, 12.83], [6.9, 13.7], [6.07, 13.7], [6.07, 13.95]] },
 ];
 
 // ---------------------------------------------------------------------------
 // KOTAK INBOW: tiap stop kontak / saklar = satu kotak Panasonic. ID = <lantai>-<nomor>, urut per ruangan lalu posisi.
-const RUANG_LT1 = (x, z) => z > 13.5 ? 'Carport' : x < 3 ? 'Selasar samping (luar)' : z < 3.5 ? (x > 6.5 ? 'Teras belakang' : 'R. jemur')
+const RUANG_LT1 = (x, z) => z > 19.1 ? 'Luar pagar (sisi jalan)' : x < 1.5 && z > 8.5 && z < 13.5 ? 'Taman samping (dek)' : x < 1.5 ? 'Taman samping' : z > 13.5 ? 'Carport' : x < 2.85 && z > 8.5 ? 'Taman samping (dek)' : x < 3 ? 'Selasar samping (luar)' : z < 3.5 ? (x > 6.5 ? 'Teras belakang' : 'R. jemur')
   : z < 4.2 && x >= 6.5 ? 'Pintu belakang (r. makan)' : z < 7 ? (x >= 6.5 ? 'R. makan (sisi tangga)' : z < 5.5 ? 'Dapur' : 'R. makan')
   : z < 8.5 ? (x > 8.8 ? 'Lemari bawah tangga' : x >= 6.5 ? 'R. makan (sisi tangga)' : x < 4.6 ? 'Toilet' : 'Lorong')
   : x >= 6.5 ? 'R. keluarga' : z < 12 ? 'KT1' : 'Teras depan';
-const RUANG_LT2 = (x, z) => z < 3.5 ? 'Balkon belakang' : x < 3 ? 'Balkon samping' : z < 7 ? (x >= 6.5 ? 'Selasar' : 'KT2')
+const RUANG_LT2 = (x, z) => z < 3.5 ? 'Balkon belakang' : x < 3 ? (z > 12 ? 'Balkon depan' : 'Balkon samping') : z < 7 ? (x >= 6.5 ? 'Selasar' : 'KT2')
   : z < 8.5 ? (x >= 6.5 ? 'Selasar' : x < 4.6 ? 'Toilet kiri (KTU)' : 'Toilet kanan') : x >= 6.5 ? (z > 13.5 ? 'Balkon depan' : 'R. keluarga lt2') : z < 12 ? 'KT utama' : 'Balkon depan';
-const URUT = ['Teras belakang', 'R. jemur', 'Dapur', 'R. makan', 'Pintu belakang (r. makan)', 'R. makan (sisi tangga)', 'Lemari bawah tangga', 'Toilet', 'Lorong', 'KT1', 'R. keluarga', 'Teras depan', 'Selasar samping (luar)', 'Carport',
-  'Balkon belakang', 'KT2', 'Selasar', 'Toilet kiri (KTU)', 'Toilet kanan', 'KT utama', 'R. keluarga lt2', 'Balkon depan', 'Balkon samping'];
+const URUT = ['Taman samping', 'Taman samping (dek)', 'Teras belakang', 'R. jemur', 'Dapur', 'R. makan', 'Pintu belakang (r. makan)', 'R. makan (sisi tangga)', 'Lemari bawah tangga', 'Toilet', 'Lorong', 'KT1', 'R. keluarga', 'Teras depan', 'Fasad depan', 'Selasar samping (luar)', 'Carport', 'Luar pagar (sisi jalan)',
+  'Balkon belakang', 'KT2', 'Selasar', 'Void tangga', 'Toilet kiri (KTU)', 'Toilet kanan', 'KT utama', 'R. keluarga lt2', 'Balkon depan', 'Fasad lt2', 'Balkon samping'];
 const ISI = { stopkontak: '1 stop kontak', saklar1: '1 saklar', saklar2: '2 saklar', antena: '1 stop kontak antena TV' };
 /** Nama ruangan untuk perangkat dinding (titik 6 cm di depan muka tembok). */
 export function ruangDi(lvl, x, z) { return lvl === 'lt1' ? RUANG_LT1(x, z) : RUANG_LT2(x, z); }
@@ -207,5 +250,27 @@ for (const lvl of ['lt1', 'lt2']) {
     const id = `${lvl === 'lt1' ? 1 : 2}-${String(i + 1).padStart(2, '0')}`;
     k.d.id = id;
     KOTAK.push({ id, lvl, ruang: k.ruang, t: k.d.t, isi: ISI[k.d.t] + (k.d.tukar ? ' tukar' : k.d.ac ? ' AC' : k.d.wh ? ' water heater (IP44)' : k.d.nvr ? ' (NVR/router)' : ''), x: k.d.x, z: k.d.z, n: k.d.n, h: k.d.h, baru: !!k.d.baru, rev: !!k.d.rev, r: k.d.r });
+  });
+}
+
+// ---------------------------------------------------------------------------
+// TITIK LAMPU: semua lampu (plafon LAMPU + dinding outdoor PERANGKAT 'sconce') dengan ID L<lantai>-<nomor>, urut per ruang.
+// ID tampil di 3D (tekan E), di denah 2D, dan di tabel daftar lampu (docs/daftar-kotak.pdf).
+const JENIS = { dl: 'Downlight tanam', tempel: 'Downlight tempel (outbow)', gantung: 'Titik lampu gantung', sconce: 'Lampu dinding outdoor (up-down)' };
+export const TITIK_LAMPU = [];
+for (const lvl of ['lt1', 'lt2']) {
+  const list = [
+    ...LAMPU.filter((l) => l.lvl === lvl).map((l) => ({ o: l, jenis: l.j || 'dl', ruang: l.ruang || ruangDi(lvl, l.x, l.z) })),
+    ...PERANGKAT.filter((d) => d.lvl === lvl && d.t === 'sconce').map((d) => {
+      const nx = d.n === '+x' ? 1 : d.n === '-x' ? -1 : 0, nz = d.n === '+z' ? 1 : d.n === '-z' ? -1 : 0;
+      return { o: d, jenis: 'sconce', ruang: d.ruang || ruangDi(lvl, d.x + nx * 0.06, d.z + nz * 0.06) };
+    }),
+  ];
+  list.sort((a, b) => (URUT.indexOf(a.ruang) - URUT.indexOf(b.ruang)) || (a.o.z - b.o.z) || (a.o.x - b.o.x));
+  list.forEach((k, i) => {
+    const id = `L${lvl === 'lt1' ? 1 : 2}-${String(i + 1).padStart(2, '0')}`;
+    k.o.lid = id;
+    const sumber = k.o.baru ? (k.o.skp ? 'SKP (tidak ada di DED)' : 'baru') : k.o.skp ? (k.o.rev ? 'DED, posisi SKP' : 'DED = SKP') : k.o.rev ? 'DED, diubah' : 'DED';
+    TITIK_LAMPU.push({ id, lvl, ruang: k.ruang, jenis: JENIS[k.jenis], j: k.jenis, w: k.o.w ?? 5, x: k.o.x, z: k.o.z, h: k.o.h, hKet: k.o.hKet, n: k.o.n, skp: !!k.o.skp, baru: !!k.o.baru, rev: !!k.o.rev, sumber, r: k.o.r });
   });
 }

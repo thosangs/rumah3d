@@ -314,7 +314,8 @@ def ring_pendant():
     start()
     # titik nol = plafon; menggantung ke -z
     cyl('canopy', 0.06, 0.03, 0, 0, -0.015, M['blackMatte'], 32)
-    for (R, z) in [(0.45, -0.65), (0.33, -0.37), (0.22, -0.15)]:
+    # cincin terbawah (termasuk miring 8°) ±1,40 m di bawah plafon → 2,20 m dari lantai pada plafon 3,60 m
+    for (R, z) in [(0.45, -1.27), (0.33, -0.99), (0.22, -0.77)]:
         t = torus('ring', R, 0.014, 0, 0, z, M['chrome'], rot=(math.radians(8), 0, 0)); t.data.materials[0] = mat('brass', srgb('#b8925a'), 0.3, 0.9)
         torus('ringLed', R, 0.007, 0, 0, z - 0.012, M['led'], rot=(math.radians(8), 0, 0))
         cyl('wire', 0.002, -z, R * 0.7, 0, z / 2, M['blackMatte'], 6)
@@ -324,12 +325,13 @@ def molecule_pendant():
     start()
     brass = mat('brass', srgb('#b8925a'), 0.3, 0.9)
     cyl('canopy', 0.05, 0.03, 0, 0, -0.015, brass, 32)
-    cyl('rod', 0.006, 1.1, 0, 0, -0.55, brass, 8)
-    box('bar', 1.1, 0.02, 0.02, 0, 0, -1.1, brass)
+    L = 1.77  # batang: bawah bola lampu = plafon − (L + 0,16 + 0,06) → 0,80 m di atas meja 0,76 pada plafon 3,60 m
+    cyl('rod', 0.006, L, 0, 0, -L / 2, brass, 8)
+    box('bar', 1.1, 0.02, 0.02, 0, 0, -L, brass)
     for i in range(6):
         x = -0.5 + i * 0.2; dz = 0.16 if i % 2 else -0.16
-        cyl('stem', 0.006, 0.16, x, 0, -1.1 + dz / 2, brass, 8)
-        bpy.ops.mesh.primitive_uv_sphere_add(radius=0.06, location=(x, 0, -1.1 + dz)); s = bpy.context.active_object; s.data.materials.append(mat('bulb', srgb('#fff6e6'), 1, 0, emit=srgb('#ffe9c4'), emit_str=4)); bpy.ops.object.shade_smooth()
+        cyl('stem', 0.006, 0.16, x, 0, -L + dz / 2, brass, 8)
+        bpy.ops.mesh.primitive_uv_sphere_add(radius=0.06, location=(x, 0, -L + dz)); s = bpy.context.active_object; s.data.materials.append(mat('bulb', srgb('#fff6e6'), 1, 0, emit=srgb('#ffe9c4'), emit_str=4)); bpy.ops.object.shade_smooth()
     export('molecule_pendant')
 
 def concrete_pot():

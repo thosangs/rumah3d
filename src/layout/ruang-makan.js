@@ -21,7 +21,7 @@ export default [
   { a: 'dining_chair', x: 5.43, z: 5.98, ry: 0, scale: 0.93, note: 'sisi selatan kanan; jarak antar kursi 0.27 m' },
   { a: 'dining_chair', x: 5.935, z: 6.54, ry: -Math.PI / 2, scale: 0.93, note: 'ujung timur, menghadap −x; muka x 5.73, punggung x 6.215 → 28 cm sebelum ujung tembok (x 6.5)' },
   // Lampu gantung molekul emas di atas tengah meja (hal. 25/27), kanopi di plafon 3.55; bar searah meja (sumbu x).
-  { a: 'molecule_pendant', x: 5.08, z: 6.54, y: 3.55, ry: 0, scale: 1.15 },
+  { a: 'molecule_pendant', x: 5.08, z: 6.54, y: 3.55, ry: 0, note: 'kanopi di plafon; batang 1,77 m → bawah bola lampu 1,56 m dari lantai = 0,80 m di atas meja (standar 0,75–0,90 m)' },
   // Vas bunga kecil di atas meja (hal. 25/28) → tanaman pot mini di atas top (top 0.745+0.0175), agak ke timur.
   { a: 'plant_small', x: 5.3, z: 6.6, y: 0.763 },
   // Pohon pot di depan bagian tinggi lemari bawah tangga, di kanan niche (hal. 25/26/27), pot di ujung bukaan ke ruang keluarga.

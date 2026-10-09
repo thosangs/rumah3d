@@ -22,9 +22,9 @@ const Q = {
   cctv: n((d) => d.t === 'cctv'),
   sk: n((d) => d.t === 'stopkontak' && !d.ac && !d.wh), skBaru: n((d) => d.t === 'stopkontak' && !d.ac && !d.wh && d.baru), skAc: n((d) => d.ac), skWh: n((d) => d.wh),
   s1: n((d) => d.t === 'saklar1' && !d.tukar), s2: n((d) => d.t === 'saklar2'), s3: n((d) => d.t === 'saklar3'), tukar: n((d) => d.tukar), sconce: n((d) => d.t === 'sconce'), antena: n((d) => d.t === 'antena'),
-  l9: L.filter((l) => l.w === 9).length, l5: L.filter((l) => l.w === 5).length,
+  l9: L.filter((l) => l.w === 9 && l.j !== 'tempel').length, l9t: L.filter((l) => l.j === 'tempel').length, l5: L.filter((l) => l.w === 5).length, gantung: L.filter((l) => l.j === 'gantung').length,
 };
-Q.titik = Q.sk + Q.skAc + Q.skWh + Q.s1 + Q.s2 + Q.s3 + (Q.tukar - Q.s3) + Q.sconce + Q.l9 + Q.l5; // "titik" ala RAB: tiap lampu, stop kontak, saklar
+Q.titik = Q.sk + Q.skAc + Q.skWh + Q.s1 + Q.s2 + Q.s3 + (Q.tukar - Q.s3) + Q.sconce + Q.l9 + Q.l9t + Q.l5 + Q.gantung; // "titik" ala RAB: tiap lampu, stop kontak, saklar
 
 // ---------- panjang kabel ----------
 const man = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.z - b.z);
@@ -58,7 +58,7 @@ const acTotal = acRun.reduce((a, b) => a + b, 0);
 const whRun = P.filter((d) => d.wh).map((d) => (d.lvl === 'lt2' ? naikLt2 : CEIL.lt1 - MCB.h) + man(MCB, d) + (CEIL[d.lvl] - d.h));
 const whTotal = whRun.reduce((a, b) => a + b, 0);
 const sisa = 1.1, slackTitik = 0.5; // 10 % pemotongan + 0,5 m per titik untuk sambungan di dos
-const mLampu = (lampCabang.lt1 + lampCabang.lt2 + lampFase.lt1 + lampFase.lt2) * sisa + (Q.l9 + Q.l5 + Q.sconce + Q.s1 + Q.s2 + Q.s3 + 1) * slackTitik; // NYM 2×1,5
+const mLampu = (lampCabang.lt1 + lampCabang.lt2 + lampFase.lt1 + lampFase.lt2) * sisa + (Q.l9 + Q.l9t + Q.l5 + Q.gantung + Q.sconce + Q.s1 + Q.s2 + Q.s3 + 1) * slackTitik; // NYM 2×1,5
 const mSK = (skRantai.lt1 + skRantai.lt2) * sisa + Q.sk * slackTitik; // NYM 3×2,5
 const mAC = acTotal * sisa + Q.skAc * slackTitik; // NYM 3×2,5
 const mWH = whTotal * sisa + Q.skWh * slackTitik; // NYM 3×2,5, grup water heater
@@ -69,12 +69,12 @@ const batang = Math.ceil(mPipa / 4);
 
 // ---------- harga satuan ----------
 const H = {
-  sk: 75000, skAc: 95000, skWh: 110000, box8: 185000, s1: 35000, s2: 55000, s3: 95000, tukar: 45000, nym315m: 7000, l9: 105000, l5: 90000, sconce: 105000, antena: 155000, coax: 220000,
+  sk: 75000, skAc: 95000, skWh: 110000, box8: 185000, s1: 35000, s2: 55000, s3: 95000, tukar: 45000, nym315m: 7000, l9: 105000, l9t: 135000, l5: 90000, gantung: 85000, sconce: 105000, antena: 155000, coax: 220000,
   box6: 150000, mcb: 132500, kwh2200: 3250000, kwh3500: 4300000,
   nym215: 375000, nym325: 850000, nym34m: 15000, pipa: 12000, aks: 8750, jasa: 40000,
   grounding: 450000, elcb: 450000,
 };
-const bintang = new Set(['coax', 'tukar', 'nym315m', 'skAc', 'skWh', 'box8', 'box6', 'kwh3500', 'nym325', 'nym34m', 'grounding', 'elcb']); // perkiraan pasar
+const bintang = new Set(['l9t', 'gantung', 'coax', 'tukar', 'nym315m', 'skAc', 'skWh', 'box8', 'box6', 'kwh3500', 'nym325', 'nym34m', 'grounding', 'elcb']); // perkiraan pasar
 // coax: panjang JALUR coax + 8 m dari antena di atap ke splitter + turunan ke 2 titik
 const mCoax = 8 + JALUR.filter((j) => j.coax).reduce((m, j) => { for (let i = 0; i < j.pts.length - 1; i++) m += Math.abs(j.pts[i + 1][0] - j.pts[i][0]) + Math.abs(j.pts[i + 1][1] - j.pts[i][1]); return m; }, 0) + 3.4 + (CEIL.lt1 - 0.78) + (CEIL.lt2 - 0.4);
 const rows = [
@@ -87,8 +87,10 @@ const rows = [
   ['Pasang sakelar tukar (two-way) lampu tangga, lt2 tembok luar', Q.tukar - Q.s3, 'bh', 'tukar'],
   ['Kabel traveller NYM 3×1,5 mm² antar saklar tukar (lt1 pintu belakang ↔ lt2 atas tangga)', 14, 'm', 'nym315m'],
   ['Pasang lampu LED downlight 9 W', Q.l9, 'bh', 'l9'],
+  ['Pasang lampu LED downlight tempel (outbow) 9 W — carport', Q.l9t, 'bh', 'l9t'],
   ['Pasang lampu LED downlight 5 W', Q.l5, 'bh', 'l5'],
-  ['Pasang lampu LED sorot/dinding outdoor', Q.sconce, 'bh', 'sconce'],
+  ['Pasang lampu LED dinding outdoor 5 W (fasad, taman, pagar)', Q.sconce, 'bh', 'sconce'],
+  ['Titik lampu gantung (fitting plafon + kabel; armatur dari furnitur)', Q.gantung, 'titik', 'gantung'],
   ['Pasang stop kontak antena TV (titik coax: bawah TV lt1, bawah meja kerja lt2)', Q.antena, 'bh', 'antena'],
   ['Splitter antena 2 way + kabel coax RG6 (1 antena di atap → splitter plafon lt2 → 2 titik, ±' + Math.round(mCoax) + ' m) \u2014 antena & tiang di luar (±Rp 250–400 rb)', 1, 'ls', 'coax'],
   ['Box MCB 8 group (pengganti 4 group)', 1, 'bh', 'box8'],
@@ -134,7 +136,7 @@ const rabTotal = RABV3.reduce((a, [, v]) => a + v, 0);
 let md = `# Estimasi Biaya Instalasi Listrik — Rumah Mbak Alfi (revisi 06-10-2026)\n\n`;
 md += `Dihitung otomatis oleh \`scripts/rab-listrik.mjs\` dari data model 3D (\`src/layout/elektrik.js\`). Harga satuan mengikuti **RAB V3 bagian IX** untuk item yang sama; item bertanda \\* adalah perkiraan harga pasar (Okt 2026) karena tidak ada di RAB.\n\n`;
 md += `## A. Kuantitas\n\n| Item | Jumlah |\n|---|---:|\n`;
-md += `| Stop kontak biasa (DED ${Q.sk - Q.skBaru} + revisi ${Q.skBaru}) | ${Q.sk} |\n| Stop kontak AC | ${Q.skAc} |\n| Stop kontak water heater (IP44) | ${Q.skWh} |\n| Sakelar tunggal / ganda / triple / tukar | ${Q.s1} / ${Q.s2} / ${Q.s3} / ${Q.tukar} |\n| Downlight 9 W / 5 W | ${Q.l9} / ${Q.l5} |\n| Lampu sorot/dinding outdoor | ${Q.sconce} |\n| **Titik instalasi (lampu + stop kontak + sakelar)** | **${Q.titik}** (RAB: 65) |\n\n`;
+md += `| Stop kontak biasa (DED ${Q.sk - Q.skBaru} + revisi ${Q.skBaru}) | ${Q.sk} |\n| Stop kontak AC | ${Q.skAc} |\n| Stop kontak water heater (IP44) | ${Q.skWh} |\n| Sakelar tunggal / ganda / triple / tukar | ${Q.s1} / ${Q.s2} / ${Q.s3} / ${Q.tukar} |\n| Downlight 9 W / 9 W tempel / 5 W | ${Q.l9} / ${Q.l9t} / ${Q.l5} |\n| Lampu dinding outdoor / titik lampu gantung | ${Q.sconce} / ${Q.gantung} |\n| **Titik instalasi (lampu + stop kontak + sakelar)** | **${Q.titik}** (RAB: 65) |\n\n`;
 md += `### Panjang jalur (dari geometri model)\n\n| Jalur | Lantai 1 | Lantai 2 | Keterangan |\n|---|---:|---:|---|\n`;
 md += `| Cabang lampu (polyline denah + turunan ke sakelar) | ${r1(lampCabang.lt1)} m | ${r1(lampCabang.lt2)} m | NYM 2×1,5 |\n`;
 md += `| Fase bersama lampu (box MCB → semua sakelar) | ${r1(lampFase.lt1)} m | ${r1(lampFase.lt2)} m | NYM 2×1,5, lt2 termasuk riser ${RISER} m |\n`;
@@ -162,6 +164,7 @@ md += `- Panjang kabel dihitung dari rute ortogonal di bawah dak/plat (tinggi ${
 md += `- Harga RAB "Pasang …" dianggap sudah termasuk material + pemasangan; aksesori dan jasa per titik (Rp ${H.aks.toLocaleString('id-ID')} + Rp ${H.jasa.toLocaleString('id-ID')}) mengikuti angka RAB.\n`;
 md += `- Water heater: daya 2200 VA hanya cukup untuk pemanas tangki low-watt (≤ 500 W, mis. 15 L); pemanas instan 2–3,5 kW butuh 3500 VA ke atas. Unit pemanasnya sendiri (±Rp 1,6–2 jt/bh) masuk pekerjaan sanitasi, tidak dihitung di sini.\n`;
 md += `- Stop kontak & sakelar: Panasonic seri baru model inbow kotak (1 kotak = 1 stop kontak / 1 sakelar / 2 sakelar; daftar & ID per kotak di \`daftar-kotak.md\`). Harga satuan "Pasang stop kontak / sakelar" masih memakai angka RAB V3; sesuaikan kalau harga kotak Panasonic berbeda.\n`;
-md += `- Belum termasuk: titik pompa air (belum ditentukan), lampu taman/pagar tambahan (RAB lama: 8 sorot + 4 downlight carport, ±Rp 3,5 jt), biaya PLN di luar pasang baru (UJL).\n`;
+md += `- Lampu sudah mengikuti revisi 09-10-2026 (\`daftar-lampu.md\`): 6 lampu taman di tembok batas kiri dan lampu pagar dari DED kini terhitung, carport memakai downlight tempel, 2 titik lampu gantung furnitur. Armatur lampu gantung sendiri tidak termasuk.\n`;
+md += `- Belum termasuk: biaya PLN di luar pasang baru (UJL).\n`;
 writeFileSync(join(root, 'docs', 'rab-listrik.md'), md);
 console.log(md);

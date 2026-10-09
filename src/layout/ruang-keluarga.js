@@ -49,5 +49,5 @@ export default [
   { a: 'curtain_dark', x: 7.08, z: 13.39, ry: Math.PI, sx: 0.45, scale: 1.05, note: 'panel gelap kiri (x 6.58–7.58, z 13.25–13.40): di luar ayunan pintu dan tidak menembus tembok' },
   { a: 'curtain_dark', x: 9.42, z: 13.39, ry: Math.PI, sx: 0.45, scale: 1.05, note: 'panel gelap kanan (x 8.92–9.92, z 13.25–13.40)' },
   // --- Lampu ring emas di atas meja kopi, menggantung dari plafon 3.1 m (ring terbawah y ≈ 2.45) ---
-  { a: 'ring_pendant', x: 8.2, z: 11.2, y: 3.1 },
+  { a: 'ring_pendant', x: 8.2, z: 11.2, y: 3.55, note: 'kanopi di plafon (3,60 m); cincin terbawah 2,20 m dari lantai (≥ 2,1 m standar lampu gantung di area lalu-lalang)' },
 ];
