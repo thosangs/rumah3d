@@ -15,7 +15,20 @@ lalu buka <http://localhost:8765>.
 
 Kontrol: klik untuk mengunci mouse, `W A S D` jalan, `Shift` lari, `Spasi` lompat, `1/2/3` lompat ke teras depan / lantai 2 / depan rumah,
 `M` mode orbit (denah), `H` irisan lantai, `L` label ukuran potongan (default mati), `C` warna potongan, `F` furnitur, `E` lapisan listrik (stop kontak, saklar, MCB, kWh, titik lampu, jalur kabel — dari denah instalasi listrik hal. 69–70; denah 2D hasil revisi: `docs/denah-listrik-lt1.svg`/`-lt2.svg`, dibuat ulang dengan `node scripts/denah-listrik.mjs`), estimasi biaya/BoQ listrik `docs/rab-listrik.md` (`node scripts/rab-listrik.mjs`), `G` ganti model SKP asli ↔ model blok,
-`P` panel hitungan. Naik ke lantai 2 cukup jalan ke tangga di pojok kanan belakang ruang makan.
+`P` panel hitungan, `K` simulator cahaya. Naik ke lantai 2 cukup jalan ke tangga di pojok kanan belakang ruang makan.
+
+## Simulator cahaya (`K` atau tombol 💡 Cahaya)
+
+Untuk memilih warna cat & lampu dengan cahaya yang mendekati aslinya (`src/cahaya.js`). Semua dalam satuan fisik, jadi terang siang vs lampu malam sebanding:
+
+- **Matahari**: posisi dihitung dari kota, tanggal, jam, dan arah hadap depan rumah; terang (lux) dan warnanya (jingga saat rendah) ikut ketinggian matahari, langit ikut berubah.
+- **Lampu**: semua titik di `src/layout/elektrik.js` (`LAMPU` + lampu dinding `sconce`). Atur suhu warna (Kelvin) per kelompok (downlight dalam, lampu gantung, lampu luar), efikasi LED (lm/W → lumen tiap titik dari dayanya), dan jenis sorot downlight (lebar 100° … spotlight 24°). Mode biasa menyalakan 16 lampu sorot terdekat kamera supaya ringan; render realistis memakai semua.
+- **Cat**: dinding luar & pagar, dinding dalam, plafon, atap & list (+ doff/satin/gloss). Muka tembok dalam/luar dipisah otomatis dari arah muka tembok terhadap badan rumah — balkon/teras yang masuk badan rumah ikut "dalam".
+- **Kamera**: eksposur otomatis (seperti mata/kamera HP) atau EV manual, plus adaptasi warna (mata, kamera HP, atau tanpa adaptasi).
+- **📷 Render realistis**: path tracing (three-gpu-pathtracer 0.0.23 + three-mesh-bvh 0.8.3, `vendor/pathtracer/`): pantulan cahaya antar dinding, bayangan lembut. Makin lama makin halus; butuh GPU yang lumayan (laptop/PC).
+- Setelan tersimpan di URL (`#cahaya=…`) — tombol **🔗 Salin link** untuk berbagi kombinasi yang sama persis.
+
+Warna di layar tetap tergantung kalibrasi layar: pakai untuk membandingkan pilihan, lalu cek sampel cat asli di dinding pagi/siang/malam.
 
 ## Hitungan tanpa browser
 

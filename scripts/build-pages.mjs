@@ -32,7 +32,7 @@ const html = `<!doctype html>
 <title>Rumah Mbak Alfi — Walkthrough 3D</title>
 <link rel="stylesheet" href="styles.css" />
 <script type="importmap">
-{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/" } }
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/", "three/examples/jsm/": "./vendor/three/", "three-mesh-bvh": "./vendor/pathtracer/three-mesh-bvh.module.js" } }
 </script>
 </head>
 <body>
@@ -50,7 +50,7 @@ const html = `<!doctype html>
   <div class="card">
     <h1>Rumah Mbak Alfi <span>walkthrough 3D</span></h1>
     <p><b>Klik untuk mulai jalan</b> · <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> + mouse · <kbd>Shift</kbd> lari · <kbd>Esc</kbd> lepas</p>
-    <p class="muted"><kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> teras · lantai 2 · depan rumah &nbsp; <kbd>M</kbd> orbit &nbsp; <kbd>H</kbd> irisan lantai &nbsp; <kbd>G</kbd> model SKP/blok &nbsp; <kbd>L</kbd> ukuran potongan &nbsp; <kbd>C</kbd> warna potongan &nbsp; <kbd>F</kbd> furnitur &nbsp; <kbd>E</kbd> listrik</p>
+    <p class="muted"><kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd> teras · lantai 2 · depan rumah &nbsp; <kbd>M</kbd> orbit &nbsp; <kbd>H</kbd> irisan lantai &nbsp; <kbd>G</kbd> model SKP/blok &nbsp; <kbd>L</kbd> ukuran potongan &nbsp; <kbd>C</kbd> warna potongan &nbsp; <kbd>F</kbd> furnitur &nbsp; <kbd>E</kbd> listrik &nbsp; <kbd>K</kbd> cahaya</p>
     <p class="muted">Toolbar kanan bawah: ganti tampilan (Jalan / Orbit / Atas / Atap) &amp; irisan lantai. Di mode orbit, klik 2× di lantai untuk berdiri di sana.</p>
   </div>
 </div>
@@ -69,6 +69,7 @@ const html = `<!doctype html>
     <button data-cut="none" class="active" title="Model utuh">Utuh</button>
   </div>
   <div class="grp">
+    <button data-cahaya title="Simulator cahaya: matahari, lampu (Kelvin, lumen, sorot), warna cat, render realistis (tombol K)">💡 Cahaya</button>
     <button data-furniture class="active" title="Furnitur & interior sesuai render, termasuk kulkas (tombol F)">🛋 Interior</button>
     <button data-elektrik class="active" title="Instalasi listrik: stop kontak, saklar, MCB, kWh, titik lampu & jalur kabel (tombol E)">⚡ Listrik</button>
     <button data-open="docs/denah-listrik-lt1.svg" title="Denah instalasi listrik 2D lantai 1 (revisi) — buka di tab baru">🗺 Denah Lt1</button>

@@ -12,6 +12,7 @@ import { buildPlafonIndex } from './plafon.js';
 import { LAMPU_SKP_DIBUANG } from './layout/elektrik.js';
 import { assetsPending } from './assets.js';
 import { renderHitungan, renderGalleries, bindLightbox } from './ui.js';
+import { initCahaya } from './cahaya.js';
 
 // ---------------------------------------------------------------------------
 // Renderer & scene
@@ -48,6 +49,7 @@ const camera = new THREE.PerspectiveCamera(62, innerWidth / innerHeight, 0.05, 3
 }
 const hemi = new THREE.HemisphereLight(0xd6e6f7, 0x6f6a60, 0.35);
 scene.add(hemi);
+const legacyLights = [hemi]; // lampu tampilan biasa, dimatikan saat simulator cahaya aktif
 const sun = new THREE.DirectionalLight(0xfff1dc, 2.8);
 sun.position.set(-9, 18, 26); // matahari dari depan-kiri (menyorot fasad & masuk lewat jendela depan)
 sun.castShadow = true;
@@ -75,10 +77,10 @@ const ROOM_LIGHTS = [
 for (const [x, y, z, i] of ROOM_LIGHTS) {
   const pl = new THREE.PointLight(0xffe4c2, i, 9, 1.7);
   pl.position.set(x, y, z);
-  scene.add(pl);
+  scene.add(pl); legacyLights.push(pl);
 }
 // cahaya LED hangat lembut di TV wall & lemari bawah tangga (tanpa bayangan)
-for (const [x, y, z, i] of [[6.9, 1.6, 10.9, 3], [9.4, 1.6, 7.0, 1.5]]) { const pl = new THREE.PointLight(0xffc98a, i, 4, 2); pl.position.set(x, y, z); scene.add(pl); }
+for (const [x, y, z, i] of [[6.9, 1.6, 10.9, 3], [9.4, 1.6, 7.0, 1.5]]) { const pl = new THREE.PointLight(0xffc98a, i, 4, 2); pl.position.set(x, y, z); scene.add(pl); legacyLights.push(pl); }
 
 // ---------------------------------------------------------------------------
 // State
@@ -205,6 +207,7 @@ addEventListener('keydown', (e) => {
     case 'KeyL': setLabels(!showLabels); break;
     case 'KeyC': setCutColors(!showCutColors); break;
     case 'KeyF': setFurniture(!showFurniture); break;
+    case 'KeyK': cahaya.toggle(); break;
     case 'KeyE': setElektrik(!showElektrik); break;
     case 'KeyG': if (glbRoot) { glbOn = !glbOn; applyVisibility(); } break;
     case 'KeyP': togglePanel(); break;
@@ -568,6 +571,8 @@ function perforatedMaterial() {
   return new THREE.MeshStandardMaterial({ color: 0x23262a, metalness: 0.7, roughness: 0.45, alphaMap: alpha, alphaTest: 0.5, side: THREE.DoubleSide });
 }
 
+const cahaya = initCahaya({ renderer, scene, camera, sun, legacyLights, getGlb: () => glbRoot });
+
 // Model SKP asli (export glTF) — models/rumah.glb, dikompres meshopt
 const gltfLoader = new GLTFLoader();
 gltfLoader.setMeshoptDecoder(MeshoptDecoder);
@@ -629,6 +634,7 @@ gltfLoader.load(
     scene.add(glbRoot);
     glbOn = true;
     attachElektrik(); applyVisibility();
+    cahaya.onGlb();
     if (SHOT) applyShot();
     const bb = new THREE.Box3().setFromObject(glbRoot);
     const size = bb.getSize(new THREE.Vector3());
@@ -685,7 +691,7 @@ function animate() {
     if (anim) anim();
     orbit.update();
   }
-  renderer.render(scene, camera);
+  if (!cahaya.render()) renderer.render(scene, camera);
   // mode screenshot headless: setelah model & semua aset termuat, render beberapa frame lagi lalu berhenti
   // (halaman idle → Chrome langsung memotret, tidak menunggu virtual-time-budget habis)
   if (SHOT && window.__shotReady && assetsPending() === 0) {
@@ -697,7 +703,7 @@ function animate() {
 if (SHOT) applyShot(); // kamera screenshot dipasang sejak awal (sebelum GLB termuat) supaya tangkapan dini Chrome headless tidak memakai kamera default; dipanggil lagi setelah GLB termuat
 animate();
 
-window.__dbg = { teleport, camera, player, setMode, scene, render: () => renderer.render(scene, camera), get results() { return results; }, get glb() { return glbRoot; }, ceilingAt, get plafonIdx() { return plafonIdx; } };
+window.__dbg = { cahaya, teleport, camera, player, setMode, scene, render: () => renderer.render(scene, camera), get results() { return results; }, get glb() { return glbRoot; }, ceilingAt, get plafonIdx() { return plafonIdx; } };
 
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
