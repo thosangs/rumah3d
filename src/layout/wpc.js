@@ -16,6 +16,9 @@ export const PRODUK = { // daftar harga Duma (plafon), harga per batang, isi 10 
   t150: { nama: 'Duma Neo Modern Tempo 150', eff: 0.15, lebarTotal: 0.165, tebal: 0.01, harga: { 3: 180000, 5: 300000 }, isiBox: 10, warnaTersedia: '(lihat katalog)', contoh: '#6e4a35' },
 };
 
+// Kode warna Duma → warna rata-rata swatch katalog (perkiraan; cek sampel fisik). Dipakai ?wpcc=C2 dst.
+export const WARNA = { B2: '#9f5532', BT: '#623f3a', C2: '#634936', E: '#a17550', BC: '#1e1f1d', WG: '#b4a58e', BW: '#cbaa77' };
+
 // render: persegi dunia (m). Plafon: y = tinggi muka bawah plafon/overstek di model (diukur), x0..x1, z0..z1, arah papan 'x' | 'z'.
 // Tiang: kotak { kotak: true, x0, x1, z0, z1, y0, y1 }.
 export const AREA = [
