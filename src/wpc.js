@@ -1,7 +1,7 @@
-// Lapisan WPC (tombol J, ?wpc=1): plafon luar, gimbal atap, wall panel "celengan" bentuk U, tutup tiang teras depan.
+// Lapisan WPC (tombol J, ?wpc=1): plafon luar, gimbal atap, tutup tiang teras depan.
 // Data bidang = src/layout/wpc.js (sama dengan hitungan kebutuhan). Papan digambar sebagai tekstur kayu prosedural
-// dengan alur tiap lebar efektif produk (Duma Modern 100 / 150 / Neo Modern 200) dan warna contoh dari katalog.
-// Pilih produk: ?wpcp=m100 | m150 | n200 (default m100), warna: ?wpcc=#rrggbb.
+// dengan alur tiap lebar efektif produk (atau tiap 5 cm untuk Modern 50x3) dan warna contoh dari katalog.
+// Pilih produk: ?wpcp=m50 | m100 | m150 | n200 | t150 (default m100), warna: ?wpcc=#rrggbb.
 import * as THREE from 'three';
 import { PRODUK, AREA } from './layout/wpc.js';
 import { LEVELS } from './data.js';
@@ -50,8 +50,9 @@ function quad(p, uv) {
 export function buildWpc(ceilingAt, opts = {}) {
   const P = PRODUK[opts.produk] || PRODUK.m100;
   const warna = opts.warna || P.contoh;
-  const mat = new THREE.MeshStandardMaterial({ map: teksturPapan(warna, P.eff), roughness: 0.72, metalness: 0, side: THREE.DoubleSide });
-  const U = (m) => m / PANJANG_TEX, V = (m) => m / (P.eff * LAJUR_TEX);
+  const alur = P.alur || P.eff; // jarak alur yang tampak
+  const mat = new THREE.MeshStandardMaterial({ map: teksturPapan(warna, alur), roughness: 0.72, metalness: 0, side: THREE.DoubleSide });
+  const U = (m) => m / PANJANG_TEX, V = (m) => m / (alur * LAJUR_TEX);
   const grp = new THREE.Group(); grp.name = 'wpc';
   const add = (geom, nama) => { const m = new THREE.Mesh(geom, mat); m.name = nama; m.receiveShadow = true; m.castShadow = false; grp.add(m); };
   for (const a of AREA) {

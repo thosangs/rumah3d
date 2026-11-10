@@ -96,7 +96,7 @@ let showCutColors = false; // warna keping potongan/dicoak: tekan C (default sem
 let showFurniture = true; // furnitur & aksesori interior: tekan F
 let showElektrik = true; // lapisan listrik (stop kontak, saklar, MCB, kWh, titik lampu, jalur kabel): tekan E
 const QS = new URLSearchParams(location.search);
-let showWpc = QS.has('wpc'); // lapisan WPC Duma (plafon luar, gimbal, wall panel, tutup tiang): tekan J; ?wpcp=m100|m150|n200 &wpcc=#rrggbb
+let showWpc = QS.has('wpc'); // lapisan WPC Duma (plafon luar, gimbal, tutup tiang): tekan J; ?wpcp=m50|m100|m150|n200|t150 &wpcc=#rrggbb
 const SHOT = (() => {
   const q = new URLSearchParams(location.search);
   if (!q.has('shot')) return null;

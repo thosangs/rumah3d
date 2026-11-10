@@ -1,20 +1,23 @@
-// WPC (plafon luar, gimbal atap, wall panel fasad, tutup tiang) — satu sumber untuk hitungan kebutuhan
+// WPC (plafon luar + gimbal atap; tutup tiang) — satu sumber untuk hitungan kebutuhan
 // (scripts/wpc-hitung.mjs → docs/wpc-kebutuhan.md) dan lapisan 3D (src/wpc.js, tombol J / ?wpc=1).
 //
 // Ukuran "ukur" = ukuran lapangan dari catatan tukang (Nov 2026). Ukuran "desain" = model SKP / DED, untuk pembanding.
 // "hemat" = alternatif untuk item yang masih diragukan (dipakai skenario hemat; item lain memakai "ukur").
 // Tiap bidang: lintang = lebar yang ditutup lajur papan (melintang arah papan), bujur = panjang papan (arah serat).
 // Arah papan mengikuti denah plafon DED lembar 11–12 (garis plafon PVC sejajar sumbu depan–belakang), gimbal sejajar
-// lisplang, wall panel & tiang tegak.
+// lisplang, tiang tegak. Celengan fasad tidak jadi dilapis WPC. Tutup tiang memakai produk wall panel (harga lain),
+// jadi hanya digambar di 3D, tidak ikut hitungan plafon.
 
-export const PRODUK = {
+export const PRODUK = { // daftar harga Duma (plafon), harga per batang, isi 10 batang per box
+  m50: { nama: 'Duma Modern 50x3', eff: 0.15, alur: 0.05, lebarTotal: 0.17, tebal: 0.008, harga: { 3: 177000, 5: 295000 }, isiBox: 10, warnaTersedia: 'B2, BC, BT, WG, C2, BW, E', contoh: '#a8744c' },
   m100: { nama: 'Duma Modern 100', eff: 0.10, lebarTotal: 0.1165, tebal: 0.008, harga: { 3: 84900, 5: 141500 }, isiBox: 10, warnaTersedia: 'B2, BC, BT, WG, C2, BW, E', contoh: '#9c7c58' },
   m150: { nama: 'Duma Modern 150', eff: 0.15, lebarTotal: 0.171, tebal: 0.008, harga: { 3: 141600, 5: 236000 }, isiBox: 10, warnaTersedia: 'B2, BC, BT, WG, C2, BW, E', contoh: '#8c6356' },
   n200: { nama: 'Duma Neo Modern 200', eff: 0.198, lebarTotal: 0.214, tebal: 0.006, harga: { 3: 208200, 5: 347000 }, isiBox: 10, warnaTersedia: 'BT, C2', contoh: '#9a4e32' },
+  t150: { nama: 'Duma Neo Modern Tempo 150', eff: 0.15, lebarTotal: 0.165, tebal: 0.01, harga: { 3: 180000, 5: 300000 }, isiBox: 10, warnaTersedia: '(lihat katalog)', contoh: '#6e4a35' },
 };
 
 // render: persegi dunia (m). Plafon: y = tinggi muka bawah plafon/overstek di model (diukur), x0..x1, z0..z1, arah papan 'x' | 'z'.
-// Dinding: bidang tegak { bidang: 'x' | 'z', pada, a0, a1 (sumbu lain), y0, y1, n: ±1 }.
+// Tiang: kotak { kotak: true, x0, x1, z0, z1, y0, y1 }.
 export const AREA = [
   { id: 'P1', no: '1', nama: 'Gimbal atap (plafon bawah lisplang)', jenis: 'plafon', lvl: 'lt2',
     ukur: [{ lintang: 1.0, bujur: 6.9, ket: 'depan' }, { lintang: 1.0, bujur: 10.2, ket: 'kiri' }, { lintang: 1.0, bujur: 6.9, ket: 'belakang' }],
@@ -48,15 +51,6 @@ export const AREA = [
     hemat: [{ lintang: 3.00, bujur: 1.70 }], // kalau ternyata sama dengan teras lt1 di bawahnya
     catatan: 'Tukang 1,70 × 4,00, padahal teras lt1 tepat di bawahnya ditulis 1,70 × 3,00; di desain keduanya 3,40 × 1,45 → ukur ulang.',
     render: [{ y: 6.25, x0: 6.50, x1: 9.88, z0: 2.00, z1: 3.45, arah: 'z' }] },
-  { id: 'W1', no: '8', nama: 'Wall panel "celengan" fasad lt2 (bentuk U)', jenis: 'dinding', lvl: 'lt2',
-    // bentuk U (depan + kedua sisi), bentangan total 3,80 menurut tukang; pembagian per muka belum diukur → depan 1,72 (model),
-    // sisa 2,08 dibagi rata ke dua sisi. Tiap muka dihitung lajurnya sendiri (lajur tepi dibelah di sudut).
-    ukur: [{ lintang: 1.72, bujur: 3.30, ket: 'depan' }, { lintang: 1.04, bujur: 3.30, ket: 'sisi kiri' }, { lintang: 1.04, bujur: 3.30, ket: 'sisi kanan' }],
-    desain: [{ lintang: 1.72, bujur: 2.50, ket: 'depan' }, { lintang: 0.47, bujur: 2.50, ket: 'sisi kiri' }, { lintang: 0.35, bujur: 2.50, ket: 'sisi kanan' }],
-    catatan: 'Bentuk U: depan + 2 sisi, bentangan 3,80 × tinggi 3,30 (tukang). Model: 1,72 + 0,47 + 0,35 = 2,54 m, tinggi tampak 2,50 m.',
-    render: [{ bidang: 'z', pada: 13.958, a0: 5.20, a1: 6.92, y0: 3.75, y1: 6.25, n: 1 },
-      { bidang: 'x', pada: 5.192, a0: 13.44, a1: 13.958, y0: 3.75, y1: 6.25, n: -1 },
-      { bidang: 'x', pada: 6.928, a0: 13.56, a1: 13.958, y0: 3.75, y1: 6.25, n: 1 }] },
   { id: 'T1', no: '4', nama: 'Tutup tiang teras depan lt1 (16 × 46)', jenis: 'tiang', lvl: 'lt1',
     ukur: [{ lintang: 0.46, bujur: 3.65 }, { lintang: 0.46, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }],
     desain: [{ lintang: 0.46, bujur: 3.65 }, { lintang: 0.46, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }],
