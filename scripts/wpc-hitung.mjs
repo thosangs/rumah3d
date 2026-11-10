@@ -5,7 +5,7 @@
 import { writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PRODUK, AREA } from '../src/layout/wpc.js';
+import { PRODUK, AREA, LIS } from '../src/layout/wpc.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const POTONG = 0.01; // tambahan per potongan: rapikan ujung / gergaji
@@ -89,7 +89,7 @@ md += `4. Dipilih kombinasi box 3 m / 5 m yang termurah.\n\n`;
 
 const BASE = 'm100', hb = hitung(BASE, 'ukur'), totLuas = luas(PLAFON.flatMap((a) => a.ukur));
 md += `## Bidang plafon\n\n| No. tukang | Bidang | Ukuran tukang (m) | Luas | Model / DED | Catatan |\n|---|---|---|---|---|---|\n`;
-for (const a of PLAFON) md += `| ${a.no} | ${a.nama} | ${a.ukur.map((r) => `${f2(r.lintang)} × ${f2(r.bujur)}`).join(' + ')} | ${f2(luas(a.ukur))} m² | ${f2(luas(a.desain))} m² | ${a.catatan || ''} |\n`;
+for (const a of PLAFON) md += `| ${a.no} | ${a.nama} | ${a.ukur.map((r) => `${f2(r.lintang)} × ${f2(r.bujur)}`).join(' + ')} | ${f2(luas(a.ukur))} m² | ${a.desain.length ? `${f2(luas(a.desain))} m²` : '–'} | ${a.catatan || ''} |\n`;
 md += `| | **Total** | | **${f2(totLuas)} m²** | ${f2(luas(PLAFON.flatMap((a) => a.desain)))} m² | |\n\n`;
 
 md += `## Kebutuhan per produk (beli per box isi 10)\n\n`;
@@ -102,15 +102,23 @@ for (const k of Object.keys(PRODUK)) {
 md += `\n\\*\\* Semua batang 5 m: sedikit lebih mahal karena pembulatan box, tapi pesan lebih gampang, sambungan di gimbal / balkon samping lebih sedikit, dan tukang lebih leluasa kalau rencana potong tidak diikuti persis.\n\n`;
 md += `\\* Tukang menulis plafon balkon belakang lt2 1,70 × 4,00, padahal teras lt1 tepat di bawahnya 1,70 × 3,00 dan di desain keduanya sama (3,40 × 1,45). Perlu diukur ulang.\n\n`;
 
-md += `## Gimbal vs plafon teras / balkon (${PRODUK[BASE].nama})\n\n| Bagian | Luas | Batang terpakai | ≈ biaya |\n|---|---|---|---|\n`;
+md += `## Gimbal vs plafon lain (${PRODUK[BASE].nama})\n\n| Bagian | Luas | Batang terpakai | ≈ biaya |\n|---|---|---|---|\n`;
 for (const [g, f] of Object.entries(GRUP)) {
   const r = hitung(BASE, 'ukur', f);
-  md += `| ${g === 'gimbal' ? 'Gimbal atap' : 'Plafon teras & balkon (8 bidang)'} | ${f2(r.luas)} m² | ${btg(r)} | ${rp(Math.round((r.luas / totLuas) * hb.harga / 1000) * 1000)} |\n`;
+  md += `| ${g === 'gimbal' ? 'Gimbal atap' : `Plafon teras, balkon & dak (${PLAFON.filter(f).length} bidang)`} | ${f2(r.luas)} m² | ${btg(r)} | ${rp(Math.round((r.luas / totLuas) * hb.harga / 1000) * 1000)} |\n`;
 }
 md += `\nBiaya per bagian = bagian luas × total harga ${PRODUK[BASE].nama} (${rp(hb.harga)}), untuk menimbang. Kalau dibeli terpisah, jumlah box bisa beda karena pembulatan box.\n\n`;
 
+// lis: panjang dari tukang + sisa potong 5 % + cadangan 5 %, dibeli lonjor 5 m (harga per meter 3 m = 5 m, sambungan lebih sedikit)
+const LIS_TAMBAH = 0.10, lonjor = Math.ceil(LIS.panjang * (1 + LIS_TAMBAH) / 5 - 1e-9);
+md += `## Lis (aksesoris, dipesan per lonjor)\n\n`;
+md += `Panjang lis **${LIS.panjang} m** (hitungan ${LIS.sumber}) + ${LIS_TAMBAH * 100} % (sisa potong + cadangan) = ${f2(LIS.panjang * (1 + LIS_TAMBAH))} m → **${lonjor} lonjor 5 m**. `;
+md += `Keliling semua bidang plafon di data ini ± ${Math.round(PLAFON.reduce((s, a) => s + a.ukur.reduce((t, r) => t + 2 * (r.lintang + r.bujur), 0), 0))} m (batas atas, termasuk sisi yang menempel balok / dinding dan tidak perlu lis).\n\n`;
+md += `| Lis | Untuk | Harga per lonjor 5 m | Per meter | ${lonjor} lonjor |\n|---|---|---|---|---|\n`;
+for (const L of Object.values(LIS.produk)) md += `| ${L.nama} | ${L.pakai} | ${rp(L.harga[5])} | ${rp(L.harga[5] / 5)} | **${rp(lonjor * L.harga[5])}** |\n`;
+md += `\nTipe lis tergantung detail tukang; kalau dicampur (mis. siku di tepi luar, LS di pertemuan dinding), jumlah lonjor dibagi sesuai panjang masing-masing.\n\n`;
+
 md += `## Belum termasuk\n\n`;
-md += `- Lis tepi (U-trim / siku) dan end cap: keliling semua bidang ± ${Math.round(PLAFON.reduce((s, a) => s + a.ukur.reduce((t, r) => t + 2 * (r.lintang + r.bujur), 0), 0))} m (batas atas; sisi yang menempel dinding / balok bisa tanpa lis).\n`;
 md += `- Rangka hollow galvalum 2×4 / 4×4 (jarak 40–60 cm), sekrup, sealant, ongkos pasang.\n`;
 md += `- Tutup tiang (wall panel) — dihitung terpisah.\n`;
 md += `- Warna: ${Object.values(PRODUK).map((P) => `${P.nama.replace('Duma ', '')} ${P.warnaTersedia}`).join('; ')}.\n`;
@@ -120,4 +128,4 @@ for (const k of Object.keys(PRODUK)) {
   const { u, d } = ringkas[k];
   console.log(`${PRODUK[k].nama.padEnd(27)} ${kotak(u).padEnd(26)} ${rp(u.harga).padEnd(14)} pakai ${btg(u)} sisa ${u.sisa.toFixed(1)} m sambung ${u.sambungan} cad ${u.cadangan} | hemat ${kotak(d)} ${rp(d.harga)}`);
 }
-console.log('luas plafon', totLuas.toFixed(2), 'm2');
+console.log('luas plafon', totLuas.toFixed(2), 'm2', '| lis', lonjor, 'lonjor 5 m');

@@ -24,34 +24,49 @@ Cara hitung:
 | 7 | Plafon balkon samping lt2 | 1,30 × 6,30 | 8,19 m² | 8,05 m² |  |
 | 9 | Plafon atas jendela renteng lt2 | 2,30 × 0,50 | 1,15 m² | 1,16 m² |  |
 | 10 | Plafon balkon belakang lt2 | 4,00 × 1,70 | 6,80 m² | 4,93 m² | Tukang 1,70 × 4,00, padahal teras lt1 tepat di bawahnya ditulis 1,70 × 3,00; di desain keduanya 3,40 × 1,45 → ukur ulang. |
-| | **Total** | | **69,05 m²** | 55,38 m² | |
+| – | Dak depan (tambahan, tidak ada di catatan tukang) | 0,50 × 8,50 | 4,25 m² | – | Ukuran dari pemilik (Nov 2026), papan memanjang 8,5 m. Lokasi di model belum dipastikan → belum digambar di 3D. |
+| | **Total** | | **73,30 m²** | 55,38 m² | |
 
 ## Kebutuhan per produk (beli per box isi 10)
 
 | Produk | Lebar efektif | Harga per m² | **Beli (termurah)** | Terpakai (rencana potong) | Cadangan | **Harga** | Alternatif semua 5 m** | Kalau balkon belakang lt2 = 3,00 m* |
 |---|---|---|---|---|---|---|---|---|
-| Duma Modern 50x3 | 15 cm | Rp 393.333 | **1 box 3 m + 10 box 5 m** | 7 × 3 m + 94 × 5 m | 9 batang | **Rp 31.270.000** | 11 box 5 m, Rp 32.450.000 | 1 box 3 m + 10 box 5 m, Rp 31.270.000 |
-| Duma Modern 100 | 10 cm | Rp 283.000 | **16 box 3 m + 6 box 5 m** | 150 × 3 m + 56 × 5 m | 14 batang | **Rp 22.074.000** | 16 box 5 m, Rp 22.640.000 | 15 box 5 m, Rp 21.225.000 |
-| Duma Modern 150 | 15 cm | Rp 314.667 | **1 box 3 m + 10 box 5 m** | 7 × 3 m + 94 × 5 m | 9 batang | **Rp 25.016.000** | 11 box 5 m, Rp 25.960.000 | 1 box 3 m + 10 box 5 m, Rp 25.016.000 |
-| Duma Neo Modern 200 | 19,8 cm | Rp 350.505 | **8 box 3 m + 4 box 5 m** | 76 × 3 m + 35 × 5 m | 9 batang | **Rp 30.536.000** | 9 box 5 m, Rp 31.230.000 | 1 box 3 m + 8 box 5 m, Rp 29.842.000 |
-| Duma Neo Modern Tempo 150 | 15 cm | Rp 400.000 | **1 box 3 m + 10 box 5 m** | 7 × 3 m + 94 × 5 m | 9 batang | **Rp 31.800.000** | 11 box 5 m, Rp 33.000.000 | 1 box 3 m + 10 box 5 m, Rp 31.800.000 |
+| Duma Modern 50x3 | 15 cm | Rp 393.333 | **1 box 3 m + 11 box 5 m** | 7 × 3 m + 101 × 5 m | 12 batang | **Rp 34.220.000** | 12 box 5 m, Rp 35.400.000 | 11 box 5 m, Rp 32.450.000 |
+| Duma Modern 100 | 10 cm | Rp 283.000 | **16 box 5 m** | 152 × 5 m | 8 batang | **Rp 22.640.000** | sama | 16 box 5 m, Rp 22.640.000 |
+| Duma Modern 150 | 15 cm | Rp 314.667 | **1 box 3 m + 11 box 5 m** | 7 × 3 m + 101 × 5 m | 12 batang | **Rp 27.376.000** | 12 box 5 m, Rp 28.320.000 | 11 box 5 m, Rp 25.960.000 |
+| Duma Neo Modern 200 | 19,8 cm | Rp 350.505 | **9 box 5 m** | 85 × 5 m | 5 batang | **Rp 31.230.000** | sama | 9 box 5 m, Rp 31.230.000 |
+| Duma Neo Modern Tempo 150 | 15 cm | Rp 400.000 | **1 box 3 m + 11 box 5 m** | 7 × 3 m + 101 × 5 m | 12 batang | **Rp 34.800.000** | 12 box 5 m, Rp 36.000.000 | 11 box 5 m, Rp 33.000.000 |
 
 \*\* Semua batang 5 m: sedikit lebih mahal karena pembulatan box, tapi pesan lebih gampang, sambungan di gimbal / balkon samping lebih sedikit, dan tukang lebih leluasa kalau rencana potong tidak diikuti persis.
 
 \* Tukang menulis plafon balkon belakang lt2 1,70 × 4,00, padahal teras lt1 tepat di bawahnya 1,70 × 3,00 dan di desain keduanya sama (3,40 × 1,45). Perlu diukur ulang.
 
-## Gimbal vs plafon teras / balkon (Duma Modern 100)
+## Gimbal vs plafon lain (Duma Modern 100)
 
 | Bagian | Luas | Batang terpakai | ≈ biaya |
 |---|---|---|---|
-| Gimbal atap | 24,00 m² | 7 × 3 m + 45 × 5 m | Rp 7.673.000 |
-| Plafon teras & balkon (8 bidang) | 45,04 m² | 94 × 5 m | Rp 14.401.000 |
+| Gimbal atap | 24,00 m² | 7 × 3 m + 45 × 5 m | Rp 7.413.000 |
+| Plafon teras, balkon & dak (9 bidang) | 49,29 m² | 103 × 5 m | Rp 15.227.000 |
 
-Biaya per bagian = bagian luas × total harga Duma Modern 100 (Rp 22.074.000), untuk menimbang. Kalau dibeli terpisah, jumlah box bisa beda karena pembulatan box.
+Biaya per bagian = bagian luas × total harga Duma Modern 100 (Rp 22.640.000), untuk menimbang. Kalau dibeli terpisah, jumlah box bisa beda karena pembulatan box.
+
+## Lis (aksesoris, dipesan per lonjor)
+
+Panjang lis **145 m** (hitungan tukang) + 10 % (sisa potong + cadangan) = 159,50 m → **32 lonjor 5 m**. Keliling semua bidang plafon di data ini ± 166 m (batas atas, termasuk sisi yang menempel balok / dinding dan tidak perlu lis).
+
+| Lis | Untuk | Harga per lonjor 5 m | Per meter | 32 lonjor |
+|---|---|---|---|---|
+| Lis Siku 21 × 21 | tepi / sudut luar plafon | Rp 112.500 | Rp 22.500 | **Rp 3.600.000** |
+| Lis Siku 35 × 35 | tepi / sudut luar, lebih lebar | Rp 128.750 | Rp 25.750 | **Rp 4.120.000** |
+| Lis Atas (LS) | pertemuan plafon dengan dinding (list profil) | Rp 187.500 | Rp 37.500 | **Rp 6.000.000** |
+| Lis Tengah (LT) | penutup sambungan di tengah bidang | Rp 187.500 | Rp 37.500 | **Rp 6.000.000** |
+| Lis Crescent | sudut dalam (cekung) | Rp 97.500 | Rp 19.500 | **Rp 3.120.000** |
+| Lis Quarter Round | sudut dalam (cembung) | Rp 97.500 | Rp 19.500 | **Rp 3.120.000** |
+
+Tipe lis tergantung detail tukang; kalau dicampur (mis. siku di tepi luar, LS di pertemuan dinding), jumlah lonjor dibagi sesuai panjang masing-masing.
 
 ## Belum termasuk
 
-- Lis tepi (U-trim / siku) dan end cap: keliling semua bidang ± 148 m (batas atas; sisi yang menempel dinding / balok bisa tanpa lis).
 - Rangka hollow galvalum 2×4 / 4×4 (jarak 40–60 cm), sekrup, sealant, ongkos pasang.
 - Tutup tiang (wall panel) — dihitung terpisah.
 - Warna: Modern 50x3 B2, BC, BT, WG, C2, BW, E; Modern 100 B2, BC, BT, WG, C2, BW, E; Modern 150 B2, BC, BT, WG, C2, BW, E; Neo Modern 200 BT, C2; Neo Modern Tempo 150 (lihat katalog).

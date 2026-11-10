@@ -51,6 +51,10 @@ export const AREA = [
     hemat: [{ lintang: 3.00, bujur: 1.70 }], // kalau ternyata sama dengan teras lt1 di bawahnya
     catatan: 'Tukang 1,70 × 4,00, padahal teras lt1 tepat di bawahnya ditulis 1,70 × 3,00; di desain keduanya 3,40 × 1,45 → ukur ulang.',
     render: [{ y: 6.25, x0: 6.50, x1: 9.88, z0: 2.00, z1: 3.45, arah: 'z' }] },
+  { id: 'P10', no: '–', nama: 'Dak depan (tambahan, tidak ada di catatan tukang)', jenis: 'plafon', lvl: 'lt1',
+    ukur: [{ lintang: 0.50, bujur: 8.50 }], desain: [],
+    catatan: 'Ukuran dari pemilik (Nov 2026), papan memanjang 8,5 m. Lokasi di model belum dipastikan → belum digambar di 3D.',
+    render: [] },
   { id: 'T1', no: '4', nama: 'Tutup tiang teras depan lt1 (16 × 46)', jenis: 'tiang', lvl: 'lt1',
     ukur: [{ lintang: 0.46, bujur: 3.65 }, { lintang: 0.46, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }],
     desain: [{ lintang: 0.46, bujur: 3.65 }, { lintang: 0.46, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }],
@@ -63,3 +67,16 @@ export const AREA = [
     catatan: 'Tukang 3,30 = lantai lt2 sampai dak atap; plafon balkon ada di 2,40 → bagian di atas plafon tertutup.',
     render: [{ kotak: true, x0: 2.902, x1: 3.282, z0: 13.402, z1: 13.602, y0: 3.80, y1: 6.25 }] },
 ];
+
+// Lis profil Duma (aksesoris, dipesan per lonjor). Panjang lis plafon dari tukang.
+export const LIS = {
+  panjang: 145, sumber: 'tukang',
+  produk: {
+    siku21: { nama: 'Lis Siku 21 × 21', harga: { 3: 67500, 5: 112500 }, warna: 'B2, BC, BT, WG, C2, BW, E', pakai: 'tepi / sudut luar plafon' },
+    siku35: { nama: 'Lis Siku 35 × 35', harga: { 3: 77250, 5: 128750 }, warna: 'BT, WG, C2, BW, BC', pakai: 'tepi / sudut luar, lebih lebar' },
+    ls: { nama: 'Lis Atas (LS)', harga: { 3: 112500, 5: 187500 }, warna: 'C2, B2, BT, E, BW', pakai: 'pertemuan plafon dengan dinding (list profil)' },
+    lt: { nama: 'Lis Tengah (LT)', harga: { 3: 112500, 5: 187500 }, warna: 'C2, B2, BT, E, BW', pakai: 'penutup sambungan di tengah bidang' },
+    crescent: { nama: 'Lis Crescent', harga: { 3: 58500, 5: 97500 }, warna: 'BT, C2', pakai: 'sudut dalam (cekung)' },
+    quarter: { nama: 'Lis Quarter Round', harga: { 3: 58500, 5: 97500 }, warna: 'BT, C2', pakai: 'sudut dalam (cembung)' },
+  },
+};
