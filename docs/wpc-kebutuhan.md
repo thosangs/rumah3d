@@ -76,18 +76,33 @@ Biaya per bagian = bagian luas × total harga Duma Modern 100 (Rp 22.640.000), u
 
 ## Lis (aksesoris, dipesan per lonjor)
 
-Panjang lis **145 m** (hitungan tukang) + 10 % (sisa potong + cadangan) = 159,50 m → **32 lonjor 5 m**. Keliling semua bidang plafon di data ini ± 151 m (batas atas, termasuk sisi yang menempel balok / dinding dan tidak perlu lis).
+Panjang lis = keliling tiap bidang plafon (gimbal: tepi dalam + tepi luar + 2 ujung) = **146,50 m**; hitungan tukang 145 m → cocok. Rencana potong ke lonjor (sisi > 5 m disambung) + cadangan 5 % = **33 lonjor 5 m** (165 m, sisa potong 7,94 m).
 
-| Lis | Untuk | Harga per lonjor 5 m | Per meter | 32 lonjor |
-|---|---|---|---|---|
-| Lis Siku 21 × 21 | tepi / sudut luar plafon | Rp 112.500 | Rp 22.500 | **Rp 3.600.000** |
-| Lis Siku 35 × 35 | tepi / sudut luar, lebih lebar | Rp 128.750 | Rp 25.750 | **Rp 4.120.000** |
-| Lis Atas (LS) | pertemuan plafon dengan dinding (list profil) | Rp 187.500 | Rp 37.500 | **Rp 6.000.000** |
-| Lis Tengah (LT) | penutup sambungan di tengah bidang | Rp 187.500 | Rp 37.500 | **Rp 6.000.000** |
-| Lis Crescent | sudut dalam (cekung) | Rp 97.500 | Rp 19.500 | **Rp 3.120.000** |
-| Lis Quarter Round | sudut dalam (cembung) | Rp 97.500 | Rp 19.500 | **Rp 3.120.000** |
+| Bidang | Tepi (m) | Panjang |
+|---|---|---|
+| Gimbal atap (plafon bawah lisplang) | 6,90 + 6,90 + 10,20 + 10,20 + 6,90 + 6,90 + 1,00 + 1,00 | 50,00 m |
+| Plafon teras belakang lt1 | 1,70 + 1,70 + 3,00 + 3,00 | 9,40 m |
+| Plafon teras depan lt1 | 1,45 + 1,45 + 3,50 + 3,50 | 9,90 m |
+| Plafon bawah balkon samping lt1 | 6,70 + 6,70 + 1,30 + 1,30 | 16,00 m |
+| Plafon dak depan lt1 (di atas kanopi carport) | 0,50 + 0,50 + 8,50 + 8,50 | 18,00 m |
+| Plafon balkon depan lt2 | 2,10 + 2,10 + 3,40 + 3,40 | 11,00 m |
+| Plafon balkon samping lt2 | 6,30 + 6,30 + 1,30 + 1,30 | 15,20 m |
+| Plafon atas jendela renteng lt2 | 0,50 + 0,50 + 2,30 + 2,30 | 5,60 m |
+| Plafon balkon belakang lt2 | 1,70 + 1,70 + 4,00 + 4,00 | 11,40 m |
+| **Total** | | **146,50 m** |
 
-Tipe lis tergantung detail tukang; kalau dicampur (mis. siku di tepi luar, LS di pertemuan dinding), jumlah lonjor dibagi sesuai panjang masing-masing.
+| Lis | Untuk | Per meter | 33 lonjor 5 m |
+|---|---|---|---|
+| Lis Siku 21 × 21 | tepi / sudut luar plafon | Rp 22.500 | **Rp 3.712.500** |
+| Lis Siku 35 × 35 | tepi / sudut luar, lebih lebar | Rp 25.750 | **Rp 4.248.750** |
+| Lis Atas (LS) | pertemuan plafon dengan dinding (list profil) | Rp 37.500 | **Rp 6.187.500** |
+| Lis Tengah (LT) | penutup sambungan di tengah bidang | Rp 37.500 | **Rp 6.187.500** |
+| Lis Crescent | sudut dalam (cekung) | Rp 19.500 | **Rp 3.217.500** |
+| Lis Quarter Round | sudut dalam (cembung) | Rp 19.500 | **Rp 3.217.500** |
+
+Tipe lis tergantung detail tukang. Kalau dicampur (mis. siku di tepi bebas, crescent / LS di pertemuan dengan dinding), lonjor dibagi sesuai panjang masing-masing; sisa potong tidak bisa dipakai lintas tipe.
+
+Bidang yang bersebelahan di ketinggian sama (teras depan – dak depan, balkon depan – balkon samping lt2, ujung bawah balkon samping – dak depan) dihitung dua kali di atas. Kalau tukang menyambungnya tanpa lis (atau cukup satu Lis Tengah), kebutuhan berkurang ± 13,80 m (± 3 lonjor 5 m).
 
 ## Belum termasuk
 

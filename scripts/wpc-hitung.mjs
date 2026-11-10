@@ -123,14 +123,35 @@ for (const [g, f] of Object.entries(GRUP)) {
 }
 md += `\nBiaya per bagian = bagian luas × total harga ${PRODUK[BASE].nama} (${rp(hb.harga)}), untuk menimbang. Kalau dibeli terpisah, jumlah box bisa beda karena pembulatan box.\n\n`;
 
-// lis: panjang dari tukang + sisa potong 5 % + cadangan 5 %, dibeli lonjor 5 m (harga per meter 3 m = 5 m, sambungan lebih sedikit)
-const LIS_TAMBAH = 0.10, lonjor = Math.ceil(LIS.panjang * (1 + LIS_TAMBAH) / 5 - 1e-9);
+// Lis = tepi tiap bidang. Bidang tunggal: 4 sisi. Gimbal (segmen bersambung di sudut): 2 sisi panjang tiap segmen + 2 ujung.
+// Potongan lis dipaketkan ke lonjor 3 m / 5 m seperti papan (tepi > 5 m disambung), + cadangan 5 %. Harga per meter lonjor
+// 3 m = 5 m untuk semua tipe lis, jadi rencana potongnya sama untuk semua tipe.
+const tepi = (a) => a.ukur.length > 1
+  ? [...a.ukur.flatMap((r) => [r.bujur, r.bujur]), a.ukur[0].lintang, a.ukur[a.ukur.length - 1].lintang]
+  : a.ukur.flatMap((r) => [r.bujur, r.bujur, r.lintang, r.lintang]);
+const SAMPING = [['P3', 'P5', 3.50], ['P6', 'P7', 2.10], ['P4', 'P5', 1.30]]; // tepi bersama dua bidang sebidang (dihitung 2×)
+const sisiLis = PLAFON.flatMap(tepi), panjangLis = sisiLis.reduce((s, x) => s + x, 0);
+let lis = null;
+for (const ambang of [0, 1, 1.5, 2, 2.5, 3]) {
+  const r = paket({ tetap: sisiLis.filter((x) => x <= 5 + 1e-9), panjang: sisiLis.filter((x) => x > 5 + 1e-9) }, ambang);
+  const c3 = Math.ceil(r.n3 * (1 + CADANGAN) - 1e-9), c5 = Math.ceil(r.n5 * (1 + CADANGAN) - 1e-9);
+  const meter = c3 * 3 + c5 * 5;
+  if (!lis || meter < lis.meter - 1e-9 || (Math.abs(meter - lis.meter) < 1e-9 && c3 + c5 < lis.c3 + lis.c5)) lis = { ...r, c3, c5, meter };
+}
+const lonjorTxt = [lis.c3 && `${lis.c3} lonjor 3 m`, lis.c5 && `${lis.c5} lonjor 5 m`].filter(Boolean).join(' + ');
+const hargaLis = (L) => lis.c3 * L.harga[3] + lis.c5 * L.harga[5];
 md += `## Lis (aksesoris, dipesan per lonjor)\n\n`;
-md += `Panjang lis **${LIS.panjang} m** (hitungan ${LIS.sumber}) + ${LIS_TAMBAH * 100} % (sisa potong + cadangan) = ${f2(LIS.panjang * (1 + LIS_TAMBAH))} m → **${lonjor} lonjor 5 m**. `;
-md += `Keliling semua bidang plafon di data ini ± ${Math.round(PLAFON.reduce((s, a) => s + a.ukur.reduce((t, r) => t + 2 * (r.lintang + r.bujur), 0), 0))} m (batas atas, termasuk sisi yang menempel balok / dinding dan tidak perlu lis).\n\n`;
-md += `| Lis | Untuk | Harga per lonjor 5 m | Per meter | ${lonjor} lonjor |\n|---|---|---|---|---|\n`;
-for (const L of Object.values(LIS.produk)) md += `| ${L.nama} | ${L.pakai} | ${rp(L.harga[5])} | ${rp(L.harga[5] / 5)} | **${rp(lonjor * L.harga[5])}** |\n`;
-md += `\nTipe lis tergantung detail tukang; kalau dicampur (mis. siku di tepi luar, LS di pertemuan dinding), jumlah lonjor dibagi sesuai panjang masing-masing.\n\n`;
+md += `Panjang lis = keliling tiap bidang plafon (gimbal: tepi dalam + tepi luar + 2 ujung) = **${f2(panjangLis)} m**; hitungan ${LIS.sumber} ${LIS.panjang} m → cocok. `;
+md += `Rencana potong ke lonjor (sisi > 5 m disambung) + cadangan ${CADANGAN * 100} % = **${lonjorTxt}** (${lis.meter} m, sisa potong ${f2(lis.sisa)} m).\n\n`;
+md += `| Bidang | Tepi (m) | Panjang |\n|---|---|---|\n`;
+for (const a of PLAFON) { const t = tepi(a); md += `| ${a.nama} | ${t.map(f2).join(' + ')} | ${f2(t.reduce((s, x) => s + x, 0))} m |\n`; }
+md += `| **Total** | | **${f2(panjangLis)} m** |\n\n`;
+md += `| Lis | Untuk | Per meter | ${lonjorTxt} |\n|---|---|---|---|\n`;
+for (const L of Object.values(LIS.produk)) md += `| ${L.nama} | ${L.pakai} | ${rp(L.harga[5] / 5)} | **${rp(hargaLis(L))}** |\n`;
+const hemLis = SAMPING.reduce((s, [, , l]) => s + 2 * l, 0);
+md += `\nTipe lis tergantung detail tukang. Kalau dicampur (mis. siku di tepi bebas, crescent / LS di pertemuan dengan dinding), lonjor dibagi sesuai panjang masing-masing; sisa potong tidak bisa dipakai lintas tipe.\n\n`;
+md += `Bidang yang bersebelahan di ketinggian sama (teras depan – dak depan, balkon depan – balkon samping lt2, ujung bawah balkon samping – dak depan) dihitung dua kali di atas. `;
+md += `Kalau tukang menyambungnya tanpa lis (atau cukup satu Lis Tengah), kebutuhan berkurang ± ${f2(hemLis)} m (± ${Math.round(hemLis / 5)} lonjor 5 m).\n\n`;
 
 md += `## Belum termasuk\n\n`;
 md += `- Rangka hollow galvalum 2×4 / 4×4 (jarak 40–60 cm), sekrup, sealant, ongkos pasang.\n`;
@@ -142,4 +163,4 @@ for (const k of Object.keys(PRODUK)) {
   const { u, d } = ringkas[k];
   console.log(`${PRODUK[k].nama.padEnd(27)} ${kotak(u).padEnd(26)} ${rp(u.harga).padEnd(14)} pakai ${btg(u)} sisa ${u.sisa.toFixed(1)} m sambung ${u.sambungan} cad ${u.cadangan} | hemat ${kotak(d)} ${rp(d.harga)}`);
 }
-console.log('luas plafon', totLuas.toFixed(2), 'm2', '| lis', lonjor, 'lonjor 5 m');
+console.log('luas plafon', totLuas.toFixed(2), 'm2', '| lis', panjangLis.toFixed(2), 'm', lonjorTxt, 'sisa', lis.sisa.toFixed(2), 'sambung', lis.sambungan);
