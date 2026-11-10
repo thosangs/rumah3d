@@ -1416,6 +1416,23 @@
      },
      "noelek": true
     },
+    "wpc-dak-depan": {
+     "cam": [
+      4.0,
+      2.95,
+      14.6
+     ],
+     "look": [
+      7.0,
+      3.35,
+      13.7
+     ],
+     "fov": 85,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
     "wpc-bawah-balkon-samping": {
      "cam": [
       2.6,
