@@ -1356,6 +1356,236 @@
      "fov": 70
     }
    }
+  },
+  "wpc": {
+   "render": [
+    3,
+    4,
+    5,
+    6
+   ],
+   "views": {
+    "wpc-fasad-depan": {
+     "cam": [
+      5.5,
+      4.4,
+      25.5
+     ],
+     "look": [
+      5.5,
+      4.6,
+      13.5
+     ],
+     "fov": 50,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-kiri-depan": {
+     "cam": [
+      -3.0,
+      4.6,
+      21.0
+     ],
+     "look": [
+      3.8,
+      4.6,
+      11.5
+     ],
+     "fov": 55,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-teras-depan": {
+     "cam": [
+      5.9,
+      1.5,
+      13.3
+     ],
+     "look": [
+      3.4,
+      3.0,
+      12.5
+     ],
+     "fov": 70,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-bawah-balkon-samping": {
+     "cam": [
+      2.6,
+      1.3,
+      14.4
+     ],
+     "look": [
+      1.9,
+      3.15,
+      10.5
+     ],
+     "fov": 70,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-balkon-depan-lt2": {
+     "cam": [
+      5.0,
+      5.2,
+      13.9
+     ],
+     "look": [
+      2.6,
+      6.1,
+      12.3
+     ],
+     "fov": 72,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-balkon-samping-lt2": {
+     "cam": [
+      2.6,
+      5.3,
+      13.6
+     ],
+     "look": [
+      2.0,
+      6.0,
+      9.0
+     ],
+     "fov": 72,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-teras-belakang": {
+     "cam": [
+      7.1,
+      1.5,
+      3.35
+     ],
+     "look": [
+      9.6,
+      3.1,
+      2.1
+     ],
+     "fov": 75,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-balkon-belakang-lt2": {
+     "cam": [
+      7.4,
+      5.3,
+      3.3
+     ],
+     "look": [
+      9.2,
+      6.1,
+      2.2
+     ],
+     "fov": 72,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-celengan": {
+     "cam": [
+      4.4,
+      5.1,
+      17.2
+     ],
+     "look": [
+      6.0,
+      5.0,
+      13.9
+     ],
+     "fov": 60,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-belakang": {
+     "cam": [
+      6.5,
+      4.6,
+      -6.0
+     ],
+     "look": [
+      6.5,
+      4.8,
+      4.0
+     ],
+     "fov": 60,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
+    "wpc-fasad-m150": {
+     "cam": [
+      5.5,
+      4.4,
+      25.5
+     ],
+     "look": [
+      5.5,
+      4.6,
+      13.5
+     ],
+     "fov": 50,
+     "q": {
+      "wpc": "1",
+      "wpcp": "m150"
+     },
+     "noelek": true
+    },
+    "wpc-fasad-n200": {
+     "cam": [
+      5.5,
+      4.4,
+      25.5
+     ],
+     "look": [
+      5.5,
+      4.6,
+      13.5
+     ],
+     "fov": 50,
+     "q": {
+      "wpc": "1",
+      "wpcp": "n200"
+     },
+     "noelek": true
+    },
+    "wpc-tanpa": {
+     "cam": [
+      -3.0,
+      4.6,
+      21.0
+     ],
+     "look": [
+      3.8,
+      4.6,
+      11.5
+     ],
+     "fov": 55,
+     "noelek": true
+    }
+   }
   }
  }
 }

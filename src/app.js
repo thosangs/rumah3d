@@ -8,6 +8,7 @@ import { LEVELS, STAIRS, SLAB2, SITE } from './data.js';
 import { buildAll } from './scene.js';
 import { buildFurniture } from './furniture.js';
 import { buildElektrik } from './elektrik.js';
+import { buildWpc } from './wpc.js';
 import { buildPlafonIndex } from './plafon.js';
 import { LAMPU_SKP_DIBUANG } from './layout/elektrik.js';
 import { assetsPending } from './assets.js';
@@ -94,6 +95,8 @@ let showLabels = false; // label ukuran potongan: tekan L
 let showCutColors = false; // warna keping potongan/dicoak: tekan C (default semua putih)
 let showFurniture = true; // furnitur & aksesori interior: tekan F
 let showElektrik = true; // lapisan listrik (stop kontak, saklar, MCB, kWh, titik lampu, jalur kabel): tekan E
+const QS = new URLSearchParams(location.search);
+let showWpc = QS.has('wpc'); // lapisan WPC Duma (plafon luar, gimbal, wall panel, tutup tiang): tekan J; ?wpcp=m100|m150|n200 &wpcc=#rrggbb
 const SHOT = (() => {
   const q = new URLSearchParams(location.search);
   if (!q.has('shot')) return null;
@@ -151,6 +154,14 @@ function attachElektrik() {
   e.lt1.visible = e.lt2.visible = showElektrik;
   built.gLt1.add(e.lt1); built.gLt2.add(e.lt2);
   built.elektrik = e;
+  attachWpc();
+}
+/** Lapisan WPC: koordinat dunia, tinggi plafon dari indeks plafon SKP (bidang plafon baru muncul setelah GLB termuat). */
+function attachWpc() {
+  if (!built) return;
+  if (built.wpc) { built.root.remove(built.wpc); built.wpc.traverse((o) => o.geometry && o.geometry.dispose()); }
+  const w = buildWpc(ceilingAt, { produk: QS.get('wpcp') || 'm100', warna: QS.get('wpcc') || undefined });
+  w.visible = showWpc; built.root.add(w); built.wpc = w;
 }
 function applyVisibility() {
   if (!built) return;
@@ -209,6 +220,7 @@ addEventListener('keydown', (e) => {
     case 'KeyF': setFurniture(!showFurniture); break;
     case 'KeyK': cahaya.toggle(); break;
     case 'KeyE': setElektrik(!showElektrik); break;
+    case 'KeyJ': setWpc(!showWpc); break;
     case 'KeyG': if (glbRoot) { glbOn = !glbOn; applyVisibility(); } break;
     case 'KeyP': togglePanel(); break;
     case 'Space': e.preventDefault(); if (mode === 'walk' && !player.air) { player.air = true; player.vy = 3.6; } break; // lompat ±0,65 m
@@ -295,6 +307,8 @@ function applyShot() {
   orbit.enabled = false;
   overlay.hidden = true; crosshair.hidden = true;
   camera.fov = SHOT.fov; camera.updateProjectionMatrix();
+  // sudut potret bebas: tanpa batas orbit (maxPolarAngle 0,495π mengangkat kamera yang menengadah ke plafon setinggi target)
+  orbit.maxPolarAngle = Math.PI; orbit.minDistance = 0;
   camera.position.set(...SHOT.cam);
   orbit.target.set(...SHOT.look);
   camera.lookAt(...SHOT.look);
@@ -520,6 +534,12 @@ function setElektrik(on) {
   document.querySelectorAll('#viewbar [data-elektrik]').forEach((b) => b.classList.toggle('active', on));
 }
 document.querySelectorAll('#viewbar [data-elektrik]').forEach((b) => b.addEventListener('click', () => setElektrik(!showElektrik)));
+function setWpc(on) {
+  showWpc = on;
+  if (built && built.wpc) built.wpc.visible = on;
+  document.querySelectorAll('#viewbar [data-wpc]').forEach((b) => b.classList.toggle('active', on));
+}
+document.querySelectorAll('#viewbar [data-wpc]').forEach((b) => { b.classList.toggle('active', showWpc); b.addEventListener('click', () => setWpc(!showWpc)); });
 document.querySelectorAll('#viewbar [data-open]').forEach((b) => b.addEventListener('click', () => window.open(b.dataset.open, '_blank')));
 document.querySelectorAll('.legend').forEach((el) => el.classList.add('dim'));
 
