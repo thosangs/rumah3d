@@ -5,8 +5,8 @@
 // "hemat" = alternatif untuk item yang masih diragukan (dipakai skenario hemat; item lain memakai "ukur").
 // Tiap bidang: lintang = lebar yang ditutup lajur papan (melintang arah papan), bujur = panjang papan (arah serat).
 // Arah papan mengikuti denah plafon DED lembar 11–12 (garis plafon PVC sejajar sumbu depan–belakang), gimbal sejajar
-// lisplang, tiang tegak. Celengan fasad tidak jadi dilapis WPC. Tutup tiang memakai produk wall panel (harga lain),
-// jadi hanya digambar di 3D, tidak ikut hitungan plafon.
+// lisplang, wall panel & tiang tegak. Celengan (bentuk L) dan tutup tiang memakai produk wall panel (harga lain),
+// jadi tidak ikut hitungan plafon; luasnya dicatat di docs/wpc-kebutuhan.md.
 
 export const PRODUK = { // daftar harga Duma (plafon), harga per batang, isi 10 batang per box
   m50: { nama: 'Duma Modern 50x3', eff: 0.15, alur: 0.05, lebarTotal: 0.17, tebal: 0.008, harga: { 3: 177000, 5: 295000 }, isiBox: 10, warnaTersedia: 'B2, BC, BT, WG, C2, BW, E', contoh: '#a8744c' },
@@ -20,7 +20,7 @@ export const PRODUK = { // daftar harga Duma (plafon), harga per batang, isi 10 
 export const WARNA = { B2: '#9f5532', BT: '#623f3a', C2: '#634936', E: '#a17550', BC: '#1e1f1d', WG: '#b4a58e', BW: '#cbaa77' };
 
 // render: persegi dunia (m). Plafon: y = tinggi muka bawah plafon/overstek di model (diukur), x0..x1, z0..z1, arah papan 'x' | 'z'.
-// Tiang: kotak { kotak: true, x0, x1, z0, z1, y0, y1 }.
+// Dinding: bidang tegak { bidang: 'x' | 'z', pada, a0, a1 (sumbu lain), y0, y1 }. Tiang: kotak { kotak: true, x0, x1, z0, z1, y0, y1 }.
 export const AREA = [
   { id: 'P1', no: '1', nama: 'Gimbal atap (plafon bawah lisplang)', jenis: 'plafon', lvl: 'lt2',
     ukur: [{ lintang: 1.0, bujur: 6.9, ket: 'depan' }, { lintang: 1.0, bujur: 10.2, ket: 'kiri' }, { lintang: 1.0, bujur: 6.9, ket: 'belakang' }],
@@ -55,6 +55,12 @@ export const AREA = [
     hemat: [{ lintang: 3.00, bujur: 1.70 }], // kalau ternyata sama dengan teras lt1 di bawahnya
     catatan: 'Tukang 1,70 × 4,00, padahal teras lt1 tepat di bawahnya ditulis 1,70 × 3,00; di desain keduanya 3,40 × 1,45 → ukur ulang.',
     render: [{ y: 6.25, x0: 6.50, x1: 9.88, z0: 2.00, z1: 3.45, arah: 'z' }] },
+  { id: 'W1', no: '8', nama: 'Wall panel celengan fasad lt2 (bentuk L)', jenis: 'dinding', lvl: 'lt2',
+    ukur: [{ lintang: 1.72, bujur: 3.80, ket: 'muka depan' }, { lintang: 0.58, bujur: 3.80, ket: 'sisi kiri (menghadap balkon)' }],
+    desain: [{ lintang: 1.72, bujur: 2.50, ket: 'muka depan' }, { lintang: 0.50, bujur: 2.50, ket: 'sisi kiri' }],
+    catatan: 'Tukang menghitung bentuk U (\'tinggi 3,30, lebar total 3,80\'); yang benar bentuk L = muka depan + sisi kiri, lebar 2,30 × tinggi 3,80 (pemilik, Nov 2026). Pembagian depan / sisi dari model. Model: tinggi tampak 2,50 (3,75 → 6,25); selebihnya kemungkinan menutup pita lantai & pita atap.',
+    render: [{ bidang: 'z', pada: 13.958, a0: 5.20, a1: 6.92, y0: 3.75, y1: 6.25 },
+      { bidang: 'x', pada: 5.192, a0: 13.44, a1: 13.958, y0: 3.75, y1: 6.25 }] },
   { id: 'T1', no: '4', nama: 'Tutup tiang teras depan lt1 (16 × 46)', jenis: 'tiang', lvl: 'lt1',
     ukur: [{ lintang: 0.46, bujur: 3.65 }, { lintang: 0.46, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }],
     desain: [{ lintang: 0.46, bujur: 3.65 }, { lintang: 0.46, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }, { lintang: 0.16, bujur: 3.65 }],

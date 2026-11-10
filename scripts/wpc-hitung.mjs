@@ -79,7 +79,7 @@ const btg = (r) => [r.n3 && `${r.n3} × 3 m`, r.n5 && `${r.n5} × 5 m`].filter(B
 let md = `# Kebutuhan plafon WPC Duma (outdoor)\n\n`;
 md += `Dihitung otomatis oleh \`scripts/wpc-hitung.mjs\` dari \`src/layout/wpc.js\` (data yang sama dengan lapisan WPC di model 3D, tombol **J**). `;
 md += `Ukuran = ukuran lapangan tukang. Harga = daftar harga Duma, **beli per box isi 10 batang**.\n\n`;
-md += `Yang dihitung hanya plafon outdoor: gimbal atap dan plafon teras / balkon. Tutup tiang memakai produk wall panel (dihitung terpisah); celengan fasad tidak dilapis WPC.\n\n`;
+md += `Yang dihitung hanya plafon outdoor: gimbal atap dan plafon teras / balkon. Celengan (bentuk L) dan tutup tiang memakai produk wall panel; luasnya ada di bagian *Wall panel* di bawah, box dihitung setelah ada daftar harga wall panel.\n\n`;
 md += `Cara hitung:\n\n`;
 md += `1. Tiap bidang dibagi lajur selebar **lebar efektif** papan (dibulatkan ke atas; lajur tepi dibelah). Tiap lajur sepanjang bidang + 1 cm rapikan per potong.\n`;
 md += `2. **Rencana potong**: lajur ≤ 5 m dipasang utuh tanpa sambungan; potongannya dipaketkan ke batang 3 m / 5 m supaya sisa potong terpakai di bidang lain. `;
@@ -153,9 +153,17 @@ md += `\nTipe lis tergantung detail tukang. Kalau dicampur (mis. siku di tepi be
 md += `Bidang yang bersebelahan di ketinggian sama (teras depan – dak depan, balkon depan – balkon samping lt2, ujung bawah balkon samping – dak depan) dihitung dua kali di atas. `;
 md += `Kalau tukang menyambungnya tanpa lis (atau cukup satu Lis Tengah), kebutuhan berkurang ± ${f2(hemLis)} m (± ${Math.round(hemLis / 5)} lonjor 5 m).\n\n`;
 
+const DINDING = AREA.filter((a) => a.jenis !== 'plafon');
+md += `## Wall panel (produk lain, belum dihitung box)\n\n| No. tukang | Bidang | Ukuran (m) | Luas | Model / DED | Catatan |\n|---|---|---|---|---|---|\n`;
+for (const a of DINDING) {
+  const u = a.ukur.map((r) => f2(r.lintang)).join(' + ') + ` × ${f2(a.ukur[0].bujur)}`;
+  md += `| ${a.no} | ${a.nama} | ${u} | ${f2(luas(a.ukur))} m² | ${f2(luas(a.desain))} m² | ${a.catatan || ''} |\n`;
+}
+md += `| | **Total** | | **${f2(luas(DINDING.flatMap((a) => a.ukur)))} m²** | | |\n\n`;
+md += `Lebar tiap muka dihitung lajurnya sendiri (lajur tepi dibelah di sudut). Kirim daftar harga wall panel (lebar efektif, panjang, harga, isi box) untuk menghitung box.\n\n`;
+
 md += `## Belum termasuk\n\n`;
 md += `- Rangka hollow galvalum 2×4 / 4×4 (jarak 40–60 cm), sekrup, sealant, ongkos pasang.\n`;
-md += `- Tutup tiang (wall panel) — dihitung terpisah.\n`;
 md += `- Warna: ${Object.values(PRODUK).map((P) => `${P.nama.replace('Duma ', '')} ${P.warnaTersedia}`).join('; ')}.\n`;
 writeFileSync(join(root, 'docs/wpc-kebutuhan.md'), md);
 

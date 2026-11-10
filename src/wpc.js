@@ -1,4 +1,4 @@
-// Lapisan WPC (tombol J, ?wpc=1): plafon luar, gimbal atap, tutup tiang teras depan.
+// Lapisan WPC (tombol J, ?wpc=1): plafon luar, gimbal atap, wall panel celengan (bentuk L), tutup tiang teras depan.
 // Data bidang = src/layout/wpc.js (sama dengan hitungan kebutuhan). Papan digambar sebagai tekstur kayu prosedural
 // dengan alur tiap lebar efektif produk (atau tiap 5 cm untuk Modern 50x3) dan warna contoh dari katalog.
 // Pilih produk: ?wpcp=m50 | m100 | m150 | n200 | t150 (default m100), warna: ?wpcc=C2 | BT | … atau #rrggbb.

@@ -1518,6 +1518,23 @@
      },
      "noelek": true
     },
+    "wpc-celengan": {
+     "cam": [
+      3.6,
+      5.0,
+      17.4
+     ],
+     "look": [
+      6.0,
+      5.0,
+      13.9
+     ],
+     "fov": 60,
+     "q": {
+      "wpc": "1"
+     },
+     "noelek": true
+    },
     "wpc-belakang": {
      "cam": [
       6.5,

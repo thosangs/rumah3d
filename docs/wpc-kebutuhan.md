@@ -2,7 +2,7 @@
 
 Dihitung otomatis oleh `scripts/wpc-hitung.mjs` dari `src/layout/wpc.js` (data yang sama dengan lapisan WPC di model 3D, tombol **J**). Ukuran = ukuran lapangan tukang. Harga = daftar harga Duma, **beli per box isi 10 batang**.
 
-Yang dihitung hanya plafon outdoor: gimbal atap dan plafon teras / balkon. Tutup tiang memakai produk wall panel (dihitung terpisah); celengan fasad tidak dilapis WPC.
+Yang dihitung hanya plafon outdoor: gimbal atap dan plafon teras / balkon. Celengan (bentuk L) dan tutup tiang memakai produk wall panel; luasnya ada di bagian *Wall panel* di bawah, box dihitung setelah ada daftar harga wall panel.
 
 Cara hitung:
 
@@ -104,8 +104,18 @@ Tipe lis tergantung detail tukang. Kalau dicampur (mis. siku di tepi bebas, cres
 
 Bidang yang bersebelahan di ketinggian sama (teras depan – dak depan, balkon depan – balkon samping lt2, ujung bawah balkon samping – dak depan) dihitung dua kali di atas. Kalau tukang menyambungnya tanpa lis (atau cukup satu Lis Tengah), kebutuhan berkurang ± 13,80 m (± 3 lonjor 5 m).
 
+## Wall panel (produk lain, belum dihitung box)
+
+| No. tukang | Bidang | Ukuran (m) | Luas | Model / DED | Catatan |
+|---|---|---|---|---|---|
+| 8 | Wall panel celengan fasad lt2 (bentuk L) | 1,72 + 0,58 × 3,80 | 8,74 m² | 5,55 m² | Tukang menghitung bentuk U ('tinggi 3,30, lebar total 3,80'); yang benar bentuk L = muka depan + sisi kiri, lebar 2,30 × tinggi 3,80 (pemilik, Nov 2026). Pembagian depan / sisi dari model. Model: tinggi tampak 2,50 (3,75 → 6,25); selebihnya kemungkinan menutup pita lantai & pita atap. |
+| 4 | Tutup tiang teras depan lt1 (16 × 46) | 0,46 + 0,46 + 0,16 + 0,16 × 3,65 | 4,53 m² | 4,53 m² | Dari muka tanah sampai bawah dak (−0,50 → +3,15), cocok dengan model. |
+| 7 | Tutup tiang balkon lt2 (16 × 46) | 0,46 + 0,46 + 0,16 + 0,16 × 3,30 | 4,09 m² | 2,98 m² | Tukang 3,30 = lantai lt2 sampai dak atap; plafon balkon ada di 2,40 → bagian di atas plafon tertutup. |
+| | **Total** | | **17,36 m²** | | |
+
+Lebar tiap muka dihitung lajurnya sendiri (lajur tepi dibelah di sudut). Kirim daftar harga wall panel (lebar efektif, panjang, harga, isi box) untuk menghitung box.
+
 ## Belum termasuk
 
 - Rangka hollow galvalum 2×4 / 4×4 (jarak 40–60 cm), sekrup, sealant, ongkos pasang.
-- Tutup tiang (wall panel) — dihitung terpisah.
 - Warna: Modern 50x3 B2, BC, BT, WG, C2, BW, E; Modern 100 B2, BC, BT, WG, C2, BW, E; Modern 150 B2, BC, BT, WG, C2, BW, E; Neo Modern 200 BT, C2; Neo Modern Tempo 150 (lihat katalog).
