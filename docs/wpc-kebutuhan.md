@@ -40,6 +40,31 @@ Cara hitung:
 
 \* Tukang menulis plafon balkon belakang lt2 1,70 × 4,00, padahal teras lt1 tepat di bawahnya 1,70 × 3,00 dan di desain keduanya sama (3,40 × 1,45). Perlu diukur ulang.
 
+## Ukuran tukang vs model 3D
+
+| Bidang | Tukang | Model 3D / DED | Selisih |
+|---|---|---|---|
+| Gimbal atap (plafon bawah lisplang) | 24,00 m² | 13,08 m² | +10,92 m² |
+| Plafon teras belakang lt1 | 5,10 m² | 4,93 m² | +0,17 m² |
+| Plafon teras depan lt1 | 5,08 m² | 5,25 m² | -0,17 m² |
+| Plafon bawah balkon samping lt1 | 8,71 m² | 7,97 m² | +0,74 m² |
+| Plafon dak depan lt1 (di atas kanopi carport) | 4,25 m² | 3,74 m² | +0,51 m² |
+| Plafon balkon depan lt2 | 7,14 m² | 6,83 m² | +0,31 m² |
+| Plafon balkon samping lt2 | 8,19 m² | 8,05 m² | +0,14 m² |
+| Plafon atas jendela renteng lt2 | 1,15 m² | 1,16 m² | -0,01 m² |
+| Plafon balkon belakang lt2 | 6,80 m² | 4,93 m² | +1,87 m² |
+| **Total** | **70,42 m²** | **55,94 m²** | **+14,47 m²** |
+
+| Produk | Ukuran tukang | Ukuran model 3D | Selisih |
+|---|---|---|---|
+| Duma Modern 50x3 | 11 box 5 m, Rp 32.450.000 | 9 box 5 m, Rp 26.550.000 | 2 box, Rp 5.900.000 |
+| Duma Modern 100 | 16 box 5 m, Rp 22.640.000 | 1 box 3 m + 12 box 5 m, Rp 17.829.000 | 3 box, Rp 4.811.000 |
+| Duma Modern 150 | 11 box 5 m, Rp 25.960.000 | 9 box 5 m, Rp 21.240.000 | 2 box, Rp 4.720.000 |
+| Duma Neo Modern 200 | 9 box 5 m, Rp 31.230.000 | 7 box 5 m, Rp 24.290.000 | 2 box, Rp 6.940.000 |
+| Duma Neo Modern Tempo 150 | 11 box 5 m, Rp 33.000.000 | 9 box 5 m, Rp 27.000.000 | 2 box, Rp 6.000.000 |
+
+Selisih terbesar di gimbal: model 50–60 cm, di lapangan overstek dipanjangkan jadi 1 m (sudah dikonfirmasi).
+
 ## Gimbal vs plafon lain (Duma Modern 100)
 
 | Bagian | Luas | Batang terpakai | ≈ biaya |

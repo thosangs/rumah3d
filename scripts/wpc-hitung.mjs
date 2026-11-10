@@ -102,6 +102,20 @@ for (const k of Object.keys(PRODUK)) {
 md += `\n\\*\\* Semua batang 5 m: sedikit lebih mahal karena pembulatan box, tapi pesan lebih gampang, sambungan di gimbal / balkon samping lebih sedikit, dan tukang lebih leluasa kalau rencana potong tidak diikuti persis.\n\n`;
 md += `\\* Tukang menulis plafon balkon belakang lt2 1,70 × 4,00, padahal teras lt1 tepat di bawahnya 1,70 × 3,00 dan di desain keduanya sama (3,40 × 1,45). Perlu diukur ulang.\n\n`;
 
+md += `## Ukuran tukang vs model 3D\n\n| Bidang | Tukang | Model 3D / DED | Selisih |\n|---|---|---|---|\n`;
+for (const a of PLAFON) {
+  const u = luas(a.ukur), d = luas(a.desain);
+  md += `| ${a.nama} | ${f2(u)} m² | ${f2(d)} m² | ${u - d >= 0 ? '+' : ''}${f2(u - d)} m² |\n`;
+}
+const dTot = luas(PLAFON.flatMap((a) => a.desain));
+md += `| **Total** | **${f2(totLuas)} m²** | **${f2(dTot)} m²** | **+${f2(totLuas - dTot)} m²** |\n\n`;
+md += `| Produk | Ukuran tukang | Ukuran model 3D | Selisih |\n|---|---|---|---|\n`;
+for (const k of Object.keys(PRODUK)) {
+  const u = ringkas[k].u, d = hitung(k, 'desain');
+  md += `| ${PRODUK[k].nama} | ${kotak(u)}, ${rp(u.harga)} | ${kotak(d)}, ${rp(d.harga)} | ${u.box - d.box} box, ${rp(u.harga - d.harga)} |\n`;
+}
+md += `\nSelisih terbesar di gimbal: model 50–60 cm, di lapangan overstek dipanjangkan jadi 1 m (sudah dikonfirmasi).\n\n`;
+
 md += `## Gimbal vs plafon lain (${PRODUK[BASE].nama})\n\n| Bagian | Luas | Batang terpakai | ≈ biaya |\n|---|---|---|---|\n`;
 for (const [g, f] of Object.entries(GRUP)) {
   const r = hitung(BASE, 'ukur', f);
